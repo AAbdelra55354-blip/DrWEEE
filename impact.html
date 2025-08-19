@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Discover the measurable environmental, economic, and social impact of DR.WEEE. View detailed metrics on e-waste recycling, carbon reduction, and community empowerment.">
+    <meta name="keywords" content="DR.WEEE impact, sustainability report, e-waste metrics, circular economy data, environmental impact">
+    <meta name="author" content="DR.WEEE Smart Green IT Solutions">
+
+    <title>Our Impact - Quantifying Sustainability | DR.WEEE</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logos/favicon.png">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js for Data Visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/impact-drweee.css">
+</head>
+<body class="impact-drweee-page">
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Hero Section -->
+        <section class="hero hero--impact-drweee" id="hero">
+            <div class="hero__background">
+                <video class="hero__video-background" autoplay loop muted playsinline>
+                    <source src="https://assets.mixkit.co/videos/preview/mixkit-plexus-network-of-a-dna-strand-4322-large.mp4" type="video/mp4">
+                </video>
+                <div class="hero__overlay"></div>
+            </div>
+            <div class="container">
+                <div class="hero__content">
+                    <span class="hero__subtitle">Our Sustainable Footprint</span>
+                    <h1 class="hero__title">Quantifying Our Commitment to the Planet</h1>
+                    <p class="hero__description">
+                        We believe in transparent, measurable results. Explore the data that defines our environmental, economic, and social contributions.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Impact Overview Section -->
+        <section class="section impact-overview">
+            <div class="container">
+                <div class="impact-dimensions">
+                    <div class="dimension-card">
+                        <div class="dimension-icon"><i class="fas fa-leaf"></i></div>
+                        <h3>Environmental</h3>
+                        <p>Diverting waste, recovering resources, and reducing carbon emissions.</p>
+                        <div class="dimension-stat">
+                            <span class="counter" data-target="5000">0</span>+ Tons CO₂ Reduced
+                        </div>
+                    </div>
+                    <div class="dimension-card">
+                        <div class="dimension-icon"><i class="fas fa-chart-line"></i></div>
+                        <h3>Economic</h3>
+                        <p>Driving a green economy through job creation and market leadership.</p>
+                        <div class="dimension-stat">
+                            <span class="counter" data-target="65">0</span>% Market Share
+                        </div>
+                    </div>
+                    <div class="dimension-card">
+                        <div class="dimension-icon"><i class="fas fa-users"></i></div>
+                        <h3>Social</h3>
+                        <p>Empowering communities through education and accessible technology.</p>
+                        <div class="dimension-stat">
+                            <span class="counter" data-target="10000">0</span>+ People Educated
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Environmental Impact Detail Section -->
+        <section class="section section--dark environmental-impact">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Environmental Impact</span>
+                    <h2 class="section__title">From Landfill to Lifeline</h2>
+                    <p class="section__description">Our core mission is to protect the planet by transforming hazardous e-waste into a valuable resource stream, directly combating pollution and conserving natural resources.</p>
+                </div>
+                <div class="environmental-grid">
+                    <div class="environmental-chart">
+                        <h3>E-Waste Processed Annually (Tons)</h3>
+                        <canvas id="ewasteChart"></canvas>
+                    </div>
+                    <div class="environmental-stats">
+                        <div class="stat-card">
+                            <i class="fas fa-recycle"></i>
+                            <div class="stat-content">
+                                <h4><span class="counter" data-target="1000">0</span>+ Tons</h4>
+                                <p>Diverted from Landfills</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-gem"></i>
+                            <div class="stat-content">
+                                <h4><span class="counter" data-target="50">0</span>kg</h4>
+                                <p>Precious Metals Recovered</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-industry"></i>
+                            <div class="stat-content">
+                                <h4><span class="counter" data-target="95">0</span>%</h4>
+                                <p>Material Recovery Rate</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Economic Impact Detail Section -->
+        <section class="section economic-impact">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Economic Impact</span>
+                    <h2 class="section__title">Fueling a Green Economy</h2>
+                    <p class="section__description">We prove that sustainability is a powerful economic driver, creating jobs, stimulating local manufacturing, and establishing a profitable model for the circular economy.</p>
+                </div>
+                <div class="economic-grid">
+                    <div class="economic-details">
+                        <div class="detail-item">
+                            <h4>Job Creation</h4>
+                            <p>We have created over <strong><span class="counter" data-target="200">0</span> direct jobs</strong> and an estimated <strong><span class="counter" data-target="300">0</span> indirect jobs</strong>, providing stable employment in the green tech sector.</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4>Market Leadership</h4>
+                            <p>As Egypt's first and largest e-waste recycler, we hold a significant market share, setting industry standards for quality and compliance.</p>
+                        </div>
+                         <div class="detail-item">
+                            <h4>Local Manufacturing</h4>
+                            <p>Our investment in local equipment production reduces import dependency by <strong><span class="counter" data-target="75">0</span>%</strong>, keeping capital within the national economy.</p>
+                        </div>
+                    </div>
+                    <div class="economic-chart">
+                        <h3>Contribution to Green Economy</h3>
+                        <canvas id="economicChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Impact Detail Section -->
+        <section class="section section--light social-impact">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Social Impact</span>
+                    <h2 class="section__title">Empowering a Sustainable Society</h2>
+                    <p class="section__description">Our impact goes beyond recycling. We are committed to educating the public and making sustainability accessible to everyone through technology and community engagement.</p>
+                </div>
+                <div class="social-grid">
+                    <div class="social-card">
+                 
+                        <div class="social-card-content">
+                            <h4>Education & Awareness</h4>
+                            <p>Our school programs and public campaigns have educated over 10,000 individuals on the importance of proper e-waste disposal.</p>
+                        </div>
+                    </div>
+                    <div class="social-card">
+                      
+                        <div class="social-card-content">
+                            <h4>Technology for All</h4>
+                            <p>The DR.WEEE mobile app has been downloaded over 10,000 times, making responsible recycling easy and rewarding for citizens across Egypt.</p>
+                        </div>
+                    </div>
+                    <div class="social-card">
+                   
+                        <div class="social-card-content">
+                            <h4>Community Partnerships</h4>
+                            <p>We partner with over 25 NGOs and community organizations to expand our collection network and ensure benefits reach underserved areas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Future Goals Section -->
+        <section class="section future-goals">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Our Vision for Tomorrow</span>
+                    <h2 class="section__title">Our 2030 Sustainability Goals</h2>
+                </div>
+                <div class="goals-grid">
+                    <div class="goal-item">
+                        <div class="goal-icon"><i class="fas fa-recycle"></i></div>
+                        <div class="goal-content">
+                            <h4>Divert 10,000 Tons</h4>
+                            <p>Annually divert over 10,000 tons of e-waste from landfills.</p>
+                        </div>
+                    </div>
+                    <div class="goal-item">
+                        <div class="goal-icon"><i class="fas fa-seedling"></i></div>
+                        <div class="goal-content">
+                            <h4>Carbon Neutral</h4>
+                            <p>Achieve fully carbon-neutral operations through efficiency and offsets.</p>
+                        </div>
+                    </div>
+                    <div class="goal-item">
+                        <div class="goal-icon"><i class="fas fa-globe-africa"></i></div>
+                        <div class="goal-content">
+                            <h4>Expand to 20 Countries</h4>
+                            <p>Establish a strong presence in 20+ countries across the MENA region and beyond.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- JavaScript Files -->
+    <script src="js/main.js"></script>
+    <script src="js/charts-drweee.js"></script>
+</body>
+</html>
