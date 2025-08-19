@@ -1,6 +1,6 @@
 // DR.WEEE Website - Main JavaScript
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Initialize all components
     initHeader();
     initMobileMenu();
@@ -16,20 +16,20 @@ document.addEventListener('DOMContentLoaded', function() {
 function initHeader() {
     const header = document.getElementById('header');
     const nav = document.querySelector('.nav');
-    
+
     // Header scroll effect
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         if (window.scrollY > 100) {
             header.classList.add('header--scrolled');
         } else {
             header.classList.remove('header--scrolled');
         }
     });
-    
+
     // Active navigation highlighting
     const navLinks = document.querySelectorAll('.nav__link');
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    
+
     navLinks.forEach(link => {
         const href = link.getAttribute('href');
         if (href === currentPage) {
@@ -38,68 +38,173 @@ function initHeader() {
     });
 }
 
-// Mobile menu functionality
+// REPLACE the existing initMobileMenu function in main.js with this improved version
+
 function initMobileMenu() {
     const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
     const body = document.body;
-    
-    if (mobileMenuToggle && mobileMenu) {
-        mobileMenuToggle.addEventListener('click', function() {
-            mobileMenu.classList.toggle('mobile-menu--active');
-            body.classList.toggle('mobile-menu-open');
-            
-            // Toggle icon
-            const icon = mobileMenuToggle.querySelector('i');
-            if (mobileMenu.classList.contains('mobile-menu--active')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            } else {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
+
+    if (!mobileMenuToggle || !mobileMenu || !mobileMenuClose) {
+        console.warn('Mobile menu elements not found');
+        return;
+    }
+
+    // Create backdrop if it doesn't exist
+    let backdrop = document.querySelector('.mobile-menu-backdrop');
+    if (!backdrop) {
+        backdrop = document.createElement('div');
+        backdrop.className = 'mobile-menu-backdrop';
+        document.body.appendChild(backdrop);
+    }
+
+    const icon = mobileMenuToggle.querySelector('i');
+
+    const openMenu = () => {
+        // Add classes for open state
+        mobileMenu.classList.add('is-open');
+        backdrop.classList.add('is-visible');
+        body.classList.add('mobile-menu-open');
+
+        // Update icon
+        if (icon) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+        }
+
+        // Update accessibility
+        mobileMenuToggle.setAttribute('aria-expanded', 'true');
+        mobileMenuToggle.setAttribute('aria-label', 'Close menu');
+
+        // Focus management - focus the close button
+        setTimeout(() => {
+            mobileMenuClose.focus();
+        }, 100);
+
+        console.log('Menu opened'); // Debug log
+    };
+
+    const closeMenu = () => {
+        // Remove classes for closed state
+        mobileMenu.classList.remove('is-open');
+        backdrop.classList.remove('is-visible');
+        body.classList.remove('mobile-menu-open');
+
+        // Update icon
+        if (icon) {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        }
+
+        // Update accessibility
+        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+        mobileMenuToggle.setAttribute('aria-label', 'Open menu');
+
+        // Return focus to toggle button
+        mobileMenuToggle.focus();
+
+        console.log('Menu closed'); // Debug log
+    };
+
+    // Toggle menu on hamburger click
+    mobileMenuToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (mobileMenu.classList.contains('is-open')) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    });
+
+    // Close menu on close button click
+    mobileMenuClose.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeMenu();
+    });
+
+    // Close menu when clicking on backdrop
+    backdrop.addEventListener('click', (e) => {
+        if (e.target === backdrop) {
+            closeMenu();
+        }
+    });
+
+    // Close menu when clicking on navigation links
+    const mobileMenuLinks = document.querySelectorAll('.mobile-menu__link');
+    mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            // Don't prevent default for actual navigation
+            setTimeout(() => {
+                closeMenu();
+            }, 150);
+        });
+    });
+
+    // Close menu on Escape key press
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mobileMenu.classList.contains('is-open')) {
+            closeMenu();
+        }
+    });
+
+    // Handle window resize - close menu if viewport becomes larger
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            if (window.innerWidth > 991 && mobileMenu.classList.contains('is-open')) {
+                closeMenu();
             }
-        });
-        
-        // Close mobile menu when clicking on links
-        const mobileMenuLinks = document.querySelectorAll('.mobile-menu__link');
-        mobileMenuLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                mobileMenu.classList.remove('mobile-menu--active');
-                body.classList.remove('mobile-menu-open');
-                const icon = mobileMenuToggle.querySelector('i');
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            });
-        });
-        
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!mobileMenu.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
-                mobileMenu.classList.remove('mobile-menu--active');
-                body.classList.remove('mobile-menu-open');
-                const icon = mobileMenuToggle.querySelector('i');
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
+        }, 150);
+    });
+
+    // Trap focus within menu when open
+    const focusableElements = mobileMenu.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+
+    if (focusableElements.length > 0) {
+        const firstFocusable = focusableElements[0];
+        const lastFocusable = focusableElements[focusableElements.length - 1];
+
+        mobileMenu.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab' && mobileMenu.classList.contains('is-open')) {
+                if (e.shiftKey) {
+                    // Shift + Tab
+                    if (document.activeElement === firstFocusable) {
+                        e.preventDefault();
+                        lastFocusable.focus();
+                    }
+                } else {
+                    // Tab
+                    if (document.activeElement === lastFocusable) {
+                        e.preventDefault();
+                        firstFocusable.focus();
+                    }
+                }
             }
         });
     }
 }
-
 // Smooth scrolling for anchor links
 function initSmoothScrolling() {
     const anchorLinks = document.querySelectorAll('a[href^="#"]');
-    
+
     anchorLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             e.preventDefault();
-            
+
             const targetId = this.getAttribute('href').substring(1);
             const targetElement = document.getElementById(targetId);
-            
+
             if (targetElement) {
                 const headerHeight = document.getElementById('header').offsetHeight;
                 const targetPosition = targetElement.offsetTop - headerHeight;
-                
+
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'smooth'
@@ -115,15 +220,15 @@ function initAnimations() {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
     };
-    
-    const observer = new IntersectionObserver(function(entries) {
+
+    const observer = new IntersectionObserver(function (entries) {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('animate-in');
             }
         });
     }, observerOptions);
-    
+
     // Observe elements with animation classes
     const animatedElements = document.querySelectorAll('.animate-on-scroll');
     animatedElements.forEach(element => {
@@ -134,8 +239,8 @@ function initAnimations() {
 // Counter animations
 function initCounters() {
     const counters = document.querySelectorAll('.counter');
-    
-    const counterObserver = new IntersectionObserver(function(entries) {
+
+    const counterObserver = new IntersectionObserver(function (entries) {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const counter = entry.target;
@@ -143,8 +248,8 @@ function initCounters() {
                 const duration = 2000; // 2 seconds
                 const step = target / (duration / 16); // 60fps
                 let current = 0;
-                
-                const timer = setInterval(function() {
+
+                const timer = setInterval(function () {
                     current += step;
                     if (current >= target) {
                         current = target;
@@ -152,12 +257,12 @@ function initCounters() {
                     }
                     counter.textContent = Math.floor(current);
                 }, 16);
-                
+
                 counterObserver.unobserve(counter);
             }
         });
     }, { threshold: 0.5 });
-    
+
     counters.forEach(counter => {
         counterObserver.observe(counter);
     });
@@ -166,50 +271,50 @@ function initCounters() {
 // Carousel functionality
 function initCarousels() {
     const carousels = document.querySelectorAll('.carousel');
-    
+
     carousels.forEach(carousel => {
         const track = carousel.querySelector('.carousel__track');
         const slides = carousel.querySelectorAll('.carousel__slide');
         const prevBtn = carousel.querySelector('.carousel__btn--prev');
         const nextBtn = carousel.querySelector('.carousel__btn--next');
         const dots = carousel.querySelectorAll('.carousel__dot');
-        
+
         if (!track || slides.length === 0) return;
-        
+
         let currentSlide = 0;
         const totalSlides = slides.length;
-        
+
         function updateCarousel() {
             const translateX = -currentSlide * 100;
             track.style.transform = `translateX(${translateX}%)`;
-            
+
             // Update dots
             dots.forEach((dot, index) => {
                 dot.classList.toggle('carousel__dot--active', index === currentSlide);
             });
         }
-        
+
         function nextSlide() {
             currentSlide = (currentSlide + 1) % totalSlides;
             updateCarousel();
         }
-        
+
         function prevSlide() {
             currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
             updateCarousel();
         }
-        
+
         // Event listeners
         if (nextBtn) nextBtn.addEventListener('click', nextSlide);
         if (prevBtn) prevBtn.addEventListener('click', prevSlide);
-        
+
         dots.forEach((dot, index) => {
-            dot.addEventListener('click', function() {
+            dot.addEventListener('click', function () {
                 currentSlide = index;
                 updateCarousel();
             });
         });
-        
+
         // Auto-play
         setInterval(nextSlide, 5000);
     });
@@ -218,26 +323,26 @@ function initCarousels() {
 // Contact form handling
 function initContactForm() {
     const contactForm = document.getElementById('contact-form');
-    
+
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+        contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
-            
+
             // Get form data
             const formData = new FormData(contactForm);
             const data = Object.fromEntries(formData);
-            
+
             // Basic validation
             if (!data.name || !data.email || !data.message) {
                 showNotification('Please fill in all required fields.', 'error');
                 return;
             }
-            
+
             if (!isValidEmail(data.email)) {
                 showNotification('Please enter a valid email address.', 'error');
                 return;
             }
-            
+
             // Simulate form submission
             showNotification('Thank you for your message! We will get back to you soon.', 'success');
             contactForm.reset();
@@ -259,7 +364,7 @@ function loadIncludes() {
             })
             .catch(error => console.error('Error loading header:', error));
     }
-    
+
     // Load footer
     const footerPlaceholder = document.getElementById('footer-placeholder');
     if (footerPlaceholder) {
@@ -290,10 +395,10 @@ function showNotification(message, type = 'info') {
             </button>
         </div>
     `;
-    
+
     // Add to page
     document.body.appendChild(notification);
-    
+
     // Auto-remove after 5 seconds
     setTimeout(() => {
         if (notification.parentElement) {
@@ -305,8 +410,8 @@ function showNotification(message, type = 'info') {
 // Lazy loading for images
 function initLazyLoading() {
     const images = document.querySelectorAll('img[data-src]');
-    
-    const imageObserver = new IntersectionObserver(function(entries) {
+
+    const imageObserver = new IntersectionObserver(function (entries) {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const img = entry.target;
@@ -316,7 +421,7 @@ function initLazyLoading() {
             }
         });
     });
-    
+
     images.forEach(img => {
         imageObserver.observe(img);
     });
@@ -328,7 +433,7 @@ document.addEventListener('DOMContentLoaded', initLazyLoading);
 // Page-specific functionality
 function initPageSpecific() {
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    
+
     switch (currentPage) {
         case 'index.html':
             initHomePage();
@@ -404,10 +509,10 @@ document.addEventListener('DOMContentLoaded', initPageSpecific);
 
 // --- INNOVATIVE HERO SCRIPT (HOME & ABOUT) ---
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Check if we are on the home or about page and a hero section exists
     if ((document.body.classList.contains('home-page') || document.body.classList.contains('about-page') || document.body.classList.contains('services-page')) && document.getElementById('hero')) {
-        
+
         // 1. Initialize Particle Effect
         initParticleCanvas();
 
@@ -416,7 +521,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 3. Initialize Magnetic Buttons
         initMagneticButtons();
-        
+
         // 4. Initialize Parallax Scroll Effect
         window.addEventListener('scroll', handleHeroParallax);
     }
@@ -428,7 +533,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function initParticleCanvas() {
     const canvas = document.getElementById('particle-canvas');
     if (!canvas) return;
-    
+
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -501,7 +606,7 @@ function initTextReveal() {
 
     const mainLetters = wrapLetters(mainTitle);
     const subLetters = wrapLetters(subTitle);
-    
+
     let delay = 0;
     mainLetters.forEach(letter => {
         letter.style.animationDelay = `${delay}s`;
@@ -520,14 +625,14 @@ function initTextReveal() {
 function initMagneticButtons() {
     const buttons = document.querySelectorAll('.magnetic-btn');
     buttons.forEach(btn => {
-        btn.addEventListener('mousemove', function(e) {
+        btn.addEventListener('mousemove', function (e) {
             const rect = btn.getBoundingClientRect();
             const x = e.clientX - rect.left - rect.width / 2;
             const y = e.clientY - rect.top - rect.height / 2;
 
             btn.style.transform = `translate(${x * 0.2}px, ${y * 0.3}px)`;
         });
-        btn.addEventListener('mouseleave', function() {
+        btn.addEventListener('mouseleave', function () {
             btn.style.transform = 'translate(0,0)';
         });
     });
@@ -538,7 +643,7 @@ function initMagneticButtons() {
  */
 function handleHeroParallax() {
     // This selector now targets the content inside ANY element with the .hero class
-    const heroContent = document.querySelector('.hero .hero__content'); 
+    const heroContent = document.querySelector('.hero .hero__content');
     if (heroContent) {
         const scrollY = window.scrollY;
         heroContent.style.transform = `translateY(${scrollY * 0.4}px)`;
@@ -546,7 +651,7 @@ function handleHeroParallax() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Only run chart logic on the DR.WEEE Impact page
     if (!document.body.classList.contains('impact-drweee-page')) {
         return;
@@ -575,6 +680,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false, // <-- ADD THIS LINE
                 plugins: { legend: { labels: { color: chartFontColor } } },
                 scales: {
                     y: { ticks: { color: chartFontColor }, grid: { color: gridLineColor } },
@@ -599,11 +705,12 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             options: {
                 responsive: true,
-                plugins: { 
-                    legend: { 
+                maintainAspectRatio: false, // <-- ADD THIS LINE
+                plugins: {
+                    legend: {
                         position: 'bottom',
-                        labels: { color: '#5F6368' } 
-                    } 
+                        labels: { color: '#5F6368' }
+                    }
                 }
             }
         });

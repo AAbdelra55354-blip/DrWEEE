@@ -5,45 +5,63 @@
                 <img src="images/logos/dr-weee-logo.png" alt="DR.WEEE Logo">
                 <span class="header__brand">DR.WEEE</span>
             </a>
-            
+
             <nav class="nav" id="nav">
                 <ul class="nav__list">
                     <li class="nav__item"><a href="index.html" class="nav__link" data-page="home">Home</a></li>
                     <li class="nav__item"><a href="about.html" class="nav__link" data-page="about">About</a></li>
-                    <li class="nav__item"><a href="services.html" class="nav__link" data-page="services">Services</a></li>
-                
+                    <li class="nav__item"><a href="services.html" class="nav__link" data-page="services">Services</a>
+                    </li>
+
                     <li class="nav__item"><a href="impact.html" class="nav__link" data-page="impact">Impact</a></li>
 
                 </ul>
             </nav>
-            
+
             <div class="header__actions">
-                 <a href="contact.html" class="btn btn--primary">Contact Us</a>
-                 <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Open menu">
+                <a href="contact.html" class="btn btn--primary">Contact Us</a>
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Open menu" aria-expanded="false">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
         </div>
     </div>
-    
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobile-menu">
+
+    <nav class="mobile-menu" id="mobile-menu" role="navigation" aria-label="Mobile navigation">
         <div class="mobile-menu__header">
-            <span class="mobile-menu__title">Menu</span>
+            <span class="mobile-menu__title">DR.WEEE</span>
             <button class="mobile-menu__close" id="mobile-menu-close" aria-label="Close menu">
                 <i class="fas fa-times"></i>
             </button>
         </div>
+
         <div class="mobile-menu__content">
             <ul class="mobile-menu__list">
-                <li class="mobile-menu__item"><a href="index.html" class="mobile-menu__link">Home</a></li>
-                <li class="mobile-menu__item"><a href="about.html" class="mobile-menu__link">About</a></li>
-                <li class="mobile-menu__item"><a href="services.html" class="mobile-menu__link">Services</a></li>
-
-                <li class="mobile-menu__item"><a href="impact.html" class="mobile-menu__link">Impact</a></li>
-
+                <li class="mobile-menu__item">
+                    <a href="index.html" class="mobile-menu__link">Home</a>
+                </li>
+                <li class="mobile-menu__item">
+                    <a href="about.html" class="mobile-menu__link">About</a>
+                </li>
+                <li class="mobile-menu__item">
+                    <a href="services.html" class="mobile-menu__link">Services</a>
+                </li>
+                <li class="mobile-menu__item">
+                    <a href="impact.html" class="mobile-menu__link">Impact</a>
+                </li>
             </ul>
-             <a href="contact.html" class="btn btn--primary mobile-menu__cta">Contact Us</a>
+
+            <a href="contact.html" class="btn btn--primary mobile-menu__cta">Contact Us</a>
+
+            <!-- Optional: Add social links or additional info -->
+            <div class="mobile-menu__footer">
+                <div class="mobile-menu__social">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                </div>
+                <p class="mobile-menu__footer-text">© 2024 DR.WEEE. Sustainable Solutions.</p>
+            </div>
         </div>
-    </div>
+    </nav>
 </header>
