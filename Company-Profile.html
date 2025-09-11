@@ -1,0 +1,2355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="DR.WEEE Smart Green IT Solutions - Complete company profile showcasing our vision, mission, services, and impact in sustainable e-waste recycling and circular economy solutions.">
+    <meta name="keywords"
+        content="DR.WEEE, e-waste recycling, sustainability, circular economy, green technology, environmental innovation, company profile">
+    <meta name="author" content="DR.WEEE Smart Green IT Solutions">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="DR.WEEE Company Profile - Pioneering Sustainable Innovation">
+    <meta property="og:description"
+        content="Comprehensive profile of DR.WEEE Smart Green IT Solutions - Egypt's leading e-waste recycling company transforming environmental challenges into profitable opportunities.">
+    <meta property="og:image" content="images/profile/company-hero.jpg">
+    <meta property="og:url" content="https://www.drweee.com/profile">
+    <meta property="og:type" content="website">
+
+    <title>DR.WEEE Company Profile - Sustainable Innovation Leader</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logos/favicon.png">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+
+    <!-- CSS Files -->
+    <style>
+        /* DR.WEEE Website - Main Styles */
+        /* Modernized White and Green Sustainability Theme */
+
+        /* CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Color Palette */
+            --primary-green: #00897B;
+            --secondary-green: #4DB6AC;
+            --accent-green: #A5D6A7;
+            --light-green: #E8F5E9;
+            --dark-green: #00695C;
+            --white: #FFFFFF;
+            --off-white: #F9FBFB;
+            --light-gray: #F1F3F4;
+            --medium-gray: #E0E0E0;
+            --dark-gray: #333333;
+            --text-gray: #5F6368;
+            --text-dark: #202124;
+
+            /* Typography */
+            --font-primary: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-secondary: 'DM Serif Display', Georgia, serif;
+
+            /* Spacing */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2rem;
+            --space-xl: 3rem;
+            --space-xxl: 5rem;
+
+            /* Transitions */
+            --transition-fast: 0.2s ease-in-out;
+            --transition-normal: 0.3s ease-in-out;
+            --transition-slow: 0.5s ease-in-out;
+
+            /* Shadows */
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.07);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
+            --shadow-green: 0 6px 20px rgba(0, 137, 123, 0.2);
+
+            /* Border Radius */
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --radius-xl: 24px;
+        }
+
+        /* Base Typography */
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            line-height: 1.7;
+            color: var(--text-dark);
+            background-color: var(--white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Headings */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: var(--font-secondary);
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: var(--space-sm);
+            color: var(--text-dark);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+        }
+
+        h2 {
+            font-size: 2.75rem;
+        }
+
+        h3 {
+            font-size: 2rem;
+        }
+
+        h4 {
+            font-size: 1.5rem;
+        }
+
+        h5 {
+            font-size: 1.25rem;
+        }
+
+        h6 {
+            font-size: 1.125rem;
+        }
+
+        /* Paragraphs and Text */
+        p {
+            margin-bottom: var(--space-md);
+            color: var(--text-gray);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-primary {
+            color: var(--primary-green);
+        }
+
+        /* Container and Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+
+        Grid System .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -var(--space-xs);
+            /* Changed from --space-sm */
+        }
+
+        .col {
+            flex: 1;
+            padding: 0 var(--space-xs);
+            /* Changed from --space-sm */
+        }
+
+        .col-6 {
+            flex: 0 0 50%;
+        }
+
+        .col-4 {
+            flex: 0 0 33.333333%;
+        }
+
+        .col-3 {
+            flex: 0 0 25%;
+        }
+
+        /* Sections */
+        .section {
+            padding: var(--space-xxl) 0;
+        }
+
+        .section--light {
+            background-color: var(--off-white);
+        }
+
+        .section--dark {
+            background-color: var(--dark-green);
+            color: var(--white);
+        }
+
+        .section--dark h1,
+        .section--dark h2,
+        .section--dark h3,
+        .section--dark h4,
+        .section--dark h5,
+        .section--dark h6 {
+            color: var(--white);
+        }
+
+        .section--dark p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Section Headers */
+        .section__header {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+
+        .section__subtitle {
+            display: inline-block;
+            font-family: var(--font-primary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--primary-green);
+            margin-bottom: var(--space-sm);
+            padding: var(--space-xs) var(--space-md);
+            background-color: var(--light-green);
+            border-radius: var(--radius-xl);
+        }
+
+        .section__title {
+            font-size: 2.75rem;
+            margin-bottom: var(--space-md);
+        }
+
+        .section__description {
+            font-size: 1.125rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--text-gray);
+        }
+
+        .section--dark .section__subtitle {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--secondary-green);
+        }
+
+        .section--dark .section__description {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .partner-logo {
+            width: 100%;
+            height: auto;
+            /* Remove the old fixed height */
+            aspect-ratio: 1 / 1;
+            /* This forces the box to be a square */
+            padding: var(--space-sm);
+            /* Adds a nice inner margin for the logo */
+        }
+
+        /* 2. Make the image fit properly inside the new square container */
+        .partner-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            /* Scales the image to fit without stretching or cropping */
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.875rem 1.75rem;
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: 2px solid transparent;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition-normal);
+            gap: var(--space-sm);
+            box-shadow: var(--shadow-sm);
+            white-space: nowrap;
+        }
+
+        .section--dark .card .card__title {
+            color: var(--text-dark);
+        }
+
+        .section--dark .card .card__description {
+            color: var(--text-gray);
+        }
+
+        .btn--primary {
+            background-color: var(--primary-green);
+            color: var(--white);
+            border-color: var(--primary-green);
+        }
+
+        .btn--primary:hover {
+            background-color: var(--dark-green);
+            border-color: var(--dark-green);
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-green);
+        }
+
+        .btn--outline {
+            background-color: transparent;
+            color: var(--white);
+            border-color: var(--white);
+        }
+
+        .btn--outline:hover {
+            background-color: var(--white);
+            color: var(--primary-green);
+        }
+
+        .btn--lg {
+            padding: 1rem 2.5rem;
+            font-size: 1.125rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            padding: var(--space-xxl) 0;
+            background-color: var(--dark-green);
+            text-align: center;
+        }
+
+        .hero__background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--dark-green) 0%, var(--primary-green) 100%);
+            z-index: 1;
+        }
+
+        .hero__background::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+            z-index: 1;
+        }
+
+        .hero__content {
+            position: relative;
+            z-index: 2;
+            color: var(--white);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero__subtitle {
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--space-md);
+            padding: var(--space-xs) var(--space-md);
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-xl);
+            display: inline-block;
+        }
+
+        .hero__title {
+            font-size: 4rem;
+            font-weight: 400;
+            color: var(--white);
+            margin-bottom: var(--space-lg);
+            line-height: 1.1;
+        }
+
+        .hero__description {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.95);
+            margin: 0 0 var(--space-xl) 0;
+            opacity: 0.95;
+            line-height: 1.8;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: var(--transition-normal);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card__image {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .card__image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: var(--medium-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-gray);
+            font-size: 1rem;
+        }
+
+        .card__content {
+            padding: var(--space-lg);
+            padding-top: var(--space-sm);
+        }
+
+        .card__title {
+            font-size: 1.5rem;
+            margin-bottom: var(--space-sm);
+        }
+
+        .card__description {
+            margin-bottom: var(--space-md);
+        }
+
+        /* Vision Mission Values Cards */
+        .vm-card {
+            padding: var(--space-xl);
+            border-radius: var(--radius-lg);
+            background-color: var(--white);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-normal);
+            text-align: center;
+            height: 100%;
+        }
+
+        .vm-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .vm-card__icon {
+            font-size: 2.5rem;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto var(--space-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: var(--white);
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            box-shadow: var(--shadow-green);
+        }
+
+        .vm-card__title {
+            font-size: 2rem;
+            margin-bottom: var(--space-md);
+        }
+
+        /* Service Cards */
+        .service-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-normal);
+            text-align: center;
+            height: 100%;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .service-card__icon {
+            font-size: 2.5rem;
+            color: var(--primary-green);
+            margin-bottom: var(--space-lg);
+        }
+
+        .service-card__title {
+            font-size: 1.75rem;
+            margin-bottom: var(--space-md);
+            font-family: var(--font-primary);
+            font-weight: 600;
+        }
+
+        .service-card__description {
+            margin-bottom: var(--space-md);
+        }
+
+        .service-card__features {
+            list-style: none;
+            padding: 0;
+            margin: var(--space-md) 0;
+            text-align: left;
+        }
+
+        .service-card__features li {
+            position: relative;
+            padding-left: var(--space-lg);
+            margin-bottom: var(--space-xs);
+            color: var(--text-gray);
+        }
+
+        .service-card__features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--secondary-green);
+            font-weight: 700;
+        }
+
+        /* Statistics */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-xl);
+            margin: var(--space-xl) 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: var(--space-lg);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--secondary-green);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Process Steps */
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-xl);
+            margin: var(--space-xl) 0;
+        }
+
+        .process-step {
+            text-align: center;
+            padding: var(--space-lg);
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto var(--space-lg);
+            background: var(--primary-green);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .step-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+        }
+
+        /* Activities Grid */
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-xl);
+            margin: var(--space-xl) 0;
+        }
+
+        .activity-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-normal);
+        }
+
+        .activity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .activity-card__image {
+            width: 100%;
+            height: 200px;
+            background: var(--medium-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-gray);
+        }
+
+        .activity-card__image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: var(--space-lg);
+            margin: var(--space-xl) 0;
+        }
+
+        .gallery-item {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-normal);
+            position: relative;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: var(--medium-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-gray);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: var(--space-md);
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            color: var(--white);
+            font-size: 0.875rem;
+            text-align: center;
+        }
+
+        /* Partners Grid */
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-lg);
+            margin: var(--space-xl) 0;
+        }
+
+        .partner-item {
+            background: var(--white);
+            padding: var(--space-lg);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            transition: var(--transition-normal);
+        }
+
+        .partner-item:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-3px);
+        }
+
+        .partner-logo {
+            width: 100%;
+            height: 80px;
+            background: var(--light-gray);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-gray);
+            margin-bottom: var(--space-md);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 991px) {
+
+            .col-6,
+            .col-4,
+            .col-3 {
+                flex: 0 0 100%;
+                margin-bottom: var(--space-lg);
+            }
+
+            .hero__title {
+                font-size: 3rem;
+            }
+
+            .section__title {
+                font-size: 2.25rem;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .container {
+                padding: 0 var(--space-md);
+            }
+
+            .hero__title {
+                font-size: 2.5rem;
+            }
+
+            .section__title {
+                font-size: 2rem;
+            }
+
+            .section {
+                padding: var(--space-xl) 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .process-steps {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 575px) {
+            .hero__title {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body class="profile-page">
+    <div id="header-placeholder"></div>
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Hero Section -->
+        <section class="hero" id="hero">
+            <div class="hero__background"></div>
+            <div class="container">
+                <div class="hero__content">
+                    <span class="hero__subtitle">Company Profile</span>
+                    <h1 class="hero__title">DR.WEEE Smart Green IT Solutions</h1>
+                    <p class="hero__description">
+                        A new beginning towards sustainable development and recycling of electronic waste.
+                        Pioneering innovative solutions in green information technology and circular economy.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Introduction Section -->
+        <section class="section" id="introduction">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Introduction</span>
+                    <h2 class="section__title">Transforming E-Waste into Opportunity</h2>
+                    <p class="section__description">
+                        DR.WEEE Company is a specialized leader in electronic waste recycling, extracting valuable
+                        materials
+                        including basic metals such as iron and copper, precious metals like gold and palladium, and
+                        safely
+                        managing hazardous elements such as lead and cadmium. Our comprehensive business model addresses
+                        all market needs related to electronic waste management through collection, sorting,
+                        dismantling,
+                        and advanced recycling processes.
+                    </p>
+                </div>
+
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/5nFHaxSM6-8" title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vision, Mission & Objectives Section -->
+        <section class="section section--light" id="vision-mission">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Our Foundation</span>
+                    <h2 class="section__title">Vision, Mission & Strategic Objectives</h2>
+                </div>
+
+                <div class="row">
+                    <div class="col-4">
+                        <div class="vm-card">
+                            <div class="vm-card__icon">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <h3 class="vm-card__title">The Vision</h3>
+                            <p>
+                                Our vision is to maximize the use of resources and their optimal exploitation to achieve
+                                profits while finding smarter and more innovative sustainable solutions through green
+                                information technology.supporting appropriate methods for environmental preservation and
+                                sustainable development in accordance with
+                                circular economy standards.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="vm-card">
+                            <div class="vm-card__icon">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <h3 class="vm-card__title">The Mission</h3>
+                            <p>
+                                Our mission is to transform challenges into opportunities through continuous development
+                                in our world, overcoming obstacles by providing innovative solutions using green
+                                information technology. We are committed to creating sustainable, environmentally
+                                friendly investment opportunities that drive positive change across industries and
+                                communities.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="vm-card">
+                            <div class="vm-card__icon">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            <h3 class="vm-card__title">Key Objectives</h3>
+                            <ul style="list-style: none; padding: 0; text-align: left;">
+                                <li
+                                    style="margin-bottom: var(--space-sm); position: relative; padding-left: var(--space-lg);">
+                                    <i class="fas fa-leaf"
+                                        style="position: absolute; left: 0; color: var(--secondary-green);"></i>
+                                    Developing green technology solutions
+                                </li>
+                                <li
+                                    style="margin-bottom: var(--space-sm); position: relative; padding-left: var(--space-lg);">
+                                    <i class="fas fa-recycle"
+                                        style="position: absolute; left: 0; color: var(--secondary-green);"></i>
+                                    Promoting sustainability in IT sector
+                                </li>
+                                <li
+                                    style="margin-bottom: var(--space-sm); position: relative; padding-left: var(--space-lg);">
+                                    <i class="fas fa-chart-line"
+                                        style="position: absolute; left: 0; color: var(--secondary-green);"></i>
+                                    Reducing carbon footprint
+                                </li>
+                                <li
+                                    style="margin-bottom: var(--space-sm); position: relative; padding-left: var(--space-lg);">
+                                    <i class="fas fa-bolt"
+                                        style="position: absolute; left: 0; color: var(--secondary-green);"></i>
+                                    Improving energy efficiency
+                                </li>
+                                <li
+                                    style="margin-bottom: var(--space-sm); position: relative; padding-left: var(--space-lg);">
+                                    <i class="fas fa-graduation-cap"
+                                        style="position: absolute; left: 0; color: var(--secondary-green);"></i>
+                                    Promoting environmental awareness
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Company Activities Section -->
+        <section class="section" id="company-activities">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Our Activities</span>
+                    <h2 class="section__title">Comprehensive Service Portfolio</h2>
+                    <p class="section__description">
+                        DR.WEEE operates across multiple specialized domains, delivering integrated solutions
+                        for sustainable technology and environmental management.
+                    </p>
+                </div>
+
+                <div class="activities-grid">
+                    <div class="activity-card">
+                        <div class="activity-card__image">
+                            <img src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png"
+                                alt="Automated ink filling machine">
+                        </div>
+                        <div class="card__content">
+                            <h4 class="card__title">Manufacture of Ink Filling Machines</h4>
+                            <p class="card__description">
+                                Design and manufacture of advanced automated ink filling machines for
+                                cartridge remanufacturing, providing cost-effective local production solutions.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="activity-card">
+                        <div class="activity-card__image">
+                            <img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <div class="card__content">
+                            <h4 class="card__title">Remanufacture of Ink Cartridges</h4>
+                            <p class="card__description">
+                                Professional remanufacturing of toner cartridges using reverse engineering
+                                principles with comprehensive quality inspection and testing processes.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="activity-card">
+                        <div class="activity-card__image">
+                            <img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <div class="card__content">
+                            <h4 class="card__title">Environmentally Friendly Websites & Apps</h4>
+                            <p class="card__description">
+                                Designing and developing sustainable digital solutions with minimal environmental
+                                impact through optimized code and green hosting practices.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="activity-card">
+                        <div class="activity-card__image">
+                            <img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <div class="card__content">
+                            <h4 class="card__title">Electronic Waste Recycling</h4>
+                            <p class="card__description">
+                                Comprehensive e-waste processing extracting valuable raw materials for reuse,
+                                including precious metals recovery and safe hazardous material disposal.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="activity-card">
+                        <div class="activity-card__image">
+                            <img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <div class="card__content">
+                            <h4 class="card__title">Franchise Operations</h4>
+                            <p class="card__description">
+                                Expanding sustainable business models through franchise partnerships,
+                                enabling global reach while maintaining quality standards and environmental goals.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="activity-card">
+                        <div class="activity-card__image">
+                            <img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <div class="card__content">
+                            <h4 class="card__title">Refurbishment of Electronic Components</h4>
+                            <p class="card__description">
+                                Extending component lifecycle through professional cleaning, repair, and
+                                testing processes, reducing waste and providing cost-effective alternatives.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Service Descriptions Section -->
+        <section class="section section--dark" id="service-descriptions">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Service Details</span>
+                    <h2 class="section__title">Comprehensive Service Descriptions</h2>
+                    <p class="section__description">
+                        Detailed overview of our specialized services and their environmental and economic benefits.
+                    </p>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="service-card"
+                            style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);">
+                            <div class="service-card__icon">
+                                <i class="fas fa-network-wired" style="color: var(--secondary-green);"></i>
+                            </div>
+                            <h4 class="service-card__title" style="color: var(--white);">Environmentally Friendly
+                                Networks</h4>
+                            <p style="color: rgba(255, 255, 255, 0.9);">
+                                Selecting network equipment and solutions designed to consume minimal energy while
+                                optimizing resource utilization, reducing overall environmental footprint.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="service-card"
+                            style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);">
+                            <div class="service-card__icon">
+                                <i class="fas fa-recycle" style="color: var(--secondary-green);"></i>
+                            </div>
+                            <h4 class="service-card__title" style="color: var(--white);">Electronic Waste Recycling</h4>
+                            <p style="color: rgba(255, 255, 255, 0.9);">
+                                Advanced extraction of valuable raw materials from electronic waste, enabling
+                                material reuse and supporting circular economy principles through innovative processing.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top: var(--space-xl);">
+                    <div class="col-6">
+                        <div class="service-card"
+                            style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);">
+                            <div class="service-card__icon">
+                                <i class="fas fa-mobile-alt" style="color: var(--secondary-green);"></i>
+                            </div>
+                            <h4 class="service-card__title" style="color: var(--white);">Green Digital Solutions</h4>
+                            <p style="color: rgba(255, 255, 255, 0.9);">
+                                Building and maintaining websites and mobile applications with reduced environmental
+                                impact through optimized development processes and sustainable hosting practices.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="service-card"
+                            style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);">
+                            <div class="service-card__icon">
+                                <i class="fas fa-print" style="color: var(--secondary-green);"></i>
+                            </div>
+                            <h4 class="service-card__title" style="color: var(--white);">Ink Cartridge Remanufacturing
+                            </h4>
+                            <p style="color: rgba(255, 255, 255, 0.9);">
+                                Professional cartridge assembly, disassembly, cleaning, testing, and component
+                                replacement using reverse engineering principles for optimal quality and performance.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ink Cartridge Remanufacturing Deep Dive -->
+        <section class="section section--light" id="ink-remanufacturing">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Specialized Process</span>
+                    <h2 class="section__title">Ink Cartridge Remanufacturing Excellence</h2>
+                    <p class="section__description">
+                        Advanced remanufacturing processes with precision engineering and quality assurance.
+                    </p>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card__image">
+                                <div
+                                    style="background: var(--medium-gray); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-gray);">
+                                    <img
+                                        src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                                </div>
+                            </div>
+                            <div class="card__content">
+                                <h4 class="card__title">Precision Component Analysis</h4>
+                                <p class="card__description">
+                                    Each cartridge component is treated with utmost scrutiny and precision. We apply
+                                    reverse engineering principles to examine and understand the nature and function
+                                    of every piece, ensuring optimal remanufacturing outcomes.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div style="padding: var(--space-lg);">
+                            <h3 class="text-primary">The Importance of Recycling Used Ink Cartridges</h3>
+                            <div
+                                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-lg); margin: var(--space-lg) 0;">
+                                <div
+                                    style="text-align: center; padding: var(--space-lg); background: var(--light-green); border-radius: var(--radius-md);">
+                                    <i class="fas fa-leaf"
+                                        style="font-size: 2rem; color: var(--primary-green); margin-bottom: var(--space-sm);"></i>
+                                    <h5 style="color: var(--primary-green); margin-bottom: var(--space-sm);">
+                                        Environmental Preservation</h5>
+                                    <p style="font-size: 0.9rem;">Recycling ink cartridges reduces environmental waste
+                                        and conserves natural resources.</p>
+                                </div>
+
+                                <div
+                                    style="text-align: center; padding: var(--space-lg); background: var(--light-green); border-radius: var(--radius-md);">
+                                    <i class="fas fa-dollar-sign"
+                                        style="font-size: 2rem; color: var(--primary-green); margin-bottom: var(--space-sm);"></i>
+                                    <h5 style="color: var(--primary-green); margin-bottom: var(--space-sm);">Cost
+                                        Reduction</h5>
+                                    <p style="font-size: 0.9rem;">Recycling cartridges is significantly less expensive
+                                        than purchasing new cartridges.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Advantages -->
+                <div
+                    style="margin-top: var(--space-xl); padding: var(--space-xl); background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-md);">
+                    <h3 class="text-center" style="margin-bottom: var(--space-xl);">Advantages of Our Ink Cartridge
+                        Recycling Project</h3>
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-lg);">
+                        <div>
+                            <h5 style="color: var(--primary-green); margin-bottom: var(--space-sm);">Market Advantages
+                            </h5>
+                            <ul class="service-card__features">
+                                <li>Very high demand for our products</li>
+                                <li>Potential for developing multiple printing-related products</li>
+                                <li>Large customer base interested in sustainable solutions</li>
+                                <li>Strong governmental and private sector demand</li>
+                                <li>Weak market competition in this investment sector</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 style="color: var(--primary-green); margin-bottom: var(--space-sm);">Quality &
+                                Performance</h5>
+                            <ul class="service-card__features">
+                                <li>Functionally superior and high-quality products</li>
+                                <li>Automatic ink filling and manufacturing processes</li>
+                                <li>Local production with high quality standards</li>
+                                <li>Manufacturing defect guarantees</li>
+                                <li>Higher page yield than market alternatives</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 style="color: var(--primary-green); margin-bottom: var(--space-sm);">Financial Benefits
+                            </h5>
+                            <ul class="service-card__features">
+                                <li>Significant profit potential and financial viability</li>
+                                <li>Approximately 50% cost savings for customers</li>
+                                <li>10% bulk quantity discounts available</li>
+                                <li>10% return exchange discounts</li>
+                                <li>Competitive pricing with premium quality</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Manufacturing & Machines Section -->
+        <section class="section" id="machines-manufacturing">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Innovation</span>
+                    <h2 class="section__title">Advanced Manufacturing Solutions</h2>
+                    <p class="section__description">
+                        Years of technical production experience have led to the development of innovative
+                        technological solutions that enhance every stage of the remanufacturing process.
+                    </p>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card__image">
+                                <div
+                                    style="background: var(--medium-gray); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-gray);">
+                                    <img
+                                        src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                                </div>
+                            </div>
+                            <div class="card__content">
+                                <h4 class="card__title">Local Technology Development</h4>
+                                <p class="card__description">
+                                    Our project extends beyond collection and recycling to designing technology
+                                    with trained Egyptian professionals, developing essential machines for project
+                                    management and operational excellence.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div style="padding: var(--space-lg);">
+                            <h4 class="text-primary" style="margin-bottom: var(--space-lg);">Proper Ink Refill Usage
+                                Training</h4>
+                            <p style="margin-bottom: var(--space-md);">
+                                Our company conducts periodic training courses for employees to prepare a qualified
+                                and properly trained workforce, ensuring ideal printing results when using ink refills.
+                            </p>
+                            <h5 style="color: var(--primary-green); margin-bottom: var(--space-sm);">Training
+                                Foundations:</h5>
+                            <ul class="service-card__features">
+                                <li>Confirm selection of appropriate ink for specific printer models</li>
+                                <li>Properly stir ink before filling to ensure even distribution</li>
+                                <li>Follow filling instructions and respect specified limits</li>
+                                <li>Ensure correct cartridge installation and cap closure</li>
+                                <li>Regular print head cleaning to maintain quality</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Operational Process Section -->
+        <section class="section section--light" id="operational-process">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Process Excellence</span>
+                    <h2 class="section__title">Operational Stages of Ink Cartridge Remanufacturing</h2>
+                </div>
+
+                <div class="process-steps">
+                    <div class="process-step">
+                        <div class="step-icon">1</div>
+                        <h4 class="step-title">Collect Used Inks</h4>
+
+                    </div>
+                    <div class="process-step">
+                        <div class="step-icon">2</div>
+                        <h4 class="step-title">Cleaning Process</h4>
+
+                    </div>
+                    <div class="process-step">
+                        <div class="step-icon">3</div>
+                        <h4 class="step-title">Ink Recycling & Packaging</h4>
+
+                    </div>
+
+                </div>
+
+                <div style="margin-top: var(--space-xl); text-align: center;">
+                    <div class="card" style="display: inline-block; max-width: 600px;">
+                        <div class="card__image">
+                            <div
+                                style="background: var(--medium-gray); width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; color: var(--text-gray);">
+                                <img
+                                    src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                            </div>
+                        </div>
+                        <div class="card__content">
+                            <h4 class="card__title">Complete Process Visualization</h4>
+                            <p class="card__description">
+                                Comprehensive workflow showing each stage of our ink cartridge remanufacturing process
+                                from collection to final packaging and distribution.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Economic Benefits Section -->
+        <section class="section section--dark" id="economic-benefits">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Economic Impact</span>
+                    <h2 class="section__title">Economic Benefits of Ink Cartridge Recycling</h2>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-number">90%</span>
+                        <span class="stat-label">Innovation Stimulation in Recycling Industry</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">60%</span>
+                        <span class="stat-label">Job Opportunities for Small Cartridge Refurbishment Projects</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">50%</span>
+                        <span class="stat-label">Cost Savings for Institutions and Companies</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">35%</span>
+                        <span class="stat-label">Reduction in Ink and Equipment Expenses</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Franchise System Section -->
+        <section class="section" id="franchise-system">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Global Expansion</span>
+                    <h2 class="section__title">Branches Opened Through Franchise System</h2>
+                    <p class="section__description">
+                        Strategic franchise development enabling global reach while maintaining quality standards and
+                        environmental objectives.
+                    </p>
+                </div>
+
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <div
+                            style="background: var(--medium-gray); width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; color: var(--text-gray);">
+                            <img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <div class="gallery-caption">Regional Franchise Hub</div>
+                    </div>
+                    <div class="gallery-item">
+                        <div
+                            style="background: var(--medium-gray); width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; color: var(--text-gray);">
+                            <img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <div class="gallery-caption">International Partner Location</div>
+                    </div>
+                    <div class="gallery-item">
+                        <div
+                            style="background: var(--medium-gray); width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; color: var(--text-gray);">
+                            <img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <div class="gallery-caption">Expanding Network Node</div>
+                    </div>
+                    <div class="gallery-item">
+                        <div
+                            style="background: var(--medium-gray); width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; color: var(--text-gray);">
+                            <img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <div class="gallery-caption">Expanding Network Node</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Component Refurbishment Section -->
+        <section class="section section--light" id="component-refurbishment">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Restoration Excellence</span>
+                    <h2 class="section__title">Electronic Component Refurbishment</h2>
+                    <p class="section__description">
+                        Professional restoration services extending the lifecycle of electronic components through
+                        advanced cleaning, repair, and testing processes.
+                    </p>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card__image">
+                                <div
+                                    style="background: var(--medium-gray); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-gray);">
+                                    <img
+                                        src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                                </div>
+                            </div>
+                            <div class="card__content">
+                                <h4 class="card__title">Before Refurbishment</h4>
+                                <p class="card__description">
+                                    Components showing wear, damage, or degradation before entering our comprehensive
+                                    refurbishment process.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card__image">
+                                <div
+                                    style="background: var(--medium-gray); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-gray);">
+                                    <img
+                                        src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                                </div>
+                            </div>
+                            <div class="card__content">
+                                <h4 class="card__title">After Refurbishment</h4>
+                                <p class="card__description">
+                                    Fully restored components meeting or meeting original performance specifications
+
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Field Visits & Recognition Section -->
+        <section class="section" id="field-visits">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Recognition</span>
+                    <h2 class="section__title">Project Field Visits & Industry Recognition</h2>
+                    <p class="section__description">
+                        International recognition and field visits highlighting our pioneering achievements in
+                        sustainable technology and manufacturing innovation.
+                    </p>
+                </div>
+
+                <div class="activities-grid">
+                    <div class="activity-card">
+                        <div class="activity-card__image">
+                            <img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <div class="card__content">
+                            <h4 class="card__title">Orange France Study Visit</h4>
+                            <p class="card__description">
+                                Official visit from Orange France to study our pioneering experience in
+                                manufacturing machines and sustainable technology solutions.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="activity-card">
+                        <div class="activity-card__image">
+                            <img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <div class="card__content">
+                            <h4 class="card__title">Industry Collaboration</h4>
+                            <p class="card__description">
+                                Ongoing partnerships with leading technology companies and environmental
+                                organizations for knowledge sharing and innovation development.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="activity-card">
+                        <div class="activity-card__image">
+                            <img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <div class="card__content">
+                            <h4 class="card__title">Technology Demonstrations</h4>
+                            <p class="card__description">
+                                Regular demonstrations of our innovative manufacturing processes and
+                                sustainable technology solutions for industry leaders and stakeholders.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Awareness Activities Section -->
+        <section class="section section--dark" id="awareness-activities">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Community Impact</span>
+                    <h2 class="section__title">Awareness Activities & Environmental Education</h2>
+                    <p class="section__description">
+                        Comprehensive outreach programs promoting environmental awareness and sustainable practices
+                        across educational institutions, communities, and healthcare facilities.
+                    </p>
+                </div>
+
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <div
+                            style="background: var(--medium-gray); width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; color: var(--text-gray);">
+                            <img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <div class="gallery-caption">American International School Educational Program</div>
+                    </div>
+                    <div class="gallery-item">
+                        <div
+                            style="background: var(--medium-gray); width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; color: var(--text-gray);">
+                            <img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <div class="gallery-caption">Cairo Streets Awareness Campaign</div>
+                    </div>
+                    <div class="gallery-item">
+                        <div
+                            style="background: var(--medium-gray); width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; color: var(--text-gray);">
+                            <img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <div class="gallery-caption">Hospital 57357 Environmental Initiative</div>
+                    </div>
+                    <div class="gallery-item">
+                        <div
+                            style="background: var(--medium-gray); width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; color: var(--text-gray);">
+                            <img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <div class="gallery-caption">Hospital 57357 Environmental Initiative</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events & Exhibitions Section -->
+        <section class="section section--light" id="events-exhibitions">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Global Presence</span>
+                    <h2 class="section__title">Events & Activities - Exhibitions and Conferences</h2>
+                    <p class="section__description">
+                        Active participation in major international conferences, exhibitions, and events
+                        showcasing our innovations and sustainable technology solutions worldwide.
+                    </p>
+                </div>
+
+                <!-- International Conferences -->
+                <div style="margin-bottom: var(--space-xl);">
+                    <h3 class="text-center" style="margin-bottom: var(--space-lg); color: var(--primary-green);">Major
+                        International Conferences</h3>
+                    <div class="activities-grid">
+                        <div class="activity-card">
+                            <div class="activity-card__image">
+                                <img
+                                    src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                            </div>
+                            <div class="card__content">
+                                <h4 class="card__title">UN Environment Conference</h4>
+                                <p class="card__description">Kenya 2016 - Presenting sustainable e-waste solutions at
+                                    the United Nations Environment Conference.</p>
+                            </div>
+                        </div>
+                        <div class="activity-card">
+                            <div class="activity-card__image">
+                                <img
+                                    src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                            </div>
+                            <div class="card__content">
+                                <h4 class="card__title">RTM Exhibition Cairo</h4>
+                                <p class="card__description">2015 - Showcasing innovative recycling technologies and
+                                    sustainable manufacturing solutions.</p>
+                            </div>
+                        </div>
+                        <div class="activity-card">
+                            <div class="activity-card__image">
+                                <img
+                                    src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                            </div>
+                            <div class="card__content">
+                                <h4 class="card__title">RTM World 2018</h4>
+                                <p class="card__description">International platform for presenting advanced e-waste
+                                    processing technologies and global expansion plans.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Regional Recognition -->
+                <div style="margin-bottom: var(--space-xl);">
+                    <h3 class="text-center" style="margin-bottom: var(--space-lg); color: var(--primary-green);">
+                        Regional Recognition & Awards</h3>
+                    <div class="activities-grid">
+                        <div class="activity-card">
+                            <div class="activity-card__image">
+                                <img
+                                    src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                            </div>
+                            <div class="card__content">
+                                <h4 class="card__title">Royal University for Girls, Bahrain</h4>
+                                <p class="card__description">Educational partnerships and knowledge sharing with leading
+                                    regional academic institutions.</p>
+                            </div>
+                        </div>
+                        <div class="activity-card">
+                            <div class="activity-card__image">
+                                <img
+                                    src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                            </div>
+                            <div class="card__content">
+                                <h4 class="card__title">Expo Exhibition Cairo 2008</h4>
+                                <p class="card__description">Major exhibition presence with Minister of Manpower
+                                    attendance, showcasing innovative employment opportunities in green technology.</p>
+                            </div>
+                        </div>
+                        <div class="activity-card">
+                            <div class="activity-card__image">
+                                <img
+                                    src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                            </div>
+                            <div class="card__content">
+                                <h4 class="card__title">UN Round Table on Sustainable Production</h4>
+                                <p class="card__description">Participation in United Nations sustainable production
+                                    initiatives and policy development discussions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Industry Leadership -->
+                <div style="margin-bottom: var(--space-xl);">
+                    <h3 class="text-center" style="margin-bottom: var(--space-lg); color: var(--primary-green);">
+                        Industry Leadership & Innovation</h3>
+                    <div class="activities-grid">
+                        <div class="activity-card">
+                            <div class="activity-card__image">
+                                <img
+                                    src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                            </div>
+                            <div class="card__content">
+                                <h4 class="card__title">Orange Startup Competition</h4>
+                                <p class="card__description">Participation with CEO of Orange International present,
+                                    demonstrating innovation in sustainable technology entrepreneurship.</p>
+                            </div>
+                        </div>
+                        <div class="activity-card">
+                            <div class="activity-card__image">
+                                <img
+                                    src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                            </div>
+                            <div class="card__content">
+                                <h4 class="card__title">International Inks Exhibition Cairo</h4>
+                                <p class="card__description">Leading participation in specialized inks and printing
+                                    technology exhibitions, showcasing remanufacturing excellence.</p>
+                            </div>
+                        </div>
+                        <div class="activity-card">
+                            <div class="activity-card__image">
+                                <img
+                                    src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                            </div>
+                            <div class="card__content">
+                                <h4 class="card__title">Dubai International Printing Technology 2011</h4>
+                                <p class="card__description">First ink machine manufacturer from Middle East
+                                    participating in major international printing technology exhibition.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Government Cooperation & Partnerships -->
+        <section class="section section--dark" id="partnerships-cooperation">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Strategic Partnerships</span>
+                    <h2 class="section__title">Government Cooperation & Industry Collaborations</h2>
+                    <p class="section__description">
+                        Official partnerships with government ministries, international organizations, and
+                        industry leaders driving policy development and sustainable technology adoption.
+                    </p>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div
+                            style="background: rgba(255, 255, 255, 0.05); padding: var(--space-xl); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.1);">
+                            <h4 style="color: var(--secondary-green); margin-bottom: var(--space-lg);">Ministry &
+                                Federation Partnerships</h4>
+                            <div class="card" style="background: var(--white); margin-bottom: var(--space-lg);">
+                                <div class="card__image">
+                                    <img
+                                        src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+
+                                </div>
+                                <div class="card__content">
+                                    <h5 class="card__title">Ministry of Environment </h5>
+                                    <p class="card__description" style="font-size: 0.9rem;">
+                                        Official cooperation protocol with Ministry of Environment and Federation of
+                                        Egyptian Industries
+                                        addressing e-waste dangers and ink remanufacturing success stories.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div
+                            style="background: rgba(255, 255, 255, 0.05); padding: var(--space-xl); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.1);">
+                            <h4 style="color: var(--secondary-green); margin-bottom: var(--space-lg);">International
+                                Recognition</h4>
+                            <div class="card" style="background: var(--white); margin-bottom: var(--space-lg);">
+                                <div class="card__image">
+                                    <img
+                                        src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+
+                                </div>
+                                <div class="card__content">
+                                    <h5 class="card__title">UN University Certification</h5>
+                                    <p class="card__description" style="font-size: 0.9rem;">
+                                        Official certificate from United Nations University in electronic waste
+                                        management,
+                                        recognizing our expertise and contributions to global sustainability efforts.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: var(--space-xl);">
+                    <h4 style="color: var(--white); text-align: center; margin-bottom: var(--space-lg);">Additional
+                        High-Level Partnerships</h4>
+                    <div class="activities-grid">
+                        <div
+                            style="background: rgba(255, 255, 255, 0.05); padding: var(--space-lg); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.1); text-align: center;">
+                            <i class="fas fa-handshake"
+                                style="font-size: 2rem; color: var(--secondary-green); margin-bottom: var(--space-md);"></i>
+                            <h5 style="color: var(--white); margin-bottom: var(--space-sm);">Arab & European Customs
+                                Unions</h5>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">
+                                Collaboration presenting e-waste recycling project success stories to regional and
+                                international customs organizations.
+                            </p>
+                        </div>
+                        <div
+                            style="background: rgba(255, 255, 255, 0.05); padding: var(--space-lg); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.1); text-align: center;">
+                            <i class="fas fa-users"
+                                style="font-size: 2rem; color: var(--secondary-green); margin-bottom: var(--space-md);"></i>
+                            <h5 style="color: var(--white); margin-bottom: var(--space-sm);">Arab Ministers Committee
+                            </h5>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">
+                                Presenting success experience to Ministerial Committee of Arab Environment Ministers at
+                                Arab League headquarters.
+                            </p>
+                        </div>
+                        <div
+                            style="background: rgba(255, 255, 255, 0.05); padding: var(--space-lg); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.1); text-align: center;">
+                            <i class="fas fa-crown"
+                                style="font-size: 2rem; color: var(--secondary-green); margin-bottom: var(--space-md);"></i>
+                            <h5 style="color: var(--white); margin-bottom: var(--space-sm);">Royal University of Bahrain
+                            </h5>
+                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">
+                                Honored by Royal University of Bahrain in the presence of Crown Prince Nasser bin Hamad
+                                for sustainability leadership.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Additional Achievements Section -->
+        <section class="section" id="additional-achievements">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Recognition Timeline</span>
+                    <h2 class="section__title">Notable Achievements & Milestones</h2>
+                </div>
+
+                <div class="activities-grid">
+                    <div class="activity-card">
+                        <div class="activity-card__image">
+                            <img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <div class="card__content">
+                            <h4 class="card__title">UN Environment Conference Bahrain 2014</h4>
+                            <p class="card__description">
+                                Major participation in United Nations Environment Conference showcasing innovative
+                                e-waste solutions and sustainable technology developments.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="activity-card">
+                        <div class="activity-card__image">
+                            <img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <div class="card__content">
+                            <h4 class="card__title">UN Recognition 2010</h4>
+                            <p class="card__description">
+                                Selected by United Nations as a successful experience in ink remanufacturing and
+                                sustainable business model development.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="activity-card">
+                        <div class="activity-card__image">
+                            <img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <div class="card__content">
+                            <h4 class="card__title">Cairo Waste Management Exhibition</h4>
+                            <p class="card__description">
+                                Leading participation in regional waste management exhibitions, showcasing innovative
+                                solutions and establishing industry partnerships.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Training & Capacity Building -->
+        <section class="section section--light" id="training-capacity">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Knowledge Sharing</span>
+                    <h2 class="section__title">Invitations to Prepare Technical Cadres</h2>
+                    <p class="section__description">
+                        Educational partnerships and training programs with leading universities and institutions
+                        to develop skilled professionals in sustainable technology and e-waste management.
+                    </p>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card__image">
+                                <div
+                                    style="background: var(--medium-gray); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-gray);">
+                                    <img
+                                        src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                                </div>
+                            </div>
+                            <div class="card__content">
+                                <h4 class="card__title">Alexandria University Partnership</h4>
+                                <p class="card__description">
+                                    Comprehensive technical training programs for engineering students and professionals
+                                    in sustainable technology and e-waste management methodologies.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div style="padding: var(--space-lg);">
+                            <h4 style="color: var(--primary-green); margin-bottom: var(--space-lg);">Training Program
+                                Benefits</h4>
+                            <ul class="service-card__features">
+                                <li>Hands-on experience with cutting-edge recycling technology</li>
+                                <li>Professional certification in e-waste management</li>
+                                <li>Practical knowledge of circular economy principles</li>
+                                <li>Industry-relevant skills development</li>
+                                <li>Career opportunities in growing green technology sector</li>
+                                <li>Networking with sustainability professionals</li>
+                                <li>Access to latest research and development initiatives</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Media & Digital Presence -->
+        <section class="section section--dark" id="social-media">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Digital Engagement</span>
+                    <h2 class="section__title">Social Media & Digital Outreach</h2>
+                    <p class="section__description">
+                        Active digital presence across multiple platforms, sharing knowledge, updates, and
+                        engaging with global sustainability community.
+                    </p>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card"
+                            style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);">
+                            <div class="card__image">
+                                <div
+                                    style="background: var(--medium-gray); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-gray);">
+                                    <img
+                                        src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                                </div>
+                            </div>
+                            <div class="card__content">
+                                <h4 style="color: var(--white);">Global Digital Reach</h4>
+                                <p style="color: rgba(255, 255, 255, 0.8);">
+                                    Comprehensive social media strategy connecting with international sustainability
+                                    community, sharing innovations and best practices.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card"
+                            style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);">
+                            <div class="card__image">
+                                <div
+                                    style="background: var(--medium-gray); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-gray);">
+                                    <img
+                                        src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                                </div>
+                            </div>
+                            <div class="card__content">
+                                <h4 style="color: var(--white);">Educational Content</h4>
+                                <p style="color: rgba(255, 255, 255, 0.8);">
+                                    Regular educational content sharing environmental awareness, technology updates,
+                                    and sustainability success stories with global audience.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Success Partners Section -->
+        <section class="section" id="success-partners">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Partnerships</span>
+                    <h2 class="section__title">Success Partners & Collaborations</h2>
+                    <p class="section__description">
+                        Strategic partnerships with leading organizations across industries, driving mutual
+                        growth and sustainable technology adoption.
+                    </p>
+                </div>
+
+                <div class="partners-grid">
+                    <div class="partner-item">
+                        <div class="partner-logo"><img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <h5>Corporate Partner</h5>
+                    </div>
+                    <div class="partner-item">
+                        <div class="partner-logo"><img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <h5>Technology Alliance</h5>
+                    </div>
+                    <div class="partner-item">
+                        <div class="partner-logo"><img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <h5>Research Institution</h5>
+                    </div>
+                    <div class="partner-item">
+                        <div class="partner-logo"><img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <h5>Government Entity</h5>
+                    </div>
+                    <div class="partner-item">
+                        <div class="partner-logo"><img
+                                src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                        </div>
+                        <h5>International Organization</h5>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- External Partnerships Section -->
+        <section class="section section--light" id="external-partnerships">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Global Network</span>
+                    <h2 class="section__title">External Partnerships & International Expansion</h2>
+                    <p class="section__description">
+                        Strategic international partnerships spanning across multiple countries, establishing
+                        DR.WEEE's global presence in sustainable technology and circular economy solutions.
+                    </p>
+                </div>
+
+                <div class="row">
+                    <div class="col-4">
+                        <div class="card">
+                            <div class="card__image">
+                                <div
+                                    style="background: var(--medium-gray); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-gray);">
+                                    <img
+                                        src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                                </div>
+                            </div>
+                            <div class="card__content">
+                                <h4 class="card__title">Kingdom of Bahrain</h4>
+                                <p class="card__description">
+                                    Strategic partnership and operations in Bahrain, establishing regional hub
+                                    for sustainable technology expansion.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card">
+                            <div class="card__image">
+                                <div
+                                    style="background: var(--medium-gray); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-gray);">
+                                    <img
+                                        src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                                </div>
+                            </div>
+                            <div class="card__content">
+                                <h4 class="card__title">Jordan</h4>
+                                <p class="card__description">
+                                    Collaborative initiatives focusing on e-waste solutions
+                                    and technology transfer for sustainabile development.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card">
+                            <div class="card__image">
+                                <div
+                                    style="background: var(--medium-gray); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-gray);">
+                                    <img
+                                        src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                                </div>
+                            </div>
+                            <div class="card__content">
+                                <h4 class="card__title">Kingdom of Saudi Arabia</h4>
+                                <p class="card__description">
+                                    Major expansion into KSA market, supporting Vision 2030
+                                    goals through innovative e-waste solutions.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Previous Work & Projects -->
+        <section class="section section--dark" id="previous-projects">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Track Record</span>
+                    <h2 class="section__title">Previous Work & Completed Projects</h2>
+                    <p class="section__description">
+                        Comprehensive portfolio of successfully completed projects with leading organizations
+                        across various industries, demonstrating proven expertise and reliability.
+                    </p>
+                </div>
+
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-lg);">
+                    <div
+                        style="background: rgba(255, 255, 255, 0.05); padding: var(--space-lg); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.1);">
+                        <h4 style="color: var(--secondary-green); margin-bottom: var(--space-md);">Corporate Sector</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li
+                                style="margin-bottom: var(--space-sm); padding-left: var(--space-lg); position: relative; color: rgba(255, 255, 255, 0.9);">
+                                <i class="fas fa-building"
+                                    style="position: absolute; left: 0; color: var(--accent-green);"></i>
+                                Amoc Petroleum Company - Comprehensive e-waste management
+                            </li>
+                            <li
+                                style="margin-bottom: var(--space-sm); padding-left: var(--space-lg); position: relative; color: rgba(255, 255, 255, 0.9);">
+                                <i class="fas fa-building"
+                                    style="position: absolute; left: 0; color: var(--accent-green);"></i>
+                                Al Othaim Company - Sustainable printing solutions
+                            </li>
+                            <li
+                                style="margin-bottom: var(--space-sm); padding-left: var(--space-lg); position: relative; color: rgba(255, 255, 255, 0.9);">
+                                <i class="fas fa-building"
+                                    style="position: absolute; left: 0; color: var(--accent-green);"></i>
+                                Oracle Company - Ink waste collection project
+                            </li>
+                            <li
+                                style="margin-bottom: var(--space-sm); padding-left: var(--space-lg); position: relative; color: rgba(255, 255, 255, 0.9);">
+                                <i class="fas fa-building"
+                                    style="position: absolute; left: 0; color: var(--accent-green);"></i>
+                                Orange Company - Comprehensive ink waste collection initiative
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div
+                        style="background: rgba(255, 255, 255, 0.05); padding: var(--space-lg); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.1);">
+                        <h4 style="color: var(--secondary-green); margin-bottom: var(--space-md);">Educational
+                            Institutions</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li
+                                style="margin-bottom: var(--space-sm); padding-left: var(--space-lg); position: relative; color: rgba(255, 255, 255, 0.9);">
+                                <i class="fas fa-graduation-cap"
+                                    style="position: absolute; left: 0; color: var(--accent-green);"></i>
+                                Faculty of Engineering Alexandria - Technology training programs
+                            </li>
+                            <li
+                                style="margin-bottom: var(--space-sm); padding-left: var(--space-lg); position: relative; color: rgba(255, 255, 255, 0.9);">
+                                <i class="fas fa-graduation-cap"
+                                    style="position: absolute; left: 0; color: var(--accent-green);"></i>
+                                Arab Academy - Empty cartridge collection project
+                            </li>
+                            <li
+                                style="margin-bottom: var(--space-sm); padding-left: var(--space-lg); position: relative; color: rgba(255, 255, 255, 0.9);">
+                                <i class="fas fa-graduation-cap"
+                                    style="position: absolute; left: 0; color: var(--accent-green);"></i>
+                                Faculty of Agriculture - Sustainable practices implementation
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div
+                        style="background: rgba(255, 255, 255, 0.05); padding: var(--space-lg); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.1);">
+                        <h4 style="color: var(--secondary-green); margin-bottom: var(--space-md);">Healthcare & Sports
+                        </h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li
+                                style="margin-bottom: var(--space-sm); padding-left: var(--space-lg); position: relative; color: rgba(255, 255, 255, 0.9);">
+                                <i class="fas fa-hospital"
+                                    style="position: absolute; left: 0; color: var(--accent-green);"></i>
+                                Armed Forces Hospital Alexandria - Medical facility e-waste management
+                            </li>
+                            <li
+                                style="margin-bottom: var(--space-sm); padding-left: var(--space-lg); position: relative; color: rgba(255, 255, 255, 0.9);">
+                                <i class="fas fa-hospital"
+                                    style="position: absolute; left: 0; color: var(--accent-green);"></i>
+                                Arab Contractors Medical Complex - Comprehensive waste solutions
+                            </li>
+                            <li
+                                style="margin-bottom: var(--space-sm); padding-left: var(--space-lg); position: relative; color: rgba(255, 255, 255, 0.9);">
+                                <i class="fas fa-golf-ball"
+                                    style="position: absolute; left: 0; color: var(--accent-green);"></i>
+                                Egypt Golf - Sustainable facility management
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="margin-top: var(--space-xl); text-align: center;">
+                    <div
+                        style="background: rgba(255, 255, 255, 0.1); padding: var(--space-xl); border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.2);">
+                        <h4 style="color: var(--white); margin-bottom: var(--space-md);">Project Success Metrics</h4>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-number">10+</span>
+                                <span class="stat-label">Major Corporate Clients</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">100%</span>
+                                <span class="stat-label">Project Success Rate</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">5+</span>
+                                <span class="stat-label">Years Average Partnership</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">98%</span>
+                                <span class="stat-label">Client Satisfaction Rate</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusion Section -->
+        <section class="section section--light" id="conclusion">
+            <div class="container">
+                <div class="section__header">
+                    <span class="section__subtitle">Looking Forward</span>
+                    <h2 class="section__title">Conclusion & Future Vision</h2>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div style="padding: var(--space-lg);">
+                            <p style="font-size: 1.125rem; line-height: 1.8; margin-bottom: var(--space-lg);">
+                                We have reached the conclusion of our comprehensive presentation, which we hope has
+                                successfully
+                                provided a rich overview of ideas, including all elements of the e-waste recycling
+                                project with
+                                particular focus on our printing ink experience and innovations.
+                            </p>
+                            <p style="font-size: 1.125rem; line-height: 1.8; margin-bottom: var(--space-lg);">
+                                Our presentation encompasses all the details that may have been seen or understood
+                                through our
+                                extensive experience and research. We have invested all our efforts and capabilities
+                                into
+                                developing these comprehensive solutions for sustainable technology and environmental
+                                preservation.
+                            </p>
+                            <p
+                                style="font-size: 1.125rem; line-height: 1.8; color: var(--primary-green); font-weight: 500;">
+                                We can only express our gratitude for the divine guidance that has led us to these
+                                innovations,
+                                and acknowledge that without this guidance, we would not have achieved our current
+                                success in
+                                pioneering sustainable technology solutions.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card__image">
+                                <div
+                                    style="background: var(--medium-gray); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-gray);">
+                                    <img
+                                        src="https://websitestoragechemican.blob.core.windows.net/websiteimages/Screenshot 2025-09-11 232926.png">
+                                </div>
+                            </div>
+                            <div class="card__content">
+                                <h4 class="card__title">Our Commitment to Excellence</h4>
+                                <p class="card__description">
+                                    DR.WEEE remains committed to continuous innovation, environmental stewardship,
+                                    and sustainable business practices that benefit communities globally while
+                                    preserving our planet for future generations.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Call to Action -->
+                <div
+                    style="margin-top: var(--space-xl); text-align: center; background: var(--primary-green); padding: var(--space-xl); border-radius: var(--radius-lg); color: var(--white);">
+                    <h3 style="color: var(--white); margin-bottom: var(--space-md);">Ready to Partner with Us?</h3>
+                    <p
+                        style="color: rgba(255, 255, 255, 0.9); margin-bottom: var(--space-lg); max-width: 600px; margin-left: auto; margin-right: auto;">
+                        Join DR.WEEE in building a sustainable future through innovative e-waste recycling solutions,
+                        advanced manufacturing, and environmental stewardship.
+                    </p>
+                    <div style="display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap;">
+                        <a href="#contact" class="btn btn--outline"
+                            style="color: var(--white); border-color: var(--white);">
+                            <i class="fas fa-handshake"></i>
+                            Start Partnership
+                        </a>
+                        <a href="#services" class="btn" style="background: var(--white); color: var(--primary-green);">
+                            <i class="fas fa-leaf"></i>
+                            Explore Solutions
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- JavaScript Files -->
+    <script src="js/main.js"></script>
+
+    <!-- JavaScript -->
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll to top functionality
+        const scrollTopBtn = document.getElementById('scrollTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.style.opacity = '1';
+                scrollTopBtn.style.visibility = 'visible';
+            } else {
+                scrollTopBtn.style.opacity = '0';
+                scrollTopBtn.style.visibility = 'hidden';
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Add animation styles and observe elements
+        document.addEventListener('DOMContentLoaded', () => {
+            const animateElements = document.querySelectorAll('.card, .vm-card, .service-card, .activity-card, .gallery-item, .partner-item, .stat-item, .process-step');
+
+            animateElements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
+
+        // Counter animation
+        const counters = document.querySelectorAll('.stat-number');
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = parseInt(counter.textContent.replace(/\D/g, ''));
+                    const increment = target / 100;
+                    let current = 0;
+
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            counter.textContent = counter.textContent.replace(/\d+/, target);
+                            clearInterval(timer);
+                        } else {
+                            counter.textContent = counter.textContent.replace(/\d+/, Math.floor(current));
+                        }
+                    }, 20);
+
+                    counterObserver.unobserve(counter);
+                }
+            });
+        }, observerOptions);
+
+        counters.forEach(counter => {
+            counterObserver.observe(counter);
+        });
+
+        // Image placeholder interaction
+        document.querySelectorAll('[style*="background: var(--medium-gray)"]').forEach(placeholder => {
+            placeholder.addEventListener('click', function () {
+                this.style.background = 'linear-gradient(45deg, var(--light-green), var(--secondary-green))';
+                this.style.color = 'var(--white)';
+                this.innerHTML = '<i class="fas fa-image" style="font-size: 2rem; margin-bottom: 0.5rem;"></i><br>Image Placeholder<br><small>Click to upload</small>';
+
+                setTimeout(() => {
+                    this.style.background = 'var(--medium-gray)';
+                    this.style.color = 'var(--text-gray)';
+                    this.innerHTML = this.innerHTML.replace('<i class="fas fa-image" style="font-size: 2rem; margin-bottom: 0.5rem;"></i><br>Image Placeholder<br><small>Click to upload</small>', this.innerHTML.match(/\[.*?\]/)[0]);
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+
+</html>

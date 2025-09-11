@@ -165,7 +165,7 @@ a:hover {
 .row {
     display: flex;
     flex-wrap: wrap;
-    margin: 0 -var(--space-sm);
+    margin: 10px;
 }
 
 .col {
