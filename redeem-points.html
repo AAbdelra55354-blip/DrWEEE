@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Redeem your WEEE Points for amazing rewards and gift cards. Turn your eco-friendly actions into valuable benefits.">
+    <title>Redeem WEEE Points - Rewards & Gift Cards | DR.WEEE</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logos/favicon.png">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+
+    <style>
+        /* Redeem Points Page Specific Styles */
+        .redeem-header {
+            position: relative;
+            min-height: 50vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            padding: 7rem 0 var(--space-lg) 0;
+            background: linear-gradient(135deg, var(--dark-green), var(--primary-green));
+            z-index: 1;
+            margin-top: -5rem;
+            padding-top: 9rem;
+        }
+
+        .redeem-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.05)" d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,128C960,128,1056,192,1152,197.3C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') repeat-x bottom;
+            background-size: cover;
+            z-index: 1;
+        }
+
+        .redeem-header .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-content {
+            text-align: center;
+            color: var(--white);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header-title {
+            font-family: var(--font-secondary);
+            font-size: 3.5rem;
+            margin-bottom: var(--space-md);
+            color: var(--white);
+        }
+
+        .header-subtitle {
+            font-size: 1.25rem;
+            opacity: 0.95;
+            color: var(--white);
+            margin-bottom: var(--space-xl);
+        }
+
+        .user-points-display {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-md);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: var(--space-lg) var(--space-xl);
+            border-radius: var(--radius-xl);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .points-info {
+            text-align: left;
+        }
+
+        .points-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .points-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .points-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--secondary-green), var(--accent-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: var(--off-white);
+            padding: var(--space-xl) 0;
+            border-bottom: 2px solid var(--light-green);
+        }
+
+        .filter-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 0.75rem 1.5rem;
+            background: var(--white);
+            border: 2px solid var(--medium-gray);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: var(--transition-normal);
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .filter-tab:hover,
+        .filter-tab.active {
+            background: var(--primary-green);
+            color: var(--white);
+            border-color: var(--primary-green);
+        }
+
+        .sort-control {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .sort-control select {
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--medium-gray);
+            border-radius: var(--radius-md);
+            font-family: var(--font-primary);
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        /* Gift Cards Grid */
+        .rewards-section {
+            padding: var(--space-xxl) 0;
+        }
+
+        .rewards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: var(--space-xl);
+            margin-top: var(--space-xl);
+        }
+
+        .gift-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-normal);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .gift-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            background: var(--primary-green);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-xl);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            z-index: 2;
+        }
+
+        .card-badge.popular {
+            background: linear-gradient(135deg, #FF6B6B, #EE5A24);
+        }
+
+        .card-badge.new {
+            background: linear-gradient(135deg, #4834DF, #341F97);
+        }
+
+        .card-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, var(--light-green), var(--accent-green));
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .gift-card:hover .card-image img {
+            transform: scale(1.1);
+        }
+
+        .card-brand-logo {
+            position: absolute;
+            bottom: var(--space-md);
+            left: var(--space-md);
+            background: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            color: var(--text-dark);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-content {
+            padding: var(--space-lg);
+        }
+
+        .card-title {
+            font-size: 1.375rem;
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+            color: var(--text-dark);
+        }
+
+        .card-description {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            margin-bottom: var(--space-md);
+            line-height: 1.6;
+        }
+
+        .card-value-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+            padding: var(--space-md);
+            background: var(--off-white);
+            border-radius: var(--radius-md);
+        }
+
+        .card-value {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .value-label {
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+        }
+
+        .value-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .points-required {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--light-green);
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--radius-lg);
+        }
+
+        .points-required i {
+            color: var(--primary-green);
+            font-size: 1.25rem;
+        }
+
+        .points-amount {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-green);
+        }
+
+        .points-text {
+            font-size: 0.875rem;
+            color: var(--text-gray);
+        }
+
+        .card-footer {
+            padding: 0 var(--space-lg) var(--space-lg);
+        }
+
+        .redeem-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .redeem-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-green);
+        }
+
+        .redeem-btn:disabled {
+            background: var(--medium-gray);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .redeem-btn.insufficient {
+            background: #E0E0E0;
+            color: #999;
+        }
+
+        /* Redemption Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .redemption-modal {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .redemption-modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: var(--space-xl);
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            color: var(--white);
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: var(--white);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            transition: var(--transition-normal);
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-title {
+            font-size: 1.75rem;
+            margin-bottom: var(--space-sm);
+        }
+
+        .modal-body {
+            padding: var(--space-xl);
+        }
+
+        .redemption-summary {
+            background: var(--off-white);
+            padding: var(--space-lg);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-lg);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-sm) 0;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+            margin-top: var(--space-md);
+            padding-top: var(--space-md);
+            font-weight: 700;
+            font-size: 1.125rem;
+        }
+
+        .delivery-info {
+            margin-top: var(--space-lg);
+        }
+
+        .info-box {
+            background: var(--light-green);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--primary-green);
+        }
+
+        .info-box i {
+            color: var(--primary-green);
+            margin-right: var(--space-sm);
+        }
+
+        .modal-actions {
+            padding: var(--space-xl);
+            border-top: 2px solid var(--light-gray);
+            display: flex;
+            gap: var(--space-md);
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition-normal);
+        }
+
+        .modal-btn-cancel {
+            background: var(--light-gray);
+            color: var(--text-dark);
+        }
+
+        .modal-btn-cancel:hover {
+            background: var(--medium-gray);
+        }
+
+        .modal-btn-confirm {
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            color: var(--white);
+        }
+
+        .modal-btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-green);
+        }
+
+        /* Success Modal */
+        .success-modal {
+            text-align: center;
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--secondary-green), var(--accent-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-lg);
+            font-size: 3rem;
+            color: var(--white);
+        }
+
+        /* Responsive */
+        @media (max-width: 767px) {
+            .header-title {
+                font-size: 2.5rem;
+            }
+
+            .points-value {
+                font-size: 2rem;
+            }
+
+            .filter-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-tabs {
+                justify-content: center;
+            }
+
+            .rewards-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-lg);
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body class="redeem-page">
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Hero Header -->
+        <section class="redeem-header">
+            <div class="container">
+                <div class="header-content">
+                    <h1 class="header-title">Redeem Your WEEE Points</h1>
+                    <p class="header-subtitle">Turn your eco-friendly actions into valuable rewards. Choose from our
+                        selection of premium gift cards.</p>
+
+                    <div class="user-points-display">
+                        <div class="points-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="points-info">
+                            <span class="points-label">Your Available Points</span>
+                            <div class="points-value">
+                                <span id="user-points">1,250</span>
+                                <small style="font-size: 1rem; opacity: 0.8;">WEEE Points</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filter Section -->
+        <section class="filter-section">
+            <div class="container">
+                <div class="filter-controls">
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-category="all">All Rewards</button>
+                        <button class="filter-tab" data-category="retail">Retail & Shopping</button>
+                        <button class="filter-tab" data-category="food">Food & Dining</button>
+                        <button class="filter-tab" data-category="entertainment">Entertainment</button>
+                        <button class="filter-tab" data-category="tech">Technology</button>
+                    </div>
+                    <div class="sort-control">
+                        <label for="sort-select">Sort by:</label>
+                        <select id="sort-select">
+                            <option value="points-low">Points: Low to High</option>
+                            <option value="points-high">Points: High to Low</option>
+                            <option value="value-high">Value: High to Low</option>
+                            <option value="popular">Most Popular</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rewards Grid Section -->
+        <section class="rewards-section">
+            <div class="container">
+                <div class="rewards-grid" id="rewards-grid">
+                    <!-- Gift cards will be dynamically inserted here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Redemption Confirmation Modal -->
+    <div class="modal-overlay" id="redemption-modal">
+        <div class="redemption-modal">
+            <div class="modal-header">
+                <button class="modal-close" id="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+                <h2 class="modal-title">Confirm Redemption</h2>
+                <p>Review your reward before confirming</p>
+            </div>
+            <div class="modal-body">
+                <div class="redemption-summary">
+                    <div class="summary-row">
+                        <span>Reward:</span>
+                        <strong id="modal-reward-name">Amazon Gift Card</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Value:</span>
+                        <strong id="modal-reward-value">$50</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Points Required:</span>
+                        <strong id="modal-points-required">500 Points</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Your Current Balance:</span>
+                        <strong id="modal-current-balance">1,250 Points</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Balance After Redemption:</span>
+                        <strong id="modal-new-balance" style="color: var(--primary-green);">750 Points</strong>
+                    </div>
+                </div>
+
+                <div class="delivery-info">
+                    <h3 style="margin-bottom: var(--space-md);">Delivery Information</h3>
+                    <div class="info-box">
+                        <i class="fas fa-envelope"></i>
+                        <strong>Email Delivery:</strong> Your gift card code will be sent to your registered email
+                        within 24 hours.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" id="btn-cancel">Cancel</button>
+                <button class="modal-btn modal-btn-confirm" id="btn-confirm">
+                    <i class="fas fa-check-circle"></i> Confirm Redemption
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="success-modal">
+        <div class="redemption-modal success-modal">
+            <div class="modal-header">
+                <button class="modal-close" id="success-close">
+                    <i class="fas fa-times"></i>
+                </button>
+                <h2 class="modal-title">Redemption Successful!</h2>
+            </div>
+            <div class="modal-body">
+                <div class="success-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h3 style="margin-bottom: var(--space-md);">Congratulations!</h3>
+                <p style="margin-bottom: var(--space-lg); color: var(--text-gray);">
+                    Your reward has been successfully redeemed. Check your email for the gift card details.
+                </p>
+                <div class="info-box">
+                    <i class="fas fa-gift"></i>
+                    <strong>What's Next?</strong> Your gift card code will arrive in your inbox within 24 hours. Keep
+                    earning WEEE Points for more rewards!
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-confirm" id="btn-close-success">
+                    <i class="fas fa-home"></i> Continue Shopping
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="js/main.js"></script>
+    <script>
+        // Gift Cards Data
+        const giftCardsData = [
+            {
+                id: 1,
+                name: "Amazon Gift Card",
+                brand: "Amazon",
+                category: "retail",
+                value: 50,
+                points: 500,
+                description: "Shop millions of products on Amazon with this versatile gift card.",
+                image: "https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2?w=400&h=300&fit=crop",
+                badge: "popular"
+            },
+            {
+                id: 2,
+                name: "Carrefour Voucher",
+                brand: "Carrefour",
+                category: "retail",
+                value: 100,
+                points: 950,
+                description: "Get your groceries and household essentials at Carrefour stores.",
+                image: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=400&h=300&fit=crop",
+                badge: "popular"
+            },
+            {
+                id: 3,
+                name: "Starbucks Gift Card",
+                brand: "Starbucks",
+                category: "food",
+                value: 25,
+                points: 250,
+                description: "Enjoy your favorite coffee and treats at any Starbucks location.",
+                image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=300&fit=crop",
+                badge: null
+            },
+            {
+                id: 4,
+                name: "Netflix Subscription",
+                brand: "Netflix",
+                category: "entertainment",
+                value: 30,
+                points: 300,
+                description: "One month of unlimited movies and TV shows on Netflix.",
+                image: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=400&h=300&fit=crop",
+                badge: "new"
+            },
+            {
+                id: 5,
+                name: "Noon.com Credit",
+                brand: "Noon",
+                category: "retail",
+                value: 75,
+                points: 700,
+                description: "Shop electronics, fashion, and more on Noon.com.",
+                image: "https://images.unsplash.com/photo-1557821552-17105176677c?w=400&h=300&fit=crop",
+                badge: null
+            },
+            {
+                id: 6,
+                name: "iTunes Gift Card",
+                brand: "Apple",
+                category: "tech",
+                value: 40,
+                points: 400,
+                description: "Download apps, games, music, and more from the App Store and iTunes.",
+                image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=300&fit=crop",
+                badge: null
+            },
+            {
+                id: 7,
+                name: "Uber Eats Voucher",
+                brand: "Uber Eats",
+                category: "food",
+                value: 50,
+                points: 480,
+                description: "Get food delivered from your favorite restaurants.",
+                image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop",
+                badge: "popular"
+            },
+            {
+                id: 8,
+                name: "Google Play Credit",
+                brand: "Google",
+                category: "tech",
+                value: 35,
+                points: 350,
+                description: "Buy apps, games, and digital content on Google Play.",
+                image: "https://images.unsplash.com/photo-1607252650355-f7fd0460ccdb?w=400&h=300&fit=crop",
+                badge: null
+            },
+            {
+                id: 9,
+                name: "Zara Gift Card",
+                brand: "Zara",
+                category: "retail",
+                value: 100,
+                points: 950,
+                description: "Update your wardrobe with the latest fashion trends at Zara.",
+                image: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=400&h=300&fit=crop",
+                badge: null
+            },
+            {
+                id: 10,
+                name: "Spotify Premium",
+                brand: "Spotify",
+                category: "entertainment",
+                value: 20,
+                points: 200,
+                description: "Three months of ad-free music streaming on Spotify Premium.",
+                image: "https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=400&h=300&fit=crop",
+                badge: "new"
+            },
+            {
+                id: 11,
+                name: "H&M Voucher",
+                brand: "H&M",
+                category: "retail",
+                value: 60,
+                points: 580,
+                description: "Shop the latest fashion and home collections at H&M.",
+                image: "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=400&h=300&fit=crop",
+                badge: null
+            },
+            {
+                id: 12,
+                name: "PlayStation Store",
+                brand: "PlayStation",
+                category: "entertainment",
+                value: 50,
+                points: 500,
+                description: "Buy games, add-ons, and subscriptions on PlayStation Store.",
+                image: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400&h=300&fit=crop",
+                badge: null
+            }
+        ];
+
+        // State
+        let userPoints = 1250;
+        let currentFilter = 'all';
+        let currentSort = 'points-low';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGiftCards();
+            setupFilters();
+            setupSorting();
+            setupModals();
+        });
+
+        // Render Gift Cards
+        function renderGiftCards() {
+            const grid = document.getElementById('rewards-grid');
+            let filteredCards = giftCardsData;
+
+            // Apply filter
+            if (currentFilter !== 'all') {
+                filteredCards = filteredCards.filter(card => card.category === currentFilter);
+            }
+
+            // Apply sorting
+            filteredCards = sortCards(filteredCards, currentSort);
+
+            grid.innerHTML = filteredCards.map(card => createGiftCardHTML(card)).join('');
+
+            // Add click handlers
+            document.querySelectorAll('.redeem-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const cardId = parseInt(btn.dataset.cardId);
+                    openRedemptionModal(cardId);
+                });
+            });
+        }
+
+        // Create Gift Card HTML
+        function createGiftCardHTML(card) {
+            const canRedeem = userPoints >= card.points;
+            const badgeHTML = card.badge ? `<div class="card-badge ${card.badge}">${card.badge}</div>` : '';
+
+            return `
+                <div class="gift-card" data-category="${card.category}">
+                    ${badgeHTML}
+                    <div class="card-image">
+                        <img src="${card.image}" alt="${card.name}" loading="lazy">
+                        <div class="card-brand-logo">${card.brand}</div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">${card.name}</h3>
+                        <p class="card-description">${card.description}</p>
+                        <div class="card-value-row">
+                            <div class="card-value">
+                                <span class="value-label">Gift Card Value</span>
+                                <span class="value-amount">$${card.value}</span>
+                            </div>
+                            <div class="points-required">
+                                <i class="fas fa-coins"></i>
+                                <div>
+                                    <div class="points-amount">${card.points}</div>
+                                    <div class="points-text">Points</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="redeem-btn ${!canRedeem ? 'insufficient' : ''}"
+                                data-card-id="${card.id}"
+                                ${!canRedeem ? 'disabled' : ''}>
+                            <i class="fas ${canRedeem ? 'fa-gift' : 'fa-lock'}"></i>
+                            ${canRedeem ? 'Redeem Now' : 'Insufficient Points'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Setup Filters
+        function setupFilters() {
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentFilter = tab.dataset.category;
+                    renderGiftCards();
+                });
+            });
+        }
+
+        // Setup Sorting
+        function setupSorting() {
+            document.getElementById('sort-select').addEventListener('change', (e) => {
+                currentSort = e.target.value;
+                renderGiftCards();
+            });
+        }
+
+        // Sort Cards
+        function sortCards(cards, sortType) {
+            const sorted = [...cards];
+            switch (sortType) {
+                case 'points-low':
+                    return sorted.sort((a, b) => a.points - b.points);
+                case 'points-high':
+                    return sorted.sort((a, b) => b.points - a.points);
+                case 'value-high':
+                    return sorted.sort((a, b) => b.value - a.value);
+                case 'popular':
+                    return sorted.sort((a, b) => (b.badge === 'popular' ? 1 : 0) - (a.badge === 'popular' ? 1 : 0));
+                default:
+                    return sorted;
+            }
+        }
+
+        // Open Redemption Modal
+        function openRedemptionModal(cardId) {
+            const card = giftCardsData.find(c => c.id === cardId);
+            if (!card) return;
+
+            const newBalance = userPoints - card.points;
+
+            document.getElementById('modal-reward-name').textContent = card.name;
+            document.getElementById('modal-reward-value').textContent = `$${card.value}`;
+            document.getElementById('modal-points-required').textContent = `${card.points} Points`;
+            document.getElementById('modal-current-balance').textContent = `${userPoints} Points`;
+            document.getElementById('modal-new-balance').textContent = `${newBalance} Points`;
+
+            document.getElementById('redemption-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Store card ID for confirmation
+            document.getElementById('btn-confirm').dataset.cardId = cardId;
+        }
+
+        // Setup Modals
+        function setupModals() {
+            // Close buttons
+            document.getElementById('modal-close').addEventListener('click', closeRedemptionModal);
+            document.getElementById('btn-cancel').addEventListener('click', closeRedemptionModal);
+            document.getElementById('success-close').addEventListener('click', closeSuccessModal);
+            document.getElementById('btn-close-success').addEventListener('click', closeSuccessModal);
+
+            // Confirm redemption
+            document.getElementById('btn-confirm').addEventListener('click', confirmRedemption);
+
+            // Close on overlay click
+            document.querySelectorAll('.modal-overlay').forEach(overlay => {
+                overlay.addEventListener('click', (e) => {
+                    if (e.target === overlay) {
+                        overlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+        }
+
+        function closeRedemptionModal() {
+            document.getElementById('redemption-modal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('success-modal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function confirmRedemption() {
+            const cardId = parseInt(document.getElementById('btn-confirm').dataset.cardId);
+            const card = giftCardsData.find(c => c.id === cardId);
+
+            if (!card) return;
+
+            // Deduct points
+            userPoints -= card.points;
+            document.getElementById('user-points').textContent = userPoints.toLocaleString();
+
+            // Close redemption modal
+            closeRedemptionModal();
+
+            // Show success modal
+            setTimeout(() => {
+                document.getElementById('success-modal').classList.add('active');
+            }, 300);
+
+            // Re-render cards with updated points
+            renderGiftCards();
+
+            // In a real app, make API call here
+            console.log(`Redeemed: ${card.name} for ${card.points} points`);
+        }
+    </script>
+</body>
+
+</html>

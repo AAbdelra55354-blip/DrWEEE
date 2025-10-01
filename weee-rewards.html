@@ -1,0 +1,2112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Turn your e-waste into rewards! Discover your environmental impact and earn WEEE points through DR.WEEE's innovative recycling program.">
+    <title>💎 WEEE Rewards Hub - Turn Your E-Waste Into Impact | DR.WEEE</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logos/favicon.png">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css"
+        type="text/css" />
+    <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
+    <script src="https://atlas.microsoft.com/sdk/javascript/service/2/atlas-service.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+
+    <style>
+        /* Additional styles specific to WEEE Rewards Hub */
+        .rewards-header {
+            position: relative;
+            min-height: 50vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            padding: 7rem 0 var(--space-lg) 0;
+            background-color: var(--dark-green);
+            z-index: 1;
+            margin-top: -5rem;
+            padding-top: 9rem;
+        }
+
+        .rewards-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 105, 92, 0.6);
+            z-index: 2;
+        }
+
+        .rewards-header .container {
+            position: relative;
+            z-index: 3;
+            max-width: 100%;
+            width: 100%;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 3;
+            color: var(--white);
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 5rem;
+            font-weight: 400;
+            color: #F1F3F4;
+            margin-bottom: var(--space-lg);
+            line-height: 1.1;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            background: none;
+            -webkit-background-clip: initial;
+            -webkit-text-fill-color: initial;
+            background-clip: initial;
+        }
+
+        .header-subtitle {
+            font-size: 1.25rem;
+            max-width: 1000px;
+            color: seashell;
+            margin: 0 0 var(--space-xl) 0;
+            opacity: 0.95;
+            line-height: 1.8;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            font-weight: 300;
+        }
+
+        .impact-preview {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .impact-stat {
+            text-align: center;
+        }
+
+        .impact-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #FFD700;
+            display: block;
+        }
+
+        .impact-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+
+        /* Main Content Layout */
+        .rewards-main {
+            padding: 3rem 0;
+        }
+
+        .rewards-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .ewaste-categories {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .categories-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .categories-title {
+            font-size: 1.8rem;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .categories-subtitle {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        .category-filter {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--light-green);
+            background: transparent;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: var(--primary-green);
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--primary-green);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 137, 123, 0.3);
+        }
+
+        .ewaste-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .ewaste-item {
+            background: white;
+            border: 2px solid #f0f0f0;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ewaste-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .ewaste-item:hover::before {
+            left: 100%;
+        }
+
+        .ewaste-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--primary-green);
+            box-shadow: 0 15px 35px rgba(0, 137, 123, 0.2);
+        }
+
+        .ewaste-item.selected {
+            border-color: var(--primary-green);
+            background: linear-gradient(135deg, var(--light-green), #f8fff8);
+            transform: translateY(-4px);
+        }
+
+        .item-icon {
+            font-size: 2.5rem;
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .item-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            position: relative;
+            z-index: 2;
+        }
+
+        .item-points {
+            color: #FF9800;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .item-impact {
+            font-size: 0.8rem;
+            color: #4CAF50;
+            font-weight: 500;
+            position: relative;
+            z-index: 2;
+        }
+
+        .add-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 25px;
+            height: 25px;
+            background: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            transform: scale(0);
+            transition: transform 0.3s ease;
+        }
+
+        .ewaste-item.selected .add-indicator {
+            transform: scale(1);
+        }
+
+        /* Selection Panel */
+        .selection-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 2rem;
+            align-self: flex-start;
+        }
+
+        .panel-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .panel-title {
+            font-size: 1.5rem;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .panel-subtitle {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        .selected-items {
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-bottom: 2rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 0;
+            color: var(--text-gray);
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .selected-item {
+            background: #f8fff8;
+            border: 1px solid var(--light-green);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .selected-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 137, 123, 0.15);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .item-mini-icon {
+            font-size: 1.5rem;
+            color: var(--primary-green);
+        }
+
+        .item-details h4 {
+            font-size: 0.9rem;
+            margin: 0 0 0.25rem 0;
+            color: var(--text-dark);
+        }
+
+        .item-details .item-points {
+            font-size: 0.8rem;
+            color: #FF9800;
+            margin: 0;
+        }
+
+        .remove-btn {
+            background: #ffebee;
+            border: 1px solid #ffcdd2;
+            color: #f44336;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            background: #f44336;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .quantity-input {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .quantity-control {
+            flex: 1;
+        }
+
+        .quantity-control label {
+            font-size: 0.8rem;
+            color: var(--text-gray);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .quantity-control select,
+        .quantity-control input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .quantity-control input:focus,
+        .quantity-control select:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.1);
+        }
+
+        /* Impact Summary */
+        .impact-summary {
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: white;
+            text-align: center;
+        }
+
+        .impact-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: block;
+            color: #FFD700;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+        }
+
+        /* Proceed Button */
+        .proceed-btn {
+            background: linear-gradient(135deg, #4CAF50, #66BB6A);
+            border: none;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .proceed-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .proceed-btn:not(:disabled):hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.4);
+        }
+
+        .proceed-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .proceed-btn:not(:disabled):hover::before {
+            left: 100%;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .rewards-layout {
+                grid-template-columns: 1.5fr 1fr;
+                gap: 1.5rem;
+            }
+
+            .ewaste-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .rewards-layout {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                max-height: none;
+            }
+
+            .ewaste-categories,
+            .selection-panel {
+                max-height: none;
+                position: static;
+            }
+
+            .selection-panel {
+                order: -1;
+            }
+
+            .impact-preview {
+                flex-wrap: wrap;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 2.5rem;
+            }
+
+            .ewaste-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+
+            .category-filter {
+                gap: 0.5rem;
+            }
+
+            .filter-btn {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .impact-metrics {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .quantity-input {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .rewards-main {
+                padding: 2rem 0;
+            }
+
+            .ewaste-categories,
+            .selection-panel {
+                padding: 1.5rem;
+            }
+
+            .ewaste-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 1rem;
+            }
+
+            .ewaste-item {
+                padding: 1rem;
+            }
+
+            .item-icon {
+                font-size: 2rem;
+            }
+        }
+
+        /* Animation classes */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Base styles for modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.8) translateY(30px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1) translateY(0);
+        }
+
+        /* Login Required Modal */
+        .login-modal {
+            padding: 3rem;
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .login-modal-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 2rem;
+            background: linear-gradient(135deg, #FF9800, #F57C00);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .login-modal h2 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .login-modal p {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .login-modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        /* Scope button styles to ONLY rewards-specific buttons, not header buttons */
+        .rewards-main .btn,
+        .location-modal .btn,
+        .confirmation-modal .btn {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rewards-main .btn-primary,
+        .location-modal .btn-primary,
+        .confirmation-modal .btn-primary {
+            background: linear-gradient(135deg, #00897B, #4DB6AC);
+            color: white;
+        }
+
+        .rewards-main .btn-primary:hover,
+        .location-modal .btn-primary:hover,
+        .confirmation-modal .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 137, 123, 0.3);
+        }
+
+        .rewards-main .btn-secondary,
+        .location-modal .btn-secondary,
+        .confirmation-modal .btn-secondary {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .rewards-main .btn-secondary:hover,
+        .location-modal .btn-secondary:hover,
+        .confirmation-modal .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        /* Location Picker Modal */
+        .location-modal {
+            width: 90vw;
+            max-width: 800px;
+            max-height: 85vh;
+            /* Use max-height for better flexibility */
+            min-height: 500px;
+            /* Ensure it's not too small */
+            height: auto;
+            /* Allow content to define height up to the max */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .location-modal-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .location-modal-header h2 {
+            margin: 0;
+            color: #00897B;
+            font-size: 1.5rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .location-modal-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .search-container {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #00897B;
+            border-radius: 50px;
+            font-size: 14px;
+            outline: none;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-btn,
+        .clear-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .search-btn {
+            background: #00897B;
+            color: white;
+        }
+
+        .search-btn:hover {
+            background: #00695C;
+            transform: translateY(-2px);
+        }
+
+        .clear-btn {
+            background: #f44336;
+            color: white;
+        }
+
+        .clear-btn:hover {
+            background: #d32f2f;
+            transform: translateY(-2px);
+        }
+
+        #locationMap {
+            flex: 1;
+            min-height: 400px;
+        }
+
+        .location-modal-footer {
+            padding: 1.5rem 2rem;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .selected-location {
+            font-size: 0.9rem;
+            color: #666;
+            flex: 1;
+        }
+
+        .confirm-location-btn {
+            background: linear-gradient(135deg, #4CAF50, #66BB6A);
+            color: white;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            disabled: true;
+        }
+
+        .confirm-location-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .confirm-location-btn:not(:disabled):hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+        }
+
+        /* Success Modal */
+        .success-modal {
+            padding: 2rem 3rem 3rem;
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 2rem;
+            background: linear-gradient(135deg, #4CAF50, #66BB6A);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            animation: successPulse 0.6s ease-out;
+        }
+
+        @keyframes successPulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-modal h2 {
+            color: #4CAF50;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .request-details {
+            background: #f8fff8;
+            border: 1px solid #c8e6c9;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e8f5e8;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+            font-weight: 600;
+            color: #4CAF50;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .location-modal {
+                width: 95vw;
+                height: auto;
+                /* Let height be flexible */
+                max-height: 85vh;
+                /* Set a maximum vertical limit */
+            }
+
+            .login-modal {
+                padding: 2rem 1.5rem;
+                max-width: 90vw;
+            }
+
+            .login-modal-buttons {
+                flex-direction: column;
+            }
+
+            .search-container {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body class="weee-rewards-page">
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Hero Header -->
+        <section class="rewards-header">
+            <div class="hero__background">
+                <video class="hero__video-background" autoplay loop muted playsinline>
+                    <source
+                        src="https://assets.mixkit.co/videos/preview/mixkit-futuristic-wireframes-of-a-technological-city-4328-large.mp4"
+                        type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <canvas id="particle-canvas" class="hero__particles"></canvas>
+            </div>
+            <div class="container">
+                <div class="header-content">
+                    <h1 class="header-title">WEEE Rewards Hub</h1>
+                    <p class="header-subtitle">Transform Your E-Waste Into Environmental Impact & Rewards</p>
+
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Rewards Interface -->
+        <section class="rewards-main">
+            <div class="container">
+                <div class="rewards-layout">
+                    <!-- E-Waste Categories Section (Left 2/3) -->
+                    <div class="ewaste-categories">
+                        <div class="categories-header">
+                            <h2 class="categories-title">Select Your E-Waste Items</h2>
+                            <p class="categories-subtitle">Click on items to add them to your collection bag and see
+                                your environmental impact!</p>
+                        </div>
+
+                        <!-- Category Filters -->
+                        <div class="category-filter">
+                            <button class="filter-btn active" data-category="all">All Items</button>
+                            <button class="filter-btn" data-category="computing">💻 Computing</button>
+                            <button class="filter-btn" data-category="mobile">📱 Mobile</button>
+                            <button class="filter-btn" data-category="home">🏠 Home Appliances</button>
+                            <button class="filter-btn" data-category="entertainment">📺 Entertainment</button>
+                            <button class="filter-btn" data-category="accessories">🔌 Accessories</button>
+                        </div>
+
+                        <!-- E-Waste Items Grid -->
+                        <div class="ewaste-grid" id="ewaste-grid">
+                            <!-- Items will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Selection Panel (Right 1/3) -->
+                    <div class="selection-panel">
+                        <div class="panel-header">
+                            <h3 class="panel-title">Your Collection Bag</h3>
+                            <p class="panel-subtitle">Items ready for eco-friendly disposal</p>
+                        </div>
+
+                        <!-- Selected Items Container -->
+                        <div class="selected-items" id="selected-items">
+                            <div class="empty-state">
+                                <div class="empty-icon">🌱</div>
+                                <p>Start selecting items to see your environmental impact!</p>
+                            </div>
+                        </div>
+
+                        <!-- Impact Summary -->
+                        <div class="impact-summary" id="impact-summary" style="display: none;">
+                            <h4 class="summary-title">Your Environmental Impact</h4>
+                            <div class="impact-metrics">
+                                <div class="metric">
+                                    <span class="metric-value" id="total-points">0</span>
+                                    <span class="metric-label">WEEE Points</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value" id="total-co2">0</span>
+                                    <span class="metric-label">CO₂ Saved (kg)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Proceed Button -->
+                        <button class="proceed-btn" id="proceed-btn" disabled>
+                            <i class="fas fa-leaf"></i>
+                            Complete Collection Request
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Login Required Modal -->
+            <div id="loginRequiredModal" class="modal-overlay">
+                <div class="modal login-modal">
+                    <div class="login-modal-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h2>Login Required</h2>
+                    <p>To proceed with your e-waste collection request, please log in to your account or create a new
+                        one. This helps us track your environmental impact and WEEE points!</p>
+                    <div class="login-modal-buttons">
+                        <a href="/login.html" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login / Register
+                        </a>
+                        <button class="btn btn-secondary" onclick="closeLoginModal()">
+                            <i class="fas fa-times"></i>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location Picker Modal -->
+            <div id="locationModal" class="modal-overlay">
+                <div class="modal location-modal">
+                    <div class="location-modal-header">
+                        <h2><i class="fas fa-map-marker-alt"></i> Select Collection Location</h2>
+                        <button class="close-btn" onclick="closeLocationModal()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="location-modal-body">
+                        <div class="search-container">
+                            <input type="text" id="locationSearchInput" class="search-input"
+                                placeholder="Search for your address or location..." autocomplete="off">
+                            <button id="locationSearchBtn" class="search-btn">Search</button>
+                            <button id="locationClearBtn" class="clear-btn">Clear</button>
+                        </div>
+                        <div id="locationMap"></div>
+                    </div>
+                    <div class="location-modal-footer">
+                        <div class="selected-location" id="selectedLocationText">
+                            Click on the map or search for a location
+                        </div>
+                        <button id="confirmLocationBtn" class="confirm-location-btn" disabled>
+                            <i class="fas fa-check"></i>
+                            Confirm Location
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Modal -->
+            <div id="successModal" class="modal-overlay">
+                <div class="modal success-modal">
+                    <div class="success-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h2>Request Submitted Successfully!</h2>
+                    <p>Thank you for choosing DR.WEEE! Your e-waste collection request has been submitted.</p>
+
+                    <div class="request-details" id="requestDetails">
+                        <!-- Details will be populated by JavaScript -->
+                    </div>
+
+                    <p style="color: #666; margin: 1.5rem 0;">Our team will contact you to arrange the
+                        pickup at your specified location.</p>
+
+                    <button class="btn btn-primary" onclick="closeSuccessModal()">
+                        <i class="fas fa-home"></i>
+                        Continue Browsing
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- JavaScript -->
+    <script>
+        // Updated JavaScript section for weee-rewards.html
+        // Replace the existing JavaScript section with this updated version
+
+        // E-Waste Items Database (keep existing)
+        let ewasteItems = {
+            computing: [],
+            mobile: [],
+            home: [],
+            entertainment: [],
+            accessories: [],
+            office: []
+        };
+
+        // Add this new function to fetch products from server
+        async function fetchEwasteProducts() {
+            try {
+                console.log('Fetching e-waste products...');
+
+                const response = await fetch('/api/fetch-products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ type: 'product' })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch products: ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                if (result.success && result.products) {
+                    console.log(result.cached ? 'Loaded products from cache' : 'Fetched fresh products from Power Automate');
+
+                    // Update the global ewasteItems with fetched data
+                    ewasteItems = {
+                        computing: result.products.computing || [],
+                        mobile: result.products.mobile || [],
+                        home: result.products.home || [],
+                        entertainment: result.products.entertainment || [],
+                        accessories: result.products.accessories || [],
+                        office: result.products.office || []
+                    };
+
+                    return true;
+                } else {
+                    throw new Error('Invalid response format');
+                }
+            } catch (error) {
+                console.error('Error fetching e-waste products:', error);
+
+                // Show user-friendly error message
+                showProductLoadError();
+                return false;
+            }
+        }
+
+
+        // Add this function to handle manual refresh
+        async function refreshProducts() {
+            try {
+                // Clear session cache by calling a new endpoint
+                await fetch('/api/clear-product-cache', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+
+                // Reload products
+                location.reload();
+            } catch (error) {
+                console.error('Error refreshing products:', error);
+            }
+        }
+
+        // Add this function to show error when products fail to load
+        function showProductLoadError() {
+            const ewasteGrid = document.getElementById('ewaste-grid');
+            ewasteGrid.innerHTML = `
+        <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #666;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">⚠️</div>
+            <h3 style="color: #333; margin-bottom: 1rem;">Unable to Load Products</h3>
+            <p style="margin-bottom: 2rem;">We're having trouble loading the e-waste items. Please try refreshing the page.</p>
+            <button onclick="location.reload()" style="
+                background: linear-gradient(135deg, #00897B, #4DB6AC);
+                color: white;
+                border: none;
+                padding: 0.8rem 2rem;
+                border-radius: 25px;
+                cursor: pointer;
+                font-weight: 600;
+            ">
+                Refresh Page
+            </button>
+        </div>
+    `;
+        }
+
+        // Application State
+        let selectedItems = {};
+        let currentFilter = 'all';
+        let locationMap, locationDataSource, locationSearchService;
+        let selectedLocation = null;
+        let AZURE_MAPS_KEY = null;
+
+        // DOM Elements
+        const ewasteGrid = document.getElementById('ewaste-grid');
+        const selectedItemsContainer = document.getElementById('selected-items');
+        const impactSummary = document.getElementById('impact-summary');
+        const totalPointsEl = document.getElementById('total-points');
+        const totalCo2El = document.getElementById('total-co2');
+        const proceedBtn = document.getElementById('proceed-btn');
+
+        // Initialize the application
+        async function init() {
+            // Show loading state
+            const ewasteGrid = document.getElementById('ewaste-grid');
+            ewasteGrid.innerHTML = `
+        <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #666;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
+            <h3 style="color: #333;">Loading E-Waste Items...</h3>
+            <p>Please wait while we fetch the latest products.</p>
+        </div>
+    `;
+
+            // Fetch products from server
+            const success = await fetchEwasteProducts();
+
+            if (success) {
+                // Render items after successful fetch
+                renderEwasteItems();
+                setupEventListeners();
+            }
+            // If failed, error message is already shown by showProductLoadError()
+        }
+
+        // Render e-waste items based on current filter
+        // Replace the renderEwasteItems function with this:
+        function renderEwasteItems() {
+            ewasteGrid.innerHTML = '';
+
+            const allItems = Object.values(ewasteItems).flat();
+            const filteredItems = currentFilter === 'all'
+                ? allItems
+                : allItems.filter(item => item.category === currentFilter);
+
+            if (filteredItems.length === 0) {
+                ewasteGrid.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #666;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">📦</div>
+                <h3 style="color: #333; margin-bottom: 1rem;">No Items Found</h3>
+                <p>No e-waste items available in this category.</p>
+            </div>
+        `;
+                return;
+            }
+
+            filteredItems.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = `ewaste-item ${selectedItems[item.id] ? 'selected' : ''}`;
+                itemElement.setAttribute('data-item-id', item.id);
+
+                // Get default unit for display
+                const defaultUnit = item.units.find(u => u.value === 'Each') || item.units[0];
+                const displayPoints = defaultUnit ? defaultUnit.points : 0;
+                const displayCo2 = defaultUnit ? defaultUnit.co2 : 0;
+
+                itemElement.innerHTML = `
+            <div class="add-indicator">+</div>
+            <div class="item-icon">${item.icon}</div>
+            <h4 class="item-name">${item.name}</h4>
+            <div class="item-points">⭐ ${displayPoints} Points</div>
+            <div class="item-impact">🌱 ${displayCo2}kg CO₂ Saved</div>
+        `;
+
+                itemElement.addEventListener('click', () => toggleItem(item));
+                ewasteGrid.appendChild(itemElement);
+            });
+        }
+
+        // Toggle item selection
+        function toggleItem(item) {
+            if (selectedItems[item.id]) {
+                delete selectedItems[item.id];
+            } else {
+                // Find the default unit (usually "Each" or the first unit)
+                const defaultUnit = item.units.find(u => u.value === 'Each') || item.units[0];
+
+                selectedItems[item.id] = {
+                    id: item.id,
+                    name: item.name,
+                    icon: item.icon,
+                    category: item.category,
+                    quantity: 1,
+                    unit: defaultUnit.value,
+                    points: defaultUnit.points,
+                    co2: defaultUnit.co2,
+                    units: item.units // Store available units for this item
+                };
+            }
+
+            updateUI();
+        }
+
+        // Update the entire UI
+        function updateUI() {
+            renderEwasteItems();
+            renderSelectedItems();
+            updateImpactSummary();
+            updateProceedButton();
+        }
+
+        // Render selected items in the panel
+        function renderSelectedItems() {
+            if (Object.keys(selectedItems).length === 0) {
+                selectedItemsContainer.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">🌱</div>
+                <p>Start selecting items to see your environmental impact!</p>
+            </div>
+        `;
+                return;
+            }
+
+            selectedItemsContainer.innerHTML = '';
+
+            Object.values(selectedItems).forEach(item => {
+                const selectedItemEl = document.createElement('div');
+                selectedItemEl.className = 'selected-item fade-in';
+
+                // Create unit options
+                const unitOptions = item.units.map(unit =>
+                    `<option value="${unit.value}" ${item.unit === unit.value ? 'selected' : ''}>${unit.value}</option>`
+                ).join('');
+
+                selectedItemEl.innerHTML = `
+            <div class="item-header">
+                <div class="item-info">
+                    <div class="item-mini-icon">${item.icon}</div>
+                    <div class="item-details">
+                        <h4>${item.name}</h4>
+                        <div class="item-points">⭐ ${item.points} pts each</div>
+                    </div>
+                </div>
+                <button class="remove-btn" data-item-id="${item.id}">×</button>
+            </div>
+            <div class="quantity-input">
+                <div class="quantity-control">
+                    <label>Unit</label>
+                    <select data-item-id="${item.id}" data-field="unit">
+                        ${unitOptions}
+                    </select>
+                </div>
+                <div class="quantity-control">
+                    <label>Quantity</label>
+                    <input type="number" min="1" value="${item.quantity}" 
+                           data-item-id="${item.id}" data-field="quantity">
+                </div>
+            </div>
+        `;
+
+                selectedItemsContainer.appendChild(selectedItemEl);
+            });
+        }
+
+
+        // Update impact summary
+        function updateImpactSummary() {
+            const hasItems = Object.keys(selectedItems).length > 0;
+
+            if (!hasItems) {
+                impactSummary.style.display = 'none';
+                return;
+            }
+
+            impactSummary.style.display = 'block';
+
+            let totalPoints = 0;
+            let totalCo2 = 0;
+
+            Object.values(selectedItems).forEach(item => {
+                // Points and CO2 are already calculated per unit in the data
+                totalPoints += item.points * item.quantity;
+                totalCo2 += item.co2 * item.quantity;
+            });
+
+            totalPointsEl.textContent = totalPoints.toLocaleString();
+            totalCo2El.textContent = totalCo2.toFixed(1);
+        }
+
+        // Update proceed button state
+        function updateProceedButton() {
+            const hasItems = Object.keys(selectedItems).length > 0;
+            const allQuantitiesSet = Object.values(selectedItems).every(item =>
+                item.quantity && item.quantity > 0
+            );
+
+            proceedBtn.disabled = !hasItems || !allQuantitiesSet;
+
+            if (!proceedBtn.disabled) {
+                proceedBtn.classList.add('pulse');
+            } else {
+                proceedBtn.classList.remove('pulse');
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    currentFilter = e.target.getAttribute('data-category');
+                    renderEwasteItems();
+                });
+            });
+
+            // Selected items container (event delegation)
+            selectedItemsContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('remove-btn')) {
+                    const itemId = e.target.getAttribute('data-item-id');
+                    delete selectedItems[itemId];
+                    updateUI();
+                }
+            });
+
+            selectedItemsContainer.addEventListener('change', (e) => {
+                const itemId = e.target.getAttribute('data-item-id');
+                const field = e.target.getAttribute('data-field');
+
+                if (selectedItems[itemId]) {
+                    if (field === 'quantity') {
+                        selectedItems[itemId][field] = parseInt(e.target.value) || 1;
+                    } else if (field === 'unit') {
+                        // Update unit and corresponding points/co2 values
+                        const newUnit = e.target.value;
+                        const unitData = selectedItems[itemId].units.find(u => u.value === newUnit);
+
+                        if (unitData) {
+                            selectedItems[itemId].unit = newUnit;
+                            selectedItems[itemId].points = unitData.points;
+                            selectedItems[itemId].co2 = unitData.co2;
+
+                            // Re-render to update the points display
+                            renderSelectedItems();
+                        }
+                    }
+
+                    updateImpactSummary();
+                    updateProceedButton();
+                }
+            });
+
+            // Proceed button
+            proceedBtn.addEventListener('click', () => {
+                if (!proceedBtn.disabled) {
+                    handleProceed();
+                }
+            });
+        }
+
+        // UPDATED: Handle proceed action with return URL
+        async function handleProceed() {
+            // Store selected items and return URL in sessionStorage before checking auth
+            sessionStorage.setItem('weee_selected_items', JSON.stringify(selectedItems));
+            sessionStorage.setItem('weee_return_url', window.location.pathname); // Store current page
+
+            // Check if user is logged in
+            try {
+                const response = await fetch('/api/auth-status', {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+
+                const authData = await response.json();
+
+                if (authData.isLoggedIn) {
+                    // User is logged in, show location picker
+                    showLocationModal();
+                } else {
+                    // User not logged in, show login required modal
+                    showLoginModal();
+                }
+            } catch (error) {
+                console.error('Error checking auth status:', error);
+                // On error, assume not logged in
+                showLoginModal();
+            }
+        }
+
+        // Show login required modal
+        function showLoginModal() {
+            // Store selected items and return URL in sessionStorage so they persist after login/register
+            sessionStorage.setItem('weee_selected_items', JSON.stringify(selectedItems));
+            sessionStorage.setItem('weee_return_url', window.location.pathname);
+
+            const modal = document.getElementById('loginRequiredModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close login modal
+        function closeLoginModal() {
+            const modal = document.getElementById('loginRequiredModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Show location picker modal
+        function showLocationModal() {
+            const modal = document.getElementById('locationModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Initialize map if not already initialized
+            setTimeout(() => {
+                if (!locationMap) {
+                    initializeLocationMap();
+                }
+            }, 300);
+        }
+
+        // Close location modal
+        function closeLocationModal() {
+            const modal = document.getElementById('locationModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Initialize location map
+        function initializeLocationMap() {
+            if (!AZURE_MAPS_KEY) {
+                console.error('Azure Maps key not available');
+                return;
+            }
+
+            // Initialize map
+            locationMap = new atlas.Map('locationMap', {
+                authOptions: {
+                    authType: 'subscriptionKey',
+                    subscriptionKey: AZURE_MAPS_KEY
+                },
+                center: [31.2357, 30.0444], // Default to Cairo
+                zoom: 10,
+                style: 'road'
+            });
+
+            locationMap.events.add('ready', function () {
+                locationDataSource = new atlas.source.DataSource();
+                locationMap.sources.add(locationDataSource);
+
+                locationMap.layers.add(new atlas.layer.SymbolLayer(locationDataSource, null, {
+                    iconOptions: {
+                        image: 'pin-red',
+                        anchor: 'center',
+                        allowOverlap: true,
+                        size: 1.2
+                    },
+                    textOptions: {
+                        textField: ['get', 'title'],
+                        offset: [0, -2],
+                        color: '#333333',
+                        size: 12
+                    }
+                }));
+
+                locationMap.events.add('click', async function (e) {
+                    // Set a temporary message while fetching the address
+                    document.getElementById('selectedLocationText').textContent = 'Fetching address...';
+                    document.getElementById('confirmLocationBtn').disabled = true;
+
+                    try {
+                        // Perform a reverse geocode search to get the address from coordinates
+                        const response = await locationSearchService.searchAddressReverse(atlas.service.Aborter.none, e.position);
+
+                        let address = `${e.position[1].toFixed(6)}, ${e.position[0].toFixed(6)}`; // Fallback to coordinates
+
+                        // Use the first good address result
+                        if (response && response.addresses && response.addresses.length > 0) {
+                            address = response.addresses[0].address.freeformAddress;
+                        }
+
+                        // Set the pin with the new address
+                        setLocationPin(e.position, address);
+
+                    } catch (error) {
+                        console.error('Reverse geocode error:', error);
+                        // If the lookup fails, just use the coordinates as before
+                        setLocationPin(e.position);
+                    }
+                });
+                locationSearchService = new atlas.service.SearchURL(
+                    atlas.service.MapsURL.newPipeline(
+                        new atlas.service.SubscriptionKeyCredential(AZURE_MAPS_KEY)
+                    )
+                );
+            });
+        }
+
+        // Setup location modal event listeners
+        function setupLocationModal() {
+            const searchInput = document.getElementById('locationSearchInput');
+            const searchBtn = document.getElementById('locationSearchBtn');
+            const clearBtn = document.getElementById('locationClearBtn');
+            const confirmBtn = document.getElementById('confirmLocationBtn');
+
+            if (!searchInput || !searchBtn || !clearBtn || !confirmBtn) {
+                console.warn('Location modal elements not found');
+                return;
+            }
+
+            // Search functionality
+            searchBtn.addEventListener('click', function () {
+                const query = searchInput.value.trim();
+                if (query) {
+                    performLocationSearch(query);
+                }
+            });
+
+            searchInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    const query = searchInput.value.trim();
+                    if (query) {
+                        performLocationSearch(query);
+                    }
+                }
+            });
+
+            // Clear functionality
+            clearBtn.addEventListener('click', function () {
+                searchInput.value = '';
+                selectedLocation = null;
+                if (locationDataSource) {
+                    locationDataSource.clear();
+                }
+                document.getElementById('selectedLocationText').textContent = 'Click on the map or search for a location';
+                confirmBtn.disabled = true;
+            });
+
+            // Confirm location
+            confirmBtn.addEventListener('click', function () {
+                if (selectedLocation) {
+                    submitCollectionRequest();
+                }
+            });
+        }
+
+        // Perform location search
+        async function performLocationSearch(query) {
+            if (!query.trim() || !locationSearchService) return;
+
+            try {
+                const response = await locationSearchService.searchAddress(atlas.service.Aborter.none, query, {
+                    limit: 5,
+                    countrySet: ['EG'], // Restrict to Egypt
+                    language: 'en-US'
+                });
+
+                if (response.results && response.results.length > 0) {
+                    const result = response.results[0];
+                    const position = [result.position.lon, result.position.lat];
+                    const address = result.address.freeformAddress || `${result.position.lat.toFixed(6)}, ${result.position.lon.toFixed(6)}`;
+
+                    setLocationPin(position, address);
+
+                    // Center map on result
+                    locationMap.setCamera({
+                        center: position,
+                        zoom: 16,
+                        type: 'ease',
+                        duration: 1000
+                    });
+                } else {
+                    alert('Location not found. Please try a different search term.');
+                }
+            } catch (error) {
+                console.error('Search error:', error);
+                alert('Location search failed. Please try again.');
+            }
+        }
+
+        // Set location pin on map
+        function setLocationPin(position, address = null) {
+            selectedLocation = {
+                coordinates: position,
+                address: address || `${position[1].toFixed(6)}, ${position[0].toFixed(6)}`
+            };
+
+            // Clear existing pins
+            if (locationDataSource) {
+                locationDataSource.clear();
+
+                // Add new pin
+                const pin = new atlas.data.Feature(new atlas.data.Point(position), {
+                    title: 'Selected Location'
+                });
+                locationDataSource.add(pin);
+            }
+
+            // Update UI
+            document.getElementById('selectedLocationText').textContent = selectedLocation.address;
+            document.getElementById('confirmLocationBtn').disabled = false;
+        }
+
+        // Submit collection request
+        async function submitCollectionRequest() {
+            // Calculate totals and create description
+            let totalPoints = 0;
+            let totalCo2 = 0;
+            let itemCount = 0;
+            const itemsListForDescription = []; // For Power Automate description (strings)
+            const itemsListForModal = []; // For success modal (objects)
+
+            Object.values(selectedItems).forEach(item => {
+                const multiplier = item.unit === 'Box' ? 10 : item.unit === 'Kg' ? 5 : 1;
+                const itemTotalPoints = item.points * item.quantity * multiplier;
+                const itemTotalCo2 = item.co2 * item.quantity * multiplier;
+
+                totalPoints += itemTotalPoints;
+                totalCo2 += itemTotalCo2;
+                itemCount += item.quantity;
+
+                // For Power Automate description (string format)
+                itemsListForDescription.push(`${item.quantity} ${item.unit} of ${item.name} (${item.icon})`);
+
+                // For success modal (object format)
+                itemsListForModal.push({
+                    name: item.name,
+                    icon: item.icon,
+                    quantity: item.quantity,
+                    unit: item.unit,
+                    points: itemTotalPoints,
+                    co2: itemTotalCo2
+                });
+            });
+
+            // Create human-readable description for the employee
+            // Create human-readable description for the employee
+            const description = `
+E-WASTE COLLECTION REQUEST
+====================================
+
+\nCOLLECTION DETAILS
+------------------------------------
+Address: ${selectedLocation.address}
+Submitted: ${new Date().toLocaleString('en-US', { dateStyle: 'full', timeStyle: 'short' })}
+
+\nREQUEST SUMMARY
+------------------------------------
+Total Items: ${itemCount}
+WEEE Points: ${totalPoints.toLocaleString()}
+CO₂ Saved: ${totalCo2.toFixed(1)} kg
+
+\nITEMIZED LIST
+------------------------------------
+${itemsListForDescription.map(item => `- ${item}`).join('\n')}
+`.trim();
+
+            try {
+                // Get user data to extract GUID
+                const authResponse = await fetch('/api/auth-status', {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+
+                const authData = await authResponse.json();
+
+                if (!authData.isLoggedIn || !authData.userData.GUID) {
+                    throw new Error('User not properly authenticated');
+                }
+
+                // Show loading indicator
+                const confirmBtn = document.getElementById('confirmLocationBtn');
+                const originalText = confirmBtn.innerHTML;
+                confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+                confirmBtn.disabled = true;
+
+                // Send request to backend
+                const response = await fetch('/api/collection-request', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        type: 'ewaste',
+                        GUID: authData.userData.GUID,
+                        Description: description,
+                        longitude: selectedLocation.coordinates[0].toString(),
+                        latitude: selectedLocation.coordinates[1].toString()
+                    })
+                });
+
+                const result = await response.json();
+
+                // Reset button
+                confirmBtn.innerHTML = originalText;
+                confirmBtn.disabled = false;
+
+                if (response.ok) {
+                    // Close location modal
+                    closeLocationModal();
+
+                    // Show success modal with details
+                    showSuccessModal(totalPoints, totalCo2, itemCount, itemsListForModal, result.requestId);
+                } else {
+                    // Handle different error types
+                    handleRequestError(result, response.status);
+                }
+
+            } catch (error) {
+                // Reset button on error
+                const confirmBtn = document.getElementById('confirmLocationBtn');
+                confirmBtn.innerHTML = '<i class="fas fa-check"></i> Confirm Location';
+                confirmBtn.disabled = false;
+
+                console.error('Error submitting collection request:', error);
+                alert('Network error. Please check your connection and try again.');
+            }
+        }
+
+        function handleRequestError(result, status) {
+            let title = 'Request Failed';
+            let message = 'An error occurred while processing your request.';
+            let action = 'Please try again later.';
+
+            switch (result.error) {
+                case 'timeout':
+                    title = 'Processing Delayed';
+                    message = 'Your request is taking longer than usual to process.';
+                    action = 'Please check back in a few minutes or try submitting again.';
+                    break;
+
+                case 'processing_delayed':
+                    title = 'Request Received';
+                    message = result.message;
+                    action = 'Our team will contact you within 24 hours to arrange pickup.';
+                    // Show partial success modal for delayed processing
+                    showDelayedProcessingModal(result.requestId);
+                    return;
+
+                case 'service_unavailable':
+                    title = 'Service Temporarily Unavailable';
+                    message = 'Our collection service is temporarily down.';
+                    action = 'Please try again in 30 minutes.';
+                    break;
+
+                case 'invalid_request':
+                    title = 'Invalid Request';
+                    message = 'There was an error with your request data.';
+                    action = 'Please refresh the page and try again.';
+                    break;
+
+                default:
+                    message = result.message || message;
+            }
+
+            alert(`${title}\n\n${message}\n\n${action}`);
+        }
+
+        // Add this new function for delayed processing
+        function showDelayedProcessingModal(requestId) {
+            const modal = document.getElementById('successModal');
+            const detailsContainer = document.getElementById('requestDetails');
+            const title = modal.querySelector('h2');
+            const icon = modal.querySelector('.success-icon');
+
+            // Change the modal appearance for delayed processing
+            title.textContent = 'Request Received!';
+            icon.innerHTML = '<i class="fas fa-clock"></i>';
+            icon.style.background = 'linear-gradient(135deg, #FF9800, #F57C00)';
+
+            detailsContainer.innerHTML = `
+        <div class="detail-row">
+            <span><i class="fas fa-id-card"></i> Request ID:</span>
+            <span style="font-family: monospace; font-weight: bold;">${requestId}</span>
+        </div>
+        <div class="detail-row">
+            <span><i class="fas fa-clock"></i> Status:</span>
+            <span style="color: #FF9800; font-weight: 600;">Processing</span>
+        </div>
+        <div class="detail-row">
+            <span><i class="fas fa-phone"></i> Contact:</span>
+            <span>Within 24 hours</span>
+        </div>
+    `;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        // UPDATED: Show success modal and handle redirect
+        function showSuccessModal(totalPoints, totalCo2, itemCount, itemsList = []) {
+            const modal = document.getElementById('successModal');
+            const detailsContainer = document.getElementById('requestDetails');
+
+            // Generate request details HTML
+            const requestId = 'WEE' + Date.now().toString().slice(-6);
+            const pickupDate = new Date(Date.now() + 24 * 60 * 60 * 1000).toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            // Create items summary
+            const itemsHtml = itemsList.length > 0
+                ? itemsList.slice(0, 3).map(item =>
+                    `<div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0;">
+                <span>${item.icon} ${item.name} (${item.quantity} ${item.unit})</span>
+                <span style="color: #FF9800; font-weight: 600;">${item.points} pts</span>
+            </div>`
+                ).join('')
+                : '<div>Items selected</div>';
+
+            const moreItemsText = itemsList.length > 3 ? `<div style="text-align: center; color: #666; font-style: italic; padding: 0.5rem 0;">+ ${itemsList.length - 3} more items</div>` : '';
+
+            detailsContainer.innerHTML = `
+        
+        <div class="detail-row">
+            <span><i class="fas fa-map-marker-alt"></i> Location:</span>
+            <span>${selectedLocation.address}</span>
+        </div>
+       
+        <div style="border-top: 1px solid #e8f5e8; margin: 1rem 0; padding-top: 1rem;">
+            <div style="font-weight: 600; margin-bottom: 0.5rem; color: #00897B;">
+                <i class="fas fa-box"></i> Selected Items (${itemCount} total)
+            </div>
+            ${itemsHtml}
+            ${moreItemsText}
+        </div>
+        <div class="detail-row">
+            <span><i class="fas fa-star"></i> WEEE Points Earned:</span>
+            <span style="color: #FF9800; font-weight: 700;">${totalPoints.toLocaleString()}</span>
+        </div>
+        <div class="detail-row">
+            <span><i class="fas fa-leaf"></i> Environmental Impact:</span>
+            <span style="color: #4CAF50; font-weight: 700;">${totalCo2.toFixed(1)}kg CO₂ saved</span>
+        </div>
+    `;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Clear selected items from session storage since request is complete
+            sessionStorage.removeItem('weee_selected_items');
+            sessionStorage.removeItem('weee_return_url');
+        }
+
+        // UPDATED: Close success modal and reset form
+        function closeSuccessModal() {
+            const modal = document.getElementById('successModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+
+            // Reset the form state
+            selectedItems = {};
+            selectedLocation = null;
+            currentFilter = 'all';
+
+            // Update UI to reflect reset state
+            updateUI();
+
+            // Reset filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.filter-btn[data-category="all"]').classList.add('active');
+
+            // Redirect to home page after a short delay
+            setTimeout(() => {
+                window.location.href = '/index.html';
+            }, 1000);
+        }
+
+        // Add this function to load config
+        async function loadConfig() {
+            try {
+                const response = await fetch('/api/config');
+                const config = await response.json();
+                AZURE_MAPS_KEY = config.azureMapsKey;
+                console.log('Azure Maps key loaded successfully');
+            } catch (error) {
+                console.error('Error loading configuration:', error);
+            }
+        }
+
+        // UPDATED: Show location modal with config loading
+        async function showLocationModal() {
+            // Ensure config is loaded before showing modal
+            if (!AZURE_MAPS_KEY) {
+                await loadConfig();
+            }
+
+            const modal = document.getElementById('locationModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Initialize map if not already initialized
+            setTimeout(() => {
+                if (!locationMap && AZURE_MAPS_KEY) {
+                    initializeLocationMap();
+                }
+            }, 300);
+        }
+
+        // UPDATED: Function to restore selected items after login
+        function restoreSelectedItems() {
+            const stored = sessionStorage.getItem('weee_selected_items');
+            if (stored) {
+                try {
+                    selectedItems = JSON.parse(stored);
+                    // Don't remove from sessionStorage yet - only remove after successful submission
+                    console.log('Restored selected items:', selectedItems);
+                    return true;
+                } catch (error) {
+                    console.error('Error parsing stored items:', error);
+                    sessionStorage.removeItem('weee_selected_items');
+                }
+            }
+            return false;
+        }
+
+        // UPDATED: Initialize when DOM is loaded
+        // NOTE: Header/footer loading is handled by main.js loadIncludes()
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Load configuration first
+            await loadConfig();
+
+            // NOTE: loadIncludes() removed - now handled by main.js
+            await init(); // Make sure init completes before continuing
+            setupLocationModal();
+
+            // Restore selected items if user just logged in or returned to page
+            if (restoreSelectedItems()) {
+                console.log('Items restored from session storage');
+                updateUI();
+            }
+        });
+    </script>
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- JavaScript Files -->
+    <script src="js/main.js"></script>
+</body>
+
+</html>

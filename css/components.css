@@ -177,13 +177,7 @@
     color: var(--text-gray);
 }
 
-.service-card__features li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    color: var(--secondary-green);
-    font-weight: bold;
-}
+
 
 .service-card__link {
     display: inline-flex;
@@ -611,13 +605,7 @@
     margin-bottom: var(--space-sm);
 }
 
-.advantages-list li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    color: var(--primary-green);
-    font-weight: bold;
-}
+
 
 /* About Page: Achievements Timeline */
 .achievements-timeline {

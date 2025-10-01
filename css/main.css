@@ -339,16 +339,17 @@ a:hover {
     transform: translateY(-3px);
 }
 
-.btn--outline {
-    background-color: transparent;
-    color: var(--white);
-    border-color: var(--white);
-}
+ .btn--outline {
+            background-color: transparent;
+            color: var(--primary-green);
+            border-color: var(--primary-green);
+        }
 
-.btn--outline:hover {
-    background-color: var(--white);
-    color: var(--primary-green);
-}
+ .btn--outline:hover {
+            background-color: var(--primary-green);
+            color: var(--white);
+        }
+
 
 .btn--lg {
     padding: 1rem 2.5rem;
@@ -376,9 +377,12 @@ a:hover {
 .header__container {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     padding: var(--space-sm) var(--space-lg);
-    gap: var(--space-xl);
+    gap: var(--space-md);
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
 }
 
 .header__logo {
@@ -403,8 +407,10 @@ a:hover {
 .nav__list {
     display: flex;
     list-style: none;
-    gap: var(--space-xl);
+    gap: var(--space-lg);
     margin: 0;
+    padding: 0;
+    align-items: center;
 }
 
 .nav__item {
@@ -564,28 +570,7 @@ a:hover {
     height: 60%;
 }
 
-/* Add icons to menu items */
-.mobile-menu__link[href*="index"]::after {
-    content: "🏠";
-}
 
-.mobile-menu__link[href*="about"]::after {
-    content: "👤";
-}
-
-.mobile-menu__link[href*="services"]::after {
-    content: "⚙️";
-}
-
-.mobile-menu__link[href*="impact"]::after {
-    content: "🌱";
-}
-
-.mobile-menu__link::after {
-    font-size: 1.2rem;
-    margin-left: auto;
-    opacity: 0.6;
-}
 
 /* --- UPDATED: Hero Section --- */
 .hero {
@@ -2351,13 +2336,7 @@ a:hover {
     color: var(--text-gray);
 }
 
-.franchise-features li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    color: var(--secondary-green);
-    font-weight: 700;
-}
+
 
 /* Special styling for the 'featured' card */
 .franchise-card--featured {
@@ -2436,15 +2415,6 @@ a:hover {
     .franchise-card--featured {
         transform: none;
         /* Reset featured card scaling on tablets */
-    }
-     .nav {
-        display: none;
-    }
-
-    .mobile-menu-toggle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
     }
 }
 
@@ -2719,32 +2689,20 @@ a:hover {
     }
 }
 
-/* --- Add this to your responsive styles --- */
+/* Chart heights */
 .environmental-chart,
 .economic-chart {
-
-    /* --- Mobile Menu Visibility Fix --- */
-
-    /* This rule makes the menu slide in from the right when the 'is-open' class is added by the JavaScript */
-    .mobile-menu.is-open {
-        right: 0;
-    }
-
-    /* Optional: This class prevents the main content from scrolling when the mobile menu is open */
-    .mobile-menu-open {
-        overflow: hidden;
-    }
-
     height: 350px;
 }
 
 @media (max-width: 991px) {
+    /* Hide desktop nav, show mobile toggle */
     .nav {
-        display: none;
+        display: none !important;
     }
 
     .mobile-menu-toggle {
-        display: flex;
+        display: flex !important;
         align-items: center;
         justify-content: center;
     }
@@ -2765,3 +2723,21 @@ a:hover {
         padding: var(--space-md);
     }
 }
+/* Enhanced Login Button Styling */
+.btn--login {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.btn--login::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+

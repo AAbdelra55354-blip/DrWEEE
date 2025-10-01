@@ -10,15 +10,112 @@
                 <ul class="nav__list">
                     <li class="nav__item"><a href="index.html" class="nav__link" data-page="home">Home</a></li>
                     <li class="nav__item"><a href="about.html" class="nav__link" data-page="about">About</a></li>
-                    <li class="nav__item"><a href="Company-Profile.html" class="nav__link" data-page="services">Company Profile</a></li>
+                    <li class="nav__item"><a href="store.html" class="nav__link" data-page="store">Store</a></li>
+                    <li class="nav__item"><a href="weee-rewards.html" class="nav__link" data-page="weee-rewards">E-waste</a></li>
                     <li class="nav__item"><a href="services.html" class="nav__link" data-page="services">Services</a></li>
                     <li class="nav__item"><a href="impact.html" class="nav__link" data-page="impact">Impact</a></li>
-
                 </ul>
             </nav>
 
             <div class="header__actions">
                 <a href="contact.html" class="btn btn--primary">Contact Us</a>
+
+                <!-- Login Button (shown when not logged in) - Desktop Only -->
+                <a href="login.html" class="btn btn--outline btn--login desktop-only" id="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </a>
+
+                <!-- User Dropdown (shown when logged in) - Desktop Only -->
+                <div class="user-dropdown desktop-only" id="user-dropdown" style="display: none;">
+                    <button class="user-dropdown__trigger" id="user-dropdown-trigger" aria-expanded="false">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <i class="fas fa-chevron-down user-dropdown__arrow"></i>
+                    </button>
+                    <div class="user-dropdown__menu" id="user-dropdown-menu">
+                        <div class="user-dropdown__header">
+                            <div class="user-info">
+                                <div class="user-info__avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-info__details">
+                                    <span class="user-info__phone" id="user-phone">+20XXXXXXXXXX</span>
+                                    <span class="user-info__status">Active User</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- WEEE Data Section -->
+                        <div class="user-dropdown__weee-data">
+                            <h4 class="weee-data__title">
+                                <i class="fas fa-leaf"></i> Your WEEE Impact
+                            </h4>
+                            <div class="weee-data__grid">
+                                <div class="weee-stat">
+                                    <div class="weee-stat__icon">
+                                        <i class="fas fa-coins"></i>
+                                    </div>
+                                    <div class="weee-stat__info">
+                                        <span class="weee-stat__value" id="available-weee-points">0</span>
+                                        <span class="weee-stat__label">Available Points</span>
+                                    </div>
+                                </div>
+                                <div class="weee-stat">
+                                    <div class="weee-stat__icon">
+                                        <i class="fas fa-award"></i>
+                                    </div>
+                                    <div class="weee-stat__info">
+                                        <span class="weee-stat__value" id="total-weee-points">0</span>
+                                        <span class="weee-stat__label">Total Points</span>
+                                    </div>
+                                </div>
+                                <div class="weee-stat">
+                                    <div class="weee-stat__icon">
+                                        <i class="fas fa-dollar-sign"></i>
+                                    </div>
+                                    <div class="weee-stat__info">
+                                        <span class="weee-stat__value" id="available-cash">0</span>
+                                        <span class="weee-stat__label">Available Cash</span>
+                                    </div>
+                                </div>
+                                <div class="weee-stat">
+                                    <div class="weee-stat__icon">
+                                        <i class="fas fa-seedling"></i>
+                                    </div>
+                                    <div class="weee-stat__info">
+                                        <span class="weee-stat__value" id="total-carbon-saved">0</span>
+                                        <span class="weee-stat__label">Carbon Saved (kg)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="user-dropdown__body">
+                            
+                            <a href="environmental-impact.html" class="user-dropdown__item">
+                                <i class="fas fa-leaf"></i>
+                                My Environmental Impact
+                            </a>
+                            <a href="#" class="user-dropdown__item">
+                                <i class="fas fa-history"></i>
+                                Transaction History
+                            </a>
+                            <a href="redeem-points.html" class="user-dropdown__item">
+                                <i class="fas fa-gift"></i>
+                                Redeem Points
+                            </a>
+                          
+                            <div class="user-dropdown__separator"></div>
+                            <button class="user-dropdown__item user-dropdown__logout" id="logout-btn">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Sign Out
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Open menu" aria-expanded="false">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -37,22 +134,77 @@
         <div class="mobile-menu__content">
             <ul class="mobile-menu__list">
                 <li class="mobile-menu__item">
-                    <a href="index.html" class="mobile-menu__link">Home</a>
+                    <a href="index.html" class="mobile-menu__link" data-page="home">Home</a>
                 </li>
                 <li class="mobile-menu__item">
-                    <a href="about.html" class="mobile-menu__link">About</a>
+                    <a href="about.html" class="mobile-menu__link" data-page="about">About</a>
                 </li>
                 <li class="mobile-menu__item">
-                    <a href="services.html" class="mobile-menu__link">Services</a>
+                    <a href="store.html" class="mobile-menu__link" data-page="store">Store</a>
                 </li>
                 <li class="mobile-menu__item">
-                    <a href="impact.html" class="mobile-menu__link">Impact</a>
+                    <a href="weee-rewards.html" class="mobile-menu__link" data-page="weee-rewards">E-waste</a>
+                </li>
+                <li class="mobile-menu__item">
+                    <a href="services.html" class="mobile-menu__link" data-page="services">Services</a>
+                </li>
+                <li class="mobile-menu__item">
+                    <a href="impact.html" class="mobile-menu__link" data-page="impact">Impact</a>
+                </li>
+                <!-- Mobile Login (shown when not logged in) -->
+                <li class="mobile-menu__item" id="mobile-login-item">
+                    <a href="login.html" class="mobile-menu__link">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login
+                    </a>
+                </li>
+                <!-- Mobile User Info (shown when logged in) -->
+                <li class="mobile-menu__item mobile-user-info" id="mobile-user-info" style="display: none;">
+                    <div class="mobile-user-details">
+                        <div class="user-info__avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <span class="user-info__phone" id="mobile-user-phone">+20XXXXXXXXXX</span>
+                            <span class="user-info__status">Active User</span>
+                        </div>
+                    </div>
+
+                    <!-- Mobile WEEE Data Summary -->
+                    <div class="mobile-weee-summary">
+                        <div class="mobile-weee-title">
+                            <i class="fas fa-leaf"></i>
+                            Your WEEE Impact
+                        </div>
+                        <div class="mobile-weee-grid">
+                            <div class="mobile-weee-stat">
+                                <span class="mobile-weee-value" id="mobile-available-weee-points">0</span>
+                                <span class="mobile-weee-label">Available Points</span>
+                            </div>
+                            <div class="mobile-weee-stat">
+                                <span class="mobile-weee-value" id="mobile-total-weee-points">0</span>
+                                <span class="mobile-weee-label">Total Points</span>
+                            </div>
+                            <div class="mobile-weee-stat">
+                                <span class="mobile-weee-value" id="mobile-available-cash">0</span>
+                                <span class="mobile-weee-label">Available Cash</span>
+                            </div>
+                            <div class="mobile-weee-stat">
+                                <span class="mobile-weee-value" id="mobile-total-carbon-saved">0kg</span>
+                                <span class="mobile-weee-label">Carbon Saved</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="mobile-logout-btn" id="mobile-logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Sign Out
+                    </button>
                 </li>
             </ul>
 
             <a href="contact.html" class="btn btn--primary mobile-menu__cta">Contact Us</a>
 
-            <!-- Optional: Add social links or additional info -->
             <div class="mobile-menu__footer">
                 <div class="mobile-menu__social">
                     <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
@@ -64,3 +216,329 @@
         </div>
     </nav>
 </header>
+
+<style>
+    /* Define CSS variables if not already defined */
+    :root {
+        --primary-green: #00897B;
+        --secondary-green: #4DB6AC;
+        --light-green: #E8F5E9;
+        --dark-green: #00695C;
+        --text-dark: #202124;
+        --text-gray: #5F6368;
+        --success-green: #388E3C;
+        --error-red: #D32F2F;
+    }
+
+    /* Enhanced User Dropdown Styles */
+    .user-dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .user-dropdown__trigger {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: rgba(237, 237, 237, 0.1);
+        border: 1px solid rgba(203, 203, 203, 0.373);
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: var(--primary-green);
+    }
+
+    .user-dropdown__trigger:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .user-avatar {
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 0.9rem;
+    }
+
+    .user-dropdown__arrow {
+        font-size: 0.75rem;
+        transition: transform 0.3s ease;
+    }
+
+    .user-dropdown__trigger[aria-expanded="true"] .user-dropdown__arrow {
+        transform: rotate(180deg);
+    }
+
+    .user-dropdown__menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        min-width: 350px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+        overflow: hidden;
+    }
+
+    .user-dropdown__trigger[aria-expanded="true"] + .user-dropdown__menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .user-dropdown__header {
+        padding: 1.5rem;
+        background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+        color: white;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .user-info__avatar {
+        width: 45px;
+        height: 45px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.1rem;
+    }
+
+    .user-info__details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .user-info__phone {
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .user-info__status {
+        font-size: 0.8rem;
+        opacity: 0.9;
+    }
+
+    /* WEEE Data Styles */
+    .user-dropdown__weee-data {
+        padding: 1.5rem;
+        background: #f8fffe;
+        border-bottom: 1px solid #eee;
+    }
+
+    .weee-data__title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--primary-green);
+    }
+
+    .weee-data__grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .weee-stat {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem;
+        background: white;
+        border-radius: 12px;
+        border: 1px solid rgba(77, 182, 172, 0.1);
+        transition: all 0.2s ease;
+    }
+
+    .weee-stat:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(77, 182, 172, 0.15);
+    }
+
+    .weee-stat__icon {
+        width: 35px;
+        height: 35px;
+        background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 0.8rem;
+        flex-shrink: 0;
+    }
+
+    .weee-stat__info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.1rem;
+        min-width: 0;
+    }
+
+    .weee-stat__value {
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: var(--text-dark);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .weee-stat__label {
+        font-size: 0.7rem;
+        color: var(--text-gray);
+        font-weight: 500;
+        line-height: 1.2;
+    }
+
+    .user-dropdown__body {
+        padding: 0.75rem;
+    }
+
+    .user-dropdown__item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        width: 100%;
+        background: none;
+        border: none;
+        border-radius: 10px;
+        text-decoration: none;
+        color: var(--text-dark);
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+
+    .user-dropdown__item:hover {
+        background: var(--light-green);
+        color: var(--dark-green);
+    }
+
+    .user-dropdown__logout {
+        color: var(--error-red);
+    }
+
+    .user-dropdown__logout:hover {
+        background: #ffebee;
+        color: var(--error-red);
+    }
+
+    .user-dropdown__separator {
+        height: 1px;
+        background: #eee;
+        margin: 0.5rem 0;
+    }
+
+    /* Mobile User Info Styles */
+    .mobile-user-info {
+        background: rgba(77, 182, 172, 0.1);
+        border-radius: 12px;
+        padding: 1rem;
+        margin: 0.5rem 0;
+    }
+
+    .mobile-user-details {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Mobile WEEE Data */
+    .mobile-weee-summary {
+        background: white;
+        border-radius: 10px;
+        padding: 1rem;
+        margin: 1rem 0;
+        border: 1px solid rgba(77, 182, 172, 0.2);
+    }
+
+    .mobile-weee-title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--primary-green);
+    }
+
+    .mobile-weee-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+    }
+
+    .mobile-weee-stat {
+        text-align: center;
+        padding: 0.5rem;
+        background: rgba(77, 182, 172, 0.05);
+        border-radius: 8px;
+    }
+
+    .mobile-weee-value {
+        display: block;
+        font-weight: 700;
+        font-size: 0.8rem;
+        color: var(--primary-green);
+    }
+
+    .mobile-weee-label {
+        font-size: 0.65rem;
+        color: var(--text-gray);
+        margin-top: 0.25rem;
+    }
+
+    .mobile-logout-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1rem;
+        background: var(--error-red);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        width: 100%;
+    }
+
+    .mobile-logout-btn:hover {
+        background: #c62828;
+        transform: translateY(-1px);
+    }
+
+    /* Desktop-only class to hide login/user dropdown on mobile */
+    @media (max-width: 991px) {
+        .desktop-only {
+            display: none !important;
+        }
+    }
+</style>
+
+<!-- All header functionality is now handled by main.js -->

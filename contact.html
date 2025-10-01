@@ -68,6 +68,10 @@
                                     <input type="email" id="email" name="email" placeholder="you@example.com" required>
                                 </div>
                             </div>
+                            <div class="form-group" id="phone-field-group" style="display: none;">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" placeholder="+20 123 456 7890">
+                            </div>
                             <div class="form-group">
                                 <label for="subject">What can we help you with?</label>
                                 <select id="subject" name="subject" required>
@@ -95,7 +99,7 @@
                             <div class="info-content">
                                 <h4>Email Us</h4>
                                 <p>For general inquiries and partnerships.</p>
-                                <a href="mailto:info@drweee.com">info@drweee.com</a>
+                                <a href="mailto:essam@drweee.com">essam@drweee.com</a>
                             </div>
                         </div>
                         <div class="info-card">
@@ -103,7 +107,7 @@
                             <div class="info-content">
                                 <h4>Call Us</h4>
                                 <p>Sun - Thu, 9:00 AM - 6:00 PM (GMT+2)</p>
-                                <a href="tel:+201234567890">+20 123 456 7890</a>
+                                <a href="tel:+201234567890">+20 111 588 7928</a>
                             </div>
                         </div>
                         <div class="info-card">
@@ -125,7 +129,522 @@
     <!-- Footer Placeholder -->
     <div id="footer-placeholder"></div>
 
+    <!-- Success Modal -->
+    <div class="contact-success-overlay" id="contact-success-modal">
+        <div class="contact-success-modal">
+            <button class="success-close-btn" id="success-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="success-animation">
+                <div class="success-checkmark">
+                    <div class="check-icon">
+                        <span class="icon-line line-tip"></span>
+                        <span class="icon-line line-long"></span>
+                        <div class="icon-circle"></div>
+                        <div class="icon-fix"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="success-content">
+                <h2 class="success-title">Message Sent Successfully! 🎉</h2>
+                <p class="success-message">
+                    Thank you for reaching out to <strong>DR.WEEE</strong>. We've received your message and our team is already on it!
+                </p>
+
+                <div class="success-timeline">
+                    <div class="timeline-header">
+                        <i class="fas fa-clock"></i>
+                        <span>What Happens Next?</span>
+                    </div>
+
+                    <div class="timeline-steps">
+                      
+                        <div class="timeline-step">
+                            <div class="step-icon">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div class="step-content">
+                                <h4>Within 24 Hours</h4>
+                                <p>Our team will personally review your inquiry</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-step">
+                            <div class="step-icon">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div class="step-content">
+                                <h4>Within 48 Hours</h4>
+                                <p>We'll contact you with a detailed response</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="success-extras">
+                    <div class="extra-card">
+                        <i class="fas fa-headset"></i>
+                        <div>
+                            <strong>Need Urgent Help?</strong>
+                            <p>Call us at <a href="tel:+20123456789">+20 123 456 789</a></p>
+                        </div>
+                    </div>
+                    <div class="extra-card">
+                        <i class="fas fa-comments"></i>
+                        <div>
+                            <strong>Have More Questions?</strong>
+                            <p>Check our <a href="index.html#faq">FAQ section</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="success-action-btn" id="success-action-btn">
+                    <i class="fas fa-home"></i>
+                    Back to Home
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Success Modal Styles */
+        .contact-success-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .contact-success-overlay.active {
+            display: flex;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .contact-success-modal {
+            background: white;
+            border-radius: 24px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transform: scale(0.8) translateY(50px);
+            animation: modalSlideIn 0.5s ease forwards;
+        }
+
+        @keyframes modalSlideIn {
+            to {
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .success-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.1);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .success-close-btn:hover {
+            background: rgba(0, 0, 0, 0.2);
+            transform: rotate(90deg);
+        }
+
+        /* Animated Checkmark */
+        .success-animation {
+            padding: 40px 20px 20px;
+            text-align: center;
+        }
+
+        .success-checkmark {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: inline-block;
+            stroke-width: 3;
+            stroke: #4CAF50;
+            stroke-miterlimit: 10;
+            box-shadow: inset 0 0 0 #4CAF50;
+            animation: fill 0.4s ease-in-out 0.4s forwards, scale 0.3s ease-in-out 0.9s both;
+        }
+
+        @keyframes fill {
+            100% { box-shadow: inset 0 0 0 50px #4CAF50; }
+        }
+
+        @keyframes scale {
+            0%, 100% { transform: none; }
+            50% { transform: scale(1.1); }
+        }
+
+        .check-icon {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            border-radius: 50%;
+            box-sizing: content-box;
+            border: 3px solid #4CAF50;
+        }
+
+        .icon-line {
+            height: 3px;
+            background-color: #fff;
+            display: block;
+            border-radius: 2px;
+            position: absolute;
+            z-index: 10;
+        }
+
+        .icon-line.line-tip {
+            top: 48px;
+            left: 20px;
+            width: 25px;
+            transform: rotate(45deg);
+            animation: icon-line-tip 0.75s;
+        }
+
+        .icon-line.line-long {
+            top: 45px;
+            right: 12px;
+            width: 47px;
+            transform: rotate(-45deg);
+            animation: icon-line-long 0.75s;
+        }
+
+        @keyframes icon-line-tip {
+            0% { width: 0; left: 1px; top: 19px; }
+            54% { width: 0; left: 1px; top: 19px; }
+            70% { width: 50px; left: -8px; top: 37px; }
+            84% { width: 17px; left: 21px; top: 48px; }
+            100% { width: 25px; left: 20px; top: 48px; }
+        }
+
+        @keyframes icon-line-long {
+            0% { width: 0; right: 46px; top: 54px; }
+            65% { width: 0; right: 46px; top: 54px; }
+            84% { width: 55px; right: 0; top: 35px; }
+            100% { width: 47px; right: 12px; top: 45px; }
+        }
+
+        .icon-circle, .icon-fix {
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .icon-circle {
+            top: -3px;
+            left: -3px;
+            width: 100px;
+            height: 100px;
+            border: 3px solid rgba(76, 175, 80, 0.5);
+            animation: icon-circle 1s ease-in-out;
+        }
+
+        @keyframes icon-circle {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(1.2); opacity: 0; }
+        }
+
+        .icon-fix {
+            top: 10px;
+            width: 7px;
+            height: 85px;
+            background-color: white;
+            transform: rotate(-45deg);
+            left: 28px;
+        }
+
+        /* Content Styles */
+        .success-content {
+            padding: 0 40px 40px;
+        }
+
+        .success-title {
+            font-size: 2rem;
+            color: #00695C;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .success-message {
+            text-align: center;
+            color: #666;
+            font-size: 1.125rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* Timeline */
+        .success-timeline {
+            background: linear-gradient(135deg, #E0F2F1, #B2DFDB);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .timeline-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #00695C;
+            margin-bottom: 20px;
+        }
+
+        .timeline-header i {
+            font-size: 1.5rem;
+        }
+
+        .timeline-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .timeline-step {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: slideInLeft 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .timeline-step:nth-child(1) { animation-delay: 0.6s; }
+        .timeline-step:nth-child(2) { animation-delay: 0.8s; }
+        .timeline-step:nth-child(3) { animation-delay: 1s; }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .timeline-step:hover {
+            transform: translateX(8px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #00897B, #4DB6AC);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            font-size: 1.125rem;
+            color: #00695C;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .step-content p {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Extra Cards */
+        .success-extras {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .extra-card {
+            background: #F5F5F5;
+            padding: 16px;
+            border-radius: 12px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+        }
+
+        .extra-card:hover {
+            background: #E0F2F1;
+            transform: translateY(-4px);
+        }
+
+        .extra-card i {
+            font-size: 1.5rem;
+            color: #00897B;
+            flex-shrink: 0;
+        }
+
+        .extra-card strong {
+            display: block;
+            color: #333;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .extra-card p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .extra-card a {
+            color: #00897B;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .extra-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* Action Button */
+        .success-action-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #00897B, #4DB6AC);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .success-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 137, 123, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 767px) {
+            .contact-success-modal {
+                width: 95%;
+                max-height: 95vh;
+            }
+
+            .success-content {
+                padding: 0 24px 24px;
+            }
+
+            .success-title {
+                font-size: 1.5rem;
+            }
+
+            .success-message {
+                font-size: 1rem;
+            }
+
+            .success-extras {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-step {
+                padding: 12px;
+            }
+
+            .step-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+
     <!-- JavaScript Files -->
     <script src="js/main.js"></script>
+
+    <script>
+        // Success Modal Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const successModal = document.getElementById('contact-success-modal');
+            const closeBtn = document.getElementById('success-close-btn');
+            const actionBtn = document.getElementById('success-action-btn');
+
+            // Close modal
+            function closeSuccessModal() {
+                successModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeSuccessModal);
+            }
+
+            if (actionBtn) {
+                actionBtn.addEventListener('click', function() {
+                    window.location.href = 'index.html';
+                });
+            }
+
+            // Close on overlay click
+            if (successModal) {
+                successModal.addEventListener('click', function(e) {
+                    if (e.target === successModal) {
+                        closeSuccessModal();
+                    }
+                });
+            }
+
+            // Close on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && successModal.classList.contains('active')) {
+                    closeSuccessModal();
+                }
+            });
+
+            // Make modal accessible globally
+            window.showContactSuccessModal = function() {
+                successModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            };
+        });
+    </script>
 </body>
 </html>

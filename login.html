@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DR.WEEE - Login | Smart Green IT Solutions</title>
+    <link rel="icon" type="image/png" href="images/logos/favicon.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/css/flag-icon.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #00897B;
+            --secondary-green: #4DB6AC;
+            --accent-green: #A5D6A7;
+            --light-green: #E8F5E9;
+            --dark-green: #00695C;
+            --white: #FFFFFF;
+            --off-white: #F9FBFB;
+            --light-gray: #F1F3F4;
+            --medium-gray: #E0E0E0;
+            --dark-gray: #333333;
+            --text-gray: #5F6368;
+            --text-dark: #202124;
+            --error-red: #D32F2F;
+            --success-green: #388E3C;
+            --header-height: 75px;
+            /* Approximate header height */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background-color: var(--off-white);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* NEW: Container to center the login form on the page */
+        .login-page-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - var(--header-height));
+            padding: var(--space-xl) var(--space-lg);
+            margin-top: var(--header-height);
+        }
+
+        /* MODIFIED: Login Modal is now a static card */
+        .login-modal {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            overflow: hidden;
+            /* To contain the border-bottom */
+        }
+
+        /* Modal Header */
+        .login-modal__header {
+            padding: var(--space-xl);
+            text-align: center;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .login-modal__logo {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto var(--space-md);
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.5rem;
+        }
+
+        .custom-option,
+        .custom-select__trigger span {
+            font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Segoe UI Symbol", sans-serif;
+            font-size: 0.875rem;
+        }
+
+        /* Ensure the modal doesn't clip the dropdown */
+        .login-modal {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            overflow: visible;
+            /* Changed from hidden to visible */
+        }
+
+        .login-modal__title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.75rem;
+            margin-bottom: var(--space-xs);
+            color: var(--text-dark);
+        }
+
+        .login-modal__subtitle {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        /* Modal Content */
+        .login-modal__content {
+            padding: var(--space-xl);
+        }
+
+        /* Form Styles */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 0.875rem;
+            border: 2px solid var(--medium-gray);
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: 0.3s ease-in-out;
+            background-color: var(--white);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px var(--light-green);
+        }
+
+        /* Phone Input Group */
+        .phone-input-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .country-select {
+            flex: 0 0 100px;
+            font-size: 0.875rem;
+            font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'sans-serif';
+            /* Add this line */
+        }
+
+        /* --- Add these new styles for the custom dropdown with flags --- */
+
+        .custom-select-wrapper {
+            position: relative;
+            user-select: none;
+            width: 110px;
+            /* Adjust width as needed */
+        }
+
+        .custom-select {
+            position: relative;
+        }
+
+        .custom-select__trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.875rem;
+            border: 2px solid var(--medium-gray);
+            border-radius: 12px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            background-color: var(--white);
+            /* This is the corrected line */
+            transition: opacity var(--transition-normal), transform var(--transition-normal);
+        }
+
+        /* ADD THIS: Styles for the view toggle links */
+        .toggle-form-section {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--light-gray);
+            font-size: 0.9rem;
+        }
+
+        .toggle-link {
+            color: var(--primary-green);
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .toggle-link:hover {
+            color: var(--dark-green);
+            text-decoration: underline;
+        }
+
+        .custom-select-wrapper.open .custom-select__trigger {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px var(--light-green);
+        }
+
+        .custom-select__trigger .fas {
+            font-size: 0.7rem;
+            transition: transform var(--transition-normal);
+        }
+
+        .custom-select-wrapper.open .custom-select__trigger .fas {
+            transform: rotate(180deg);
+        }
+
+        .custom-options {
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 0;
+            right: 0;
+            background-color: var(--white);
+            border: 1px solid var(--medium-gray);
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+            /* Increased z-index */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all var(--transition-normal);
+            max-height: 200px;
+            overflow-y: auto;
+            /* Fix for dropdown cutoff */
+            position: fixed;
+            min-width: 110px;
+        }
+
+        .custom-select-wrapper.open .custom-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .custom-option {
+            display: block;
+            padding: 0.75rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: background-color var(--transition-fast);
+        }
+
+        .custom-option:hover {
+            background-color: var(--light-green);
+        }
+
+        .phone-input {
+            flex: 1;
+        }
+
+        /* OTP Input Group */
+        .otp-inputs {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+
+        .otp-input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: 600;
+            border: 2px solid var(--medium-gray);
+            border-radius: 12px;
+            transition: 0.3s ease-in-out;
+        }
+
+        .otp-input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px var(--light-green);
+        }
+
+        .otp-input.filled {
+            border-color: var(--primary-green);
+            background-color: var(--light-green);
+        }
+
+
+        /* Other styles for messages, steps etc. are the same */
+        .message {
+            padding: 1.5rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .message--error {
+            background-color: #FFEBEE;
+            color: var(--error-red);
+            border: 1px solid #FFCDD2;
+        }
+
+        .message--success {
+            background-color: #E8F5E9;
+            color: var(--success-green);
+            border: 1px solid #C8E6C9;
+        }
+
+        /* --- REPLACE your existing Step Navigation CSS with this enhanced version --- */
+
+        /* Main container for the indicator */
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            /* Align items to the top */
+            width: 100%;
+            margin-bottom: var(--space-xl);
+        }
+
+        /* Container for each step (icon + label) */
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* The main step circle */
+        .step {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: var(--light-gray);
+            color: var(--text-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all var(--transition-normal);
+            position: relative;
+            border: 3px solid var(--light-gray);
+            margin-bottom: var(--space-xs);
+        }
+
+        /* The text label below each step circle */
+        .step-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-gray);
+            transition: color var(--transition-normal);
+        }
+
+        /* --- States & Animations --- */
+
+        /* Style for the ACTIVE step */
+        .step.active {
+            background-color: var(--white);
+            border-color: var(--primary-green);
+            color: var(--primary-green);
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 137, 123, 0.2);
+            animation: pulse 1.5s infinite;
+        }
+
+        .step.active+.step-label {
+            color: var(--primary-green);
+        }
+
+        /* --- Enhanced Custom Dropdown Styles --- */
+
+        .custom-select-wrapper {
+            position: relative;
+            user-select: none;
+            width: 115px;
+            /* A bit more space for flags */
+        }
+
+        .custom-select__trigger {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.875rem;
+            background: var(--white);
+            cursor: pointer;
+            border: 2px solid var(--medium-gray);
+            border-radius: 12px;
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* State when the dropdown is open/active */
+        .custom-select-wrapper.open .custom-select__trigger {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 4px var(--light-green);
+        }
+
+        .custom-select__trigger span {
+            font-family: 'Poppins', 'Segoe UI Emoji', sans-serif;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        /* Chevron icon animation */
+        .custom-select__trigger .fas {
+            font-size: 0.7rem;
+            transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .custom-select-wrapper.open .custom-select__trigger .fas {
+            transform: rotate(180deg);
+        }
+
+        /* Options panel animation */
+        .custom-options {
+            position: absolute;
+            top: calc(100% + 8px);
+            /* A little gap */
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid #e8e8e8;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            z-index: 10;
+            max-height: 200px;
+            overflow-y: auto;
+
+            /* Animation properties */
+            transform: scale(0.95) translateY(-10px);
+            opacity: 0;
+            visibility: hidden;
+            transform-origin: top;
+            transition: all 0.2s cubic-bezier(0.5, 0, 0, 1.25);
+        }
+
+        .custom-select-wrapper.open .custom-options {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .custom-option {
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s ease, padding-left 0.2s ease;
+        }
+
+        .custom-option span {
+            font-family: 'Poppins', 'Segoe UI Emoji', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        /* Hover effect for options */
+        .custom-option:hover {
+            background-color: var(--light-green);
+            color: var(--dark-green);
+            padding-left: 1.5rem;
+            /* Adds a nice slide-in effect */
+        }
+
+        /* --- Optional: Custom Scrollbar --- */
+        .custom-options::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-options::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .custom-options::-webkit-scrollbar-thumb {
+            background: var(--secondary-green);
+            border-radius: 10px;
+        }
+
+        .custom-options::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-green);
+        }
+
+        /* Style for COMPLETED steps */
+        .step.completed {
+            background-color: var(--primary-green);
+            border-color: var(--primary-green);
+            color: var(--white);
+        }
+
+        .step.completed::before {
+            content: '\f00c';
+            /* Font Awesome checkmark icon */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 1rem;
+        }
+
+        .step.completed .fas {
+            display: none;
+            /* Hide original icon when complete */
+        }
+
+        .step.completed+.step-label {
+            color: var(--text-dark);
+        }
+
+        /* Connector line between steps */
+        .step-connector {
+            flex-grow: 1;
+            height: 4px;
+            background-color: var(--light-gray);
+            margin: 20px 0;
+            position: relative;
+        }
+
+        /* This pseudo-element creates the fill animation */
+        .step-connector::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary-green);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease-in-out;
+        }
+
+        .step-connector.completed::before {
+            transform: scaleX(1);
+            /* Animate the line fill */
+        }
+
+        /* Pulsing animation for the active step */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 137, 123, 0.3);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(0, 137, 123, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 137, 123, 0);
+            }
+        }
+
+        /* Keep these styles as they control step visibility */
+        .login-step {
+            display: none;
+        }
+
+        .login-step.active {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .resend-section {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .resend-timer {
+            color: var(--text-gray);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .resend-button {
+            background: none;
+            border: none;
+            color: var(--primary-green);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.9rem;
+        }
+
+        .resend-button:disabled {
+            color: var(--text-gray);
+            cursor: not-allowed;
+            text-decoration: none;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--success-green), var(--accent-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 2rem;
+            animation: successPulse 0.6s ease-out;
+        }
+
+        @keyframes successPulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="login-page-container">
+        <div class="login-modal">
+            <div class="login-modal__header">
+                <div class="login-modal__logo">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h2 class="login-modal__title">Welcome to DR.WEEE</h2>
+                <p class="login-modal__subtitle">Join the sustainable future</p>
+            </div>
+
+            <div class="login-modal__content">
+
+                <div id="loginView">
+                    <div class="message message--error" id="loginError" style="display: none;"></div>
+                    <form class="login-form" id="actualLoginForm">
+                        <div class="form-group">
+                            <label for="loginPhoneNumber">Mobile Phone</label>
+                            <div class="phone-input-group">
+                                <div class="custom-select-wrapper" id="loginCountrySelectWrapper">
+                                    <div class="custom-select">
+                                        <div class="custom-select__trigger">
+                                            <span><span class="flag-icon flag-icon-eg me-2"></span>+20</span>
+                                        </div>
+                                        <div class="custom-options">
+                                            <div class="custom-option" data-value="+20">
+                                                <span><span class="flag-icon flag-icon-eg me-2"></span>+20</span>
+                                            </div>
+                                            <!-- <div class="custom-option" data-value="+1">
+                                                <span><span class="flag-icon flag-icon-us me-2"></span>+1</span>
+                                            </div>
+                                            <div class="custom-option" data-value="+44">
+                                                <span><span class="flag-icon flag-icon-gb me-2"></span>+44</span>
+                                            </div>
+                                            <div class="custom-option" data-value="+966">
+                                                <span><span class="flag-icon flag-icon-sa me-2"></span>+966</span>
+                                            </div>
+                                            <div class="custom-option" data-value="+971">
+                                                <span><span class="flag-icon flag-icon-ae me-2"></span>+971</span>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="tel" id="loginPhoneNumber" class="phone-input" required
+                                    placeholder="Enter phone number" pattern="\d+">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" name="loginPassword" required
+                                placeholder="Enter your password">
+                        </div>
+                        <button type="submit" class="btn btn--primary btn--lg btn--full">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                    </form>
+                    <div class="toggle-form-section">
+                        <p>Don't have an account? <a href="#" id="showRegisterLink" class="toggle-link">Create one
+                                now</a></p>
+                    </div>
+                </div>
+
+                <div id="registerView" style="display: none;">
+                    <div class="step-indicator">
+                        <div class="step-item">
+                            <div class="step active" id="step1">
+                                <i class="fas fa-user-edit"></i>
+                            </div>
+                            <div class="step-label">Details</div>
+                        </div>
+                        <div class="step-connector" id="connector1"></div>
+                        <div class="step-item">
+                            <div class="step" id="step2">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="step-label">Verify</div>
+                        </div>
+                        <div class="step-connector" id="connector2"></div>
+                        <div class="step-item">
+                            <div class="step" id="step3">
+                                <i class="fas fa-key"></i>
+                            </div>
+                            <div class="step-label">Secure</div>
+                        </div>
+                        <div class="step-connector" id="connector3"></div>
+                        <div class="step-item">
+                            <div class="step" id="step4">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="step-label">Finish</div>
+                        </div>
+                    </div>
+
+                    <div id="phoneStep" class="login-step active">
+
+                        <div class="message message--error" id="phoneError" style="display: none;"></div>
+                        <form class="login-form" id="phoneForm">
+                            <div class="form-group">
+                                <label for="fullName">Full Name *</label>
+                                <input type="text" id="fullName" name="fullName" required
+                                    placeholder="Enter your full name">
+                            </div>
+                            <div class="form-group">
+                                <label for="phoneNumber">Mobile Phone *</label>
+                                <div class="phone-input-group">
+                                    <div class="custom-select-wrapper" id="countrySelectWrapper">
+                                        <div class="custom-select">
+                                            <div class="custom-select__trigger" id="countrySelectTrigger">
+                                                <span id="selectedCountry">🇪🇬 +20</span>
+                                                <i class="fas fa-chevron-down"></i>
+                                            </div>
+                                            <div class="custom-options" id="countryOptions">
+                                                <div class="custom-option" data-value="+20">🇪🇬 +20</div>
+                                                <!-- <div class="custom-option" data-value="+1">🇺🇸 +1</div>
+                                                <div class="custom-option" data-value="+44">🇬🇧 +44</div>
+                                                <div class="custom-option" data-value="+966">🇸🇦 +966</div>
+                                                <div class="custom-option" data-value="+971">🇦🇪 +971</div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="tel" id="phoneNumber" name="phoneNumber" class="phone-input" required
+                                        placeholder="Enter phone number" pattern="\d+">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn--primary btn--lg btn--full">
+                                <i class="fas fa-paper-plane"></i> Send OTP Code
+                            </button>
+                        </form>
+                    </div>
+
+                    <div id="otpStep" class="login-step">
+                        <div class="message message--success" id="otpSentMessage" style="display: none;"></div>
+                        <div class="message message--error" id="otpError" style="display: none;"></div>
+                        <form class="login-form" id="otpForm">
+                            <div class="form-group">
+                                <label>Enter 6-Digit OTP Code</label>
+                                <p style="color: var(--text-gray); font-size: 0.875rem;">Sent to <b
+                                        id="phoneDisplay"></b></p>
+                                <div class="otp-inputs">
+                                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]"
+                                        inputmode="numeric">
+                                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]"
+                                        inputmode="numeric">
+                                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]"
+                                        inputmode="numeric">
+                                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]"
+                                        inputmode="numeric">
+                                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]"
+                                        inputmode="numeric">
+                                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]"
+                                        inputmode="numeric">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn--primary btn--lg btn--full">
+                                <i class="fas fa-check-circle"></i> Verify Code
+                            </button>
+                        </form>
+                        <div class="resend-section">
+                            <div class="resend-timer" id="resendTimer">Resend in <span id="countdown">60</span>s</div>
+                            <button class="resend-button" id="resendBtn" disabled>Resend Code</button>
+                        </div>
+                    </div>
+
+                    <div id="passwordStep" class="login-step">
+                        <div class="message message--success">Mobile verified successfully!</div>
+                        <div class="message message--error" id="passwordError" style="display: none;"></div>
+                        <form class="login-form" id="passwordForm">
+                            <div class="form-group">
+                                <label for="newPassword">Create Password *</label>
+                                <input type="password" id="newPassword" name="newPassword" required
+                                    placeholder="Minimum 6 characters" minlength="6">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm Password *</label>
+                                <input type="password" id="confirmPassword" name="confirmPassword" required
+                                    placeholder="Confirm your password">
+                            </div>
+                            <button type="submit" class="btn btn--primary btn--lg btn--full">
+                                <i class="fas fa-key"></i> Create Account
+                            </button>
+                        </form>
+                    </div>
+
+                    <div id="successStep" class="login-step">
+                        <div style="text-align: center; padding: 2rem 0;">
+                            <div class="success-icon"><i class="fas fa-check"></i></div>
+                            <h3 style="color: var(--success-green);">Welcome to DR.WEEE!</h3>
+                            <p style="color: var(--text-gray); margin: 1rem 0 2rem;">Your account is ready. You are now
+                                logged in.</p>
+                            <a href="#" id="continueBtn" class="btn btn--primary btn--lg btn--full">
+                                <i class="fas fa-arrow-right"></i> Continue
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="toggle-form-section">
+                        <p>Already have an account? <a href="#" id="showLoginLink" class="toggle-link">Login here</a>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- 1. ELEMENT SELECTION ---
+            const loginView = document.getElementById('loginView');
+            const registerView = document.getElementById('registerView');
+            const showRegisterLink = document.getElementById('showRegisterLink');
+            const showLoginLink = document.getElementById('showLoginLink');
+            const actualLoginForm = document.getElementById('actualLoginForm');
+            const phoneForm = document.getElementById('phoneForm');
+            const otpForm = document.getElementById('otpForm');
+            const passwordForm = document.getElementById('passwordForm');
+            const fullNameInput = document.getElementById('fullName');
+            const phoneNumberInput = document.getElementById('phoneNumber');
+            const otpInputs = document.querySelectorAll('.otp-input');
+            const modalTitle = document.querySelector('.login-modal__title');
+            const phoneDisplay = document.getElementById('phoneDisplay');
+            const continueBtn = document.getElementById('continueBtn');
+            const stepIndicatorContainer = registerView.querySelector('.step-indicator');
+            const resendTimerEl = document.getElementById('resendTimer');
+            const countdownEl = document.getElementById('countdown');
+            const resendBtn = document.getElementById('resendBtn');
+            const otpErrorMessage = document.getElementById('otpError');
+            const passwordErrorMessage = document.getElementById('passwordError');
+            const registerCountryWrapper = document.getElementById('countrySelectWrapper');
+            const loginCountrySelectWrapper = document.getElementById('loginCountrySelectWrapper');
+
+            // --- 2. STATE MANAGEMENT ---
+            let userFullName = '';
+            let userPhoneNumberWithCode = '';
+            let countdownInterval;
+
+            // NEW: Function to handle redirect after login/registration
+            function handleSuccessfulAuth() {
+                const returnUrl = sessionStorage.getItem('weee_return_url');
+
+                if (returnUrl && returnUrl !== '/login.html') {
+                    // Clear the return URL from storage
+                    sessionStorage.removeItem('weee_return_url');
+
+                    console.log('Redirecting to:', returnUrl);
+                    // Redirect to the stored return URL
+                    window.location.href = returnUrl;
+                } else {
+                    // Default redirect to home page
+                    window.location.href = '/index.html';
+                }
+            }
+
+            // --- 3. HELPER & LOGIC FUNCTIONS ---
+            function switchView(viewName) {
+                loginView.style.display = 'none';
+                registerView.style.display = 'none';
+                if (viewName === 'register') {
+                    registerView.style.display = 'block';
+                    modalTitle.textContent = 'Create Your Account';
+                    showStep(1);
+                } else {
+                    loginView.style.display = 'block';
+                    modalTitle.textContent = 'Welcome Back';
+                }
+            }
+
+            function showStep(stepNum) {
+                document.querySelectorAll('#registerView .login-step').forEach(step => step.classList.remove('active'));
+                const stepIdMap = { 1: 'phoneStep', 2: 'otpStep', 3: 'passwordStep', 4: 'successStep' };
+                document.getElementById(stepIdMap[stepNum])?.classList.add('active');
+                updateStepIndicator(stepNum);
+            }
+
+            function updateStepIndicator(currentStep) {
+                const steps = stepIndicatorContainer.querySelectorAll('.step');
+                const connectors = stepIndicatorContainer.querySelectorAll('.step-connector');
+                steps.forEach((step, index) => {
+                    step.classList.remove('active', 'completed');
+                    if (index + 1 < currentStep) step.classList.add('completed');
+                    else if (index + 1 === currentStep) step.classList.add('active');
+                });
+                connectors.forEach((connector, index) => {
+                    connector.classList.toggle('completed', index + 1 < currentStep);
+                });
+            }
+
+            function showMessage(element, message, isError = true) {
+                element.textContent = message;
+                element.className = isError ? 'message message--error' : 'message message--success';
+                element.style.display = 'block';
+                setTimeout(() => { element.style.display = 'none'; }, 5000);
+            }
+
+            function startResendTimer() {
+                resendBtn.disabled = true;
+                resendTimerEl.style.display = 'block';
+                let timeLeft = 60;
+                countdownEl.textContent = timeLeft;
+                clearInterval(countdownInterval);
+                countdownInterval = setInterval(() => {
+                    timeLeft--;
+                    countdownEl.textContent = timeLeft;
+                    if (timeLeft <= 0) {
+                        clearInterval(countdownInterval);
+                        resendTimerEl.style.display = 'none';
+                        resendBtn.disabled = false;
+                    }
+                }, 1000);
+            }
+
+            otpInputs.forEach((input, index) => {
+                input.addEventListener('input', () => {
+                    if (input.value.length === 1 && index < otpInputs.length - 1) {
+                        otpInputs[index + 1].focus();
+                    }
+                });
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && input.value === '' && index > 0) {
+                        otpInputs[index - 1].focus();
+                    }
+                });
+            });
+
+            function initializeCustomDropdown(wrapperElement) {
+                if (!wrapperElement) return;
+                const trigger = wrapperElement.querySelector('.custom-select__trigger');
+                const options = wrapperElement.querySelectorAll('.custom-option');
+                const displaySpan = trigger.querySelector('span');
+                trigger.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    wrapperElement.classList.toggle('open');
+                });
+                options.forEach(option => {
+                    option.addEventListener('click', () => {
+                        displaySpan.innerHTML = option.innerHTML;
+                        wrapperElement.dataset.value = option.dataset.value;
+                        wrapperElement.classList.remove('open');
+                    });
+                });
+            }
+
+            // --- 4. ASYNC HANDLERS ---
+            async function handlePhoneSubmit(event) {
+                event.preventDefault();
+                const submitButton = phoneForm.querySelector('button[type="submit"]');
+                const phoneErrorEl = document.getElementById('phoneError');
+
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                userFullName = fullNameInput.value.trim();
+                const selectedCountryCode = registerCountryWrapper.dataset.value || '+20';
+
+                const rawPhoneNumber = selectedCountryCode + phoneNumberInput.value.trim();
+                userPhoneNumberWithCode = normalizePhoneNumber(rawPhoneNumber);
+
+                try {
+                    const response = await fetch('/api/request-otp', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ phoneNumber: userPhoneNumberWithCode })
+                    });
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Failed to send OTP.');
+                    }
+                    phoneDisplay.textContent = userPhoneNumberWithCode;
+                    showStep(2);
+                    otpInputs[0].focus();
+                    startResendTimer();
+                } catch (error) {
+                    showMessage(phoneErrorEl, error.message);
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> Send OTP Code';
+                }
+            }
+
+            async function handleResendOtp() {
+                try {
+                    const response = await fetch('/api/request-otp', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ phoneNumber: userPhoneNumberWithCode })
+                    });
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Failed to resend OTP.');
+                    }
+                    showMessage(document.getElementById('otpSentMessage'), 'A new OTP has been sent.', false);
+                    startResendTimer();
+                } catch (error) {
+                    showMessage(document.getElementById('otpError'), error.message);
+                }
+            }
+
+            async function handleOtpSubmit(event) {
+                event.preventDefault();
+                const submitButton = otpForm.querySelector('button[type="submit"]');
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+                const enteredOtp = Array.from(otpInputs).map(input => input.value).join('');
+                try {
+                    const response = await fetch('/api/verify-otp', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ phoneNumber: userPhoneNumberWithCode, otp: enteredOtp })
+                    });
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Invalid OTP.');
+                    }
+                    showStep(3);
+                } catch (error) {
+                    showMessage(otpErrorMessage, error.message);
+                    otpInputs.forEach(input => input.value = '');
+                    otpInputs[0].focus();
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="fas fa-check-circle"></i> Verify Code';
+                }
+            }
+
+            async function handleCreateContactSubmit(event) {
+                event.preventDefault();
+                const submitButton = passwordForm.querySelector('button[type="submit"]');
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                if (newPassword.length < 6) {
+                    showMessage(passwordErrorMessage, 'Password must be at least 6 characters long.');
+                    return;
+                }
+                if (newPassword !== confirmPassword) {
+                    showMessage(passwordErrorMessage, 'Passwords do not match.');
+                    return;
+                }
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+                try {
+                    const response = await fetch('/api/create-contact', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            fullName: userFullName,
+                            phoneNumber: userPhoneNumberWithCode,
+                            password: newPassword
+                        })
+                    });
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Failed to create contact.');
+                    }
+                    showStep(4);
+                } catch (error) {
+                    showMessage(passwordErrorMessage, error.message);
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="fas fa-key"></i> Create Account';
+                }
+            }
+
+            function normalizePhoneNumber(phoneNumber) {
+                if (phoneNumber && phoneNumber.startsWith('+200')) {
+                    return '+20' + phoneNumber.substring(4);
+                }
+                return phoneNumber;
+            }
+
+            // --- 5. INITIALIZATION & EVENT LISTENERS ---
+            phoneForm.addEventListener('submit', handlePhoneSubmit);
+            otpForm.addEventListener('submit', handleOtpSubmit);
+            passwordForm.addEventListener('submit', handleCreateContactSubmit);
+            showRegisterLink.addEventListener('click', (e) => { e.preventDefault(); switchView('register'); });
+            showLoginLink.addEventListener('click', (e) => { e.preventDefault(); switchView('login'); });
+            resendBtn.addEventListener('click', handleResendOtp);
+
+            // UPDATED: Continue button - use the redirect helper
+            continueBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('Continue button clicked - handling redirect');
+                handleSuccessfulAuth();
+            });
+
+            // UPDATED: Login form - use the redirect helper
+            actualLoginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const submitButton = actualLoginForm.querySelector('button[type="submit"]');
+                const loginErrorEl = document.getElementById('loginError');
+                const phoneNumber = document.getElementById('loginPhoneNumber').value;
+                const password = document.getElementById('loginPassword').value;
+                const selectedCountryCode = loginCountrySelectWrapper.dataset.value || '+20';
+
+                const rawPhoneNumber = selectedCountryCode + phoneNumber;
+                const fullPhoneNumber = normalizePhoneNumber(rawPhoneNumber);
+
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging In...';
+
+                try {
+                    const response = await fetch('/api/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ phoneNumber: fullPhoneNumber, password })
+                    });
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Login failed.');
+                    }
+                    // UPDATED: Use redirect helper instead of hardcoded redirect
+                    handleSuccessfulAuth();
+                } catch (error) {
+                    showMessage(loginErrorEl, error.message);
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+                }
+            });
+
+            document.querySelectorAll('.custom-select-wrapper').forEach(initializeCustomDropdown);
+            document.addEventListener('click', () => {
+                document.querySelectorAll('.custom-select-wrapper.open').forEach(wrapper => {
+                    wrapper.classList.remove('open');
+                });
+            });
+
+            switchView('login');
+        });
+    </script>
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- JavaScript Files -->
+    <script src="js/main.js"></script>
+</body>
+
+</html>

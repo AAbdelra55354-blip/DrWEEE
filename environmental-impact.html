@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Understand your environmental impact through e-waste recycling. Learn how recycling electronics and using remanufactured cartridges helps reduce CO2 emissions.">
+    <title>Your Environmental Impact - CO2 Savings | DR.WEEE</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logos/favicon.png">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+
+    <style>
+        /* Environmental Impact Page Styles */
+        .impact-hero {
+            position: relative;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1B5E20, #2E7D32, #43A047);
+            padding: 8rem 0 var(--space-xxl) 0;
+            margin-top: -5rem;
+        }
+
+        .impact-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.08)" d="M0,128L48,144C96,160,192,192,288,186.7C384,181,480,139,576,133.3C672,128,768,160,864,165.3C960,171,1056,149,1152,133.3C1248,117,1344,107,1392,101.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+            opacity: 0.3;
+        }
+
+        .impact-hero .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content {
+            text-align: center;
+            color: var(--white);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-xl);
+            font-weight: 600;
+            margin-bottom: var(--space-lg);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .hero-title {
+            font-family: var(--font-secondary);
+            font-size: 3.75rem;
+            margin-bottom: var(--space-md);
+            color: var(--white);
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.375rem;
+            opacity: 0.95;
+              color: var(--white);
+            margin-bottom: var(--space-xl);
+            line-height: 1.6;
+        }
+
+        /* User Impact Summary Card */
+        .user-impact-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: var(--space-xxl);
+            box-shadow: var(--shadow-lg);
+            margin-top: -80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .impact-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+
+        .impact-stat-card {
+            text-align: center;
+            padding: var(--space-lg);
+            background: linear-gradient(135deg, var(--light-green), rgba(77, 182, 172, 0.1));
+            border-radius: var(--radius-lg);
+            transition: var(--transition-normal);
+        }
+
+        .impact-stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-md);
+            font-size: 2rem;
+            color: var(--white);
+            box-shadow: var(--shadow-green);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-gray);
+            font-weight: 500;
+        }
+
+        .impact-divider {
+            text-align: center;
+            margin: var(--space-xxl) 0;
+            position: relative;
+        }
+
+        .impact-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--light-green), transparent);
+        }
+
+        .impact-divider-text {
+            position: relative;
+            display: inline-block;
+            background: var(--white);
+            padding: 0 var(--space-lg);
+            font-weight: 600;
+            color: var(--primary-green);
+            font-size: 1.125rem;
+        }
+
+        /* CO2 Comparisons Section */
+        .comparisons-section {
+            padding: var(--space-xxl) 0;
+            background: var(--off-white);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto var(--space-xxl);
+        }
+
+        .section-title {
+            font-family: var(--font-secondary);
+            font-size: 2.75rem;
+            color: var(--text-dark);
+            margin-bottom: var(--space-md);
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        .comparison-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-xl);
+        }
+
+        .comparison-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: var(--space-xl);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-normal);
+            border: 2px solid transparent;
+        }
+
+        .comparison-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-green);
+        }
+
+        .comparison-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-lg);
+            font-size: 2.5rem;
+        }
+
+        .comparison-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: var(--space-md);
+            color: var(--text-dark);
+        }
+
+        .comparison-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            margin-bottom: var(--space-sm);
+        }
+
+        .comparison-description {
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* Interactive Calculator */
+        .calculator-section {
+            padding: var(--space-xxl) 0;
+            background: var(--white);
+        }
+
+        .calculator-card {
+            background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+            border-radius: var(--radius-xl);
+            padding: var(--space-xxl);
+            color: var(--white);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .calculator-header {
+            text-align: center;
+             color: var(--white);
+            margin-bottom: var(--space-xl);
+        }
+
+        .calculator-title {
+            font-family: var(--font-secondary);
+            font-size: 2.5rem;
+             color: var(--white);
+            margin-bottom: var(--space-md);
+        }
+
+        .calculator-inputs {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+
+        .input-group {
+            margin-bottom: var(--space-lg);
+        }
+
+        .input-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .input-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+            font-size: 1.125rem;
+        }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+        }
+
+        .input-icon {
+            font-size: 1.5rem;
+            color: var(--secondary-green);
+        }
+
+        .slider-container {
+            flex: 1;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--white);
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--white);
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            border: none;
+        }
+
+        .slider-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            min-width: 100px;
+            text-align: right;
+        }
+
+        .calculator-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .result-icon {
+            font-size: 2rem;
+            margin-bottom: var(--space-sm);
+        }
+
+        .result-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Educational Content */
+        .education-section {
+            padding: var(--space-xxl) 0;
+            background: var(--off-white);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-xl);
+        }
+
+        .benefit-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-normal);
+        }
+
+        .benefit-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-5px);
+        }
+
+        .benefit-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: var(--space-md);
+        }
+
+        .benefit-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+            color: var(--text-dark);
+        }
+
+        .benefit-text {
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* Call to Action */
+        .cta-section {
+            padding: var(--space-xxl) 0;
+            background: linear-gradient(135deg, var(--dark-green), var(--primary-green));
+            color: var(--white);
+        }
+
+        .cta-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-family: var(--font-secondary);
+            font-size: 2.75rem;
+            margin-bottom: var(--space-md);
+            color: var(--white);
+        }
+
+        .cta-text {
+            font-size: 1.25rem;
+            margin-bottom: var(--space-xl);
+            opacity: 0.95;
+            line-height: 1.6;
+            color: var(--white);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: var(--space-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Responsive */
+        @media (max-width: 991px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .section-title {
+                font-size: 2.25rem;
+            }
+
+            .calculator-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .hero-title {
+                font-size: 2.25rem;
+            }
+
+            .impact-stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .calculator-results {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cta-buttons .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body class="impact-page">
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Hero Section -->
+        <section class="impact-hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <i class="fas fa-leaf"></i>
+                        <span>Your Environmental Journey</span>
+                    </div>
+                    <h1 class="hero-title">Every Action Counts for Our Planet</h1>
+                    <p class="hero-subtitle">
+                        Discover how your e-waste recycling efforts translate into real environmental impact.
+                        Together, we're reducing CO₂ emissions and building a sustainable future.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- User Impact Summary -->
+        <section class="container" style="margin-top: -60px; padding-bottom: var(--space-xxl);">
+            <div class="user-impact-card">
+                <h2 style="text-align: center; font-size: 2rem; margin-bottom: var(--space-xl); color: var(--text-dark);">
+                    <i class="fas fa-chart-line" style="color: var(--primary-green);"></i>
+                    Your Personal Impact
+                </h2>
+
+                <div class="impact-stats-grid">
+                    <div class="impact-stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <span class="stat-value" id="user-co2-saved">42.5</span>
+                        <span class="stat-label">kg CO₂ Saved</span>
+                    </div>
+
+                    <div class="impact-stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-recycle"></i>
+                        </div>
+                        <span class="stat-value" id="user-items-recycled">15</span>
+                        <span class="stat-label">Items Recycled</span>
+                    </div>
+
+                    <div class="impact-stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-print"></i>
+                        </div>
+                        <span class="stat-value" id="user-cartridges-used">8</span>
+                        <span class="stat-label">Remanufactured Cartridges</span>
+                    </div>
+
+                    <div class="impact-stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-tree"></i>
+                        </div>
+                        <span class="stat-value" id="user-trees-equivalent">2.1</span>
+                        <span class="stat-label">Trees Planted Equivalent</span>
+                    </div>
+                </div>
+
+               
+            </div>
+        </section>
+
+        <!-- CO2 Comparisons Section -->
+        <section class="comparisons-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Understanding Your CO₂ Savings</h2>
+                    <p class="section-subtitle">
+                        Your <strong id="comparison-co2-value">42.5 kg</strong> of CO₂ savings is equivalent to...
+                    </p>
+                </div>
+
+                <div class="comparison-cards">
+                    <div class="comparison-card">
+                        <div class="comparison-icon">
+                            🚗
+                        </div>
+                        <h3 class="comparison-title">Driving Distance</h3>
+                        <div class="comparison-value" id="driving-distance">212 km</div>
+                        <p class="comparison-description">
+                            That's like driving from Dubai to Abu Dhabi and back! By recycling e-waste, you've prevented the same amount of emissions as this car journey.
+                        </p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <div class="comparison-icon">
+                            💡
+                        </div>
+                        <h3 class="comparison-title">Home Electricity</h3>
+                        <div class="comparison-value" id="electricity-days">21 days</div>
+                        <p class="comparison-description">
+                            Equivalent to powering an average home for 3 weeks. Your recycling efforts save energy and reduce the carbon footprint significantly.
+                        </p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <div class="comparison-icon">
+                            ✈️
+                        </div>
+                        <h3 class="comparison-title">Smartphone Charges</h3>
+                        <div class="comparison-value" id="phone-charges">5,312</div>
+                        <p class="comparison-description">
+                            You could charge your smartphone over 5,000 times! That's 14 years of daily charging - an incredible energy saving.
+                        </p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <div class="comparison-icon">
+                            🌳
+                        </div>
+                        <h3 class="comparison-title">Trees Planted</h3>
+                        <div class="comparison-value" id="trees-planted">2.1 trees</div>
+                        <p class="comparison-description">
+                            Planting 2 trees absorbs the same CO₂ in a year. Your recycling has the same environmental benefit as planting a small forest!
+                        </p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <div class="comparison-icon">
+                            📺
+                        </div>
+                        <h3 class="comparison-title">TV Streaming</h3>
+                        <div class="comparison-value" id="tv-hours">708 hours</div>
+                        <p class="comparison-description">
+                            That's like streaming your favorite shows for nearly 30 days straight. Your eco-actions offset this much energy consumption!
+                        </p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <div class="comparison-icon">
+                            🍔
+                        </div>
+                        <h3 class="comparison-title">Burgers Saved</h3>
+                        <div class="comparison-value" id="burgers-saved">42 burgers</div>
+                        <p class="comparison-description">
+                            Producing a beef burger creates 1kg of CO₂. You've saved the equivalent of skipping 42 burgers - that's sustainability in action!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Calculator -->
+        <section class="calculator-section">
+            <div class="container">
+                <div class="calculator-card">
+                    <div class="calculator-header">
+                        <h2 class="calculator-title">Calculate Your Potential Impact</h2>
+                        <p style="opacity: 0.9; font-size: 1.125rem; color: white;">
+                            See how much CO₂ you could save by recycling electronics and using remanufactured cartridges
+                        </p>
+                    </div>
+
+                    <div class="calculator-inputs">
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-laptop"></i> Number of Electronic Devices to Recycle
+                            </label>
+                            <div class="input-row">
+                                <i class="input-icon fas fa-mobile-alt"></i>
+                                <div class="slider-container">
+                                    <input type="range" min="0" max="50" value="10" class="slider" id="devices-slider">
+                                </div>
+                                <span class="slider-value" id="devices-value">10</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-print"></i> Remanufactured Cartridges per Year
+                            </label>
+                            <div class="input-row">
+                                <i class="input-icon fas fa-fill-drip"></i>
+                                <div class="slider-container">
+                                    <input type="range" min="0" max="100" value="24" class="slider" id="cartridges-slider">
+                                </div>
+                                <span class="slider-value" id="cartridges-value">24</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calculator-results">
+                        <div class="result-card">
+                            <div class="result-icon">🌍</div>
+                            <span class="result-value" id="calc-co2">127 kg</span>
+                            <span class="result-label">CO₂ Saved Annually</span>
+                        </div>
+
+                        <div class="result-card">
+                            <div class="result-icon">🚗</div>
+                            <span class="result-value" id="calc-driving">635 km</span>
+                            <span class="result-label">Driving Equivalent</span>
+                        </div>
+
+                        <div class="result-card">
+                            <div class="result-icon">🌳</div>
+                            <span class="result-value" id="calc-trees">6.4</span>
+                            <span class="result-label">Trees Planted</span>
+                        </div>
+
+                        <div class="result-card">
+                            <div class="result-icon">💚</div>
+                            <span class="result-value" id="calc-points">635</span>
+                            <span class="result-label">WEEE Points Earned</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Educational Benefits Section -->
+        <section class="education-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Why E-Waste Recycling Matters</h2>
+                    <p class="section-subtitle">
+                        Every piece of electronic waste you recycle makes a real difference for our planet's future
+                    </p>
+                </div>
+
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-number">1</div>
+                        <h3 class="benefit-title">Reduces Greenhouse Gases</h3>
+                        <p class="benefit-text">
+                            Manufacturing new electronics requires mining raw materials and energy-intensive processes.
+                            Recycling prevents 50-80% of the CO₂ emissions compared to producing new devices.
+                        </p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-number">2</div>
+                        <h3 class="benefit-title">Conserves Natural Resources</h3>
+                        <p class="benefit-text">
+                            One million recycled laptops save the energy equivalent of powering 3,500 homes for a year.
+                            Remanufactured cartridges save up to 3.5 pounds of oil per cartridge!
+                        </p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-number">3</div>
+                        <h3 class="benefit-title">Prevents Toxic Pollution</h3>
+                        <p class="benefit-text">
+                            E-waste contains harmful materials like lead and mercury. Proper recycling prevents these toxins
+                            from contaminating soil and water, protecting ecosystems and human health.
+                        </p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-number">4</div>
+                        <h3 class="benefit-title">Supports Circular Economy</h3>
+                        <p class="benefit-text">
+                            Remanufactured printer cartridges use 70% less energy than new ones and keep plastic out of landfills.
+                            Each cartridge can be reused 4-5 times before recycling!
+                        </p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-number">5</div>
+                        <h3 class="benefit-title">Creates Green Jobs</h3>
+                        <p class="benefit-text">
+                            The recycling industry creates 10 times more jobs than landfills. Your participation supports
+                            sustainable employment and helps build a green economy.
+                        </p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-number">6</div>
+                        <h3 class="benefit-title">Protects Climate Goals</h3>
+                        <p class="benefit-text">
+                            If everyone recycled their electronics, we could reduce global e-waste emissions by 50 million tons annually -
+                            equivalent to taking 10 million cars off the road!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <h2 class="cta-title">Ready to Make a Bigger Impact?</h2>
+                    <p class="cta-text">
+                        Join thousands of eco-conscious individuals who are transforming their electronic waste into environmental wins.
+                        Every device recycled and every remanufactured cartridge used brings us closer to a sustainable future.
+                    </p>
+                    <div class="cta-buttons">
+                        <a href="weee-rewards.html" class="btn btn--white btn--lg">
+                            <i class="fas fa-recycle"></i>
+                            Recycle E-Waste Now
+                        </a>
+                        <a href="store.html" class="btn btn--outline btn--lg" style="border-color: white; color: white;">
+                            <i class="fas fa-shopping-cart"></i>
+                            Shop Eco-Friendly Cartridges
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- JavaScript Files -->
+    <script src="js/main.js"></script>
+    <script>
+        // User's actual data (would come from API in production)
+        let userData = {
+            co2Saved: 42.5, // kg
+            itemsRecycled: 15,
+            cartridgesUsed: 8,
+            treesEquivalent: 2.1
+        };
+
+        // CO2 calculation constants
+        const CO2_PER_DEVICE = 5; // kg CO2 saved per device recycled
+        const CO2_PER_CARTRIDGE = 2.5; // kg CO2 saved per remanufactured cartridge
+        const KM_PER_KG_CO2 = 5; // km driven per kg CO2
+        const ELECTRICITY_DAYS_PER_KG = 0.5; // days of home electricity per kg CO2
+        const PHONE_CHARGES_PER_KG = 125; // smartphone charges per kg CO2
+        const TREES_PER_KG = 0.05; // tree-years per kg CO2 (1 tree absorbs ~20kg/year)
+        const TV_HOURS_PER_KG = 16.66; // hours of TV streaming per kg CO2
+        const BURGERS_PER_KG = 1; // burgers (1kg CO2 per burger)
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateUserStats();
+            updateComparisons();
+            setupCalculator();
+        });
+
+        // Update user statistics
+        function updateUserStats() {
+            document.getElementById('user-co2-saved').textContent = userData.co2Saved.toFixed(1);
+            document.getElementById('user-items-recycled').textContent = userData.itemsRecycled;
+            document.getElementById('user-cartridges-used').textContent = userData.cartridgesUsed;
+            document.getElementById('user-trees-equivalent').textContent = userData.treesEquivalent.toFixed(1);
+        }
+
+        // Update comparison values
+        function updateComparisons() {
+            const co2 = userData.co2Saved;
+
+            document.getElementById('comparison-co2-value').textContent = co2.toFixed(1) + ' kg';
+            document.getElementById('driving-distance').textContent = Math.round(co2 * KM_PER_KG_CO2) + ' km';
+            document.getElementById('electricity-days').textContent = Math.round(co2 * ELECTRICITY_DAYS_PER_KG) + ' days';
+            document.getElementById('phone-charges').textContent = Math.round(co2 * PHONE_CHARGES_PER_KG).toLocaleString();
+            document.getElementById('trees-planted').textContent = (co2 * TREES_PER_KG).toFixed(1) + ' trees';
+            document.getElementById('tv-hours').textContent = Math.round(co2 * TV_HOURS_PER_KG) + ' hours';
+            document.getElementById('burgers-saved').textContent = Math.round(co2 * BURGERS_PER_KG) + ' burgers';
+        }
+
+        // Setup interactive calculator
+        function setupCalculator() {
+            const devicesSlider = document.getElementById('devices-slider');
+            const cartridgesSlider = document.getElementById('cartridges-slider');
+            const devicesValue = document.getElementById('devices-value');
+            const cartridgesValue = document.getElementById('cartridges-value');
+
+            // Update display values
+            devicesSlider.addEventListener('input', (e) => {
+                devicesValue.textContent = e.target.value;
+                calculateImpact();
+            });
+
+            cartridgesSlider.addEventListener('input', (e) => {
+                cartridgesValue.textContent = e.target.value;
+                calculateImpact();
+            });
+
+            // Initial calculation
+            calculateImpact();
+        }
+
+        // Calculate potential impact
+        function calculateImpact() {
+            const devices = parseInt(document.getElementById('devices-slider').value);
+            const cartridges = parseInt(document.getElementById('cartridges-slider').value);
+
+            // Calculate total CO2 saved
+            const totalCO2 = (devices * CO2_PER_DEVICE) + (cartridges * CO2_PER_CARTRIDGE);
+
+            // Update results
+            document.getElementById('calc-co2').textContent = Math.round(totalCO2) + ' kg';
+            document.getElementById('calc-driving').textContent = Math.round(totalCO2 * KM_PER_KG_CO2) + ' km';
+            document.getElementById('calc-trees').textContent = (totalCO2 * TREES_PER_KG).toFixed(1);
+
+            // WEEE Points (assuming 5 points per kg CO2)
+            const weeePoints = Math.round(totalCO2 * 5);
+            document.getElementById('calc-points').textContent = weeePoints.toLocaleString();
+
+            // Animate values
+            animateValue('calc-co2');
+            animateValue('calc-driving');
+            animateValue('calc-trees');
+            animateValue('calc-points');
+        }
+
+        // Animate value changes
+        function animateValue(elementId) {
+            const element = document.getElementById(elementId);
+            element.style.transform = 'scale(1.1)';
+            element.style.color = 'var(--secondary-green)';
+
+            setTimeout(() => {
+                element.style.transform = 'scale(1)';
+                element.style.color = '';
+            }, 200);
+        }
+
+        // Smooth scroll for CTA buttons
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

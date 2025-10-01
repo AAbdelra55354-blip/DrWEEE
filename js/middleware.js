@@ -1,0 +1,164 @@
+// js/middleware.js - Production-ready middleware for performance and security
+
+const compression = require('compression');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+
+// Compression middleware - reduces response size by ~70%
+function compressionMiddleware() {
+    return compression({
+        filter: (req, res) => {
+            if (req.headers['x-no-compression']) {
+                return false;
+            }
+            return compression.filter(req, res);
+        },
+        level: 6, // Balance between speed and compression ratio
+        threshold: 1024 // Only compress responses larger than 1KB
+    });
+}
+
+// Security headers middleware
+function securityMiddleware() {
+    return helmet({
+        contentSecurityPolicy: {
+            directives: {
+                defaultSrc: ["'self'"],
+                scriptSrc: ["'self'", "'unsafe-inline'", "https://atlas.microsoft.com", "https://cdn.jsdelivr.net"],
+                styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdn.jsdelivr.net"],
+                fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
+                imgSrc: ["'self'", "data:", "https:", "blob:"],
+                connectSrc: ["'self'", "https://atlas.microsoft.com", "https://apis.cequens.com", "https://*.crm.dynamics.com"],
+                frameSrc: ["'none'"],
+                objectSrc: ["'none'"],
+                upgradeInsecureRequests: []
+            }
+        },
+        crossOriginEmbedderPolicy: false, // Allow external resources
+        hsts: {
+            maxAge: 31536000, // 1 year
+            includeSubDomains: true,
+            preload: true
+        }
+    });
+}
+
+// Rate limiting middleware - prevents abuse
+function rateLimitMiddleware() {
+    // General API rate limit
+    const apiLimiter = rateLimit({
+        windowMs: 15 * 60 * 1000, // 15 minutes
+        max: 100, // Limit each IP to 100 requests per windowMs
+        message: 'Too many requests from this IP, please try again later.',
+        standardHeaders: true,
+        legacyHeaders: false,
+    });
+
+    // Stricter rate limit for authentication endpoints
+    const authLimiter = rateLimit({
+        windowMs: 15 * 60 * 1000, // 15 minutes
+        max: 10, // Limit each IP to 10 requests per windowMs
+        message: 'Too many authentication attempts, please try again later.',
+        skipSuccessfulRequests: false,
+    });
+
+    // Very strict rate limit for OTP requests
+    const otpLimiter = rateLimit({
+        windowMs: 15 * 60 * 1000, // 15 minutes
+        max: 5, // Limit each IP to 5 OTP requests per windowMs
+        message: 'Too many OTP requests, please try again later.',
+        skipSuccessfulRequests: false,
+    });
+
+    return { apiLimiter, authLimiter, otpLimiter };
+}
+
+// Cache control middleware for static assets
+function cacheControlMiddleware() {
+    return (req, res, next) => {
+        // Cache static assets aggressively
+        if (req.url.match(/\.(css|js|jpg|jpeg|png|gif|ico|svg|woff|woff2|ttf|eot)$/)) {
+            res.setHeader('Cache-Control', 'public, max-age=31536000, immutable'); // 1 year
+        }
+        // Don't cache HTML files
+        else if (req.url.match(/\.html$/)) {
+            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+            res.setHeader('Pragma', 'no-cache');
+            res.setHeader('Expires', '0');
+        }
+        next();
+    };
+}
+
+// Request logging middleware (lightweight for production)
+function requestLoggerMiddleware() {
+    return (req, res, next) => {
+        const start = Date.now();
+        res.on('finish', () => {
+            const duration = Date.now() - start;
+            if (duration > 1000) { // Only log slow requests
+                console.log(`⚠️ Slow request: ${req.method} ${req.url} - ${duration}ms`);
+            }
+        });
+        next();
+    };
+}
+
+// Error handling middleware
+function errorHandlerMiddleware() {
+    return (err, req, res, next) => {
+        console.error('❌ Unhandled error:', err);
+
+        // Don't leak error details in production
+        const isProduction = process.env.NODE_ENV === 'production';
+
+        res.status(err.status || 500).json({
+            success: false,
+            message: isProduction ? 'An error occurred' : err.message,
+            ...(isProduction ? {} : { stack: err.stack })
+        });
+    };
+}
+
+// CORS configuration for production
+function corsOptionsProduction() {
+    return {
+        origin: (origin, callback) => {
+            // Allow requests with no origin (mobile apps, Postman, etc.)
+            if (!origin) return callback(null, true);
+
+            // In production, you should whitelist specific domains
+            // For now, allowing all origins - UPDATE THIS for production
+            const allowedOrigins = [
+                process.env.FRONTEND_URL,
+                'https://your-domain.com', // Add your production domain
+                /\.railway\.app$/ // Allow Railway subdomains
+            ].filter(Boolean);
+
+            // Allow all origins in development, specific ones in production
+            if (process.env.NODE_ENV === 'production') {
+                const isAllowed = allowedOrigins.some(allowed => {
+                    if (allowed instanceof RegExp) return allowed.test(origin);
+                    return allowed === origin;
+                });
+                callback(isAllowed ? null : new Error('Not allowed by CORS'), isAllowed);
+            } else {
+                callback(null, true);
+            }
+        },
+        credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+        maxAge: 86400 // 24 hours
+    };
+}
+
+module.exports = {
+    compressionMiddleware,
+    securityMiddleware,
+    rateLimitMiddleware,
+    cacheControlMiddleware,
+    requestLoggerMiddleware,
+    errorHandlerMiddleware,
+    corsOptionsProduction
+};
