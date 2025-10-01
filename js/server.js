@@ -37,6 +37,10 @@ const STORE_CACHE_DURATION_MS = 15 * 60 * 1000; // Cache for 15 minutes
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Trust proxy - Required for Railway, Heroku, and other cloud platforms
+// This enables express to trust X-Forwarded-* headers from reverse proxies
+app.set('trust proxy', 1);
+
 // Use memory store instead of MySQL for sessions (more reliable)
 const sessionStore = new MemoryStore({
     checkPeriod: 86400000 // prune expired entries every 24h
