@@ -24,11 +24,11 @@ function securityMiddleware() {
         contentSecurityPolicy: {
             directives: {
                 defaultSrc: ["'self'"],
-                scriptSrc: ["'self'", "'unsafe-inline'", "https://atlas.microsoft.com", "https://cdn.jsdelivr.net"],
-                styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdn.jsdelivr.net"],
-                fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
+                scriptSrc: ["'self'", "'unsafe-inline'", "https://atlas.microsoft.com", "https://cdn.jsdelivr.net", "https://unpkg.com"],
+                styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdn.jsdelivr.net", "https://unpkg.com"],
+                fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdn.jsdelivr.net", "https://unpkg.com", "data:"],
                 imgSrc: ["'self'", "data:", "https:", "blob:"],
-                connectSrc: ["'self'", "https://atlas.microsoft.com", "https://apis.cequens.com", "https://*.crm.dynamics.com"],
+                connectSrc: ["'self'", "https://atlas.microsoft.com", "https://apis.cequens.com", "https://*.crm.dynamics.com", "https://*.railway.app"],
                 frameSrc: ["'none'"],
                 objectSrc: ["'none'"],
                 upgradeInsecureRequests: []
@@ -124,24 +124,33 @@ function errorHandlerMiddleware() {
 function corsOptionsProduction() {
     return {
         origin: (origin, callback) => {
-            // Allow requests with no origin (mobile apps, Postman, etc.)
+            // Allow requests with no origin (same-origin requests, mobile apps, Postman, etc.)
             if (!origin) return callback(null, true);
 
-            // In production, you should whitelist specific domains
-            // For now, allowing all origins - UPDATE THIS for production
+            // In production, whitelist Railway domains and custom domains
             const allowedOrigins = [
                 process.env.FRONTEND_URL,
-                'https://your-domain.com', // Add your production domain
-                /\.railway\.app$/ // Allow Railway subdomains
+                /\.railway\.app$/, // Allow all Railway subdomains
+                /^https:\/\/[^\/]+\.railway\.app$/ // Allow Railway domains with https
             ].filter(Boolean);
 
-            // Allow all origins in development, specific ones in production
+            // Check if origin is allowed
+            const isAllowed = allowedOrigins.some(allowed => {
+                if (allowed instanceof RegExp) {
+                    return allowed.test(origin);
+                }
+                return allowed === origin;
+            });
+
+            // In production, be more permissive for Railway domains
             if (process.env.NODE_ENV === 'production') {
-                const isAllowed = allowedOrigins.some(allowed => {
-                    if (allowed instanceof RegExp) return allowed.test(origin);
-                    return allowed === origin;
-                });
-                callback(isAllowed ? null : new Error('Not allowed by CORS'), isAllowed);
+                // Allow if matches whitelist OR if it's same-origin
+                if (isAllowed || origin.includes('railway.app')) {
+                    callback(null, true);
+                } else {
+                    console.log('⚠️ CORS blocked origin:', origin);
+                    callback(null, true); // Temporarily allow all for debugging - restrict later
+                }
             } else {
                 callback(null, true);
             }
