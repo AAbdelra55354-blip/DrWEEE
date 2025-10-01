@@ -24,12 +24,13 @@ function securityMiddleware() {
         contentSecurityPolicy: {
             directives: {
                 defaultSrc: ["'self'"],
-                scriptSrc: ["'self'", "'unsafe-inline'", "https://atlas.microsoft.com", "https://cdn.jsdelivr.net", "https://unpkg.com", "https://cdnjs.cloudflare.com"],
+                scriptSrc: ["'self'", "'unsafe-inline'", "https://atlas.microsoft.com", "https://cdn.jsdelivr.net", "https://unpkg.com", "https://cdnjs.cloudflare.com", "https://ajax.googleapis.com"],
                 styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdn.jsdelivr.net", "https://unpkg.com", "https://cdnjs.cloudflare.com"],
                 fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdn.jsdelivr.net", "https://unpkg.com", "https://cdnjs.cloudflare.com", "data:"],
                 imgSrc: ["'self'", "data:", "https:", "blob:"],
+                mediaSrc: ["'self'", "https://assets.mixkit.co", "https://*.blob.core.windows.net", "blob:", "data:"],
                 connectSrc: ["'self'", "https://atlas.microsoft.com", "https://apis.cequens.com", "https://*.crm.dynamics.com", "https://*.railway.app"],
-                frameSrc: ["'none'"],
+                frameSrc: ["'self'", "https://*.blob.core.windows.net"],
                 objectSrc: ["'none'"],
                 upgradeInsecureRequests: []
             }
