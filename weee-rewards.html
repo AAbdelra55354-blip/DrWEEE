@@ -152,6 +152,98 @@
             font-size: 0.95rem;
         }
 
+        /* Search Box Styles */
+        .search-box {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .search-box .search-icon {
+            position: absolute;
+            left: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-green);
+            font-size: 1.1rem;
+            pointer-events: none;
+        }
+
+        .search-input-field {
+            width: 100%;
+            padding: 1rem 3rem 1rem 3.5rem;
+            border: 2px solid var(--light-green);
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+            color: var(--text-dark);
+        }
+
+        .search-input-field:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 4px rgba(0, 137, 123, 0.1), 0 4px 12px rgba(0, 137, 123, 0.15);
+        }
+
+        .search-input-field::placeholder {
+            color: #999;
+        }
+
+        .clear-search-btn {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #f0f0f0;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+
+        .clear-search-btn:hover {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .search-results-info {
+            text-align: center;
+            padding: 0.5rem;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-results-info .highlight {
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-gray);
+        }
+
+        .no-results-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .no-results h3 {
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
         .category-filter {
             display: flex;
             gap: 1rem;
@@ -885,7 +977,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            disabled: true;
+            /* disabled: true; */
         }
 
         .confirm-location-btn:disabled {
@@ -1029,6 +1121,16 @@
                                 your environmental impact!</p>
                         </div>
 
+                        <!-- Search Box -->
+                        <div class="search-box">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" id="ewaste-search" class="search-input-field"
+                                   placeholder="Search for items (e.g., laptop, phone, TV...)">
+                            <button id="clear-search" class="clear-search-btn" style="display: none;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
                         <!-- Category Filters -->
                         <div class="category-filter">
                             <button class="filter-btn active" data-category="all">All Items</button>
@@ -1037,6 +1139,7 @@
                             <button class="filter-btn" data-category="home">🏠 Home Appliances</button>
                             <button class="filter-btn" data-category="entertainment">📺 Entertainment</button>
                             <button class="filter-btn" data-category="accessories">🔌 Accessories</button>
+                            <button class="filter-btn" data-category="office">🖨️ Office</button>
                         </div>
 
                         <!-- E-Waste Items Grid -->
@@ -1265,6 +1368,7 @@
         // Application State
         let selectedItems = {};
         let currentFilter = 'all';
+        let searchQuery = '';
         let locationMap, locationDataSource, locationSearchService;
         let selectedLocation = null;
         let AZURE_MAPS_KEY = null;
@@ -1302,25 +1406,53 @@
             // If failed, error message is already shown by showProductLoadError()
         }
 
-        // Render e-waste items based on current filter
-        // Replace the renderEwasteItems function with this:
+        // Render e-waste items based on current filter and search query
         function renderEwasteItems() {
             ewasteGrid.innerHTML = '';
 
             const allItems = Object.values(ewasteItems).flat();
-            const filteredItems = currentFilter === 'all'
+
+            // Apply category filter
+            let filteredItems = currentFilter === 'all'
                 ? allItems
                 : allItems.filter(item => item.category === currentFilter);
 
+            // Apply search filter
+            if (searchQuery.trim()) {
+                const query = searchQuery.toLowerCase().trim();
+                filteredItems = filteredItems.filter(item => {
+                    const name = item.name.toLowerCase();
+                    const category = item.category.toLowerCase();
+                    // Match by name, category, or partial match
+                    return name.includes(query) ||
+                           category.includes(query) ||
+                           query.split(' ').every(word => name.includes(word));
+                });
+            }
+
+            // Show "no results" message
             if (filteredItems.length === 0) {
+                const message = searchQuery.trim()
+                    ? `No items found matching "<strong>${searchQuery}</strong>"`
+                    : 'No e-waste items available in this category.';
+
                 ewasteGrid.innerHTML = `
-            <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #666;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">📦</div>
-                <h3 style="color: #333; margin-bottom: 1rem;">No Items Found</h3>
-                <p>No e-waste items available in this category.</p>
-            </div>
-        `;
+                    <div class="no-results">
+                        <div class="no-results-icon">🔍</div>
+                        <h3>No Items Found</h3>
+                        <p>${message}</p>
+                        ${searchQuery.trim() ? '<p style="margin-top: 1rem;"><button onclick="clearSearch()" style="background: var(--primary-green); color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 25px; cursor: pointer;">Clear Search</button></p>' : ''}
+                    </div>
+                `;
                 return;
+            }
+
+            // Show search results count if searching
+            if (searchQuery.trim()) {
+                const resultsInfo = document.createElement('div');
+                resultsInfo.className = 'search-results-info';
+                resultsInfo.innerHTML = `Found <span class="highlight">${filteredItems.length}</span> item${filteredItems.length !== 1 ? 's' : ''} matching "<span class="highlight">${searchQuery}</span>"`;
+                ewasteGrid.appendChild(resultsInfo);
             }
 
             filteredItems.forEach(item => {
@@ -1333,17 +1465,34 @@
                 const displayPoints = defaultUnit ? defaultUnit.points : 0;
                 const displayCo2 = defaultUnit ? defaultUnit.co2 : 0;
 
+                // Highlight matching text in name if searching
+                let displayName = item.name;
+                if (searchQuery.trim()) {
+                    const regex = new RegExp(`(${searchQuery.trim()})`, 'gi');
+                    displayName = item.name.replace(regex, '<mark style="background: #FFE082; padding: 0 2px; border-radius: 2px;">$1</mark>');
+                }
+
                 itemElement.innerHTML = `
-            <div class="add-indicator">+</div>
-            <div class="item-icon">${item.icon}</div>
-            <h4 class="item-name">${item.name}</h4>
-            <div class="item-points">⭐ ${displayPoints} Points</div>
-            <div class="item-impact">🌱 ${displayCo2}kg CO₂ Saved</div>
-        `;
+                    <div class="add-indicator">+</div>
+                    <div class="item-icon">${item.icon}</div>
+                    <h4 class="item-name">${displayName}</h4>
+                    <div class="item-points">⭐ ${displayPoints} Points</div>
+                    <div class="item-impact">🌱 ${displayCo2}kg CO₂ Saved</div>
+                `;
 
                 itemElement.addEventListener('click', () => toggleItem(item));
                 ewasteGrid.appendChild(itemElement);
             });
+        }
+
+        // Clear search function
+        function clearSearch() {
+            searchQuery = '';
+            const searchInput = document.getElementById('ewaste-search');
+            const clearBtn = document.getElementById('clear-search');
+            if (searchInput) searchInput.value = '';
+            if (clearBtn) clearBtn.style.display = 'none';
+            renderEwasteItems();
         }
 
         // Toggle item selection
@@ -1474,12 +1623,41 @@
 
         // Setup event listeners
         function setupEventListeners() {
+            // Search input
+            const searchInput = document.getElementById('ewaste-search');
+            const clearBtn = document.getElementById('clear-search');
+
+            if (searchInput) {
+                // Real-time search as user types
+                searchInput.addEventListener('input', (e) => {
+                    searchQuery = e.target.value;
+                    clearBtn.style.display = searchQuery.trim() ? 'flex' : 'none';
+                    renderEwasteItems();
+                });
+
+                // Clear search on Escape key
+                searchInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        clearSearch();
+                        searchInput.blur();
+                    }
+                });
+            }
+
+            if (clearBtn) {
+                clearBtn.addEventListener('click', () => {
+                    clearSearch();
+                    searchInput.focus();
+                });
+            }
+
             // Filter buttons
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                     e.target.classList.add('active');
                     currentFilter = e.target.getAttribute('data-category');
+                    // Keep search query when changing categories
                     renderEwasteItems();
                 });
             });
