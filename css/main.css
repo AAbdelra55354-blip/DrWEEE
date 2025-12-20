@@ -388,19 +388,36 @@ a:hover {
 .header__logo {
     display: flex;
     align-items: center;
-    gap: var(--space-sm);
+    gap: var(--space-md);
+    text-decoration: none;
 }
 
 .header__logo img {
-    height: 60px;
-    width: 45px;
+    height: 55px;
+    width: auto;
+    object-fit: contain;
 }
 
 .header__brand {
     font-family: var(--font-secondary);
-    font-size: 1.75rem;
-    font-weight: 400;
+    font-size: 1.5rem;
+    font-weight: 600;
     color: var(--primary-green);
+    letter-spacing: 0.5px;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.header__brand::after {
+    content: 'Smart Green IT';
+    font-family: var(--font-primary);
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--text-gray);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 2px;
 }
 
 /* Navigation */
@@ -728,26 +745,48 @@ a:hover {
 
 .footer__section--about {
     grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 .footer__logo {
     display: flex;
     align-items: center;
-    gap: var(--space-sm);
+    justify-content: center;
+    gap: var(--space-md);
     text-decoration: none;
     margin-bottom: var(--space-md);
 }
 
 .footer__logo img {
-    height: 60px;
-    width: 45px;
+    height: 65px;
+    width: auto;
+    object-fit: contain;
 }
 
 .footer__logo h4 {
     color: var(--white);
     margin: 0;
     font-family: var(--font-secondary);
-    font-size: 1.75rem;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.footer__logo h4::after {
+    content: 'Smart Green IT';
+    font-family: var(--font-primary);
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 4px;
 }
 
 .footer__section h4 {
@@ -994,12 +1033,17 @@ a:hover {
     }
 
     .header__logo img {
-        height: 40px;
-        width: 30px;
+        height: 42px;
+        width: auto;
     }
 
     .header__brand {
-        font-size: 1.25rem;
+        font-size: 1.1rem;
+    }
+
+    .header__brand::after {
+        font-size: 0.5rem;
+        letter-spacing: 0.5px;
     }
 
     .nav {
@@ -1138,6 +1182,19 @@ a:hover {
     .footer__content {
         grid-template-columns: 1fr;
         gap: var(--space-lg);
+    }
+
+    .footer__logo img {
+        height: 50px;
+    }
+
+    .footer__logo h4 {
+        font-size: 1.5rem;
+    }
+
+    .footer__logo h4::after {
+        font-size: 0.6rem;
+        letter-spacing: 1px;
     }
 
     .footer__bottom {

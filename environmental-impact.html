@@ -1563,7 +1563,7 @@
                 // Fetch calculated impact data from API
                 // API uses Climatiq emission factors for all calculations
                 const baseUrl = getApiBaseUrl();
-                const response = await fetch(`${baseUrl}/api/environmental-impact?userGUID=${user.GUID}`);
+                const response = await fetch(`${baseUrl}/api/environmental-impact?userGUID=${user.GUID}`, { credentials: 'include' });
 
                 if (response.ok) {
                     const result = await response.json();
@@ -1623,7 +1623,7 @@
 
             try {
                 const baseUrl = getApiBaseUrl();
-                const response = await fetch(`${baseUrl}/api/share/my-code?userGUID=${user.GUID}`);
+                const response = await fetch(`${baseUrl}/api/share/my-code?userGUID=${user.GUID}`, { credentials: 'include' });
                 const data = await response.json();
 
                 if (data.success) {
