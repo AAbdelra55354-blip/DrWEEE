@@ -2301,7 +2301,7 @@ app.get('/api/share/my-code', apiLimiter, async (req, res) => {
 
         // Build the public share URL
         const baseUrl = process.env.NODE_ENV === 'production'
-            ? 'https://drweee-website-production.up.railway.app'
+            ? 'https://www.drweee.com'
             : `http://localhost:${port}`;
 
         res.json({
@@ -2688,7 +2688,7 @@ app.get('/certificate/:shareCode', async (req, res) => {
 
         // Build the base URL for OG tags
         const baseUrl = process.env.NODE_ENV === 'production'
-            ? 'https://drweee-website-production.up.railway.app'
+            ? 'https://www.drweee.com'
             : `http://localhost:${port}`;
 
         // Inject dynamic OG meta tags
