@@ -1,0 +1,24 @@
+{
+  "name": "DR.WEEE - Smart Green IT Solutions",
+  "short_name": "DR.WEEE",
+  "description": "Pioneering sustainable innovation through e-waste management and circular economy solutions.",
+  "icons": [
+    {
+      "src": "/images/favicon/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/images/favicon/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "theme_color": "#1B5E20",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/"
+}
