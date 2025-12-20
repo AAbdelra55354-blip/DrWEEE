@@ -375,18 +375,20 @@
         .selection-panel {
             background: white;
             border-radius: 20px;
-            padding: 2rem;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
             position: sticky;
-            top: 2rem;
+            top: 90px; /* Below fixed header */
             align-self: flex-start;
+            height: calc(100vh - 110px);
         }
 
         .panel-header {
             text-align: center;
-            margin-bottom: 2rem;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #eee;
+            flex-shrink: 0;
         }
 
         .panel-title {
@@ -400,10 +402,114 @@
             font-size: 0.9rem;
         }
 
+        /* Item counter badge */
+        .item-counter {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: var(--light-green);
+            color: var(--primary-green);
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .item-counter.hidden {
+            display: none;
+        }
+
+        .item-counter i {
+            font-size: 0.75rem;
+        }
+
+        /* Selected items container with scroll indicator */
+        .selected-items-wrapper {
+            position: relative;
+            flex: 1;
+            min-height: 150px;
+            overflow: hidden;
+        }
+
         .selected-items {
-            flex-grow: 1;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             overflow-y: auto;
-            margin-bottom: 2rem;
+            padding: 1.5rem 2rem;
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar for selected items */
+        .selected-items::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .selected-items::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .selected-items::-webkit-scrollbar-thumb {
+            background: var(--light-green);
+            border-radius: 3px;
+        }
+
+        .selected-items::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-green);
+        }
+
+        /* Scroll fade indicator at bottom */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.9) 50%, white);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 8px;
+        }
+
+        .scroll-indicator.visible {
+            opacity: 1;
+        }
+
+        .scroll-indicator-icon {
+            background: var(--light-green);
+            color: var(--primary-green);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            animation: bounceDown 1.5s ease-in-out infinite;
+            box-shadow: 0 2px 8px rgba(0, 137, 123, 0.2);
+        }
+
+        @keyframes bounceDown {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(5px); }
+        }
+
+        /* Panel footer - always visible */
+        .panel-footer {
+            flex-shrink: 0;
+            padding: 0 2rem 2rem;
+            background: white;
+            border-top: 1px solid #eee;
+            padding-top: 1.5rem;
         }
 
         .empty-state {
@@ -521,9 +627,9 @@
         .impact-summary {
             background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
             color: white;
-            padding: 1.5rem;
-            border-radius: 16px;
-            margin-bottom: 1.5rem;
+            padding: 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
         }
 
         .summary-title {
@@ -619,15 +725,12 @@
                 max-height: none;
             }
 
-            .ewaste-categories,
-            .selection-panel {
+            .ewaste-categories {
                 max-height: none;
                 position: static;
             }
 
-            .selection-panel {
-                order: -1;
-            }
+            /* Selection panel is hidden on mobile - using floating drawer instead */
 
             .impact-preview {
                 flex-wrap: wrap;
@@ -686,6 +789,413 @@
             .item-icon {
                 font-size: 2rem;
             }
+        }
+
+        /* Mobile Floating Collection Bar */
+        .mobile-collection-bar {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: white;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+            border-radius: 20px 20px 0 0;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-collection-bar.visible {
+            transform: translateY(0);
+        }
+
+        .mobile-collection-bar.has-items {
+            display: block;
+        }
+
+        .mobile-bar-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.25rem;
+            gap: 1rem;
+        }
+
+        .mobile-bar-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .mobile-bar-badge {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .mobile-bar-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #FF5722;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            min-width: 22px;
+            height: 22px;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .mobile-bar-stats {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .mobile-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .mobile-stat-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            line-height: 1.2;
+        }
+
+        .mobile-stat-label {
+            font-size: 0.65rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .mobile-stat-divider {
+            width: 1px;
+            height: 30px;
+            background: #e0e0e0;
+        }
+
+        .mobile-bar-btn {
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .mobile-bar-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Mobile Drawer */
+        .mobile-drawer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            max-height: 85vh;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 1060;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .mobile-drawer.open {
+            transform: translateY(0);
+        }
+
+        .mobile-drawer-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1050;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .mobile-drawer-backdrop.visible {
+            display: block;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .mobile-drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #eee;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            border-radius: 20px 20px 0 0;
+        }
+
+        .mobile-drawer-header h3 {
+            color: white;
+            font-size: 1.1rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .mobile-drawer-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        .mobile-drawer-close:active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .mobile-drawer-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            max-height: 45vh;
+        }
+
+        .mobile-drawer-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+        }
+
+        .mobile-drawer-item-icon {
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-drawer-item-info {
+            flex: 1;
+        }
+
+        .mobile-drawer-item-name {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .mobile-drawer-item-meta {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .mobile-drawer-item-points {
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .mobile-drawer-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .mobile-drawer-item-qty {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: white;
+            border-radius: 20px;
+            padding: 0.25rem;
+        }
+
+        .mobile-qty-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: var(--light-green);
+            color: var(--primary-green);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .mobile-qty-btn:active {
+            background: var(--primary-green);
+            color: white;
+        }
+
+        .mobile-qty-value {
+            min-width: 30px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .mobile-drawer-item-remove {
+            background: #ffebee;
+            color: #f44336;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-drawer-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #eee;
+            background: #f8f9fa;
+        }
+
+        .mobile-drawer-summary {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            border-radius: 12px;
+        }
+
+        .mobile-drawer-metric {
+            text-align: center;
+            color: white;
+        }
+
+        .drawer-metric-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FFD700;
+        }
+
+        .drawer-metric-label {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+
+        .mobile-drawer-proceed {
+            width: 100%;
+            background: linear-gradient(135deg, #4CAF50, #66BB6A);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-drawer-proceed:active {
+            transform: scale(0.98);
+        }
+
+        .mobile-drawer-empty {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #888;
+        }
+
+        .mobile-drawer-empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Desktop - hide mobile elements */
+        @media (min-width: 993px) {
+            .mobile-collection-bar,
+            .mobile-drawer,
+            .mobile-drawer-backdrop {
+                display: none !important;
+            }
+        }
+
+        /* Mobile - show mobile bar, hide desktop panel */
+        @media (max-width: 992px) {
+            .mobile-collection-bar.has-items {
+                display: block;
+            }
+
+            /* Hide selection panel on mobile when drawer is used */
+            .selection-panel {
+                display: none;
+            }
+
+            /* Add padding at bottom for the floating bar */
+            .rewards-main {
+                padding-bottom: 100px;
+            }
+        }
+
+        /* Item added animation */
+        @keyframes itemAdded {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .mobile-bar-badge.bounce {
+            animation: itemAdded 0.3s ease;
         }
 
         /* Animation classes */
@@ -1153,37 +1663,111 @@
                         <div class="panel-header">
                             <h3 class="panel-title">Your Collection Bag</h3>
                             <p class="panel-subtitle">Items ready for eco-friendly disposal</p>
-                        </div>
-
-                        <!-- Selected Items Container -->
-                        <div class="selected-items" id="selected-items">
-                            <div class="empty-state">
-                                <div class="empty-icon">🌱</div>
-                                <p>Start selecting items to see your environmental impact!</p>
+                            <div class="item-counter hidden" id="item-counter">
+                                <i class="fas fa-box"></i>
+                                <span id="item-counter-text">0 items</span>
                             </div>
                         </div>
 
-                        <!-- Impact Summary -->
-                        <div class="impact-summary" id="impact-summary" style="display: none;">
-                            <h4 class="summary-title">Your Environmental Impact</h4>
-                            <div class="impact-metrics">
-                                <div class="metric">
-                                    <span class="metric-value" id="total-points">0</span>
-                                    <span class="metric-label">WEEE Points</span>
+                        <!-- Selected Items Container (scrollable) -->
+                        <div class="selected-items-wrapper">
+                            <div class="selected-items" id="selected-items">
+                                <div class="empty-state">
+                                    <div class="empty-icon">🌱</div>
+                                    <p>Start selecting items to see your environmental impact!</p>
                                 </div>
-                                <div class="metric">
-                                    <span class="metric-value" id="total-co2">0</span>
-                                    <span class="metric-label">CO₂ Saved (kg)</span>
+                            </div>
+                            <!-- Scroll indicator -->
+                            <div class="scroll-indicator" id="scroll-indicator">
+                                <div class="scroll-indicator-icon">
+                                    <i class="fas fa-chevron-down"></i>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Proceed Button -->
-                        <button class="proceed-btn" id="proceed-btn" disabled>
-                            <i class="fas fa-leaf"></i>
-                            Complete Collection Request
-                        </button>
+                        <!-- Panel Footer (always visible) -->
+                        <div class="panel-footer">
+                            <!-- Impact Summary -->
+                            <div class="impact-summary" id="impact-summary" style="display: none;">
+                                <h4 class="summary-title">Your Environmental Impact</h4>
+                                <div class="impact-metrics">
+                                    <div class="metric">
+                                        <span class="metric-value" id="total-points">0</span>
+                                        <span class="metric-label">WEEE Points</span>
+                                    </div>
+                                    <div class="metric">
+                                        <span class="metric-value" id="total-co2">0</span>
+                                        <span class="metric-label">CO₂ Saved (kg)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Proceed Button -->
+                            <button class="proceed-btn" id="proceed-btn" disabled>
+                                <i class="fas fa-leaf"></i>
+                                Complete Collection Request
+                            </button>
+                        </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Mobile Floating Collection Bar -->
+            <div class="mobile-collection-bar" id="mobile-collection-bar">
+                <div class="mobile-bar-content">
+                    <div class="mobile-bar-info" id="mobile-bar-toggle">
+                        <div class="mobile-bar-badge">
+                            <i class="fas fa-shopping-bag"></i>
+                            <span class="mobile-bar-count" id="mobile-bar-count">0</span>
+                        </div>
+                        <div class="mobile-bar-stats">
+                            <div class="mobile-stat">
+                                <span class="mobile-stat-value" id="mobile-bar-points">0</span>
+                                <span class="mobile-stat-label">Points</span>
+                            </div>
+                            <div class="mobile-stat-divider"></div>
+                            <div class="mobile-stat">
+                                <span class="mobile-stat-value" id="mobile-bar-co2">0</span>
+                                <span class="mobile-stat-label">kg CO₂</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="mobile-bar-btn" id="mobile-bar-btn">
+                        <i class="fas fa-arrow-up"></i>
+                        View Bag
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile drawer backdrop (must be before drawer) -->
+            <div class="mobile-drawer-backdrop" id="mobile-drawer-backdrop"></div>
+
+            <!-- Mobile Drawer (separate from bar for proper z-index stacking) -->
+            <div class="mobile-drawer" id="mobile-drawer">
+                <div class="mobile-drawer-header">
+                    <h3><i class="fas fa-shopping-bag"></i> Your Collection Bag</h3>
+                    <button class="mobile-drawer-close" id="mobile-drawer-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="mobile-drawer-items" id="mobile-drawer-items">
+                    <!-- Items will be populated here -->
+                </div>
+                <div class="mobile-drawer-footer">
+                    <div class="mobile-drawer-summary">
+                        <div class="mobile-drawer-metric">
+                            <span class="drawer-metric-value" id="drawer-total-points">0</span>
+                            <span class="drawer-metric-label">WEEE Points</span>
+                        </div>
+                        <div class="mobile-drawer-metric">
+                            <span class="drawer-metric-value" id="drawer-total-co2">0</span>
+                            <span class="drawer-metric-label">kg CO₂ Saved</span>
+                        </div>
+                    </div>
+                    <button class="mobile-drawer-proceed" id="mobile-drawer-proceed">
+                        <i class="fas fa-leaf"></i>
+                        Complete Request
+                    </button>
                 </div>
             </div>
 
@@ -1256,8 +1840,8 @@
                         pickup at your specified location.</p>
 
                     <button class="btn btn-primary" onclick="closeSuccessModal()">
-                        <i class="fas fa-home"></i>
-                        Continue Browsing
+                        <i class="fas fa-clipboard-list"></i>
+                        View My Requests
                     </button>
                 </div>
             </div>
@@ -1282,12 +1866,28 @@
             office: []
         };
 
+        // Detect if running on Live Server or other non-Node environment
+        function getApiBaseUrl() {
+            const port = window.location.port;
+            const hostname = window.location.hostname;
+
+            // If running on Live Server (5500) or file://, use Node.js server
+            if (port === '5500' || port === '5501' || window.location.protocol === 'file:') {
+                return 'http://localhost:3000';
+            }
+            // Otherwise use relative path (same server)
+            return '';
+        }
+
         // Add this new function to fetch products from server
         async function fetchEwasteProducts() {
             try {
                 console.log('Fetching e-waste products...');
 
-                const response = await fetch('/api/fetch-products', {
+                const apiBase = getApiBaseUrl();
+                console.log('Using API base:', apiBase || '(same origin)');
+
+                const response = await fetch(`${apiBase}/api/fetch-products`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ type: 'product' })
@@ -1447,14 +2047,6 @@
                 return;
             }
 
-            // Show search results count if searching
-            if (searchQuery.trim()) {
-                const resultsInfo = document.createElement('div');
-                resultsInfo.className = 'search-results-info';
-                resultsInfo.innerHTML = `Found <span class="highlight">${filteredItems.length}</span> item${filteredItems.length !== 1 ? 's' : ''} matching "<span class="highlight">${searchQuery}</span>"`;
-                ewasteGrid.appendChild(resultsInfo);
-            }
-
             filteredItems.forEach(item => {
                 const itemElement = document.createElement('div');
                 itemElement.className = `ewaste-item ${selectedItems[item.id] ? 'selected' : ''}`;
@@ -1465,17 +2057,10 @@
                 const displayPoints = defaultUnit ? defaultUnit.points : 0;
                 const displayCo2 = defaultUnit ? defaultUnit.co2 : 0;
 
-                // Highlight matching text in name if searching
-                let displayName = item.name;
-                if (searchQuery.trim()) {
-                    const regex = new RegExp(`(${searchQuery.trim()})`, 'gi');
-                    displayName = item.name.replace(regex, '<mark style="background: #FFE082; padding: 0 2px; border-radius: 2px;">$1</mark>');
-                }
-
                 itemElement.innerHTML = `
                     <div class="add-indicator">+</div>
                     <div class="item-icon">${item.icon}</div>
-                    <h4 class="item-name">${displayName}</h4>
+                    <h4 class="item-name">${item.name}</h4>
                     <div class="item-points">⭐ ${displayPoints} Points</div>
                     <div class="item-impact">🌱 ${displayCo2}kg CO₂ Saved</div>
                 `;
@@ -1525,17 +2110,34 @@
             renderSelectedItems();
             updateImpactSummary();
             updateProceedButton();
+            updateMobileBar();
         }
 
         // Render selected items in the panel
         function renderSelectedItems() {
-            if (Object.keys(selectedItems).length === 0) {
+            const itemCount = Object.keys(selectedItems).length;
+            const itemCounter = document.getElementById('item-counter');
+            const itemCounterText = document.getElementById('item-counter-text');
+
+            // Update item counter
+            if (itemCounter && itemCounterText) {
+                if (itemCount > 0) {
+                    itemCounter.classList.remove('hidden');
+                    const totalQty = Object.values(selectedItems).reduce((sum, item) => sum + item.quantity, 0);
+                    itemCounterText.textContent = `${totalQty} item${totalQty !== 1 ? 's' : ''}`;
+                } else {
+                    itemCounter.classList.add('hidden');
+                }
+            }
+
+            if (itemCount === 0) {
                 selectedItemsContainer.innerHTML = `
             <div class="empty-state">
                 <div class="empty-icon">🌱</div>
                 <p>Start selecting items to see your environmental impact!</p>
             </div>
         `;
+                updateScrollIndicator();
                 return;
             }
 
@@ -1570,7 +2172,7 @@
                 </div>
                 <div class="quantity-control">
                     <label>Quantity</label>
-                    <input type="number" min="1" value="${item.quantity}" 
+                    <input type="number" min="1" value="${item.quantity}"
                            data-item-id="${item.id}" data-field="quantity">
                 </div>
             </div>
@@ -1578,6 +2180,27 @@
 
                 selectedItemsContainer.appendChild(selectedItemEl);
             });
+
+            // Check if scroll indicator should be shown
+            setTimeout(updateScrollIndicator, 100);
+        }
+
+        // Update scroll indicator visibility
+        function updateScrollIndicator() {
+            const container = document.getElementById('selected-items');
+            const indicator = document.getElementById('scroll-indicator');
+
+            if (!container || !indicator) return;
+
+            // Show indicator if content is scrollable and not scrolled to bottom
+            const isScrollable = container.scrollHeight > container.clientHeight;
+            const isAtBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 10;
+
+            if (isScrollable && !isAtBottom) {
+                indicator.classList.add('visible');
+            } else {
+                indicator.classList.remove('visible');
+            }
         }
 
 
@@ -1662,6 +2285,9 @@
                 });
             });
 
+            // Selected items scroll listener for indicator
+            selectedItemsContainer.addEventListener('scroll', updateScrollIndicator);
+
             // Selected items container (event delegation)
             selectedItemsContainer.addEventListener('click', (e) => {
                 if (e.target.classList.contains('remove-btn')) {
@@ -1704,6 +2330,210 @@
                     handleProceed();
                 }
             });
+
+            // Mobile bar event listeners
+            setupMobileBarListeners();
+        }
+
+        // Mobile Bar Functions
+        function setupMobileBarListeners() {
+            const mobileBar = document.getElementById('mobile-collection-bar');
+            const mobileBarBtn = document.getElementById('mobile-bar-btn');
+            const mobileBarToggle = document.getElementById('mobile-bar-toggle');
+            const mobileDrawer = document.getElementById('mobile-drawer');
+            const mobileDrawerClose = document.getElementById('mobile-drawer-close');
+            const mobileDrawerBackdrop = document.getElementById('mobile-drawer-backdrop');
+            const mobileDrawerProceed = document.getElementById('mobile-drawer-proceed');
+            const mobileDrawerItems = document.getElementById('mobile-drawer-items');
+
+            // Open drawer
+            function openDrawer() {
+                mobileDrawer.classList.add('open');
+                mobileDrawerBackdrop.classList.add('visible');
+                document.body.style.overflow = 'hidden';
+                renderMobileDrawerItems();
+            }
+
+            // Close drawer
+            function closeDrawer() {
+                mobileDrawer.classList.remove('open');
+                mobileDrawerBackdrop.classList.remove('visible');
+                document.body.style.overflow = '';
+            }
+
+            if (mobileBarBtn) {
+                mobileBarBtn.addEventListener('click', openDrawer);
+            }
+
+            if (mobileBarToggle) {
+                mobileBarToggle.addEventListener('click', openDrawer);
+            }
+
+            if (mobileDrawerClose) {
+                mobileDrawerClose.addEventListener('click', closeDrawer);
+            }
+
+            if (mobileDrawerBackdrop) {
+                mobileDrawerBackdrop.addEventListener('click', closeDrawer);
+            }
+
+            if (mobileDrawerProceed) {
+                mobileDrawerProceed.addEventListener('click', () => {
+                    closeDrawer();
+                    handleProceed();
+                });
+            }
+
+            // Event delegation for drawer items
+            if (mobileDrawerItems) {
+                mobileDrawerItems.addEventListener('click', (e) => {
+                    const target = e.target.closest('button');
+                    if (!target) return;
+
+                    const itemId = target.getAttribute('data-item-id');
+                    if (!itemId || !selectedItems[itemId]) return;
+
+                    if (target.classList.contains('mobile-qty-minus')) {
+                        if (selectedItems[itemId].quantity > 1) {
+                            selectedItems[itemId].quantity--;
+                            updateUI();
+                            renderMobileDrawerItems();
+                        }
+                    } else if (target.classList.contains('mobile-qty-plus')) {
+                        selectedItems[itemId].quantity++;
+                        updateUI();
+                        renderMobileDrawerItems();
+                    } else if (target.classList.contains('mobile-drawer-item-remove')) {
+                        delete selectedItems[itemId];
+                        updateUI();
+                        renderMobileDrawerItems();
+                        // Close drawer if no items left
+                        if (Object.keys(selectedItems).length === 0) {
+                            closeDrawer();
+                        }
+                    }
+                });
+            }
+        }
+
+        // Update mobile bar with current selection info
+        function updateMobileBar() {
+            const mobileBar = document.getElementById('mobile-collection-bar');
+            const mobileBarCount = document.getElementById('mobile-bar-count');
+            const mobileBarPoints = document.getElementById('mobile-bar-points');
+            const mobileBarCo2 = document.getElementById('mobile-bar-co2');
+            const mobileBarBadge = document.querySelector('.mobile-bar-badge');
+
+            if (!mobileBar) return;
+
+            const itemCount = Object.keys(selectedItems).length;
+            let totalPoints = 0;
+            let totalCo2 = 0;
+
+            Object.values(selectedItems).forEach(item => {
+                totalPoints += item.points * item.quantity;
+                totalCo2 += item.co2 * item.quantity;
+            });
+
+            // Update count badge
+            if (mobileBarCount) {
+                mobileBarCount.textContent = itemCount;
+            }
+
+            // Update stats
+            if (mobileBarPoints) {
+                mobileBarPoints.textContent = totalPoints.toLocaleString();
+            }
+            if (mobileBarCo2) {
+                mobileBarCo2.textContent = totalCo2.toFixed(1);
+            }
+
+            // Update drawer footer stats too
+            const drawerTotalPoints = document.getElementById('drawer-total-points');
+            const drawerTotalCo2 = document.getElementById('drawer-total-co2');
+            if (drawerTotalPoints) {
+                drawerTotalPoints.textContent = totalPoints.toLocaleString();
+            }
+            if (drawerTotalCo2) {
+                drawerTotalCo2.textContent = totalCo2.toFixed(1);
+            }
+
+            // Show/hide bar based on items
+            if (itemCount > 0) {
+                mobileBar.classList.add('has-items');
+                // Animate in after a short delay
+                setTimeout(() => {
+                    mobileBar.classList.add('visible');
+                }, 100);
+
+                // Bounce animation on badge
+                if (mobileBarBadge) {
+                    mobileBarBadge.classList.remove('bounce');
+                    void mobileBarBadge.offsetWidth; // Trigger reflow
+                    mobileBarBadge.classList.add('bounce');
+                }
+            } else {
+                mobileBar.classList.remove('visible');
+                setTimeout(() => {
+                    mobileBar.classList.remove('has-items');
+                }, 300);
+            }
+        }
+
+        // Render items in the mobile drawer
+        function renderMobileDrawerItems() {
+            const container = document.getElementById('mobile-drawer-items');
+            if (!container) return;
+
+            const items = Object.values(selectedItems);
+
+            if (items.length === 0) {
+                container.innerHTML = `
+                    <div class="mobile-drawer-empty">
+                        <div class="mobile-drawer-empty-icon">🌱</div>
+                        <p>Your collection bag is empty</p>
+                        <p style="font-size: 0.85rem;">Tap on items to add them</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = items.map(item => `
+                <div class="mobile-drawer-item">
+                    <div class="mobile-drawer-item-icon">${item.icon}</div>
+                    <div class="mobile-drawer-item-info">
+                        <div class="mobile-drawer-item-name">${item.name}</div>
+                        <div class="mobile-drawer-item-meta">
+                            <span class="mobile-drawer-item-points">⭐ ${(item.points * item.quantity).toLocaleString()} pts</span>
+                            <span> · 🌱 ${(item.co2 * item.quantity).toFixed(1)}kg</span>
+                        </div>
+                    </div>
+                    <div class="mobile-drawer-item-controls">
+                        <div class="mobile-drawer-item-qty">
+                            <button class="mobile-qty-btn mobile-qty-minus" data-item-id="${item.id}">−</button>
+                            <span class="mobile-qty-value">${item.quantity}</span>
+                            <button class="mobile-qty-btn mobile-qty-plus" data-item-id="${item.id}">+</button>
+                        </div>
+                        <button class="mobile-drawer-item-remove" data-item-id="${item.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Helper to get user from localStorage (for cross-origin local dev)
+        function getStoredUser() {
+            const storedUser = localStorage.getItem('drweee_user');
+            if (storedUser) {
+                try {
+                    return JSON.parse(storedUser);
+                } catch (e) {
+                    localStorage.removeItem('drweee_user');
+                    return null;
+                }
+            }
+            return null;
         }
 
         // UPDATED: Handle proceed action with return URL
@@ -1714,7 +2544,7 @@
 
             // Check if user is logged in
             try {
-                const response = await fetch('/api/auth-status', {
+                const response = await fetch(getApiBaseUrl() + '/api/auth-status', {
                     method: 'GET',
                     credentials: 'include'
                 });
@@ -1725,13 +2555,26 @@
                     // User is logged in, show location picker
                     showLocationModal();
                 } else {
-                    // User not logged in, show login required modal
-                    showLoginModal();
+                    // Fallback: Check localStorage for cross-origin local development
+                    const storedUser = getStoredUser();
+                    if (storedUser && storedUser.GUID) {
+                        console.log('📦 Using localStorage user for auth:', storedUser.fullName);
+                        showLocationModal();
+                    } else {
+                        // User not logged in, show login required modal
+                        showLoginModal();
+                    }
                 }
             } catch (error) {
                 console.error('Error checking auth status:', error);
-                // On error, assume not logged in
-                showLoginModal();
+                // Fallback: Check localStorage
+                const storedUser = getStoredUser();
+                if (storedUser && storedUser.GUID) {
+                    console.log('📦 Using localStorage user (API error fallback):', storedUser.fullName);
+                    showLocationModal();
+                } else {
+                    showLoginModal();
+                }
             }
         }
 
@@ -2004,15 +2847,32 @@ ${itemsListForDescription.map(item => `- ${item}`).join('\n')}
 `.trim();
 
             try {
-                // Get user data to extract GUID
-                const authResponse = await fetch('/api/auth-status', {
-                    method: 'GET',
-                    credentials: 'include'
-                });
+                // Get user data to extract GUID - try API first, then localStorage
+                let userGUID = null;
 
-                const authData = await authResponse.json();
+                try {
+                    const authResponse = await fetch(getApiBaseUrl() + '/api/auth-status', {
+                        method: 'GET',
+                        credentials: 'include'
+                    });
+                    const authData = await authResponse.json();
+                    if (authData.isLoggedIn && authData.userData?.GUID) {
+                        userGUID = authData.userData.GUID;
+                    }
+                } catch (e) {
+                    console.log('Auth API failed, trying localStorage');
+                }
 
-                if (!authData.isLoggedIn || !authData.userData.GUID) {
+                // Fallback to localStorage for cross-origin local development
+                if (!userGUID) {
+                    const storedUser = getStoredUser();
+                    if (storedUser && storedUser.GUID) {
+                        userGUID = storedUser.GUID;
+                        console.log('📦 Using GUID from localStorage:', userGUID);
+                    }
+                }
+
+                if (!userGUID) {
                     throw new Error('User not properly authenticated');
                 }
 
@@ -2023,13 +2883,13 @@ ${itemsListForDescription.map(item => `- ${item}`).join('\n')}
                 confirmBtn.disabled = true;
 
                 // Send request to backend
-                const response = await fetch('/api/collection-request', {
+                const response = await fetch(getApiBaseUrl() + '/api/collection-request', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
                     body: JSON.stringify({
                         type: 'ewaste',
-                        GUID: authData.userData.GUID,
+                        GUID: userGUID,
                         Description: description,
                         longitude: selectedLocation.coordinates[0].toString(),
                         latitude: selectedLocation.coordinates[1].toString()
@@ -2209,16 +3069,16 @@ ${itemsListForDescription.map(item => `- ${item}`).join('\n')}
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelector('.filter-btn[data-category="all"]').classList.add('active');
 
-            // Redirect to home page after a short delay
+            // Redirect to My Requests page after a short delay
             setTimeout(() => {
-                window.location.href = '/index.html';
+                window.location.href = '/my-requests.html';
             }, 1000);
         }
 
         // Add this function to load config
         async function loadConfig() {
             try {
-                const response = await fetch('/api/config');
+                const response = await fetch(getApiBaseUrl() + '/api/config');
                 const config = await response.json();
                 AZURE_MAPS_KEY = config.azureMapsKey;
                 console.log('Azure Maps key loaded successfully');

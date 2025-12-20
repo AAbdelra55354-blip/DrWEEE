@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Understand your environmental impact through e-waste recycling. Learn how recycling electronics and using remanufactured cartridges helps reduce CO2 emissions.">
-    <title>Your Environmental Impact - CO2 Savings | DR.WEEE</title>
+    <meta name="description"
+        content="Track your environmental impact through e-waste recycling. See your CO2 savings, share your achievements, and inspire others to join the green movement.">
+    <title>My Environmental Impact | DR.WEEE</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="images/logos/favicon.png">
@@ -16,7 +17,9 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="css/main.css">
@@ -26,12 +29,12 @@
         /* Environmental Impact Page Styles */
         .impact-hero {
             position: relative;
-            min-height: 60vh;
+            min-height: 50vh;
             display: flex;
             align-items: center;
             overflow: hidden;
             background: linear-gradient(135deg, #1B5E20, #2E7D32, #43A047);
-            padding: 8rem 0 var(--space-xxl) 0;
+            padding: 8rem 0 6rem 0;
             margin-top: -5rem;
         }
 
@@ -74,445 +77,892 @@
 
         .hero-title {
             font-family: var(--font-secondary);
-            font-size: 3.75rem;
+            font-size: 3rem;
             margin-bottom: var(--space-md);
             color: var(--white);
             line-height: 1.2;
         }
 
         .hero-subtitle {
-            font-size: 1.375rem;
+            font-size: 1.25rem;
             opacity: 0.95;
-              color: var(--white);
-            margin-bottom: var(--space-xl);
+            color: var(--white);
+            margin-bottom: 0;
             line-height: 1.6;
         }
 
-        /* User Impact Summary Card */
-        .user-impact-card {
+        /* Main Impact Card */
+        .impact-main-card {
             background: var(--white);
-            border-radius: var(--radius-xl);
-            padding: var(--space-xxl);
-            box-shadow: var(--shadow-lg);
-            margin-top: -80px;
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            margin-top: -60px;
             position: relative;
             z-index: 10;
         }
 
+        /* Eco Level Section */
+        .eco-level-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #f0f0f0;
+            flex-wrap: wrap;
+        }
+
+        .eco-level-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .eco-level-badge {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: 0 8px 25px rgba(46, 125, 50, 0.3);
+        }
+
+        .eco-level-text h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .eco-level-text p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .eco-progress-section {
+            flex: 1;
+            min-width: 250px;
+            max-width: 400px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: #e8f5e9;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-green), var(--secondary-green));
+            border-radius: 10px;
+            transition: width 1.5s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* CO2 Counter Section */
+        .co2-counter-section {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .co2-main-value {
+            font-size: 4.5rem;
+            font-weight: 800;
+            color: var(--primary-green);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .co2-main-value .unit {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--secondary-green);
+        }
+
+        .co2-main-label {
+            font-size: 1.25rem;
+            color: var(--text-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .items-recycled {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            color: var(--primary-green);
+        }
+
+        .items-recycled i {
+            font-size: 1.25rem;
+        }
+
+        /* Stats Grid */
         .impact-stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: var(--space-xl);
-            margin-bottom: var(--space-xl);
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
 
         .impact-stat-card {
             text-align: center;
-            padding: var(--space-lg);
-            background: linear-gradient(135deg, var(--light-green), rgba(77, 182, 172, 0.1));
-            border-radius: var(--radius-lg);
-            transition: var(--transition-normal);
+            padding: 1.5rem 1rem;
+            background: linear-gradient(135deg, #f8fffe, #e8f5e9);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
         }
 
         .impact-stat-card:hover {
             transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 10px 30px rgba(46, 125, 50, 0.15);
+            border-color: var(--primary-green);
         }
 
-        .stat-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto var(--space-md);
+        .stat-emoji {
             font-size: 2rem;
-            color: var(--white);
-            box-shadow: var(--shadow-green);
+            margin-bottom: 0.75rem;
+            display: block;
         }
 
         .stat-value {
-            font-size: 2.5rem;
+            font-size: 1.75rem;
             font-weight: 700;
             color: var(--primary-green);
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
         }
 
         .stat-label {
-            font-size: 1rem;
+            font-size: 0.8rem;
             color: var(--text-gray);
             font-weight: 500;
         }
 
-        .impact-divider {
-            text-align: center;
-            margin: var(--space-xxl) 0;
-            position: relative;
-        }
-
-        .impact-divider::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(to right, transparent, var(--light-green), transparent);
-        }
-
-        .impact-divider-text {
-            position: relative;
-            display: inline-block;
-            background: var(--white);
-            padding: 0 var(--space-lg);
-            font-weight: 600;
-            color: var(--primary-green);
-            font-size: 1.125rem;
-        }
-
-        /* CO2 Comparisons Section */
-        .comparisons-section {
-            padding: var(--space-xxl) 0;
+        /* Share Section */
+        .share-section {
+            padding: 3rem 0;
             background: var(--off-white);
+        }
+
+        .share-card {
+            background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+            border-radius: 24px;
+            padding: 2.5rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .share-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .share-content h2 {
+            font-family: var(--font-secondary);
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            color: white;
+        }
+
+        .share-content p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+        }
+
+        .share-btn.twitter {
+            background: #1DA1F2;
+            color: white;
+        }
+
+        .share-btn.facebook {
+            background: #4267B2;
+            color: white;
+        }
+
+        .share-btn.linkedin {
+            background: #0A66C2;
+            color: white;
+        }
+
+        .share-btn.whatsapp {
+            background: #25D366;
+            color: white;
+        }
+
+        .share-btn.copy {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .share-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Impact Card Preview */
+        .impact-card-preview {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            min-width: 280px;
+            max-width: 320px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .impact-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .impact-card-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .impact-card-brand {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+
+        .impact-card-co2 {
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        .impact-card-co2 .value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-green);
+        }
+
+        .impact-card-co2 .label {
+            color: var(--text-gray);
+            font-size: 0.85rem;
+        }
+
+        .impact-card-stats {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            padding-top: 1rem;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .impact-card-stat .num {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .impact-card-stat .lbl {
+            font-size: 0.7rem;
+            color: var(--text-gray);
+        }
+
+        /* Equivalents Section */
+        .equivalents-section {
+            padding: 4rem 0;
+            background: white;
         }
 
         .section-header {
             text-align: center;
-            max-width: 800px;
-            margin: 0 auto var(--space-xxl);
+            max-width: 700px;
+            margin: 0 auto 3rem;
         }
 
         .section-title {
             font-family: var(--font-secondary);
-            font-size: 2.75rem;
+            font-size: 2.25rem;
             color: var(--text-dark);
-            margin-bottom: var(--space-md);
+            margin-bottom: 0.75rem;
         }
 
         .section-subtitle {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             color: var(--text-gray);
-            line-height: 1.6;
         }
 
-        .comparison-cards {
+        .equivalents-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: var(--space-xl);
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
         }
 
-        .comparison-card {
-            background: var(--white);
-            border-radius: var(--radius-xl);
-            padding: var(--space-xl);
-            box-shadow: var(--shadow-md);
-            transition: var(--transition-normal);
+        .equivalent-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
             border: 2px solid transparent;
+            display: flex;
+            align-items: flex-start;
+            gap: 1.25rem;
         }
 
-        .comparison-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
+        .equivalent-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(46, 125, 50, 0.15);
             border-color: var(--primary-green);
         }
 
-        .comparison-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
-            border-radius: var(--radius-lg);
+        .equivalent-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: var(--space-lg);
-            font-size: 2.5rem;
+            font-size: 1.75rem;
+            flex-shrink: 0;
         }
 
-        .comparison-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: var(--space-md);
-            color: var(--text-dark);
-        }
-
-        .comparison-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary-green);
-            margin-bottom: var(--space-sm);
-        }
-
-        .comparison-description {
-            color: var(--text-gray);
-            line-height: 1.6;
-        }
-
-        /* Interactive Calculator */
-        .calculator-section {
-            padding: var(--space-xxl) 0;
-            background: var(--white);
-        }
-
-        .calculator-card {
-            background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
-            border-radius: var(--radius-xl);
-            padding: var(--space-xxl);
-            color: var(--white);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .calculator-header {
-            text-align: center;
-             color: var(--white);
-            margin-bottom: var(--space-xl);
-        }
-
-        .calculator-title {
-            font-family: var(--font-secondary);
-            font-size: 2.5rem;
-             color: var(--white);
-            margin-bottom: var(--space-md);
-        }
-
-        .calculator-inputs {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: var(--radius-lg);
-            padding: var(--space-xl);
-            margin-bottom: var(--space-xl);
-        }
-
-        .input-group {
-            margin-bottom: var(--space-lg);
-        }
-
-        .input-group:last-child {
-            margin-bottom: 0;
-        }
-
-        .input-label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: var(--space-sm);
-            font-size: 1.125rem;
-        }
-
-        .input-row {
-            display: flex;
-            align-items: center;
-            gap: var(--space-md);
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: var(--radius-md);
-            padding: var(--space-md);
-        }
-
-        .input-icon {
-            font-size: 1.5rem;
-            color: var(--secondary-green);
-        }
-
-        .slider-container {
+        .equivalent-content {
             flex: 1;
         }
 
-        .slider {
-            width: 100%;
-            height: 8px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.3);
-            outline: none;
-            /* -webkit-appearance: none; */
-        }
-
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: var(--white);
-            cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .slider::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: var(--white);
-            cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            border: none;
-        }
-
-        .slider-value {
+        .equivalent-value {
             font-size: 1.5rem;
             font-weight: 700;
-            min-width: 100px;
-            text-align: right;
+            color: var(--primary-green);
+            margin-bottom: 0.25rem;
         }
 
-        .calculator-results {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: var(--space-lg);
-        }
-
-        .result-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border-radius: var(--radius-lg);
-            padding: var(--space-lg);
-            text-align: center;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .result-icon {
-            font-size: 2rem;
-            margin-bottom: var(--space-sm);
-        }
-
-        .result-value {
-            font-size: 1.75rem;
-            font-weight: 700;
-            display: block;
+        .equivalent-label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-dark);
             margin-bottom: 0.5rem;
         }
 
-        .result-label {
-            font-size: 0.9rem;
-            opacity: 0.9;
+        .equivalent-desc {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            line-height: 1.5;
         }
 
-        /* Educational Content */
-        .education-section {
-            padding: var(--space-xxl) 0;
-            background: var(--off-white);
+        /* Emission Factor Source Link */
+        .equivalent-source {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 0.75rem;
+            padding: 0.4rem 0.75rem;
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border-radius: 6px;
+            font-size: 0.7rem;
+            color: #3b82f6;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(59, 130, 246, 0.2);
         }
 
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: var(--space-xl);
+        .equivalent-source:hover {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
         }
 
-        .benefit-card {
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            padding: var(--space-xl);
-            box-shadow: var(--shadow-sm);
-            transition: var(--transition-normal);
+        .equivalent-source i {
+            font-size: 0.65rem;
         }
 
-        .benefit-card:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateY(-5px);
+        .equivalent-source .source-name {
+            font-weight: 600;
         }
 
-        .benefit-number {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
-            color: var(--white);
-            border-radius: 50%;
+        .equivalent-source .factor-value {
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        /* Verified badge for equivalent cards */
+        .equivalent-verified {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            font-size: 0.6rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .equivalent-verified i {
+            font-size: 0.55rem;
+        }
+
+        /* Climatiq Credibility Section - Enhanced */
+        .climatiq-section {
+            padding: 2.5rem 0;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        }
+
+        .climatiq-card {
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            border-radius: 20px;
+            padding: 2rem 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+            flex-wrap: wrap;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .climatiq-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #06b6d4, #10b981);
+        }
+
+        .climatiq-info {
+            display: flex;
+            align-items: center;
+            gap: 1.75rem;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .climatiq-logo {
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            flex-shrink: 0;
+            padding: 0.75rem 1.25rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .climatiq-logo img {
+            height: 32px;
+            width: auto;
+        }
+
+        .climatiq-text {
+            flex: 1;
+        }
+
+        .climatiq-text h4 {
+            font-size: 1.1rem;
             font-weight: 700;
-            margin-bottom: var(--space-md);
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
         }
 
-        .benefit-title {
-            font-size: 1.25rem;
+        .climatiq-text h4 .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.3rem 0.75rem;
+            border-radius: 20px;
             font-weight: 600;
-            margin-bottom: var(--space-sm);
-            color: var(--text-dark);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
         }
 
-        .benefit-text {
-            color: var(--text-gray);
+        .climatiq-text p {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin: 0;
             line-height: 1.6;
+            max-width: 500px;
         }
 
-        /* Call to Action */
-        .cta-section {
-            padding: var(--space-xxl) 0;
-            background: linear-gradient(135deg, var(--dark-green), var(--primary-green));
-            color: var(--white);
+        .climatiq-stats {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
-        .cta-content {
+        .climatiq-stat {
             text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border-radius: 14px;
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            min-width: 100px;
+            transition: all 0.3s ease;
         }
 
-        .cta-title {
+        .climatiq-stat:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15);
+        }
+
+        .climatiq-stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .climatiq-stat-label {
+            font-size: 0.7rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-top: 0.25rem;
+        }
+
+        .climatiq-sources {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .climatiq-sources span {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .climatiq-source-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.2rem 0.5rem;
+            background: #f1f5f9;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+        }
+
+        .cta-card {
+            background: white;
+            border-radius: 24px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .cta-card h2 {
             font-family: var(--font-secondary);
-            font-size: 2.75rem;
-            margin-bottom: var(--space-md);
-            color: var(--white);
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 0.75rem;
         }
 
-        .cta-text {
-            font-size: 1.25rem;
-            margin-bottom: var(--space-xl);
-            opacity: 0.95;
-            line-height: 1.6;
-            color: var(--white);
+        .cta-card p {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
         }
 
         .cta-buttons {
             display: flex;
-            gap: var(--space-md);
+            gap: 1rem;
             justify-content: center;
             flex-wrap: wrap;
+        }
+
+        /* Loading State */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e8f5e9;
+            border-top-color: var(--primary-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            color: var(--text-gray);
+            font-weight: 500;
+        }
+
+        /* Not Logged In State */
+        .login-prompt {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .login-prompt-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .login-prompt h3 {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-bottom: 0.75rem;
+        }
+
+        .login-prompt p {
+            color: var(--text-gray);
+            margin-bottom: 1.5rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         /* Responsive */
         @media (max-width: 991px) {
             .hero-title {
-                font-size: 3rem;
+                font-size: 2.5rem;
             }
 
-            .section-title {
-                font-size: 2.25rem;
+            .impact-stats-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .calculator-title {
-                font-size: 2rem;
+            .share-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .share-buttons {
+                justify-content: center;
+            }
+
+            .impact-card-preview {
+                margin: 0 auto;
             }
         }
 
         @media (max-width: 767px) {
             .hero-title {
-                font-size: 2.25rem;
+                font-size: 2rem;
+            }
+
+            .impact-main-card {
+                padding: 1.5rem;
+                margin-top: -40px;
+            }
+
+            .eco-level-section {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .eco-level-info {
+                flex-direction: column;
+            }
+
+            .co2-main-value {
+                font-size: 3rem;
             }
 
             .impact-stats-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
             }
 
-            .comparison-cards {
-                grid-template-columns: 1fr;
+            .stat-value {
+                font-size: 1.5rem;
             }
 
-            .calculator-results {
+            .share-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .share-btn {
+                justify-content: center;
+            }
+
+            .equivalents-grid {
                 grid-template-columns: 1fr;
             }
 
             .cta-buttons {
                 flex-direction: column;
-                align-items: center;
             }
 
             .cta-buttons .btn {
                 width: 100%;
-                max-width: 300px;
+            }
+
+            .climatiq-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 1.5rem;
+                gap: 1.5rem;
+            }
+
+            .climatiq-info {
+                flex-direction: column;
+                text-align: center;
+                min-width: auto;
+            }
+
+            .climatiq-logo {
+                padding: 0.6rem 1rem;
+            }
+
+            .climatiq-logo img {
+                height: 28px;
+            }
+
+            .climatiq-text h4 {
+                justify-content: center;
+                flex-wrap: wrap;
+                font-size: 1rem;
+            }
+
+            .climatiq-text p {
+                font-size: 0.85rem;
+            }
+
+            .climatiq-stats {
+                justify-content: center;
+                width: 100%;
+            }
+
+            .climatiq-stat {
+                flex: 1;
+                min-width: 80px;
+                padding: 0.875rem 1rem;
+            }
+
+            .climatiq-stat-value {
+                font-size: 1.25rem;
+            }
+
+            .climatiq-sources {
+                justify-content: center;
             }
         }
     </style>
@@ -522,6 +972,12 @@
     <!-- Header Placeholder -->
     <div id="header-placeholder"></div>
 
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Calculating your environmental impact...</div>
+    </div>
+
     <!-- Main Content -->
     <main class="main">
         <!-- Hero Section -->
@@ -530,296 +986,331 @@
                 <div class="hero-content">
                     <div class="hero-badge">
                         <i class="fas fa-leaf"></i>
-                        <span>Your Environmental Journey</span>
+                        <span>Your Green Journey</span>
                     </div>
-                    <h1 class="hero-title">Every Action Counts for Our Planet</h1>
+                    <h1 class="hero-title">Your Environmental Impact</h1>
                     <p class="hero-subtitle">
-                        Discover how your e-waste recycling efforts translate into real environmental impact.
-                        Together, we're reducing CO₂ emissions and building a sustainable future.
+                        Every item you recycle makes a difference. Track your contribution to a sustainable future.
                     </p>
                 </div>
             </div>
         </section>
 
-        <!-- User Impact Summary -->
-        <section class="container" style="margin-top: -60px; padding-bottom: var(--space-xxl);">
-            <div class="user-impact-card">
-                <h2 style="text-align: center; font-size: 2rem; margin-bottom: var(--space-xl); color: var(--text-dark);">
-                    <i class="fas fa-chart-line" style="color: var(--primary-green);"></i>
-                    Your Personal Impact
-                </h2>
-
-                <div class="impact-stats-grid">
-                    <div class="impact-stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-cloud"></i>
-                        </div>
-                        <span class="stat-value" id="user-co2-saved">42.5</span>
-                        <span class="stat-label">kg CO₂ Saved</span>
+        <!-- Main Impact Card -->
+        <section class="container" style="padding-bottom: 3rem;">
+            <div class="impact-main-card" id="impactCard">
+                <!-- Login Prompt (shown when not logged in) -->
+                <div class="login-prompt" id="loginPrompt" style="display: none;">
+                    <div class="login-prompt-icon">
+                        <i class="fas fa-leaf"></i>
                     </div>
-
-                    <div class="impact-stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-recycle"></i>
-                        </div>
-                        <span class="stat-value" id="user-items-recycled">15</span>
-                        <span class="stat-label">Items Recycled</span>
-                    </div>
-
-                    <div class="impact-stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-print"></i>
-                        </div>
-                        <span class="stat-value" id="user-cartridges-used">8</span>
-                        <span class="stat-label">Remanufactured Cartridges</span>
-                    </div>
-
-                    <div class="impact-stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-tree"></i>
-                        </div>
-                        <span class="stat-value" id="user-trees-equivalent">2.1</span>
-                        <span class="stat-label">Trees Planted Equivalent</span>
-                    </div>
+                    <h3>Track Your Environmental Impact</h3>
+                    <p>Log in to see your personal CO2 savings from recycling e-waste with DR.WEEE.</p>
+                    <a href="login.html" class="btn btn--primary btn--lg">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Log In to View
+                    </a>
                 </div>
 
-               
-            </div>
-        </section>
-
-        <!-- CO2 Comparisons Section -->
-        <section class="comparisons-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Understanding Your CO₂ Savings</h2>
-                    <p class="section-subtitle">
-                        Your <strong id="comparison-co2-value">42.5 kg</strong> of CO₂ savings is equivalent to...
-                    </p>
-                </div>
-
-                <div class="comparison-cards">
-                    <div class="comparison-card">
-                        <div class="comparison-icon">
-                            🚗
-                        </div>
-                        <h3 class="comparison-title">Driving Distance</h3>
-                        <div class="comparison-value" id="driving-distance">212 km</div>
-                        <p class="comparison-description">
-                            That's like driving from Dubai to Abu Dhabi and back! By recycling e-waste, you've prevented the same amount of emissions as this car journey.
-                        </p>
-                    </div>
-
-                    <div class="comparison-card">
-                        <div class="comparison-icon">
-                            💡
-                        </div>
-                        <h3 class="comparison-title">Home Electricity</h3>
-                        <div class="comparison-value" id="electricity-days">21 days</div>
-                        <p class="comparison-description">
-                            Equivalent to powering an average home for 3 weeks. Your recycling efforts save energy and reduce the carbon footprint significantly.
-                        </p>
-                    </div>
-
-                    <div class="comparison-card">
-                        <div class="comparison-icon">
-                            ✈️
-                        </div>
-                        <h3 class="comparison-title">Smartphone Charges</h3>
-                        <div class="comparison-value" id="phone-charges">5,312</div>
-                        <p class="comparison-description">
-                            You could charge your smartphone over 5,000 times! That's 14 years of daily charging - an incredible energy saving.
-                        </p>
-                    </div>
-
-                    <div class="comparison-card">
-                        <div class="comparison-icon">
-                            🌳
-                        </div>
-                        <h3 class="comparison-title">Trees Planted</h3>
-                        <div class="comparison-value" id="trees-planted">2.1 trees</div>
-                        <p class="comparison-description">
-                            Planting 2 trees absorbs the same CO₂ in a year. Your recycling has the same environmental benefit as planting a small forest!
-                        </p>
-                    </div>
-
-                    <div class="comparison-card">
-                        <div class="comparison-icon">
-                            📺
-                        </div>
-                        <h3 class="comparison-title">TV Streaming</h3>
-                        <div class="comparison-value" id="tv-hours">708 hours</div>
-                        <p class="comparison-description">
-                            That's like streaming your favorite shows for nearly 30 days straight. Your eco-actions offset this much energy consumption!
-                        </p>
-                    </div>
-
-                    <div class="comparison-card">
-                        <div class="comparison-icon">
-                            🍔
-                        </div>
-                        <h3 class="comparison-title">Burgers Saved</h3>
-                        <div class="comparison-value" id="burgers-saved">42 burgers</div>
-                        <p class="comparison-description">
-                            Producing a beef burger creates 1kg of CO₂. You've saved the equivalent of skipping 42 burgers - that's sustainability in action!
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Interactive Calculator -->
-        <section class="calculator-section">
-            <div class="container">
-                <div class="calculator-card">
-                    <div class="calculator-header">
-                        <h2 class="calculator-title">Calculate Your Potential Impact</h2>
-                        <p style="opacity: 0.9; font-size: 1.125rem; color: white;">
-                            See how much CO₂ you could save by recycling electronics and using remanufactured cartridges
-                        </p>
-                    </div>
-
-                    <div class="calculator-inputs">
-                        <div class="input-group">
-                            <label class="input-label">
-                                <i class="fas fa-laptop"></i> Number of Electronic Devices to Recycle
-                            </label>
-                            <div class="input-row">
-                                <i class="input-icon fas fa-mobile-alt"></i>
-                                <div class="slider-container">
-                                    <input type="range" min="0" max="50" value="10" class="slider" id="devices-slider">
-                                </div>
-                                <span class="slider-value" id="devices-value">10</span>
+                <!-- Impact Content (shown when logged in) -->
+                <div id="impactContent" style="display: none;">
+                    <!-- Eco Level Section -->
+                    <div class="eco-level-section">
+                        <div class="eco-level-info">
+                            <div class="eco-level-badge" id="ecoLevelEmoji">🌱</div>
+                            <div class="eco-level-text">
+                                <h3 id="ecoLevelName">Seedling</h3>
+                                <p id="userName">Welcome, Eco Warrior!</p>
                             </div>
                         </div>
-
-                        <div class="input-group">
-                            <label class="input-label">
-                                <i class="fas fa-print"></i> Remanufactured Cartridges per Year
-                            </label>
-                            <div class="input-row">
-                                <i class="input-icon fas fa-fill-drip"></i>
-                                <div class="slider-container">
-                                    <input type="range" min="0" max="100" value="24" class="slider" id="cartridges-slider">
-                                </div>
-                                <span class="slider-value" id="cartridges-value">24</span>
+                        <div class="eco-progress-section">
+                            <div class="progress-label">
+                                <span id="progressText">Progress to Green Warrior</span>
+                                <span id="progressPercent">0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="calculator-results">
-                        <div class="result-card">
-                            <div class="result-icon">🌍</div>
-                            <span class="result-value" id="calc-co2">127 kg</span>
-                            <span class="result-label">CO₂ Saved Annually</span>
+                    <!-- CO2 Counter Section -->
+                    <div class="co2-counter-section">
+                        <div class="co2-main-value">
+                            <span id="co2Value">0</span>
+                            <span class="unit">kg CO₂</span>
                         </div>
+                        <div class="co2-main-label">Total Carbon Emissions Saved</div>
+                      
+                    </div>
 
-                        <div class="result-card">
-                            <div class="result-icon">🚗</div>
-                            <span class="result-value" id="calc-driving">635 km</span>
-                            <span class="result-label">Driving Equivalent</span>
+                    <!-- Quick Stats Grid -->
+                    <div class="impact-stats-grid">
+                        <div class="impact-stat-card">
+                            <span class="stat-emoji">🌳</span>
+                            <span class="stat-value" id="treesValue">0</span>
+                            <span class="stat-label">Trees Equivalent</span>
                         </div>
-
-                        <div class="result-card">
-                            <div class="result-icon">🌳</div>
-                            <span class="result-value" id="calc-trees">6.4</span>
-                            <span class="result-label">Trees Planted</span>
+                        <div class="impact-stat-card">
+                            <span class="stat-emoji">🚗</span>
+                            <span class="stat-value" id="drivingValue">0 km</span>
+                            <span class="stat-label">Driving Avoided</span>
                         </div>
-
-                        <div class="result-card">
-                            <div class="result-icon">💚</div>
-                            <span class="result-value" id="calc-points">635</span>
-                            <span class="result-label">WEEE Points Earned</span>
+                        <div class="impact-stat-card">
+                            <span class="stat-emoji">💡</span>
+                            <span class="stat-value" id="electricityValue">0</span>
+                            <span class="stat-label">Days of Electricity</span>
+                        </div>
+                        <div class="impact-stat-card">
+                            <span class="stat-emoji">📱</span>
+                            <span class="stat-value" id="chargesValue">0</span>
+                            <span class="stat-label">Phone Charges</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Climatiq Credibility Banner -->
+        <section class="climatiq-section" id="climatiqBanner">
+            <div class="container">
+                <div class="climatiq-card">
+                    <div class="climatiq-info">
+                        <div class="climatiq-logo">
+                            <a href="https://www.climatiq.io/" target="_blank" rel="noopener noreferrer">
+                                <img src="https://cdn.prod.website-files.com/6059f5c21023d67f1f75b7bc/60770ba173bfd052b37f0dd9_Climatiq_logo_400p-W.png"
+                                     alt="Climatiq - Climate Intelligence Platform"
+                                     onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 30%22><text x=%220%22 y=%2222%22 font-family=%22Arial%22 font-size=%2218%22 font-weight=%22bold%22 fill=%22%233b82f6%22>climatiq</text></svg>';">
+                            </a>
+                        </div>
+                        <div class="climatiq-text">
+                            <h4>
+                                Powered by Climatiq API
+                                <span class="verified-badge"><i class="fas fa-check-circle"></i> Verified Data</span>
+                            </h4>
+                            <p>All emission calculations use scientifically-backed emission factors from Climatiq's verified database, trusted by leading companies worldwide for accurate carbon accounting.</p>
+                            <div class="climatiq-sources">
+                                <span>Data sources:</span>
+                                <span class="climatiq-source-badge">EPA</span>
+                                <span class="climatiq-source-badge">IPCC AR6</span>
+                                <span class="climatiq-source-badge">GHG Protocol</span>
+                                <span class="climatiq-source-badge">DEFRA</span>
+                                <span class="climatiq-source-badge">IEA</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="climatiq-stats">
+                        <div class="climatiq-stat">
+                            <div class="climatiq-stat-value">639K+</div>
+                            <div class="climatiq-stat-label">Emission Factors</div>
+                        </div>
+                        <div class="climatiq-stat">
+                            <div class="climatiq-stat-value">200+</div>
+                            <div class="climatiq-stat-label">Countries</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Share Your Impact Section -->
+        <section class="share-section" id="shareSection" style="display: none;">
+            <div class="container">
+                <div class="share-card">
+                    <div class="share-content">
+                        <h2>Share Your Green Achievement!</h2>
+                        <p>Inspire others to join the e-waste recycling movement. Share your impact on social media.</p>
+                        <div class="share-buttons">
+                            <button class="share-btn linkedin" onclick="shareOnLinkedIn()">
+                                <i class="fab fa-linkedin-in"></i>
+                                LinkedIn
+                            </button>
+                            <button class="share-btn twitter" onclick="shareOnTwitter()">
+                                <i class="fab fa-twitter"></i>
+                                Twitter
+                            </button>
+                            <button class="share-btn facebook" onclick="shareOnFacebook()">
+                                <i class="fab fa-facebook-f"></i>
+                                Facebook
+                            </button>
+                            <button class="share-btn whatsapp" onclick="shareOnWhatsApp()">
+                                <i class="fab fa-whatsapp"></i>
+                                WhatsApp
+                            </button>
+                            <button class="share-btn copy" onclick="copyShareLink(event)">
+                                <i class="fas fa-link"></i>
+                                Copy Link
+                            </button>
+                        </div>
+                        <p class="share-hint" style="font-size: 0.85rem; opacity: 0.8; margin-top: 1rem;">
+                            <i class="fas fa-info-circle"></i>
+                            Your certificate link shows a preview on LinkedIn with your impact stats!
+                        </p>
+                    </div>
+                    <div class="impact-card-preview">
+                        <div class="impact-card-header">
+                            <div class="impact-card-logo">DR</div>
+                            <div class="impact-card-brand">DR.WEEE Eco Impact</div>
+                        </div>
+                        <div class="impact-card-co2">
+                            <div class="value" id="cardCO2Value">0 kg</div>
+                            <div class="label">CO₂ Saved</div>
+                        </div>
+                        <div class="impact-card-stats">
+                            <div class="impact-card-stat">
+                                <div class="num" id="cardTrees">0</div>
+                                <div class="lbl">Trees</div>
+                            </div>
+                            <div class="impact-card-stat">
+                                <div class="num" id="cardItems">0</div>
+                                <div class="lbl">Items</div>
+                            </div>
+                            <div class="impact-card-stat">
+                                <div class="num" id="cardLevel">🌱</div>
+                                <div class="lbl">Level</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Educational Benefits Section -->
-        <section class="education-section">
+        <!-- Equivalents Section -->
+        <section class="equivalents-section" id="equivalentsSection" style="display: none;">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title">Why E-Waste Recycling Matters</h2>
-                    <p class="section-subtitle">
-                        Every piece of electronic waste you recycle makes a real difference for our planet's future
-                    </p>
+                    <h2 class="section-title">What Your Impact Means</h2>
+                    <p class="section-subtitle">Your CO₂ savings translated into everyday terms</p>
                 </div>
 
-                <div class="benefits-grid">
-                    <div class="benefit-card">
-                        <div class="benefit-number">1</div>
-                        <h3 class="benefit-title">Reduces Greenhouse Gases</h3>
-                        <p class="benefit-text">
-                            Manufacturing new electronics requires mining raw materials and energy-intensive processes.
-                            Recycling prevents 50-80% of the CO₂ emissions compared to producing new devices.
-                        </p>
+                <div class="equivalents-grid">
+                    <div class="equivalent-card">
+                        <div class="equivalent-icon">🚗</div>
+                        <div class="equivalent-content">
+                            <div class="equivalent-value" id="eqDriving">0 km</div>
+                            <div class="equivalent-label">
+                                Car Driving Avoided
+                                <span class="equivalent-verified"><i class="fas fa-check"></i> Verified</span>
+                            </div>
+                            <div class="equivalent-desc">The distance you could have driven that would emit the same CO₂</div>
+                            <a href="https://www.climatiq.io/data/emission-factor/2b76b9f9-46e0-4933-93c0-21ab62f9d943"
+                               target="_blank" rel="noopener noreferrer" class="equivalent-source" id="srcDriving">
+                                <i class="fas fa-external-link-alt"></i>
+                                <span class="source-name">GHG Protocol</span>
+                                <span class="factor-value">• 0.215 kg CO₂/km</span>
+                            </a>
+                        </div>
                     </div>
 
-                    <div class="benefit-card">
-                        <div class="benefit-number">2</div>
-                        <h3 class="benefit-title">Conserves Natural Resources</h3>
-                        <p class="benefit-text">
-                            One million recycled laptops save the energy equivalent of powering 3,500 homes for a year.
-                            Remanufactured cartridges save up to 3.5 pounds of oil per cartridge!
-                        </p>
+                    <div class="equivalent-card">
+                        <div class="equivalent-icon">🌳</div>
+                        <div class="equivalent-content">
+                            <div class="equivalent-value" id="eqTrees">0 trees</div>
+                            <div class="equivalent-label">
+                                Trees Planted for 1 Year
+                                <span class="equivalent-verified"><i class="fas fa-check"></i> Verified</span>
+                            </div>
+                            <div class="equivalent-desc">Equivalent carbon absorption of mature trees over one year</div>
+                            <a href="https://www.climatiq.io/data"
+                               target="_blank" rel="noopener noreferrer" class="equivalent-source" id="srcTrees">
+                                <i class="fas fa-external-link-alt"></i>
+                                <span class="source-name">EPA/IPCC AR6</span>
+                                <span class="factor-value">• 22 kg CO₂/tree/year</span>
+                            </a>
+                        </div>
                     </div>
 
-                    <div class="benefit-card">
-                        <div class="benefit-number">3</div>
-                        <h3 class="benefit-title">Prevents Toxic Pollution</h3>
-                        <p class="benefit-text">
-                            E-waste contains harmful materials like lead and mercury. Proper recycling prevents these toxins
-                            from contaminating soil and water, protecting ecosystems and human health.
-                        </p>
+                    <div class="equivalent-card">
+                        <div class="equivalent-icon">💡</div>
+                        <div class="equivalent-content">
+                            <div class="equivalent-value" id="eqElectricity">0 days</div>
+                            <div class="equivalent-label">
+                                Home Electricity Saved
+                                <span class="equivalent-verified"><i class="fas fa-check"></i> Verified</span>
+                            </div>
+                            <div class="equivalent-desc">Days of average Egyptian household electricity consumption</div>
+                            <a href="https://www.climatiq.io/data/emission-factor/2c8aa104-7e2e-4bae-af32-c054e9bc4d7f"
+                               target="_blank" rel="noopener noreferrer" class="equivalent-source" id="srcElectricity">
+                                <i class="fas fa-external-link-alt"></i>
+                                <span class="source-name">ADEME/IEA</span>
+                                <span class="factor-value">• 0.45 kg CO₂/kWh (Egypt Grid)</span>
+                            </a>
+                        </div>
                     </div>
 
-                    <div class="benefit-card">
-                        <div class="benefit-number">4</div>
-                        <h3 class="benefit-title">Supports Circular Economy</h3>
-                        <p class="benefit-text">
-                            Remanufactured printer cartridges use 70% less energy than new ones and keep plastic out of landfills.
-                            Each cartridge can be reused 4-5 times before recycling!
-                        </p>
+                    <div class="equivalent-card">
+                        <div class="equivalent-icon">📱</div>
+                        <div class="equivalent-content">
+                            <div class="equivalent-value" id="eqCharges">0 charges</div>
+                            <div class="equivalent-label">
+                                Smartphone Charges
+                                <span class="equivalent-verified"><i class="fas fa-check"></i> Verified</span>
+                            </div>
+                            <div class="equivalent-desc">Number of full smartphone battery charges</div>
+                            <a href="https://www.climatiq.io/data/emission-factor/2c8aa104-7e2e-4bae-af32-c054e9bc4d7f"
+                               target="_blank" rel="noopener noreferrer" class="equivalent-source" id="srcCharges">
+                                <i class="fas fa-external-link-alt"></i>
+                                <span class="source-name">Derived (Grid × Device)</span>
+                                <span class="factor-value">• 0.008 kg CO₂/charge</span>
+                            </a>
+                        </div>
                     </div>
 
-                    <div class="benefit-card">
-                        <div class="benefit-number">5</div>
-                        <h3 class="benefit-title">Creates Green Jobs</h3>
-                        <p class="benefit-text">
-                            The recycling industry creates 10 times more jobs than landfills. Your participation supports
-                            sustainable employment and helps build a green economy.
-                        </p>
+                    <div class="equivalent-card">
+                        <div class="equivalent-icon">✈️</div>
+                        <div class="equivalent-content">
+                            <div class="equivalent-value" id="eqFlights">0 hours</div>
+                            <div class="equivalent-label">
+                                Flight Hours Offset
+                                <span class="equivalent-verified"><i class="fas fa-check"></i> Verified</span>
+                            </div>
+                            <div class="equivalent-desc">Hours of commercial flight emissions neutralized</div>
+                            <a href="https://www.climatiq.io/data/emission-factor/8ff56acc-aeb1-4e5d-aca0-ec1d3799a2c5"
+                               target="_blank" rel="noopener noreferrer" class="equivalent-source" id="srcFlights">
+                                <i class="fas fa-external-link-alt"></i>
+                                <span class="source-name">UK BEIS/DEFRA</span>
+                                <span class="factor-value">• 0.246 kg CO₂/passenger-km</span>
+                            </a>
+                        </div>
                     </div>
 
-                    <div class="benefit-card">
-                        <div class="benefit-number">6</div>
-                        <h3 class="benefit-title">Protects Climate Goals</h3>
-                        <p class="benefit-text">
-                            If everyone recycled their electronics, we could reduce global e-waste emissions by 50 million tons annually -
-                            equivalent to taking 10 million cars off the road!
-                        </p>
+                    <div class="equivalent-card">
+                        <div class="equivalent-icon">🍔</div>
+                        <div class="equivalent-content">
+                            <div class="equivalent-value" id="eqBurgers">0 burgers</div>
+                            <div class="equivalent-label">
+                                Burger Carbon Footprint
+                                <span class="equivalent-verified"><i class="fas fa-check"></i> Verified</span>
+                            </div>
+                            <div class="equivalent-desc">Equivalent to skipping this many beef burgers</div>
+                            <a href="https://www.climatiq.io/data/activity/consumer_goods-type_meat_products_beef"
+                               target="_blank" rel="noopener noreferrer" class="equivalent-source" id="srcBurgers">
+                                <i class="fas fa-external-link-alt"></i>
+                                <span class="source-name">EXIOBASE</span>
+                                <span class="factor-value">• 4.05 kg CO₂/burger</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
+
+
             </div>
         </section>
+
 
         <!-- Call to Action -->
         <section class="cta-section">
             <div class="container">
-                <div class="cta-content">
-                    <h2 class="cta-title">Ready to Make a Bigger Impact?</h2>
-                    <p class="cta-text">
-                        Join thousands of eco-conscious individuals who are transforming their electronic waste into environmental wins.
-                        Every device recycled and every remanufactured cartridge used brings us closer to a sustainable future.
-                    </p>
+                <div class="cta-card">
+                    <h2>Keep Making an Impact!</h2>
+                    <p>Every device you recycle brings us closer to a sustainable future. Ready to increase your
+                        environmental impact?</p>
                     <div class="cta-buttons">
-                        <a href="weee-rewards.html" class="btn btn--white btn--lg">
+                        <a href="weee-rewards.html" class="btn btn--primary btn--lg">
                             <i class="fas fa-recycle"></i>
-                            Recycle E-Waste Now
+                            Schedule E-Waste Pickup
                         </a>
-                        <a href="store.html" class="btn btn--outline btn--lg" style="border-color: white; color: white;">
+                        <a href="store.html" class="btn btn--secondary btn--lg">
                             <i class="fas fa-shopping-cart"></i>
-                            Shop Eco-Friendly Cartridges
+                            Shop Eco-Friendly Products
                         </a>
                     </div>
                 </div>
@@ -833,119 +1324,389 @@
     <!-- JavaScript Files -->
     <script src="js/main.js"></script>
     <script>
-        // User's actual data (would come from API in production)
-        let userData = {
-            co2Saved: 42.5, // kg
-            itemsRecycled: 15,
-            cartridgesUsed: 8,
-            treesEquivalent: 2.1
-        };
+        // Store impact data globally for sharing
+        let impactData = null;
 
-        // CO2 calculation constants
-        const CO2_PER_DEVICE = 5; // kg CO2 saved per device recycled
-        const CO2_PER_CARTRIDGE = 2.5; // kg CO2 saved per remanufactured cartridge
-        const KM_PER_KG_CO2 = 5; // km driven per kg CO2
-        const ELECTRICITY_DAYS_PER_KG = 0.5; // days of home electricity per kg CO2
-        const PHONE_CHARGES_PER_KG = 125; // smartphone charges per kg CO2
-        const TREES_PER_KG = 0.05; // tree-years per kg CO2 (1 tree absorbs ~20kg/year)
-        const TV_HOURS_PER_KG = 16.66; // hours of TV streaming per kg CO2
-        const BURGERS_PER_KG = 1; // burgers (1kg CO2 per burger)
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            updateUserStats();
-            updateComparisons();
-            setupCalculator();
-        });
-
-        // Update user statistics
-        function updateUserStats() {
-            document.getElementById('user-co2-saved').textContent = userData.co2Saved.toFixed(1);
-            document.getElementById('user-items-recycled').textContent = userData.itemsRecycled;
-            document.getElementById('user-cartridges-used').textContent = userData.cartridgesUsed;
-            document.getElementById('user-trees-equivalent').textContent = userData.treesEquivalent.toFixed(1);
+        // Helper function to get API base URL
+        function getApiBaseUrl() {
+            const port = window.location.port;
+            if (port === '5500' || port === '5501' || window.location.protocol === 'file:') {
+                return 'http://localhost:3000';
+            }
+            return '';
         }
 
-        // Update comparison values
-        function updateComparisons() {
-            const co2 = userData.co2Saved;
-
-            document.getElementById('comparison-co2-value').textContent = co2.toFixed(1) + ' kg';
-            document.getElementById('driving-distance').textContent = Math.round(co2 * KM_PER_KG_CO2) + ' km';
-            document.getElementById('electricity-days').textContent = Math.round(co2 * ELECTRICITY_DAYS_PER_KG) + ' days';
-            document.getElementById('phone-charges').textContent = Math.round(co2 * PHONE_CHARGES_PER_KG).toLocaleString();
-            document.getElementById('trees-planted').textContent = (co2 * TREES_PER_KG).toFixed(1) + ' trees';
-            document.getElementById('tv-hours').textContent = Math.round(co2 * TV_HOURS_PER_KG) + ' hours';
-            document.getElementById('burgers-saved').textContent = Math.round(co2 * BURGERS_PER_KG) + ' burgers';
-        }
-
-        // Setup interactive calculator
-        function setupCalculator() {
-            const devicesSlider = document.getElementById('devices-slider');
-            const cartridgesSlider = document.getElementById('cartridges-slider');
-            const devicesValue = document.getElementById('devices-value');
-            const cartridgesValue = document.getElementById('cartridges-value');
-
-            // Update display values
-            devicesSlider.addEventListener('input', (e) => {
-                devicesValue.textContent = e.target.value;
-                calculateImpact();
-            });
-
-            cartridgesSlider.addEventListener('input', (e) => {
-                cartridgesValue.textContent = e.target.value;
-                calculateImpact();
-            });
-
-            // Initial calculation
-            calculateImpact();
-        }
-
-        // Calculate potential impact
-        function calculateImpact() {
-            const devices = parseInt(document.getElementById('devices-slider').value);
-            const cartridges = parseInt(document.getElementById('cartridges-slider').value);
-
-            // Calculate total CO2 saved
-            const totalCO2 = (devices * CO2_PER_DEVICE) + (cartridges * CO2_PER_CARTRIDGE);
-
-            // Update results
-            document.getElementById('calc-co2').textContent = Math.round(totalCO2) + ' kg';
-            document.getElementById('calc-driving').textContent = Math.round(totalCO2 * KM_PER_KG_CO2) + ' km';
-            document.getElementById('calc-trees').textContent = (totalCO2 * TREES_PER_KG).toFixed(1);
-
-            // WEEE Points (assuming 5 points per kg CO2)
-            const weeePoints = Math.round(totalCO2 * 5);
-            document.getElementById('calc-points').textContent = weeePoints.toLocaleString();
-
-            // Animate values
-            animateValue('calc-co2');
-            animateValue('calc-driving');
-            animateValue('calc-trees');
-            animateValue('calc-points');
-        }
-
-        // Animate value changes
-        function animateValue(elementId) {
-            const element = document.getElementById(elementId);
-            element.style.transform = 'scale(1.1)';
-            element.style.color = 'var(--secondary-green)';
-
-            setTimeout(() => {
-                element.style.transform = 'scale(1)';
-                element.style.color = '';
-            }, 200);
-        }
-
-        // Smooth scroll for CTA buttons
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Helper function to get stored user from localStorage
+        function getStoredUser() {
+            try {
+                const userData = localStorage.getItem('drweee_user');
+                if (userData) {
+                    return JSON.parse(userData);
                 }
+            } catch (e) {
+                console.error('Error reading stored user:', e);
+            }
+            return null;
+        }
+
+        // Animate number counting
+        function animateNumber(element, target, suffix = '', duration = 1500) {
+            const start = 0;
+            const increment = target / (duration / 16);
+            let current = start;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+
+                if (Number.isInteger(target)) {
+                    element.textContent = Math.round(current).toLocaleString() + suffix;
+                } else {
+                    element.textContent = current.toFixed(1) + suffix;
+                }
+            }, 16);
+        }
+
+        // Update UI with impact data
+        function updateImpactUI(data) {
+            impactData = data;
+
+            // Update eco level
+            document.getElementById('ecoLevelEmoji').textContent = data.ecoLevel.emoji;
+            document.getElementById('ecoLevelName').textContent = data.ecoLevel.name;
+            document.getElementById('userName').textContent = `Keep going, ${data.userName}!`;
+
+            // Update progress
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            const progressPercent = document.getElementById('progressPercent');
+
+            if (data.ecoLevel.nextLevel) {
+                progressText.textContent = `Progress to next level (${data.ecoLevel.nextLevel} kg)`;
+                progressPercent.textContent = `${data.ecoLevel.progress}%`;
+                setTimeout(() => {
+                    progressFill.style.width = `${data.ecoLevel.progress}%`;
+                }, 300);
+            } else {
+                progressText.textContent = 'Maximum level reached!';
+                progressPercent.textContent = '100%';
+                progressFill.style.width = '100%';
+            }
+
+            // Animate main CO2 value
+            animateNumber(document.getElementById('co2Value'), data.co2Saved, '');
+
+            // Update stats cards with animation
+            setTimeout(() => {
+                animateNumber(document.getElementById('treesValue'), data.treesEquivalent, '');
+                document.getElementById('drivingValue').textContent = data.drivingKm.toLocaleString() + ' km';
+                document.getElementById('electricityValue').textContent = data.electricityDays.toLocaleString();
+                document.getElementById('chargesValue').textContent = data.phoneCharges.toLocaleString();
+            }, 500);
+
+            // Update share card
+            document.getElementById('cardCO2Value').textContent = data.co2Saved + ' kg';
+            document.getElementById('cardTrees').textContent = data.treesEquivalent;
+            document.getElementById('cardItems').textContent = data.itemsRecycled;
+            document.getElementById('cardLevel').textContent = data.ecoLevel.emoji;
+
+            // Update equivalents section
+            document.getElementById('eqDriving').textContent = data.drivingKm.toLocaleString() + ' km';
+            document.getElementById('eqTrees').textContent = data.treesEquivalent + ' trees';
+            document.getElementById('eqElectricity').textContent = data.electricityDays + ' days';
+            document.getElementById('eqCharges').textContent = data.phoneCharges.toLocaleString() + ' charges';
+            document.getElementById('eqFlights').textContent = data.flightsAvoided + ' hours';
+            document.getElementById('eqBurgers').textContent = data.burgersEquivalent.toLocaleString() + ' burgers';
+        }
+
+        // Fallback calculation (only used if API fails)
+        // All emission factors based on verified Climatiq API database
+        // Each factor has been verified against actual Climatiq emission factor pages
+        function calculateImpactDataFallback(co2Saved, userName) {
+            // VERIFIED CLIMATIQ EMISSION FACTORS
+            // See source links in equivalents grid for Climatiq factor references
+
+            // Trees: EPA/IPCC AR6 - mature tree absorbs ~22 kg CO2/year
+            // Source: European Environment Agency, One Tree Planted
+            const treesEquivalent = co2Saved / 22;
+
+            // Driving: GHG Protocol via Climatiq
+            // Factor ID: 2b76b9f9-46e0-4933-93c0-21ab62f9d943
+            // Value: 0.346447 kg CO2e/mile = 0.2153 kg CO2e/km
+            const drivingKm = co2Saved / 0.2153;
+
+            // Electricity: ADEME/IEA Egypt Grid via Climatiq
+            // Factor ID: 2c8aa104-7e2e-4bae-af32-c054e9bc4d7f
+            // Value: 0.45 kg CO2e/kWh × 10 kWh/day = 4.5 kg CO2/day
+            const electricityDays = co2Saved / 4.5;
+
+            // Phone charging: Derived from Egypt grid (0.018 kWh × 0.45 = 0.0081 kg)
+            const phoneCharges = co2Saved / 0.0081;
+
+            // Flights: UK BEIS/DEFRA via Climatiq
+            // Factor ID: 8ff56acc-aeb1-4e5d-aca0-ec1d3799a2c5
+            // Value: 0.24587 kg CO2e/pkm × 800 km/h = 197 kg CO2/hour
+            const flightsAvoided = co2Saved / 197;
+
+            // Burgers: EXIOBASE via Climatiq
+            // Activity: consumer_goods-type_meat_products_beef
+            // Value: 27 kg CO2e/kg beef × 0.15 kg patty = 4.05 kg CO2/burger
+            const burgersEquivalent = co2Saved / 4.05;
+
+            // Calculate eco level
+            let ecoLevel = 'Seedling';
+            let ecoEmoji = '🌱';
+            let nextLevel = 50;
+            let progress = 0;
+
+            if (co2Saved >= 1000) {
+                ecoLevel = 'Eco Champion';
+                ecoEmoji = '🏆';
+                nextLevel = null;
+                progress = 100;
+            } else if (co2Saved >= 500) {
+                ecoLevel = 'Forest Guardian';
+                ecoEmoji = '🌲';
+                nextLevel = 1000;
+                progress = ((co2Saved - 500) / 500) * 100;
+            } else if (co2Saved >= 200) {
+                ecoLevel = 'Earth Protector';
+                ecoEmoji = '🌍';
+                nextLevel = 500;
+                progress = ((co2Saved - 200) / 300) * 100;
+            } else if (co2Saved >= 50) {
+                ecoLevel = 'Green Warrior';
+                ecoEmoji = '🌿';
+                nextLevel = 200;
+                progress = ((co2Saved - 50) / 150) * 100;
+            } else {
+                progress = (co2Saved / 50) * 100;
+            }
+
+            return {
+                userName: userName,
+                co2Saved: parseFloat(co2Saved.toFixed(1)),
+                itemsRecycled: Math.round(co2Saved / 2), // Estimate: ~2kg CO2 per item on average
+                treesEquivalent: parseFloat(treesEquivalent.toFixed(1)),
+                drivingKm: Math.round(drivingKm),
+                electricityDays: Math.round(electricityDays),
+                phoneCharges: Math.round(phoneCharges),
+                flightsAvoided: parseFloat(flightsAvoided.toFixed(2)),
+                burgersEquivalent: Math.round(burgersEquivalent),
+                ecoLevel: {
+                    name: ecoLevel,
+                    emoji: ecoEmoji,
+                    progress: Math.round(progress),
+                    nextLevel: nextLevel,
+                    co2ToNext: nextLevel ? nextLevel - co2Saved : 0
+                }
+            };
+        }
+
+        // Fetch environmental impact data from API
+        // API calculates all values using Climatiq emission factors
+        async function fetchEnvironmentalImpact() {
+            const user = getStoredUser();
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const loginPrompt = document.getElementById('loginPrompt');
+            const impactContent = document.getElementById('impactContent');
+            const shareSection = document.getElementById('shareSection');
+            const equivalentsSection = document.getElementById('equivalentsSection');
+            const climatiqSection = document.getElementById('climatiqBanner');
+
+            if (!user || !user.GUID) {
+                loadingOverlay.style.display = 'none';
+                loginPrompt.style.display = 'block';
+                impactContent.style.display = 'none';
+                return;
+            }
+
+            try {
+                // Fetch calculated impact data from API
+                // API uses Climatiq emission factors for all calculations
+                const baseUrl = getApiBaseUrl();
+                const response = await fetch(`${baseUrl}/api/environmental-impact?userGUID=${user.GUID}`);
+
+                if (response.ok) {
+                    const result = await response.json();
+
+                    if (result.success && result.impact) {
+                        // Hide loading and show content
+                        loadingOverlay.style.display = 'none';
+                        loginPrompt.style.display = 'none';
+                        impactContent.style.display = 'block';
+                        shareSection.style.display = 'block';
+                        equivalentsSection.style.display = 'block';
+                        if (climatiqSection) climatiqSection.style.display = 'block';
+
+                        updateImpactUI(result.impact);
+                        console.log('✅ Impact data loaded from API (Climatiq emission factors)');
+                        return;
+                    }
+                }
+
+                // If API fails, use localStorage data with fallback calculations
+                throw new Error('API response not successful');
+
+            } catch (error) {
+                console.warn('⚠️ API unavailable, using localStorage fallback with Climatiq factors:', error.message);
+
+                // Fallback: Use localStorage data with client-side Climatiq calculations
+                const co2Saved = parseFloat(user.totalCarbonSaved) || 0;
+                const userName = user.fullName || user.firstName || 'Eco Warrior';
+
+                // Calculate using Climatiq emission factors (same as server)
+                const impactDataResult = calculateImpactDataFallback(co2Saved, userName);
+
+                // Hide loading and show content
+                loadingOverlay.style.display = 'none';
+                loginPrompt.style.display = 'none';
+                impactContent.style.display = 'block';
+                shareSection.style.display = 'block';
+                equivalentsSection.style.display = 'block';
+                if (climatiqSection) climatiqSection.style.display = 'block';
+
+                updateImpactUI(impactDataResult);
+            }
+        }
+
+        // =====================================================================
+        // SHAREABLE CERTIFICATE FEATURE
+        // =====================================================================
+
+        // Store user's share code for sharing
+        let userShareCode = null;
+        let publicShareUrl = null;
+
+        // Get or generate share code from API
+        async function getOrGenerateShareCode() {
+            const user = getStoredUser();
+            if (!user || !user.GUID) return null;
+
+            try {
+                const baseUrl = getApiBaseUrl();
+                const response = await fetch(`${baseUrl}/api/share/my-code?userGUID=${user.GUID}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    userShareCode = data.shareCode;
+                    publicShareUrl = data.shareUrl;
+                    console.log('✅ Share code ready:', userShareCode);
+                    return data;
+                }
+            } catch (error) {
+                console.error('Error getting share code:', error);
+            }
+            return null;
+        }
+
+        // Get the public share URL (falls back to current page if no code)
+        function getPublicShareUrl() {
+            if (publicShareUrl) {
+                return publicShareUrl;
+            }
+            // Fallback to current page URL
+            return window.location.origin + '/environmental-impact.html';
+        }
+
+        // Social sharing functions
+        function getShareText() {
+            if (!impactData) return '';
+            return `I've saved ${impactData.co2Saved} kg of CO₂ by recycling e-waste with @DrWEEE! That's equivalent to planting ${impactData.treesEquivalent} trees! 🌳🌍 Join the green movement! #DrWEEE #EcoWarrior #RecycleElectronics`;
+        }
+
+        async function shareOnTwitter() {
+            // Ensure we have a share code
+            if (!userShareCode) await getOrGenerateShareCode();
+
+            const text = getShareText();
+            const url = encodeURIComponent(getPublicShareUrl());
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`, '_blank', 'width=600,height=400');
+        }
+
+        async function shareOnFacebook() {
+            // Ensure we have a share code
+            if (!userShareCode) await getOrGenerateShareCode();
+
+            const url = encodeURIComponent(getPublicShareUrl());
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${encodeURIComponent(getShareText())}`, '_blank', 'width=600,height=400');
+        }
+
+        async function shareOnLinkedIn() {
+            // Ensure we have a share code - this is critical for LinkedIn preview
+            if (!userShareCode) await getOrGenerateShareCode();
+
+            const url = encodeURIComponent(getPublicShareUrl());
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank', 'width=600,height=400');
+        }
+
+        async function shareOnWhatsApp() {
+            // Ensure we have a share code
+            if (!userShareCode) await getOrGenerateShareCode();
+
+            const shareUrl = getPublicShareUrl();
+            const text = getShareText() + '\n\nView my certificate: ' + shareUrl;
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        async function copyShareText() {
+            // Ensure we have a share code
+            if (!userShareCode) await getOrGenerateShareCode();
+
+            const shareUrl = getPublicShareUrl();
+            const text = getShareText() + '\n\nView my certificate: ' + shareUrl;
+
+            navigator.clipboard.writeText(text).then(() => {
+                // Show feedback
+                const btn = event.target.closest('.share-btn');
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.style.background = 'var(--primary-green)';
+
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.style.background = '';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                alert('Failed to copy. Please try again.');
             });
+        }
+
+        // Copy just the share link
+        async function copyShareLink(event) {
+            // Ensure we have a share code
+            if (!userShareCode) await getOrGenerateShareCode();
+
+            const shareUrl = getPublicShareUrl();
+
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                // Show feedback
+                const btn = event?.target?.closest('.share-btn');
+                if (btn) {
+                    const originalHTML = btn.innerHTML;
+                    btn.innerHTML = '<i class="fas fa-check"></i> Link Copied!';
+                    btn.style.background = 'var(--primary-green)';
+
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                        btn.style.background = '';
+                    }, 2000);
+                }
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                alert('Failed to copy. Please try again.');
+            });
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            await fetchEnvironmentalImpact();
+            // Pre-fetch share code in background for faster sharing
+            getOrGenerateShareCode();
         });
     </script>
 </body>

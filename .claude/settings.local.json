@@ -2,7 +2,16 @@
   "permissions": {
     "allow": [
       "Bash(node:*)",
-      "Bash(pac:*)"
+      "Bash(pac:*)",
+      "Bash(tasklist /FI \"IMAGENAME eq node.exe\")",
+      "Bash(findstr:*)",
+      "Bash(tasklist:*)",
+      "Bash(curl:*)",
+      "Bash(timeout 5 node:*)",
+      "Bash(timeout:*)",
+      "Bash(ping:*)",
+      "Bash(npm ls:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

@@ -37,7 +37,7 @@
             background: linear-gradient(135deg, var(--dark-green), var(--primary-green));
             z-index: 1;
             margin-top: -5rem;
-            padding-top: 9rem;
+            padding-top: 12rem;
         }
 
         .redeem-header::before {
@@ -78,45 +78,60 @@
             margin-bottom: var(--space-xl);
         }
 
-        .user-points-display {
-            display: inline-flex;
-            align-items: center;
-            gap: var(--space-md);
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            padding: var(--space-lg) var(--space-xl);
-            border-radius: var(--radius-xl);
-            border: 2px solid rgba(255, 255, 255, 0.2);
+        /* User Balance Display */
+        .user-balance-display {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
         }
 
-        .points-info {
-            text-align: left;
-        }
-
-        .points-label {
-            font-size: 0.875rem;
-            opacity: 0.9;
-            display: block;
-            margin-bottom: 0.25rem;
-        }
-
-        .points-value {
-            font-size: 2.5rem;
-            font-weight: 700;
+        .balance-card {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 1.25rem 2rem;
+            border-radius: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            min-width: 220px;
         }
 
-        .points-icon {
-            width: 60px;
-            height: 60px;
+        .balance-icon {
+            width: 50px;
+            height: 50px;
             background: linear-gradient(135deg, var(--secondary-green), var(--accent-green));
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .balance-info {
+            text-align: left;
+        }
+
+        .balance-label {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .balance-value {
             font-size: 1.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: baseline;
+            gap: 0.35rem;
+        }
+
+        .balance-value small {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            font-weight: 500;
         }
 
         /* Filter Section */
@@ -158,24 +173,10 @@
             border-color: var(--primary-green);
         }
 
-        .sort-control {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-        }
-
-        .sort-control select {
-            padding: 0.75rem 1rem;
-            border: 2px solid var(--medium-gray);
-            border-radius: var(--radius-md);
-            font-family: var(--font-primary);
-            font-weight: 500;
-            cursor: pointer;
-        }
-
         /* Gift Cards Grid */
         .rewards-section {
             padding: var(--space-xxl) 0;
+            min-height: 400px;
         }
 
         .rewards-grid {
@@ -185,6 +186,46 @@
             margin-top: var(--space-xl);
         }
 
+        /* Loading State */
+        .loading-state {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--light-green);
+            border-top-color: var(--primary-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .empty-state-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--light-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: var(--primary-green);
+        }
+
+        /* Gift Card Styles */
         .gift-card {
             background: var(--white);
             border-radius: var(--radius-lg);
@@ -214,16 +255,12 @@
             z-index: 2;
         }
 
-        .card-badge.popular {
-            background: linear-gradient(135deg, #FF6B6B, #EE5A24);
-        }
-
-        .card-badge.new {
-            background: linear-gradient(135deg, #4834DF, #341F97);
+        .card-badge.cash {
+            background: linear-gradient(135deg, #FFA000, #FF6F00);
         }
 
         .card-image {
-            height: 200px;
+            height: 150px;
             overflow: hidden;
             position: relative;
             background: linear-gradient(135deg, var(--light-green), var(--accent-green));
@@ -240,127 +277,89 @@
             transform: scale(1.1);
         }
 
-        .card-brand-logo {
+        .card-category-tag {
             position: absolute;
             bottom: var(--space-md);
             left: var(--space-md);
             background: var(--white);
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 0.8rem;
             border-radius: var(--radius-md);
-            font-weight: 700;
+            font-weight: 600;
+            font-size: 0.75rem;
             color: var(--text-dark);
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-sm);
         }
 
         .card-content {
-            padding: var(--space-lg);
+            padding: 1rem 1.25rem;
         }
 
         .card-title {
-            font-size: 1.375rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: var(--space-sm);
+            margin-bottom: 0.75rem;
             color: var(--text-dark);
         }
 
-        .card-description {
-            font-size: 0.9rem;
-            color: var(--text-gray);
-            margin-bottom: var(--space-md);
-            line-height: 1.6;
-        }
-
-        .card-value-row {
+        .card-pricing {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: var(--space-md);
-            padding: var(--space-md);
-            background: var(--off-white);
-            border-radius: var(--radius-md);
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
         }
 
-        .card-value {
+        .price-option {
+            flex: 1;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            padding: 0.5rem;
+            background: var(--off-white);
+            border-radius: var(--radius-sm);
         }
 
-        .value-label {
-            font-size: 0.75rem;
+        .price-label {
+            font-size: 0.65rem;
             color: var(--text-gray);
-            text-transform: uppercase;
-            margin-bottom: 0.25rem;
-        }
-
-        .value-amount {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-
-        .points-required {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            background: var(--light-green);
-            padding: 0.75rem 1.25rem;
-            border-radius: var(--radius-lg);
+            gap: 0.25rem;
+            margin-bottom: 0.15rem;
         }
 
-        .points-required i {
+        .price-label i {
             color: var(--primary-green);
-            font-size: 1.25rem;
+            font-size: 0.6rem;
         }
 
-        .points-amount {
-            font-size: 1.25rem;
+        .price-value {
             font-weight: 700;
+            font-size: 0.9rem;
             color: var(--primary-green);
         }
 
-        .points-text {
-            font-size: 0.875rem;
-            color: var(--text-gray);
-        }
-
-        .card-footer {
-            padding: 0 var(--space-lg) var(--space-lg);
-        }
-
-        .redeem-btn {
+        .view-details-btn {
             width: 100%;
-            padding: 1rem;
+            padding: 0.7rem;
             background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
             color: var(--white);
             border: none;
             border-radius: var(--radius-md);
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.85rem;
             cursor: pointer;
             transition: var(--transition-normal);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
 
-        .redeem-btn:hover {
+        .view-details-btn:hover {
             transform: translateY(-2px);
             box-shadow: var(--shadow-green);
         }
 
-        .redeem-btn:disabled {
-            background: var(--medium-gray);
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .redeem-btn.insufficient {
-            background: #E0E0E0;
-            color: #999;
-        }
-
-        /* Redemption Modal */
+        /* Voucher Detail Modal */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -369,172 +368,398 @@
             right: 0;
             bottom: 0;
             background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
             z-index: 10000;
             align-items: center;
             justify-content: center;
+            padding: 1rem;
         }
 
         .modal-overlay.active {
             display: flex;
+            animation: fadeIn 0.2s ease;
         }
 
-        .redemption-modal {
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .voucher-modal {
             background: var(--white);
-            border-radius: var(--radius-xl);
-            max-width: 600px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
+            border-radius: 20px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: slideUp 0.3s ease;
+            overflow: hidden;
         }
 
-        .modal-overlay.active .redemption-modal {
-            transform: scale(1);
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .modal-header {
-            padding: var(--space-xl);
-            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
-            color: var(--white);
+        .modal-image {
+            height: 140px;
+            overflow: hidden;
             position: relative;
+        }
+
+        .modal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .modal-close {
             position: absolute;
-            top: var(--space-md);
-            right: var(--space-md);
-            background: rgba(255, 255, 255, 0.2);
+            top: 0.75rem;
+            right: 0.75rem;
+            background: rgba(255, 255, 255, 0.9);
             border: none;
-            color: var(--white);
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
-            transition: var(--transition-normal);
+            font-size: 0.9rem;
+            color: #333;
+            transition: all 0.2s ease;
+            z-index: 10;
         }
 
         .modal-close:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .modal-title {
-            font-size: 1.75rem;
-            margin-bottom: var(--space-sm);
+            background: white;
+            transform: scale(1.1);
         }
 
         .modal-body {
-            padding: var(--space-xl);
+            padding: 1rem 1.25rem 1.25rem;
         }
 
-        .redemption-summary {
-            background: var(--off-white);
-            padding: var(--space-lg);
-            border-radius: var(--radius-lg);
-            margin-bottom: var(--space-lg);
+        .modal-header-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .modal-category {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.6rem;
+            background: var(--light-green);
+            color: var(--primary-green);
+            border-radius: var(--radius-sm);
+            font-size: 0.7rem;
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .modal-category i {
+            font-size: 0.6rem;
+        }
+
+        /* Payment and Quantity Row */
+        .modal-controls-row {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Payment Method Selection */
+        .payment-section {
+            flex: 1;
+        }
+
+        .section-title {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #888;
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .payment-options {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .payment-option {
+            flex: 1;
+            padding: 0.6rem 0.4rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            background: white;
+        }
+
+        .payment-option:hover {
+            border-color: var(--primary-green);
+        }
+
+        .payment-option.selected {
+            border-color: var(--primary-green);
+            background: var(--light-green);
+        }
+
+        .payment-option.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .payment-option-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.3rem;
+            color: white;
+            font-size: 0.75rem;
+        }
+
+        .payment-option.cash .payment-option-icon {
+            background: linear-gradient(135deg, #FFA000, #FF6F00);
+        }
+
+        .payment-option-label {
+            font-size: 0.65rem;
+            color: var(--text-gray);
+            margin-bottom: 0.1rem;
+        }
+
+        .payment-option-value {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 0.8rem;
+        }
+
+        .insufficient-badge {
+            display: inline-block;
+            font-size: 0.55rem;
+            background: #ffebee;
+            color: #c62828;
+            padding: 0.15rem 0.35rem;
+            border-radius: 3px;
+            margin-top: 0.2rem;
+        }
+
+        /* Quantity Selector */
+        .quantity-section {
+            flex-shrink: 0;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            background: #f5f5f5;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .qty-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: var(--primary-green);
+            transition: all 0.2s ease;
+        }
+
+        .qty-btn:hover:not(:disabled) {
+            background: var(--light-green);
+        }
+
+        .qty-btn:disabled {
+            color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .qty-value {
+            width: 32px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-dark);
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.75rem;
         }
 
         .summary-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: var(--space-sm) 0;
-            border-bottom: 1px solid var(--medium-gray);
+            font-size: 0.85rem;
         }
 
-        .summary-row:last-child {
-            border-bottom: none;
-            margin-top: var(--space-md);
-            padding-top: var(--space-md);
+        .summary-row.total {
             font-weight: 700;
-            font-size: 1.125rem;
+            font-size: 1rem;
         }
 
-        .delivery-info {
-            margin-top: var(--space-lg);
+        .summary-label {
+            color: var(--text-gray);
         }
 
-        .info-box {
-            background: var(--light-green);
-            padding: var(--space-md);
-            border-radius: var(--radius-md);
-            border-left: 4px solid var(--primary-green);
+        .summary-value {
+            color: var(--text-dark);
+            font-weight: 600;
         }
 
-        .info-box i {
+        .summary-row.total .summary-value {
             color: var(--primary-green);
-            margin-right: var(--space-sm);
         }
 
+        /* Modal Actions */
         .modal-actions {
-            padding: var(--space-xl);
-            border-top: 2px solid var(--light-gray);
             display: flex;
-            gap: var(--space-md);
+            gap: 0.6rem;
         }
 
         .modal-btn {
             flex: 1;
-            padding: 1rem;
+            padding: 0.75rem;
             border: none;
-            border-radius: var(--radius-md);
+            border-radius: 10px;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: var(--transition-normal);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
         }
 
         .modal-btn-cancel {
-            background: var(--light-gray);
+            background: #f0f0f0;
             color: var(--text-dark);
         }
 
         .modal-btn-cancel:hover {
-            background: var(--medium-gray);
+            background: #e0e0e0;
         }
 
         .modal-btn-confirm {
             background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
-            color: var(--white);
+            color: white;
         }
 
-        .modal-btn-confirm:hover {
+        .modal-btn-confirm:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: var(--shadow-green);
         }
 
+        .modal-btn-confirm:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         /* Success Modal */
-        .success-modal {
+        .success-modal .modal-body {
             text-align: center;
+            padding: 2rem;
         }
 
         .success-icon {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, var(--secondary-green), var(--accent-green));
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto var(--space-lg);
-            font-size: 3rem;
-            color: var(--white);
+            margin: 0 auto 1.5rem;
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .success-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .success-message {
+            color: var(--text-gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        /* Login Required */
+        .login-required {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: #fff8e1;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .login-required-icon {
+            width: 60px;
+            height: 60px;
+            background: #ffe082;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: #f57c00;
         }
 
         /* Responsive */
         @media (max-width: 767px) {
-            .header-title {
-                font-size: 2.5rem;
+            .redeem-header {
+                padding-top: 10rem;
             }
 
-            .points-value {
-                font-size: 2rem;
+            .header-title {
+                font-size: 2.25rem;
+            }
+
+            .user-balance-display {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .balance-card {
+                width: 100%;
+                max-width: 280px;
+            }
+
+            .balance-value {
+                font-size: 1.5rem;
             }
 
             .filter-controls {
@@ -551,8 +776,68 @@
                 gap: var(--space-lg);
             }
 
-            .modal-actions {
+            .voucher-modal {
+                max-width: 100%;
+                border-radius: 16px 16px 0 0;
+                margin-top: auto;
+            }
+
+            .modal-overlay.active {
+                align-items: flex-end;
+                padding: 0;
+            }
+
+            .modal-image {
+                height: 120px;
+            }
+
+            .modal-body {
+                padding: 0.875rem 1rem 1rem;
+            }
+
+            .modal-header-row {
+                margin-bottom: 0.75rem;
+            }
+
+            .modal-title {
+                font-size: 1.1rem;
+            }
+
+            .modal-controls-row {
                 flex-direction: column;
+                gap: 0.6rem;
+            }
+
+            .payment-options {
+                flex-direction: row;
+            }
+
+            .quantity-section {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .order-summary {
+                padding: 0.6rem 0.875rem;
+                margin-bottom: 0.6rem;
+            }
+
+            .summary-row {
+                font-size: 0.8rem;
+            }
+
+            .summary-row.total {
+                font-size: 0.95rem;
+            }
+
+            .modal-actions {
+                gap: 0.5rem;
+            }
+
+            .modal-btn {
+                padding: 0.7rem;
+                font-size: 0.85rem;
             }
         }
     </style>
@@ -570,17 +855,31 @@
                 <div class="header-content">
                     <h1 class="header-title">Redeem Your WEEE Points</h1>
                     <p class="header-subtitle">Turn your eco-friendly actions into valuable rewards. Choose from our
-                        selection of premium gift cards.</p>
+                        selection of vouchers and gifts.</p>
 
-                    <div class="user-points-display">
-                        <div class="points-icon">
-                            <i class="fas fa-coins"></i>
+                    <div class="user-balance-display">
+                        <div class="balance-card">
+                            <div class="balance-icon">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <div class="balance-info">
+                                <span class="balance-label">Available Points</span>
+                                <div class="balance-value">
+                                    <span id="user-points">0</span>
+                                    <small>Points</small>
+                                </div>
+                            </div>
                         </div>
-                        <div class="points-info">
-                            <span class="points-label">Your Available Points</span>
-                            <div class="points-value">
-                                <span id="user-points">1,250</span>
-                                <small style="font-size: 1rem; opacity: 0.8;">WEEE Points</small>
+                        <div class="balance-card">
+                            <div class="balance-icon" style="background: linear-gradient(135deg, #FFA000, #FF6F00);">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <div class="balance-info">
+                                <span class="balance-label">Available Cash</span>
+                                <div class="balance-value">
+                                    <span id="user-cash">0</span>
+                                    <small>EGP</small>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -598,15 +897,7 @@
                         <button class="filter-tab" data-category="food">Food & Dining</button>
                         <button class="filter-tab" data-category="entertainment">Entertainment</button>
                         <button class="filter-tab" data-category="tech">Technology</button>
-                    </div>
-                    <div class="sort-control">
-                        <label for="sort-select">Sort by:</label>
-                        <select id="sort-select">
-                            <option value="points-low">Points: Low to High</option>
-                            <option value="points-high">Points: High to Low</option>
-                            <option value="value-high">Value: High to Low</option>
-                            <option value="popular">Most Popular</option>
-                        </select>
+                        <button class="filter-tab" data-category="cash">Cash</button>
                     </div>
                 </div>
             </div>
@@ -615,8 +906,36 @@
         <!-- Rewards Grid Section -->
         <section class="rewards-section">
             <div class="container">
-                <div class="rewards-grid" id="rewards-grid">
+                <!-- Loading State -->
+                <div id="loadingState" class="loading-state">
+                    <div class="loading-spinner"></div>
+                    <p>Loading vouchers...</p>
+                </div>
+
+                <!-- Login Required (hidden by default) -->
+                <div id="loginRequired" class="login-required" style="display: none;">
+                    <div class="login-required-icon">
+                        <i class="fas fa-user-lock"></i>
+                    </div>
+                    <h3>Login Required</h3>
+                    <p style="color: var(--text-gray); margin-bottom: 1rem;">Please log in to view and redeem vouchers.</p>
+                    <a href="login.html" class="btn btn--primary">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                </div>
+
+                <!-- Rewards Grid -->
+                <div class="rewards-grid" id="rewards-grid" style="display: none;">
                     <!-- Gift cards will be dynamically inserted here -->
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <h3>No Vouchers Available</h3>
+                    <p style="color: var(--text-gray);">Check back later for new rewards!</p>
                 </div>
             </div>
         </section>
@@ -625,85 +944,99 @@
     <!-- Footer Placeholder -->
     <div id="footer-placeholder"></div>
 
-    <!-- Redemption Confirmation Modal -->
-    <div class="modal-overlay" id="redemption-modal">
-        <div class="redemption-modal">
-            <div class="modal-header">
-                <button class="modal-close" id="modal-close">
+    <!-- Voucher Detail Modal -->
+    <div class="modal-overlay" id="voucherModal">
+        <div class="voucher-modal">
+            <div class="modal-image">
+                <img id="modalImage" src="" alt="Voucher">
+                <button class="modal-close" id="modalClose">
                     <i class="fas fa-times"></i>
                 </button>
-                <h2 class="modal-title">Confirm Redemption</h2>
-                <p>Review your reward before confirming</p>
             </div>
             <div class="modal-body">
-                <div class="redemption-summary">
-                    <div class="summary-row">
-                        <span>Reward:</span>
-                        <strong id="modal-reward-name">Amazon Gift Card</strong>
-                    </div>
-                    <div class="summary-row">
-                        <span>Value:</span>
-                        <strong id="modal-reward-value">$50</strong>
-                    </div>
-                    <div class="summary-row">
-                        <span>Points Required:</span>
-                        <strong id="modal-points-required">500 Points</strong>
-                    </div>
-                    <div class="summary-row">
-                        <span>Your Current Balance:</span>
-                        <strong id="modal-current-balance">1,250 Points</strong>
-                    </div>
-                    <div class="summary-row">
-                        <span>Balance After Redemption:</span>
-                        <strong id="modal-new-balance" style="color: var(--primary-green);">750 Points</strong>
+                <!-- Title and Category Row -->
+                <div class="modal-header-row">
+                    <h2 class="modal-title" id="modalTitle">Voucher Name</h2>
+                    <div class="modal-category" id="modalCategory">
+                        <i class="fas fa-tag"></i>
+                        <span>Category</span>
                     </div>
                 </div>
 
-                <div class="delivery-info">
-                    <h3 style="margin-bottom: var(--space-md);">Delivery Information</h3>
-                    <div class="info-box">
-                        <i class="fas fa-envelope"></i>
-                        <strong>Email Delivery:</strong> Your gift card code will be sent to your registered email
-                        within 24 hours.
+                <!-- Payment and Quantity Row -->
+                <div class="modal-controls-row">
+                    <!-- Payment Method Selection -->
+                    <div class="payment-section">
+                        <div class="section-title">Pay with</div>
+                        <div class="payment-options">
+                            <div class="payment-option points selected" data-method="points" id="payPoints">
+                                <div class="payment-option-icon">
+                                    <i class="fas fa-coins"></i>
+                                </div>
+                                <div class="payment-option-label">Points</div>
+                                <div class="payment-option-value" id="modalPointsCost">0</div>
+                                <div class="insufficient-badge" id="pointsInsufficient" style="display: none;">Insufficient</div>
+                            </div>
+                            <div class="payment-option cash" data-method="cash" id="payCash">
+                                <div class="payment-option-icon">
+                                    <i class="fas fa-wallet"></i>
+                                </div>
+                                <div class="payment-option-label">Cash</div>
+                                <div class="payment-option-value" id="modalCashCost">EGP 0</div>
+                                <div class="insufficient-badge" id="cashInsufficient" style="display: none;">Insufficient</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quantity Selector -->
+                    <div class="quantity-section">
+                        <div class="section-title">Quantity</div>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" id="qtyMinus">-</button>
+                            <span class="qty-value" id="qtyValue">1</span>
+                            <button class="qty-btn" id="qtyPlus">+</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-actions">
-                <button class="modal-btn modal-btn-cancel" id="btn-cancel">Cancel</button>
-                <button class="modal-btn modal-btn-confirm" id="btn-confirm">
-                    <i class="fas fa-check-circle"></i> Confirm Redemption
-                </button>
+
+                <!-- Order Summary -->
+                <div class="order-summary">
+                    <div class="summary-row total">
+                        <span class="summary-label">Total (<span id="summaryQuantity">1</span>x)</span>
+                        <span class="summary-value" id="summaryTotal">0 Points</span>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="modal-actions">
+                    <button class="modal-btn modal-btn-cancel" id="btnCancel">Cancel</button>
+                    <button class="modal-btn modal-btn-confirm" id="btnRedeem">
+                        <i class="fas fa-gift"></i>
+                        Redeem
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Success Modal -->
-    <div class="modal-overlay" id="success-modal">
-        <div class="redemption-modal success-modal">
-            <div class="modal-header">
-                <button class="modal-close" id="success-close">
-                    <i class="fas fa-times"></i>
-                </button>
-                <h2 class="modal-title">Redemption Successful!</h2>
-            </div>
+    <div class="modal-overlay" id="successModal">
+        <div class="voucher-modal success-modal">
             <div class="modal-body">
                 <div class="success-icon">
                     <i class="fas fa-check"></i>
                 </div>
-                <h3 style="margin-bottom: var(--space-md);">Congratulations!</h3>
-                <p style="margin-bottom: var(--space-lg); color: var(--text-gray);">
-                    Your reward has been successfully redeemed. Check your email for the gift card details.
+                <h2 class="success-title">Request Submitted!</h2>
+                <p class="success-message">
+                    Your redemption request has been submitted successfully.
+                    You can track it in the "My Requests" section.
                 </p>
-                <div class="info-box">
-                    <i class="fas fa-gift"></i>
-                    <strong>What's Next?</strong> Your gift card code will arrive in your inbox within 24 hours. Keep
-                    earning WEEE Points for more rewards!
+                <div class="modal-actions">
+                    <a href="my-requests.html" class="modal-btn modal-btn-confirm">
+                        <i class="fas fa-clipboard-list"></i>
+                        View My Requests
+                    </a>
                 </div>
-            </div>
-            <div class="modal-actions">
-                <button class="modal-btn modal-btn-confirm" id="btn-close-success">
-                    <i class="fas fa-home"></i> Continue Shopping
-                </button>
             </div>
         </div>
     </div>
@@ -711,333 +1044,390 @@
     <!-- JavaScript Files -->
     <script src="js/main.js"></script>
     <script>
-        // Gift Cards Data
-        const giftCardsData = [
-            {
-                id: 1,
-                name: "Amazon Gift Card",
-                brand: "Amazon",
-                category: "retail",
-                value: 50,
-                points: 500,
-                description: "Shop millions of products on Amazon with this versatile gift card.",
-                image: "https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2?w=400&h=300&fit=crop",
-                badge: "popular"
-            },
-            {
-                id: 2,
-                name: "Carrefour Voucher",
-                brand: "Carrefour",
-                category: "retail",
-                value: 100,
-                points: 950,
-                description: "Get your groceries and household essentials at Carrefour stores.",
-                image: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=400&h=300&fit=crop",
-                badge: "popular"
-            },
-            {
-                id: 3,
-                name: "Starbucks Gift Card",
-                brand: "Starbucks",
-                category: "food",
-                value: 25,
-                points: 250,
-                description: "Enjoy your favorite coffee and treats at any Starbucks location.",
-                image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=300&fit=crop",
-                badge: null
-            },
-            {
-                id: 4,
-                name: "Netflix Subscription",
-                brand: "Netflix",
-                category: "entertainment",
-                value: 30,
-                points: 300,
-                description: "One month of unlimited movies and TV shows on Netflix.",
-                image: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=400&h=300&fit=crop",
-                badge: "new"
-            },
-            {
-                id: 5,
-                name: "Noon.com Credit",
-                brand: "Noon",
-                category: "retail",
-                value: 75,
-                points: 700,
-                description: "Shop electronics, fashion, and more on Noon.com.",
-                image: "https://images.unsplash.com/photo-1557821552-17105176677c?w=400&h=300&fit=crop",
-                badge: null
-            },
-            {
-                id: 6,
-                name: "iTunes Gift Card",
-                brand: "Apple",
-                category: "tech",
-                value: 40,
-                points: 400,
-                description: "Download apps, games, music, and more from the App Store and iTunes.",
-                image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=300&fit=crop",
-                badge: null
-            },
-            {
-                id: 7,
-                name: "Uber Eats Voucher",
-                brand: "Uber Eats",
-                category: "food",
-                value: 50,
-                points: 480,
-                description: "Get food delivered from your favorite restaurants.",
-                image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop",
-                badge: "popular"
-            },
-            {
-                id: 8,
-                name: "Google Play Credit",
-                brand: "Google",
-                category: "tech",
-                value: 35,
-                points: 350,
-                description: "Buy apps, games, and digital content on Google Play.",
-                image: "https://images.unsplash.com/photo-1607252650355-f7fd0460ccdb?w=400&h=300&fit=crop",
-                badge: null
-            },
-            {
-                id: 9,
-                name: "Zara Gift Card",
-                brand: "Zara",
-                category: "retail",
-                value: 100,
-                points: 950,
-                description: "Update your wardrobe with the latest fashion trends at Zara.",
-                image: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=400&h=300&fit=crop",
-                badge: null
-            },
-            {
-                id: 10,
-                name: "Spotify Premium",
-                brand: "Spotify",
-                category: "entertainment",
-                value: 20,
-                points: 200,
-                description: "Three months of ad-free music streaming on Spotify Premium.",
-                image: "https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=400&h=300&fit=crop",
-                badge: "new"
-            },
-            {
-                id: 11,
-                name: "H&M Voucher",
-                brand: "H&M",
-                category: "retail",
-                value: 60,
-                points: 580,
-                description: "Shop the latest fashion and home collections at H&M.",
-                image: "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=400&h=300&fit=crop",
-                badge: null
-            },
-            {
-                id: 12,
-                name: "PlayStation Store",
-                brand: "PlayStation",
-                category: "entertainment",
-                value: 50,
-                points: 500,
-                description: "Buy games, add-ons, and subscriptions on PlayStation Store.",
-                image: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400&h=300&fit=crop",
-                badge: null
+        // Helper function to get API base URL
+        function getApiBaseUrl() {
+            const port = window.location.port;
+            if (port === '5500' || port === '5501' || window.location.protocol === 'file:') {
+                return 'http://localhost:3000';
             }
-        ];
+            return '';
+        }
+
+        // Helper function to get stored user from localStorage
+        function getStoredUser() {
+            try {
+                const storedUser = localStorage.getItem('drweee_user');
+                if (storedUser) {
+                    return JSON.parse(storedUser);
+                }
+            } catch (e) {
+                console.error('Error parsing stored user:', e);
+            }
+            return null;
+        }
 
         // State
-        let userPoints = 1250;
+        let vouchersData = [];
         let currentFilter = 'all';
-        let currentSort = 'points-low';
+        let selectedVoucher = null;
+        let selectedPaymentMethod = 'points';
+        let selectedQuantity = 1;
+        let userPoints = 0;
+        let userCash = 0;
 
         // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            renderGiftCards();
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadUserBalance();
+            await loadVouchers();
             setupFilters();
-            setupSorting();
-            setupModals();
+            setupModal();
         });
 
-        // Render Gift Cards
-        function renderGiftCards() {
+        // Load user balance from localStorage
+        async function loadUserBalance() {
+            const storedUser = getStoredUser();
+            if (storedUser) {
+                userPoints = storedUser.availableWeeePoints || storedUser.availablePoints || 0;
+                userCash = storedUser.availableCash || 0;
+
+                document.getElementById('user-points').textContent = userPoints.toLocaleString();
+                document.getElementById('user-cash').textContent = userCash.toLocaleString();
+            }
+        }
+
+        // Load vouchers from API
+        async function loadVouchers() {
+            const loadingState = document.getElementById('loadingState');
+            const loginRequired = document.getElementById('loginRequired');
+            const rewardsGrid = document.getElementById('rewards-grid');
+            const emptyState = document.getElementById('emptyState');
+
+            const storedUser = getStoredUser();
+            if (!storedUser || !storedUser.GUID) {
+                loadingState.style.display = 'none';
+                loginRequired.style.display = 'block';
+                return;
+            }
+
+            try {
+                const baseUrl = getApiBaseUrl();
+                const response = await fetch(`${baseUrl}/api/vouchers`, {
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+
+                loadingState.style.display = 'none';
+
+                if (!data.success || !data.vouchers || data.vouchers.length === 0) {
+                    emptyState.style.display = 'block';
+                    return;
+                }
+
+                vouchersData = data.vouchers;
+                rewardsGrid.style.display = 'grid';
+                renderVouchers();
+
+            } catch (error) {
+                console.error('Error loading vouchers:', error);
+                loadingState.innerHTML = `
+                    <div class="empty-state-icon" style="background: #FFEBEE;">
+                        <i class="fas fa-exclamation-triangle" style="color: #C62828;"></i>
+                    </div>
+                    <p style="font-weight: 600; margin-bottom: 0.5rem;">Error Loading Vouchers</p>
+                    <p style="color: var(--text-gray);">Please try again later.</p>
+                    <button class="btn btn--primary" onclick="location.reload()" style="margin-top: 1rem;">
+                        <i class="fas fa-redo"></i> Retry
+                    </button>
+                `;
+            }
+        }
+
+        // Render vouchers
+        function renderVouchers() {
             const grid = document.getElementById('rewards-grid');
-            let filteredCards = giftCardsData;
+            let filteredVouchers = vouchersData;
 
             // Apply filter
             if (currentFilter !== 'all') {
-                filteredCards = filteredCards.filter(card => card.category === currentFilter);
+                filteredVouchers = filteredVouchers.filter(v => v.category === currentFilter);
             }
 
-            // Apply sorting
-            filteredCards = sortCards(filteredCards, currentSort);
+            if (filteredVouchers.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+                        <p style="color: var(--text-gray);">No vouchers found in this category.</p>
+                    </div>
+                `;
+                return;
+            }
 
-            grid.innerHTML = filteredCards.map(card => createGiftCardHTML(card)).join('');
+            grid.innerHTML = filteredVouchers.map(createVoucherCard).join('');
 
             // Add click handlers
-            document.querySelectorAll('.redeem-btn').forEach(btn => {
+            document.querySelectorAll('.view-details-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    const cardId = parseInt(btn.dataset.cardId);
-                    openRedemptionModal(cardId);
+                    const voucherId = btn.dataset.voucherId;
+                    openVoucherModal(voucherId);
                 });
             });
         }
 
-        // Create Gift Card HTML
-        function createGiftCardHTML(card) {
-            const canRedeem = userPoints >= card.points;
-            const badgeHTML = card.badge ? `<div class="card-badge ${card.badge}">${card.badge}</div>` : '';
+        // Create voucher card HTML
+        function createVoucherCard(voucher) {
+            const isCash = voucher.category === 'cash';
 
             return `
-                <div class="gift-card" data-category="${card.category}">
-                    ${badgeHTML}
+                <div class="gift-card" data-category="${voucher.category}">
+                    ${isCash ? '<div class="card-badge cash">Cash</div>' : ''}
                     <div class="card-image">
-                        <img src="${card.image}" alt="${card.name}" loading="lazy">
-                        <div class="card-brand-logo">${card.brand}</div>
+                        <img src="${voucher.image}" alt="${voucher.name}" loading="lazy"
+                             onerror="this.src='https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop'">
+                        <div class="card-category-tag">${voucher.categoryName}</div>
                     </div>
                     <div class="card-content">
-                        <h3 class="card-title">${card.name}</h3>
-                        <p class="card-description">${card.description}</p>
-                        <div class="card-value-row">
-                            <div class="card-value">
-                                <span class="value-label">Gift Card Value</span>
-                                <span class="value-amount">$${card.value}</span>
+                        <h3 class="card-title">${voucher.name}</h3>
+                        <div class="card-pricing">
+                            <div class="price-option">
+                                <span class="price-label"><i class="fas fa-coins"></i> Points</span>
+                                <span class="price-value">${voucher.pointsCost.toLocaleString()}</span>
                             </div>
-                            <div class="points-required">
-                                <i class="fas fa-coins"></i>
-                                <div>
-                                    <div class="points-amount">${card.points}</div>
-                                    <div class="points-text">Points</div>
-                                </div>
+                            <div class="price-option">
+                                <span class="price-label"><i class="fas fa-wallet"></i> Cash</span>
+                                <span class="price-value">EGP ${voucher.cashCost.toLocaleString()}</span>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-footer">
-                        <button class="redeem-btn ${!canRedeem ? 'insufficient' : ''}"
-                                data-card-id="${card.id}"
-                                ${!canRedeem ? 'disabled' : ''}>
-                            <i class="fas ${canRedeem ? 'fa-gift' : 'fa-lock'}"></i>
-                            ${canRedeem ? 'Redeem Now' : 'Insufficient Points'}
+                        <button class="view-details-btn" data-voucher-id="${voucher.id}">
+                            <i class="fas fa-eye"></i>
+                            View Details
                         </button>
                     </div>
                 </div>
             `;
         }
 
-        // Setup Filters
+        // Setup filters
         function setupFilters() {
             document.querySelectorAll('.filter-tab').forEach(tab => {
                 tab.addEventListener('click', () => {
                     document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
                     tab.classList.add('active');
                     currentFilter = tab.dataset.category;
-                    renderGiftCards();
+                    renderVouchers();
                 });
             });
         }
 
-        // Setup Sorting
-        function setupSorting() {
-            document.getElementById('sort-select').addEventListener('change', (e) => {
-                currentSort = e.target.value;
-                renderGiftCards();
-            });
+
+        // Open voucher modal
+        function openVoucherModal(voucherId) {
+            selectedVoucher = vouchersData.find(v => v.id === voucherId);
+            if (!selectedVoucher) return;
+
+            selectedQuantity = 1;
+            selectedPaymentMethod = 'points';
+
+            // Populate modal
+            document.getElementById('modalImage').src = selectedVoucher.image;
+            document.getElementById('modalTitle').textContent = selectedVoucher.name;
+            document.getElementById('modalCategory').innerHTML = `<i class="fas fa-tag"></i> ${selectedVoucher.categoryName}`;
+            document.getElementById('modalPointsCost').textContent = selectedVoucher.pointsCost.toLocaleString();
+            document.getElementById('modalCashCost').textContent = `EGP ${selectedVoucher.cashCost.toLocaleString()}`;
+            document.getElementById('qtyValue').textContent = '1';
+
+            // Check affordability
+            updatePaymentOptions();
+            updateOrderSummary();
+
+            document.getElementById('voucherModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
-        // Sort Cards
-        function sortCards(cards, sortType) {
-            const sorted = [...cards];
-            switch (sortType) {
-                case 'points-low':
-                    return sorted.sort((a, b) => a.points - b.points);
-                case 'points-high':
-                    return sorted.sort((a, b) => b.points - a.points);
-                case 'value-high':
-                    return sorted.sort((a, b) => b.value - a.value);
-                case 'popular':
-                    return sorted.sort((a, b) => (b.badge === 'popular' ? 1 : 0) - (a.badge === 'popular' ? 1 : 0));
-                default:
-                    return sorted;
+        // Update payment options based on user balance
+        function updatePaymentOptions() {
+            const pointsOption = document.getElementById('payPoints');
+            const cashOption = document.getElementById('payCash');
+            const pointsInsufficient = document.getElementById('pointsInsufficient');
+            const cashInsufficient = document.getElementById('cashInsufficient');
+
+            const totalPointsCost = selectedVoucher.pointsCost * selectedQuantity;
+            const totalCashCost = selectedVoucher.cashCost * selectedQuantity;
+
+            const canAffordPoints = userPoints >= totalPointsCost;
+            const canAffordCash = userCash >= totalCashCost;
+
+            // Points option
+            if (canAffordPoints) {
+                pointsOption.classList.remove('disabled');
+                pointsInsufficient.style.display = 'none';
+            } else {
+                pointsOption.classList.add('disabled');
+                pointsInsufficient.style.display = 'block';
+                if (selectedPaymentMethod === 'points') {
+                    selectedPaymentMethod = canAffordCash ? 'cash' : null;
+                }
+            }
+
+            // Cash option
+            if (canAffordCash) {
+                cashOption.classList.remove('disabled');
+                cashInsufficient.style.display = 'none';
+            } else {
+                cashOption.classList.add('disabled');
+                cashInsufficient.style.display = 'block';
+                if (selectedPaymentMethod === 'cash') {
+                    selectedPaymentMethod = canAffordPoints ? 'points' : null;
+                }
+            }
+
+            // Update selection
+            pointsOption.classList.toggle('selected', selectedPaymentMethod === 'points');
+            cashOption.classList.toggle('selected', selectedPaymentMethod === 'cash');
+
+            // Enable/disable redeem button
+            const redeemBtn = document.getElementById('btnRedeem');
+            if (!canAffordPoints && !canAffordCash) {
+                redeemBtn.disabled = true;
+                redeemBtn.innerHTML = '<i class="fas fa-lock"></i> Insufficient Balance';
+            } else {
+                redeemBtn.disabled = false;
+                redeemBtn.innerHTML = '<i class="fas fa-gift"></i> Redeem Now';
             }
         }
 
-        // Open Redemption Modal
-        function openRedemptionModal(cardId) {
-            const card = giftCardsData.find(c => c.id === cardId);
-            if (!card) return;
+        // Update order summary
+        function updateOrderSummary() {
+            const totalCost = selectedPaymentMethod === 'points'
+                ? selectedVoucher.pointsCost * selectedQuantity
+                : selectedVoucher.cashCost * selectedQuantity;
 
-            const newBalance = userPoints - card.points;
+            const totalDisplay = selectedPaymentMethod === 'points'
+                ? `${totalCost.toLocaleString()} Points`
+                : `EGP ${totalCost.toLocaleString()}`;
 
-            document.getElementById('modal-reward-name').textContent = card.name;
-            document.getElementById('modal-reward-value').textContent = `$${card.value}`;
-            document.getElementById('modal-points-required').textContent = `${card.points} Points`;
-            document.getElementById('modal-current-balance').textContent = `${userPoints} Points`;
-            document.getElementById('modal-new-balance').textContent = `${newBalance} Points`;
-
-            document.getElementById('redemption-modal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-
-            // Store card ID for confirmation
-            document.getElementById('btn-confirm').dataset.cardId = cardId;
+            document.getElementById('summaryQuantity').textContent = selectedQuantity;
+            document.getElementById('summaryTotal').textContent = totalDisplay;
         }
 
-        // Setup Modals
-        function setupModals() {
-            // Close buttons
-            document.getElementById('modal-close').addEventListener('click', closeRedemptionModal);
-            document.getElementById('btn-cancel').addEventListener('click', closeRedemptionModal);
-            document.getElementById('success-close').addEventListener('click', closeSuccessModal);
-            document.getElementById('btn-close-success').addEventListener('click', closeSuccessModal);
+        // Setup modal interactions
+        function setupModal() {
+            // Close modal
+            document.getElementById('modalClose').addEventListener('click', closeModal);
+            document.getElementById('btnCancel').addEventListener('click', closeModal);
+            document.getElementById('voucherModal').addEventListener('click', (e) => {
+                if (e.target.id === 'voucherModal') closeModal();
+            });
 
-            // Confirm redemption
-            document.getElementById('btn-confirm').addEventListener('click', confirmRedemption);
+            // Payment method selection
+            document.getElementById('payPoints').addEventListener('click', () => {
+                if (!document.getElementById('payPoints').classList.contains('disabled')) {
+                    selectedPaymentMethod = 'points';
+                    updatePaymentOptions();
+                    updateOrderSummary();
+                }
+            });
 
-            // Close on overlay click
-            document.querySelectorAll('.modal-overlay').forEach(overlay => {
-                overlay.addEventListener('click', (e) => {
-                    if (e.target === overlay) {
-                        overlay.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                });
+            document.getElementById('payCash').addEventListener('click', () => {
+                if (!document.getElementById('payCash').classList.contains('disabled')) {
+                    selectedPaymentMethod = 'cash';
+                    updatePaymentOptions();
+                    updateOrderSummary();
+                }
+            });
+
+            // Quantity controls
+            document.getElementById('qtyMinus').addEventListener('click', () => {
+                if (selectedQuantity > 1) {
+                    selectedQuantity--;
+                    document.getElementById('qtyValue').textContent = selectedQuantity;
+                    updatePaymentOptions();
+                    updateOrderSummary();
+                }
+            });
+
+            document.getElementById('qtyPlus').addEventListener('click', () => {
+                if (selectedQuantity < selectedVoucher.availableQuantity) {
+                    selectedQuantity++;
+                    document.getElementById('qtyValue').textContent = selectedQuantity;
+                    updatePaymentOptions();
+                    updateOrderSummary();
+                }
+            });
+
+            // Redeem button
+            document.getElementById('btnRedeem').addEventListener('click', submitRedemption);
+
+            // Success modal - clicking outside closes it
+            document.getElementById('successModal').addEventListener('click', (e) => {
+                if (e.target.id === 'successModal') {
+                    document.getElementById('successModal').classList.remove('active');
+                    document.body.style.overflow = '';
+                }
             });
         }
 
-        function closeRedemptionModal() {
-            document.getElementById('redemption-modal').classList.remove('active');
+        // Close modal
+        function closeModal() {
+            document.getElementById('voucherModal').classList.remove('active');
             document.body.style.overflow = '';
         }
 
-        function closeSuccessModal() {
-            document.getElementById('success-modal').classList.remove('active');
-            document.body.style.overflow = '';
-        }
+        // Submit redemption
+        async function submitRedemption() {
+            const storedUser = getStoredUser();
+            if (!storedUser || !storedUser.GUID) {
+                alert('Please log in to redeem vouchers.');
+                return;
+            }
 
-        function confirmRedemption() {
-            const cardId = parseInt(document.getElementById('btn-confirm').dataset.cardId);
-            const card = giftCardsData.find(c => c.id === cardId);
+            const totalCost = selectedPaymentMethod === 'points'
+                ? selectedVoucher.pointsCost * selectedQuantity
+                : selectedVoucher.cashCost * selectedQuantity;
 
-            if (!card) return;
+            const redeemBtn = document.getElementById('btnRedeem');
+            redeemBtn.disabled = true;
+            redeemBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
 
-            // Deduct points
-            userPoints -= card.points;
-            document.getElementById('user-points').textContent = userPoints.toLocaleString();
+            try {
+                const baseUrl = getApiBaseUrl();
+                const response = await fetch(`${baseUrl}/api/redeem`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        voucher: selectedVoucher,
+                        quantity: selectedQuantity,
+                        paymentMethod: selectedPaymentMethod,
+                        totalCost: totalCost,
+                        userGUID: storedUser.GUID,
+                        userFullName: storedUser.fullName,
+                        userPhoneNumber: storedUser.phoneNumber
+                    })
+                });
 
-            // Close redemption modal
-            closeRedemptionModal();
+                const data = await response.json();
 
-            // Show success modal
-            setTimeout(() => {
-                document.getElementById('success-modal').classList.add('active');
-            }, 300);
+                if (data.success) {
+                    // Close voucher modal
+                    closeModal();
 
-            // Re-render cards with updated points
-            renderGiftCards();
+                    // Show success modal
+                    setTimeout(() => {
+                        document.getElementById('successModal').classList.add('active');
+                    }, 200);
+                } else {
+                    alert(data.message || 'Failed to submit redemption request.');
+                    redeemBtn.disabled = false;
+                    redeemBtn.innerHTML = '<i class="fas fa-gift"></i> Redeem Now';
+                }
 
-            // In a real app, make API call here
-            console.log(`Redeemed: ${card.name} for ${card.points} points`);
+            } catch (error) {
+                console.error('Error submitting redemption:', error);
+                alert('An error occurred. Please try again.');
+                redeemBtn.disabled = false;
+                redeemBtn.innerHTML = '<i class="fas fa-gift"></i> Redeem Now';
+            }
         }
     </script>
 </body>

@@ -15,10 +15,11 @@
 
 /* --- UPDATED: Hero Stats --- */
 .hero__stats {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: var(--space-md);
     margin-top: var(--space-xxl);
-    padding: var(--space-sm);
+    padding: var(--space-md);
     background: rgba(255, 255, 255, 0.15);
     border-radius: var(--radius-xl);
     backdrop-filter: blur(12px);
@@ -28,11 +29,11 @@
 }
 
 .hero__stat {
-    flex: 1;
     text-align: center;
     padding: var(--space-md);
     border-radius: var(--radius-lg);
     transition: background-color var(--transition-normal);
+    min-width: 0; /* Prevent overflow on small screens */
 }
 
 .hero__stat:hover {
@@ -42,18 +43,22 @@
 .hero__stat-number {
     display: block;
     font-family: var(--font-primary);
-    font-size: 2.5rem;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
     font-weight: 700;
     color: var(--white);
     margin-bottom: var(--space-xs);
+    line-height: 1.2;
 }
 
 .hero__stat-label {
     font-family: var(--font-primary);
-    font-size: 0.875rem;
+    font-size: clamp(0.65rem, 1.5vw, 0.875rem);
     color: rgba(255, 255, 255, 0.9);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+    line-height: 1.3;
+    word-wrap: break-word;
+    hyphens: auto;
 }
 
 /* About Preview Styles */
@@ -981,6 +986,26 @@
 
 /* Medium screens (768px to 991px) */
 @media (max-width: 991px) {
+    /* Hero Stats Tablet - 2x2 grid */
+    .hero__stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-sm);
+        margin-top: var(--space-lg);
+        padding: var(--space-sm);
+    }
+
+    .hero__stat {
+        padding: var(--space-sm);
+    }
+
+    .hero__stat-number {
+        font-size: 2rem;
+    }
+
+    .hero__stat-label {
+        font-size: 0.75rem;
+    }
+
     .services-grid {
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: var(--space-lg);
@@ -1319,23 +1344,25 @@
 
 /* Extra small screens (up to 575px) */
 @media (max-width: 575px) {
-    /* Hero Stats Extra Small */
+    /* Hero Stats Extra Small - Keep 2x2 grid for better layout */
     .hero__stats {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: var(--space-xs);
-        padding: var(--space-xs);
+        padding: var(--space-sm);
+        margin-top: var(--space-md);
     }
-    
+
     .hero__stat {
-        padding: var(--space-xs);
+        padding: var(--space-xs) var(--space-xxs);
     }
-    
+
     .hero__stat-number {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
     }
-    
+
     .hero__stat-label {
-        font-size: 0.7rem;
+        font-size: 0.6rem;
+        letter-spacing: 0.3px;
     }
     
     /* Service Cards Extra Small */

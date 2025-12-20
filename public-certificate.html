@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Dynamic OG Meta Tags (Server-Injected) -->
+    <title>{{OG_TITLE}}</title>
+    <meta name="description" content="{{OG_DESCRIPTION}}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="profile">
+    <meta property="og:title" content="{{OG_TITLE}}">
+    <meta property="og:description" content="{{OG_DESCRIPTION}}">
+    <meta property="og:image" content="{{OG_IMAGE}}">
+    <meta property="og:url" content="{{OG_URL}}">
+    <meta property="og:site_name" content="DR.WEEE">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{OG_TITLE}}">
+    <meta name="twitter:description" content="{{OG_DESCRIPTION}}">
+    <meta name="twitter:image" content="{{OG_IMAGE}}">
+
+    <!-- LinkedIn specific -->
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logos/favicon.png">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+
+    <style>
+        /* Certificate Page Styles */
+        :root {
+            --cert-primary: #1B5E20;
+            --cert-secondary: #2E7D32;
+            --cert-accent: #43A047;
+            --cert-light: #e8f5e9;
+            --cert-gold: #FFD700;
+            --cert-glow: rgba(67, 160, 71, 0.4);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8fff8 0%, #e8f5e9 100%);
+            min-height: 100vh;
+        }
+
+        .certificate-page .main {
+            padding-top: 0;
+        }
+
+        /* ===== INNOVATIVE HERO SECTION ===== */
+        .cert-hero {
+            position: relative;
+            padding: 4rem 0 6rem;
+            background: linear-gradient(135deg, #0a3d0c 0%, var(--cert-primary) 25%, var(--cert-secondary) 50%, var(--cert-accent) 75%, #66BB6A 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+            z-index: 1; /* Keep below header (z-index: 1000) */
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Animated particle grid background */
+        .cert-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 1px, transparent 1px),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 1px, transparent 1px),
+                radial-gradient(circle at 40% 40%, rgba(255,255,255,0.08) 2px, transparent 2px),
+                radial-gradient(circle at 60% 60%, rgba(255,255,255,0.08) 2px, transparent 2px);
+            background-size: 100px 100px, 80px 80px, 120px 120px, 90px 90px;
+            animation: particleFloat 20s linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(-100px) translateX(50px); }
+        }
+
+        /* Glowing orbs */
+        .cert-hero::after {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(102, 187, 106, 0.3) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            animation: orbPulse 4s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes orbPulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        /* Bottom wave decoration */
+        .cert-hero-wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            overflow: hidden;
+        }
+
+        .cert-hero-wave svg {
+            position: absolute;
+            bottom: 0;
+            width: 200%;
+            height: 100%;
+            animation: waveMove 10s linear infinite;
+        }
+
+        @keyframes waveMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .cert-hero .container {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Enhanced badge with glow animation */
+        .cert-badge-large {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1));
+            backdrop-filter: blur(20px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 4.5rem;
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            box-shadow:
+                0 0 60px var(--cert-glow),
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                inset 0 0 30px rgba(255, 255, 255, 0.1);
+            animation: badgeFloat 3s ease-in-out infinite, badgeGlow 2s ease-in-out infinite alternate;
+            position: relative;
+        }
+
+        .cert-badge-large::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--cert-gold), transparent, var(--cert-gold), transparent);
+            background-size: 200% 200%;
+            animation: borderRotate 3s linear infinite;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        @keyframes badgeFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes badgeGlow {
+            0% { box-shadow: 0 0 40px var(--cert-glow), 0 20px 40px rgba(0, 0, 0, 0.3), inset 0 0 30px rgba(255, 255, 255, 0.1); }
+            100% { box-shadow: 0 0 80px var(--cert-glow), 0 20px 40px rgba(0, 0, 0, 0.3), inset 0 0 30px rgba(255, 255, 255, 0.2); }
+        }
+
+        @keyframes borderRotate {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 200%; }
+        }
+
+        .cert-hero-title {
+            font-family: var(--font-secondary);
+            font-size: 3rem;
+            margin-bottom: 0.75rem;
+            color: white;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            animation: titleFadeIn 0.8s ease-out;
+        }
+
+        @keyframes titleFadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .cert-hero-level {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(90deg, #fff, var(--cert-gold), #fff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .cert-hero-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        /* Decorative elements */
+        .cert-hero-decoration {
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .cert-hero-decoration.left {
+            left: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 6rem;
+            opacity: 0.15;
+            animation: leafSway 4s ease-in-out infinite;
+        }
+
+        .cert-hero-decoration.right {
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 6rem;
+            opacity: 0.15;
+            animation: leafSway 4s ease-in-out infinite reverse;
+        }
+
+        @keyframes leafSway {
+            0%, 100% { transform: translateY(-50%) rotate(-5deg); }
+            50% { transform: translateY(-50%) rotate(5deg); }
+        }
+
+        /* Main Certificate Card - Fixed spacing */
+        .cert-main {
+            padding: 3rem 1rem 3rem;
+            position: relative;
+            z-index: 5;
+        }
+
+        .cert-card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .cert-card-header {
+            background: linear-gradient(135deg, var(--cert-light), #c8e6c9);
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 3px solid var(--cert-accent);
+        }
+
+        .cert-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .cert-logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .cert-logo-text {
+            font-family: var(--font-secondary);
+            font-size: 1.5rem;
+            color: var(--cert-primary);
+        }
+
+        .cert-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--cert-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Main Stats Section */
+        .cert-stats-main {
+            padding: 2.5rem 2rem;
+            text-align: center;
+            background: white;
+        }
+
+        .cert-co2-value {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--cert-primary);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .cert-co2-value .unit {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--cert-secondary);
+        }
+
+        .cert-co2-label {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        /* Equivalents Grid */
+        .cert-equivalents {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            padding: 0 1rem;
+        }
+
+        .cert-equiv-item {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            background: linear-gradient(135deg, #f8fff8, var(--cert-light));
+            border-radius: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .cert-equiv-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .cert-equiv-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .cert-equiv-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--cert-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .cert-equiv-label {
+            font-size: 0.8rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* Verification Footer */
+        .cert-footer {
+            padding: 1.5rem 2rem;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .cert-verified {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .cert-verified i {
+            color: var(--cert-accent);
+        }
+
+        .cert-climatiq {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cert-climatiq img {
+            height: 20px;
+            width: auto;
+            opacity: 0.7;
+        }
+
+        /* Loading State */
+        .cert-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+        }
+
+        .cert-loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--cert-light);
+            border-top-color: var(--cert-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .cert-loading-text {
+            margin-top: 1rem;
+            color: #666;
+        }
+
+        /* Error State */
+        .cert-error {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .cert-error-icon {
+            font-size: 4rem;
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+
+        .cert-error h3 {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .cert-error p {
+            color: #999;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cert-hero {
+                padding: 3rem 0 4rem;
+            }
+
+            .cert-hero-title {
+                font-size: 2rem;
+            }
+
+            .cert-badge-large {
+                width: 110px;
+                height: 110px;
+                font-size: 3.5rem;
+            }
+
+            .cert-hero-decoration {
+                display: none;
+            }
+
+            .cert-hero-wave {
+                height: 50px;
+            }
+
+            .cert-main {
+                padding: 2rem 1rem 2rem;
+            }
+
+            .cert-co2-value {
+                font-size: 3rem;
+            }
+
+            .cert-co2-value .unit {
+                font-size: 1.5rem;
+            }
+
+            .cert-equivalents {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .cert-equiv-item:last-child {
+                grid-column: span 2;
+            }
+
+            .cert-footer {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cert-hero-title {
+                font-size: 1.75rem;
+            }
+
+            .cert-badge-large {
+                width: 100px;
+                height: 100px;
+                font-size: 3rem;
+            }
+
+            .cert-hero-level {
+                font-size: 1.1rem;
+            }
+
+            .cert-hero-subtitle {
+                font-size: 0.9rem;
+                letter-spacing: 1px;
+            }
+
+            .cert-equivalents {
+                grid-template-columns: 1fr;
+            }
+
+            .cert-equiv-item:last-child {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="certificate-page">
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Hero Section -->
+        <section class="cert-hero">
+            <!-- Decorative leaf icons -->
+            <div class="cert-hero-decoration left">🌿</div>
+            <div class="cert-hero-decoration right">🍃</div>
+
+            <div class="container">
+                <div class="cert-badge-large" id="ecoLevelBadge">
+                    <span id="ecoLevelEmoji"></span>
+                </div>
+                <h1 class="cert-hero-title" id="userName">Loading...</h1>
+                <p class="cert-hero-level" id="ecoLevelName"></p>
+                <p class="cert-hero-subtitle">Environmental Impact Certificate</p>
+            </div>
+
+            <!-- Animated wave at bottom -->
+            <div class="cert-hero-wave">
+                <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+                    <path fill="rgba(255,255,255,0.15)" d="M0,40 C360,80 720,0 1080,40 C1260,60 1380,50 1440,40 L1440,80 L0,80 Z"></path>
+                    <path fill="rgba(255,255,255,0.1)" d="M0,50 C360,20 720,70 1080,30 C1260,15 1380,45 1440,50 L1440,80 L0,80 Z"></path>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Main Certificate Card -->
+        <section class="cert-main">
+            <div class="cert-card">
+                <!-- Header -->
+                <div class="cert-card-header">
+                    <div class="cert-logo">
+                        <img src="images/logos/drweee-logo.png" alt="DR.WEEE" onerror="this.style.display='none'">
+                        <span class="cert-logo-text">DR.WEEE</span>
+                    </div>
+                    <div class="cert-title">Verified Environmental Impact</div>
+                </div>
+
+                <!-- Loading State -->
+                <div class="cert-loading" id="loadingState">
+                    <div class="cert-loading-spinner"></div>
+                    <p class="cert-loading-text">Loading certificate data...</p>
+                </div>
+
+                <!-- Error State -->
+                <div class="cert-error" id="errorState" style="display: none;">
+                    <div class="cert-error-icon">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <h3>Certificate Not Found</h3>
+                    <p>This certificate may have been removed or the link is invalid.</p>
+                </div>
+
+                <!-- Main Content (hidden until loaded) -->
+                <div id="certificateContent" style="display: none;">
+                    <!-- Main Stats -->
+                    <div class="cert-stats-main">
+                        <div class="cert-co2-value">
+                            <span id="co2Value">0</span>
+                            <span class="unit">kg CO₂</span>
+                        </div>
+                        <div class="cert-co2-label">Total Carbon Emissions Saved</div>
+
+                        <!-- Equivalents Grid -->
+                        <div class="cert-equivalents">
+                            <div class="cert-equiv-item">
+                                <div class="cert-equiv-icon">🌳</div>
+                                <div class="cert-equiv-value" id="treesValue">0</div>
+                                <div class="cert-equiv-label">Trees Equivalent (1 Year)</div>
+                            </div>
+                            <div class="cert-equiv-item">
+                                <div class="cert-equiv-icon">🚗</div>
+                                <div class="cert-equiv-value" id="drivingValue">0 km</div>
+                                <div class="cert-equiv-label">Driving Avoided</div>
+                            </div>
+                            <div class="cert-equiv-item">
+                                <div class="cert-equiv-icon">💡</div>
+                                <div class="cert-equiv-value" id="electricityValue">0</div>
+                                <div class="cert-equiv-label">Days of Electricity</div>
+                            </div>
+                            <div class="cert-equiv-item">
+                                <div class="cert-equiv-icon">📱</div>
+                                <div class="cert-equiv-value" id="chargesValue">0</div>
+                                <div class="cert-equiv-label">Phone Charges</div>
+                            </div>
+                            <div class="cert-equiv-item">
+                                <div class="cert-equiv-icon">✈️</div>
+                                <div class="cert-equiv-value" id="flightsValue">0</div>
+                                <div class="cert-equiv-label">Flight Hours Offset</div>
+                            </div>
+                            <div class="cert-equiv-item">
+                                <div class="cert-equiv-icon">🍔</div>
+                                <div class="cert-equiv-value" id="burgersValue">0</div>
+                                <div class="cert-equiv-label">Burgers Equivalent</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Verification Footer -->
+                    <div class="cert-footer">
+                        <div class="cert-verified">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Verified Data</span>
+                        </div>
+                        <div class="cert-climatiq">
+                            <span>Powered by</span>
+                            <a href="https://www.climatiq.io/" target="_blank" rel="noopener noreferrer">
+                                <img src="https://cdn.prod.website-files.com/6059f5c21023d67f1f75b7bc/60770ba173bfd052b37f0dd9_Climatiq_logo_400p-W.png" alt="Climatiq">
+                            </a>
+                        </div>
+                        <div class="cert-verified">
+                            <i class="fas fa-database"></i>
+                            <span>639,000+ Emission Factors</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- JavaScript Files -->
+    <script src="js/main.js"></script>
+    <script>
+        // Get share code from URL
+        const shareCode = '{{SHARE_CODE}}';
+
+        // Helper function to get API base URL
+        function getApiBaseUrl() {
+            const port = window.location.port;
+            if (port === '5500' || port === '5501' || window.location.protocol === 'file:') {
+                return 'http://localhost:3000';
+            }
+            return '';
+        }
+
+        // Fetch and display certificate data
+        async function loadCertificate() {
+            const loadingState = document.getElementById('loadingState');
+            const errorState = document.getElementById('errorState');
+            const certificateContent = document.getElementById('certificateContent');
+
+            try {
+                const baseUrl = getApiBaseUrl();
+                const response = await fetch(`${baseUrl}/api/public/impact/${shareCode}`);
+
+                if (!response.ok) {
+                    throw new Error('Certificate not found');
+                }
+
+                const data = await response.json();
+
+                if (!data.success || !data.profile) {
+                    throw new Error('Invalid data');
+                }
+
+                const profile = data.profile;
+                const impact = profile.impact;
+
+                // Update hero section
+                document.getElementById('userName').textContent = profile.name;
+                document.getElementById('ecoLevelEmoji').textContent = impact.ecoLevel.emoji;
+                document.getElementById('ecoLevelName').textContent = impact.ecoLevel.name;
+
+                // Update main stats
+                document.getElementById('co2Value').textContent = impact.co2Saved.toLocaleString();
+                document.getElementById('treesValue').textContent = impact.treesEquivalent;
+                document.getElementById('drivingValue').textContent = impact.drivingKm.toLocaleString() + ' km';
+                document.getElementById('electricityValue').textContent = impact.electricityDays.toLocaleString();
+                document.getElementById('chargesValue').textContent = impact.phoneCharges.toLocaleString();
+                document.getElementById('flightsValue').textContent = impact.flightsAvoided + ' hrs';
+                document.getElementById('burgersValue').textContent = impact.burgersEquivalent.toLocaleString();
+
+                // Show content, hide loading
+                loadingState.style.display = 'none';
+                certificateContent.style.display = 'block';
+
+            } catch (error) {
+                console.error('Error loading certificate:', error);
+                loadingState.style.display = 'none';
+                errorState.style.display = 'block';
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Only load if we have a valid share code (check if it looks like a real code, not a placeholder)
+            // A valid share code is 8 alphanumeric characters
+            const isValidCode = shareCode && /^[A-Za-z0-9]{8}$/.test(shareCode) && !shareCode.includes('{');
+            if (isValidCode) {
+                loadCertificate();
+            } else {
+                // Show error if no share code
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('errorState').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+
+</html>

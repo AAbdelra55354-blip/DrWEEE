@@ -275,7 +275,7 @@
             transform: scale(1.1);
         }
 
-        /* Cart Panel */
+        /* Cart Panel - Desktop Sticky */
         .cart-panel {
             background: white;
             border-radius: 20px;
@@ -283,6 +283,10 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
+            position: sticky;
+            top: 100px;
+            max-height: calc(100vh - 120px);
+            overflow: hidden;
         }
 
         .panel-header {
@@ -303,10 +307,34 @@
         }
 
         .cart-items {
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             display: flex;
             flex-direction: column;
             gap: 1rem;
+            flex: 1;
+            overflow-y: auto;
+            min-height: 100px;
+            max-height: 350px;
+            padding-right: 0.5rem;
+        }
+
+        /* Custom scrollbar for cart items */
+        .cart-items::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .cart-items::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .cart-items::-webkit-scrollbar-thumb {
+            background: var(--primary-green);
+            border-radius: 3px;
+        }
+
+        .cart-items::-webkit-scrollbar-thumb:hover {
+            background: var(--dark-green);
         }
 
         .empty-cart {
@@ -421,136 +449,74 @@
             margin-top: 0.5rem;
         }
 
-        /* Enhanced Cart Summary */
-        /* Enhanced Cart Summary - Compact Version */
+        /* Enhanced Cart Summary - Modern Design */
         .cart-summary {
             background: white;
-            border: 2px solid var(--light-green);
             border-radius: 16px;
-            margin-bottom: 1.5rem;
-            /* Keep some margin before checkout button */
-            box-shadow: 0 4px 15px rgba(0, 137, 123, 0.08);
+            margin-bottom: 0.75rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
             overflow: hidden;
-        }
-
-        .summary-title {
-            background: var(--primary-green);
-            color: white;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin: 0;
-            padding: 0.75rem 1rem;
-            text-align: center;
-            letter-spacing: 0.3px;
+            flex-shrink: 0;
         }
 
         .summary-content {
-            padding: 1rem;
+            padding: 1.25rem;
         }
 
-        .summary-row {
+        .summary-total-section {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.4rem 0;
-            font-size: 0.85rem;
-            color: var(--text-dark);
-            border-bottom: 1px solid #f5f5f5;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 1rem;
         }
 
-        .summary-row:last-child {
-            border-bottom: none;
-        }
-
-        .summary-row-label {
+        .summary-total-label {
+            font-size: 0.8rem;
+            color: #666;
             font-weight: 500;
-            color: var(--text-dark);
         }
 
-        .summary-row-value {
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .summary-row.discount {
-            background: rgba(76, 175, 80, 0.1);
-            margin: 0.5rem -1rem;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            border: 1px solid rgba(76, 175, 80, 0.2);
-            border-bottom: none;
-        }
-
-        .summary-row.discount .summary-row-label {
-            color: #2E7D32;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .summary-row.discount .summary-row-value {
-            color: #2E7D32;
+        .summary-total-amount {
+            font-size: 1.1rem;
             font-weight: 700;
+            color: var(--primary-green);
         }
 
-        .discount-icon {
-            color: #4CAF50;
+        .summary-discount-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            color: #2e7d32;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .summary-discount-badge i {
+            font-size: 0.85rem;
+        }
+
+        .summary-meta {
+            display: flex;
+            gap: 1.5rem;
+            color: #888;
             font-size: 0.8rem;
         }
 
-        .summary-row.total {
-            border-top: 2px solid var(--light-green);
-            margin-top: 0.5rem;
-            padding-top: 0.5rem;
-            font-weight: 700;
-            font-size: 0.95rem;
-            border-bottom: none;
-        }
-
-        .summary-row.total .summary-row-label {
-            color: var(--primary-green);
-            font-weight: 700;
-        }
-
-        .summary-row.total .summary-row-value {
-            color: var(--primary-green);
-            font-weight: 700;
-            font-size: 1rem;
-        }
-
-        /* Savings badge for additional visual appeal */
-        .savings-badge {
-            display: inline-flex;
+        .summary-meta-item {
+            display: flex;
             align-items: center;
-            gap: 0.25rem;
-            background: #4CAF50;
-            color: white;
-            font-size: 0.7rem;
-            font-weight: 600;
-            padding: 0.2rem 0.5rem;
-            border-radius: 12px;
-            margin-left: 0.5rem;
+            gap: 0.375rem;
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .summary-row {
-                font-size: 0.8rem;
-            }
-
-            .summary-row.total {
-                font-size: 0.9rem;
-            }
-
-            .summary-content {
-                padding: 0.75rem;
-            }
-
-            .summary-row.discount {
-                margin: 0.5rem -0.75rem;
-                padding: 0.5rem 0.75rem;
-            }
+        .summary-meta-item i {
+            color: var(--primary-green);
+            font-size: 0.75rem;
         }
 
         /* Checkout Button */
@@ -1633,6 +1599,14 @@
             border: 1px solid #e0e0e0;
         }
 
+        .address-fields {
+            background: #f8f9fa;
+            padding: 1.25rem;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+            border: 1px solid #e9ecef;
+        }
+
         .address-field-row {
             margin-bottom: 0.8rem;
         }
@@ -1651,16 +1625,18 @@
 
         .address-fields .form-input {
             width: 100%;
-            padding: 0.6rem 0.8rem;
+            padding: 0.75rem 1rem;
             border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            transition: border-color 0.2s;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: white;
         }
 
         .address-fields .form-input:focus {
             outline: none;
             border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
         }
 
         .confirm-location-btn {
@@ -1682,6 +1658,149 @@
         .confirm-location-btn:not(:disabled):hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+        }
+
+        /* Mobile Delivery Modal Styles */
+        @media (max-width: 768px) {
+            #deliveryDetailsModal .location-modal {
+                width: 100%;
+                height: 100%;
+                max-width: 100%;
+                border-radius: 0;
+                margin: 0;
+            }
+
+            #deliveryDetailsModal .location-modal-header {
+                padding: 1rem 1.25rem;
+                position: sticky;
+                top: 0;
+                background: white;
+                z-index: 10;
+            }
+
+            #deliveryDetailsModal .location-modal-header h2 {
+                font-size: 1.1rem;
+            }
+
+            #deliveryDetailsModal .location-modal-body {
+                padding: 1rem;
+                overflow-y: auto;
+                flex: 1;
+            }
+
+            /* Delivery Options - Stacked on mobile */
+            #deliveryDetailsModal .delivery-options {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 1rem !important;
+                margin-bottom: 1rem !important;
+            }
+
+            #deliveryDetailsModal .delivery-options .form-group {
+                width: 100%;
+            }
+
+            #deliveryDetailsModal .delivery-options label {
+                display: block;
+                font-size: 0.85rem;
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 0.5rem;
+            }
+
+            #deliveryDetailsModal .delivery-options .form-control {
+                width: 100% !important;
+                padding: 0.875rem 1rem !important;
+                border: 1px solid #e0e0e0 !important;
+                border-radius: 10px !important;
+                font-size: 1rem !important;
+                background: #f9f9f9 !important;
+                transition: border-color 0.2s, background-color 0.2s;
+            }
+
+            #deliveryDetailsModal .delivery-options .form-control:focus {
+                border-color: var(--primary-green) !important;
+                background: white !important;
+                outline: none;
+            }
+
+            /* Map container on mobile */
+            #deliveryDetailsModal .map-container {
+                min-height: 250px;
+                border-radius: 12px;
+                overflow: hidden;
+            }
+
+            #deliveryDetailsModal .search-container {
+                top: 8px !important;
+                left: 8px !important;
+                right: 8px !important;
+            }
+
+            #deliveryDetailsModal .search-input {
+                padding: 0.75rem 1rem !important;
+                font-size: 0.9rem !important;
+                border-radius: 10px !important;
+            }
+
+            /* Footer on mobile - just the button */
+            #deliveryDetailsModal .location-modal-footer {
+                padding: 1rem;
+                position: sticky;
+                bottom: 0;
+                background: white;
+                border-top: 1px solid #eee;
+                box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            }
+
+            /* Address fields on mobile - now in body, styled for mobile */
+            #deliveryDetailsModal .address-fields {
+                background: #f9f9f9;
+                padding: 1rem;
+                border-radius: 12px;
+                margin-top: 1rem;
+            }
+
+            #deliveryDetailsModal .address-field-row {
+                flex-direction: column !important;
+                gap: 0.75rem !important;
+            }
+
+            #deliveryDetailsModal .address-fields .form-group {
+                flex: none !important;
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+
+            #deliveryDetailsModal .address-fields label {
+                display: block;
+                font-size: 0.85rem;
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 0.4rem;
+            }
+
+            #deliveryDetailsModal .address-fields .form-input {
+                width: 100%;
+                padding: 0.875rem 1rem;
+                border: 1px solid #e0e0e0;
+                border-radius: 10px;
+                font-size: 1rem;
+                background: white;
+                transition: border-color 0.2s;
+            }
+
+            #deliveryDetailsModal .address-fields .form-input:focus {
+                border-color: var(--primary-green);
+                outline: none;
+            }
+
+            #deliveryDetailsModal .confirm-location-btn {
+                width: 100%;
+                padding: 1rem;
+                font-size: 1rem;
+                border-radius: 12px;
+            }
         }
 
         /* Confirmation Modal Styles */
@@ -1891,83 +2010,40 @@
             color: var(--secondary-green);
         }
 
-        /* Add eco-impact section to cart summary */
-        .eco-impact-section {
-            background: linear-gradient(135deg, #f0f9f0, #e8f5e8);
-            margin: 0 -1rem -1rem -1rem;
-            padding: 1rem;
-            border-top: 1px solid var(--light-green);
-        }
-
-        .eco-impact-title {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--primary-green);
-            margin-bottom: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            text-align: center;
-        }
-
-        .eco-metrics {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        /* Eco Impact - Compact inline style */
+        .eco-impact-inline {
+            display: flex;
+            align-items: center;
             gap: 1rem;
+            padding: 0.75rem 1rem;
+            background: linear-gradient(135deg, #f8fdf8, #f0f9f0);
+            border-top: 1px solid #e8f5e9;
+            margin: 0 -1.25rem -1.25rem -1.25rem;
         }
 
-        .eco-metric {
-            text-align: center;
-            background: white;
-            border-radius: 8px;
-            padding: 0.75rem 0.5rem;
-            border: 1px solid rgba(0, 137, 123, 0.1);
+        .eco-impact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: #555;
         }
 
-        .eco-metric-value {
+        .eco-impact-item i {
             font-size: 1rem;
-            font-weight: 700;
-            color: var(--primary-green);
-            display: block;
         }
 
-        .eco-metric-label {
-            font-size: 0.7rem;
-            color: var(--text-gray);
-            margin-top: 0.25rem;
-            display: block;
-        }
-
-        .eco-icon {
-            font-size: 0.9rem;
-            margin-right: 0.25rem;
-        }
-
-        .weee-icon {
+        .eco-impact-item .weee-icon {
             color: #FF9800;
         }
 
-        .co2-icon {
+        .eco-impact-item .co2-icon {
             color: #4CAF50;
         }
 
-        @media (max-width: 768px) {
-            .eco-metrics {
-                grid-template-columns: 1fr;
-                gap: 0.5rem;
-            }
-
-            .eco-metric {
-                padding: 0.5rem;
-            }
-
-            .eco-metric-value {
-                font-size: 0.9rem;
-            }
-
-            .eco-impact-section {
-                margin: 0 -0.75rem -0.75rem -0.75rem;
-                padding: 0.75rem;
-            }
+        .eco-impact-item strong {
+            color: var(--text-dark);
+            font-weight: 600;
         }
 
         /* Search Bar Styles */
@@ -2180,6 +2256,391 @@
             }
         }
 
+        /* ===== MOBILE PRODUCT MODAL - SINGLE SCROLL UX ===== */
+        @media (max-width: 768px) {
+            /* Transform modal into full-screen bottom sheet */
+            #product-modal-overlay.active {
+                align-items: flex-end;
+            }
+
+            #product-modal-overlay .modal {
+                width: 100%;
+                max-width: 100%;
+                max-height: 95vh;
+                border-radius: 24px 24px 0 0;
+                margin: 0;
+                animation: slideUpModal 0.3s ease-out;
+                display: flex;
+                flex-direction: column;
+            }
+
+            @keyframes slideUpModal {
+                from {
+                    transform: translateY(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+
+            /* Compact header with drag indicator */
+            #product-modal .modal__header {
+                padding: 0.75rem 1rem 0.5rem;
+                border-bottom: none;
+                position: relative;
+                flex-direction: column;
+                align-items: stretch;
+                flex-shrink: 0;
+            }
+
+            #product-modal .modal__header::before {
+                content: '';
+                width: 40px;
+                height: 4px;
+                background: #ddd;
+                border-radius: 2px;
+                margin: 0 auto 0.75rem;
+            }
+
+            #product-modal .modal__title {
+                font-size: 1.1rem;
+                text-align: center;
+                padding-right: 0;
+                line-height: 1.3;
+            }
+
+            #product-modal .modal__close-btn {
+                position: absolute;
+                top: 0.5rem;
+                right: 0.5rem;
+                width: 32px;
+                height: 32px;
+                font-size: 1.2rem;
+                background: #f5f5f5;
+            }
+
+            /* SINGLE SCROLL CONTAINER - Everything scrolls together */
+            #product-modal .modal__content {
+                flex-direction: column;
+                height: auto;
+                flex: 1;
+                overflow-y: auto;
+                overflow-x: hidden;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 85px; /* Space for fixed button */
+            }
+
+            /* Main content - no separate scroll */
+            #product-modal .modal__main-content {
+                width: 100%;
+                padding: 0;
+                overflow: visible;
+                flex: none;
+                height: auto;
+            }
+
+            /* Actions panel flows naturally after main content */
+            #product-modal .modal__actions-panel {
+                width: 100%;
+                border-left: none;
+                border-top: none;
+                background: transparent;
+                position: static;
+                max-height: none;
+                box-shadow: none;
+                flex: none;
+                height: auto;
+            }
+
+            /* Actions scroll area - no longer scrolls, just content */
+            #product-modal .actions-panel__scroll-area {
+                padding: 1rem;
+                overflow: visible;
+                max-height: none;
+                background: #f8fffe;
+                border-top: 2px solid var(--light-green);
+                margin-top: 0.5rem;
+            }
+
+            /* Fixed bottom bar - ONLY the Add to Cart button */
+            #product-modal .actions-panel__fixed-bottom {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 0.875rem 1rem;
+                padding-bottom: max(0.875rem, env(safe-area-inset-bottom));
+                background: white;
+                border-top: 1px solid #eee;
+                box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+                z-index: 10;
+            }
+
+            /* Top section - images and description */
+            #product-modal .modal__top-section {
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+                margin-bottom: 0;
+                padding: 0 1rem;
+            }
+
+            /* Image gallery - horizontal swipe */
+            #product-modal .modal__thumbnails-vertical {
+                order: 2;
+                flex-direction: row;
+                width: 100%;
+                gap: 0.5rem;
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+                justify-content: flex-start;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            #product-modal .modal__thumbnail-vertical {
+                width: 50px;
+                height: 50px;
+                flex-shrink: 0;
+            }
+
+            #product-modal .modal__main-image-compact {
+                order: 1;
+                width: 100%;
+                height: 200px;
+                margin: 0;
+                border-radius: 12px;
+            }
+
+            /* Description section - no internal scroll */
+            #product-modal .modal__description-section {
+                height: auto;
+                min-height: auto;
+                padding: 0 1rem;
+            }
+
+            #product-modal .modal__description-content {
+                padding: 0.875rem;
+                font-size: 0.875rem;
+                min-height: auto;
+                max-height: none; /* No separate scroll */
+                overflow: visible;
+                margin-bottom: 0.75rem;
+            }
+
+            /* Key benefits - horizontal scroll cards */
+            #product-modal .modal__key-benefits {
+                padding: 0.75rem;
+                margin: 0 1rem 0.5rem;
+            }
+
+            #product-modal .modal__key-benefits h4 {
+                font-size: 0.8rem;
+                margin-bottom: 0.5rem;
+            }
+
+            #product-modal .benefits-list {
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                gap: 0.5rem;
+                padding-bottom: 0.5rem;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            #product-modal .benefits-list li {
+                flex-shrink: 0;
+                background: #f8fff8;
+                padding: 0.5rem 0.75rem;
+                border-radius: 20px;
+                font-size: 0.75rem;
+                white-space: nowrap;
+                border: 1px solid var(--light-green);
+            }
+
+            /* Info grid - 2 columns on mobile */
+            #product-modal .modal__info-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.5rem;
+                margin: 0 1rem 0.5rem;
+            }
+
+            #product-modal .info-card {
+                min-height: auto;
+                padding: 0.75rem;
+            }
+
+            #product-modal .info-card__icon {
+                font-size: 1.25rem;
+                margin-bottom: 0.25rem;
+            }
+
+            #product-modal .info-card__title {
+                font-size: 0.7rem;
+            }
+
+            #product-modal .info-card__value {
+                font-size: 0.9rem;
+            }
+
+            /* Compatible products - horizontal scroll */
+            #product-modal .modal__compatible-products {
+                padding: 0.75rem;
+                margin: 0 1rem 0.5rem;
+            }
+
+            #product-modal .compatible-products-grid {
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                gap: 0.5rem;
+                padding-bottom: 0.5rem;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            #product-modal .compatible-product-chip {
+                flex-shrink: 0;
+            }
+
+            /* Trade-in incentive - compact card */
+            #product-modal .trade-in-incentive {
+                padding: 0.875rem;
+                margin-bottom: 0.75rem;
+                border-radius: 12px;
+            }
+
+            #product-modal .incentive-icon {
+                font-size: 1.5rem;
+                margin-bottom: 0.25rem;
+            }
+
+            #product-modal .incentive-title {
+                font-size: 0.9rem;
+            }
+
+            #product-modal .incentive-subtitle {
+                font-size: 0.75rem;
+            }
+
+            /* Quantity controls - larger touch targets */
+            #product-modal .quantity-section {
+                margin-bottom: 1rem;
+            }
+
+            #product-modal .action-section__title {
+                font-size: 0.8rem;
+                margin-bottom: 0.75rem;
+            }
+
+            #product-modal .quantity-controls-modal {
+                gap: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            #product-modal .qty-btn-modal {
+                width: 48px;
+                height: 48px;
+                font-size: 1.3rem;
+            }
+
+            #product-modal .qty-display-modal {
+                font-size: 1.5rem;
+                min-width: 70px;
+                padding: 0.5rem 1rem;
+            }
+
+            #product-modal .subtotal-display {
+                font-size: 0.9rem;
+            }
+
+            /* Cart control groups */
+            #product-modal .cart-control-group {
+                padding: 0.875rem;
+                margin-bottom: 0.75rem;
+                border-radius: 12px;
+            }
+
+            #product-modal .control-group-title {
+                font-size: 0.8rem;
+            }
+
+            #product-modal .empty-cartridge-select {
+                padding: 0.625rem;
+                font-size: 0.95rem;
+            }
+
+            /* Price summary */
+            #product-modal .price-summary {
+                padding: 0.875rem;
+                margin-bottom: 0.75rem;
+                border-radius: 12px;
+            }
+
+            #product-modal .total-row .final-price {
+                font-size: 1.35rem;
+            }
+
+            /* Add to Cart button - prominent and easy to tap */
+            #product-modal .add-to-cart-btn,
+            #product-modal .btn-modal {
+                padding: 1rem 1.5rem;
+                font-size: 1rem;
+                border-radius: 12px;
+                font-weight: 600;
+            }
+        }
+
+        /* Extra small screens */
+        @media (max-width: 380px) {
+            #product-modal .modal__main-image-compact {
+                height: 160px;
+            }
+
+            #product-modal .modal__info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #product-modal .qty-btn-modal {
+                width: 44px;
+                height: 44px;
+            }
+
+            #product-modal .qty-display-modal {
+                font-size: 1.35rem;
+                min-width: 60px;
+            }
+        }
+
+        /* Hide scrollbars on mobile horizontal scroll elements */
+        @media (max-width: 768px) {
+            #product-modal .modal__thumbnails-vertical::-webkit-scrollbar,
+            #product-modal .benefits-list::-webkit-scrollbar,
+            #product-modal .compatible-products-grid::-webkit-scrollbar {
+                display: none;
+            }
+
+            #product-modal .modal__thumbnails-vertical,
+            #product-modal .benefits-list,
+            #product-modal .compatible-products-grid {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+
+            /* Smooth scrolling for modal content */
+            #product-modal .modal__content::-webkit-scrollbar {
+                width: 4px;
+            }
+
+            #product-modal .modal__content::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            #product-modal .modal__content::-webkit-scrollbar-thumb {
+                background: var(--light-green);
+                border-radius: 2px;
+            }
+        }
 
         /* Loading states for buttons */
         .btn-modal.loading {
@@ -2315,6 +2776,449 @@
             }
         }
 
+        /* ===== Mobile Floating Cart Bar - Modern Design ===== */
+        .mobile-cart-bar {
+            display: none;
+            position: fixed;
+            bottom: 12px;
+            left: 12px;
+            right: 12px;
+            background: white;
+            border-radius: 16px;
+            padding: 0.75rem 1rem;
+            padding-bottom: max(0.75rem, calc(env(safe-area-inset-bottom) + 0.25rem));
+            z-index: 1040;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .mobile-cart-bar-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .mobile-cart-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1 1 auto;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .mobile-cart-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .mobile-cart-icon i {
+            color: white;
+            font-size: 1rem;
+        }
+
+        .mobile-cart-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #ff5252;
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(255, 82, 82, 0.3);
+        }
+
+        .mobile-cart-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+        }
+
+        .mobile-cart-label {
+            font-size: 0.7rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .mobile-cart-total {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .mobile-cart-view-btn {
+            background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 128, 0, 0.25);
+            white-space: nowrap;
+            flex: 0 0 auto;
+            margin-left: auto;
+        }
+
+        .mobile-cart-view-btn:active {
+            transform: scale(0.96);
+            box-shadow: 0 2px 8px rgba(0, 128, 0, 0.2);
+        }
+
+        .mobile-cart-view-btn i {
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Cart Drawer - Enhanced */
+        .mobile-cart-drawer-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1050;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-cart-drawer-backdrop.active {
+            opacity: 1;
+        }
+
+        .mobile-cart-drawer {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            z-index: 1060;
+            border-radius: 16px 16px 0 0;
+            max-height: 75vh;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-cart-drawer.active {
+            transform: translateY(0);
+        }
+
+        .mobile-cart-drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #eee;
+            background: white;
+            flex-shrink: 0;
+        }
+
+        .mobile-cart-drawer-header::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 36px;
+            height: 4px;
+            background: #ddd;
+            border-radius: 2px;
+        }
+
+        .mobile-cart-drawer-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--text-dark);
+        }
+
+        .mobile-cart-drawer-close {
+            background: #f5f5f5;
+            border: none;
+            color: #666;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .mobile-cart-drawer-body {
+            padding: 0.75rem;
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Mobile Cart Item - Compact with controls */
+        .mobile-cart-item {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid #eee;
+        }
+
+        .mobile-cart-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .mobile-cart-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .mobile-cart-item-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 0 0 0.125rem 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .mobile-cart-item-subtitle {
+            font-size: 0.7rem;
+            color: #888;
+            margin: 0;
+        }
+
+        .mobile-cart-item-remove {
+            background: none;
+            border: none;
+            color: #ccc;
+            font-size: 1.25rem;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-left: 0.5rem;
+        }
+
+        .mobile-cart-item-remove:active {
+            color: #f44336;
+        }
+
+        .mobile-cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .mobile-cart-control {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 0.25rem;
+        }
+
+        .mobile-cart-control-label {
+            font-size: 0.65rem;
+            color: #888;
+            text-transform: uppercase;
+            padding: 0 0.25rem;
+        }
+
+        .mobile-cart-control-btn {
+            background: var(--light-green);
+            border: none;
+            color: var(--primary-green);
+            width: 26px;
+            height: 26px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-cart-control-btn:active {
+            background: var(--primary-green);
+            color: white;
+        }
+
+        .mobile-cart-control-value {
+            font-size: 0.85rem;
+            font-weight: 600;
+            min-width: 20px;
+            text-align: center;
+            color: var(--text-dark);
+        }
+
+        .mobile-cart-item-price {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            margin-left: auto;
+            white-space: nowrap;
+        }
+
+        .mobile-cart-item-discount {
+            font-size: 0.65rem;
+            color: #4CAF50;
+            background: #e8f5e9;
+            padding: 0.125rem 0.375rem;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+        }
+
+        .mobile-cart-drawer-footer {
+            padding: 0.75rem;
+            border-top: 1px solid #eee;
+            background: white;
+            flex-shrink: 0;
+        }
+
+        .mobile-cart-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.625rem;
+        }
+
+        .mobile-cart-summary-label {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .mobile-cart-summary-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-green);
+        }
+
+        .mobile-checkout-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+            color: white;
+            border: none;
+            padding: 0.875rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .mobile-checkout-btn:active {
+            transform: scale(0.98);
+        }
+
+        .mobile-checkout-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .mobile-cart-empty {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: #999;
+        }
+
+        .mobile-cart-empty-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.5;
+        }
+
+        .mobile-cart-empty-text {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Show mobile cart elements only on mobile */
+        @media (max-width: 992px) {
+            .mobile-cart-bar,
+            .mobile-cart-drawer-backdrop,
+            .mobile-cart-drawer {
+                display: block;
+            }
+
+            .mobile-cart-bar {
+                display: flex;
+            }
+
+            .mobile-cart-drawer {
+                display: none;
+            }
+
+            .mobile-cart-drawer.active,
+            .mobile-cart-drawer-backdrop.active {
+                display: flex;
+            }
+
+            .mobile-cart-drawer-backdrop.active {
+                display: block;
+            }
+
+            /* Hide desktop cart panel on mobile */
+            .cart-panel {
+                display: none !important;
+            }
+
+            /* Add bottom padding for mobile cart bar */
+            .store-main {
+                padding-bottom: 60px;
+            }
+        }
+
+        /* Desktop: Hide mobile elements */
+        @media (min-width: 993px) {
+            .mobile-cart-bar,
+            .mobile-cart-drawer-backdrop,
+            .mobile-cart-drawer {
+                display: none !important;
+            }
+        }
+
         /* Animation classes */
         .fade-in {
             animation: fadeIn 0.5s ease-in;
@@ -2430,23 +3334,7 @@
 
                         <!-- Cart Summary -->
                         <div class="cart-summary" id="cart-summary" style="display: none;">
-                            <h4 class="summary-title">Order Summary</h4>
-                            <div class="summary-row">
-                                <span>Items:</span>
-                                <span id="total-items">0</span>
-                            </div>
-                            <div class="summary-row">
-                                <span>Subtotal:</span>
-                                <span id="subtotal">EGP 0</span>
-                            </div>
-                            <div class="summary-row" id="discount-row" style="display: none;">
-                                <span>Trade-in Savings:</span>
-                                <span id="discount-amount" style="color: #4CAF50; font-weight: 600;">-EGP 0</span>
-                            </div>
-                            <div class="summary-row summary-total">
-                                <span>Total:</span>
-                                <span id="total-amount">EGP 0</span>
-                            </div>
+                            <!-- Content dynamically generated by JavaScript -->
                         </div>
 
 
@@ -2523,9 +3411,8 @@
                     </div>
                     <div id="locationMap" style="height: 100%; border-radius: 12px;"></div>
                 </div>
-            </div>
-            <div class="location-modal-footer">
-                <!-- Address Details Fields -->
+
+                <!-- Address Details Fields - Now inside body for single scroll -->
                 <div class="address-fields" id="addressFieldsContainer" style="display: none; margin-top: 1rem;">
                     <div class="address-field-row" style="display: flex; gap: 1rem;">
                         <div class="form-group" style="flex: 1;">
@@ -2548,7 +3435,8 @@
                         </div>
                     </div>
                 </div>
-
+            </div>
+            <div class="location-modal-footer">
                 <button id="confirmDeliveryBtn" class="confirm-location-btn" disabled>
                     <i class="fas fa-check"></i> Review Order
                 </button>
@@ -2578,7 +3466,79 @@
     <!-- Footer Placeholder -->
     <div id="footer-placeholder"></div>
 
+    <!-- Mobile Floating Cart Bar -->
+    <div class="mobile-cart-bar" id="mobile-cart-bar" style="display: none;">
+        <div class="mobile-cart-bar-content">
+            <div class="mobile-cart-info">
+                <div class="mobile-cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="mobile-cart-badge" id="mobile-cart-badge">0</span>
+                </div>
+                <div class="mobile-cart-details">
+                    <span class="mobile-cart-label">Your Cart</span>
+                    <span class="mobile-cart-total" id="mobile-cart-total">EGP 0</span>
+                </div>
+            </div>
+            <button class="mobile-cart-view-btn" id="mobile-cart-view-btn">
+                View
+                <i class="fas fa-chevron-up"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Cart Drawer Backdrop -->
+    <div class="mobile-cart-drawer-backdrop" id="mobile-cart-drawer-backdrop"></div>
+
+    <!-- Mobile Cart Drawer -->
+    <div class="mobile-cart-drawer" id="mobile-cart-drawer">
+        <div class="mobile-cart-drawer-header">
+            <h3 class="mobile-cart-drawer-title">
+                <i class="fas fa-shopping-cart"></i>
+                Shopping Cart
+            </h3>
+            <button class="mobile-cart-drawer-close" id="mobile-cart-drawer-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-cart-drawer-body" id="mobile-cart-drawer-body">
+            <!-- Cart items will be rendered here -->
+        </div>
+        <div class="mobile-cart-drawer-footer">
+            <div class="mobile-cart-summary">
+                <span class="mobile-cart-summary-label">Total:</span>
+                <span class="mobile-cart-summary-value" id="mobile-cart-drawer-total">EGP 0</span>
+            </div>
+            <button class="mobile-checkout-btn" id="mobile-checkout-btn" disabled>
+                <i class="fas fa-credit-card"></i>
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
     <script>
+        // Helper function to get the API base URL for local development
+        function getApiBaseUrl() {
+            const port = window.location.port;
+            if (port === '5500' || port === '5501' || window.location.protocol === 'file:') {
+                return 'http://localhost:3000';
+            }
+            return '';
+        }
+
+        // Helper to get user from localStorage (for cross-origin local dev)
+        function getStoredUser() {
+            const storedUser = localStorage.getItem('drweee_user');
+            if (storedUser) {
+                try {
+                    return JSON.parse(storedUser);
+                } catch (e) {
+                    localStorage.removeItem('drweee_user');
+                    return null;
+                }
+            }
+            return null;
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             console.log('Store page loaded, initializing...');
 
@@ -2639,7 +3599,7 @@
             async function fetchStoreProducts() {
                 console.log('Fetching store products...');
                 try {
-                    const response = await fetch('/api/store', {
+                    const response = await fetch(getApiBaseUrl() + '/api/store', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' }
                     });
@@ -2692,7 +3652,12 @@
                     const firstPriceItem = product.price_lists[0]?.items[0];
                     const displayPrice = firstPriceItem ? `EGP ${parseFloat(firstPriceItem.amount).toLocaleString()}` : 'Price not available';
 
-                    const imageHtml = product.crd33_productimage
+                    // Filter out placeholder stock images
+                    const placeholderImages = ['as2.ftcdn.net', 'ftcdn.net', 'stock.adobe.com'];
+                    const hasValidImage = product.crd33_productimage &&
+                        !placeholderImages.some(ph => product.crd33_productimage.includes(ph));
+
+                    const imageHtml = hasValidImage
                         ? `<img src="${product.crd33_productimage}" alt="${product.name}">`
                         : `<i class="fas fa-print product-card__image"></i>`;
 
@@ -2941,7 +3906,8 @@
                 </div>
             `;
                     cartSummary.style.display = 'none';
-                    checkoutBtn.disabled = true;
+                    if (checkoutBtn) checkoutBtn.disabled = true;
+                    updateMobileCartUI(0, 0);
                     return;
                 }
 
@@ -3046,45 +4012,27 @@
                 cartSummary.style.display = 'block';
 
                 cartSummary.innerHTML = `
-            <h4 class="summary-title">Order Summary</h4>
             <div class="summary-content">
-                <div class="summary-row">
-                    <span class="summary-row-label">Items (${totalItems})</span>
-                    <span class="summary-row-value">EGP ${totalAmount.toLocaleString()}</span>
+                <div class="summary-total-section">
+                    <span class="summary-total-label">Total (${totalItems} item${totalItems !== 1 ? 's' : ''})</span>
+                    <span class="summary-total-amount">EGP ${finalTotal.toLocaleString()}</span>
                 </div>
-                
+
                 ${totalDiscount > 0 ? `
-                    <div class="summary-row discount">
-                        <span class="summary-row-label">
-                            <i class="fas fa-recycle discount-icon"></i>
-                            Trade-in Savings
-                        </span>
-                        <span class="summary-row-value">-EGP ${totalDiscount.toLocaleString()}</span>
+                    <div class="summary-discount-badge">
+                        <i class="fas fa-recycle"></i>
+                        Trade-in savings: EGP ${totalDiscount.toLocaleString()}
                     </div>
                 ` : ''}
-                
-                <div class="summary-row total">
-                    <span class="summary-row-label">Total</span>
-                    <span class="summary-row-value">EGP ${finalTotal.toLocaleString()}</span>
-                </div>
-            </div>
-            
-            <div class="eco-impact-section">
-                <h5 class="eco-impact-title">Environmental Impact</h5>
-                <div class="eco-metrics">
-                    <div class="eco-metric">
-                        <span class="eco-metric-value">
-                            <i class="fas fa-coins eco-icon weee-icon"></i>
-                            ${totalWeeePoints.toLocaleString()}
-                        </span>
-                        <span class="eco-metric-label">WEEE Points</span>
+
+                <div class="eco-impact-inline">
+                    <div class="eco-impact-item">
+                        <i class="fas fa-coins weee-icon"></i>
+                        <span>Earn <strong>${totalWeeePoints.toLocaleString()}</strong> points</span>
                     </div>
-                    <div class="eco-metric">
-                        <span class="eco-metric-value">
-                            <i class="fas fa-leaf eco-icon co2-icon"></i>
-                            ${totalCo2Savings.toFixed(2)} kg
-                        </span>
-                        <span class="eco-metric-label">CO₂ Saved</span>
+                    <div class="eco-impact-item">
+                        <i class="fas fa-leaf co2-icon"></i>
+                        <span>Save <strong>${totalCo2Savings.toFixed(1)} kg</strong> CO₂</span>
                     </div>
                 </div>
             </div>
@@ -3116,6 +4064,9 @@
                 checkoutBtn = document.getElementById('checkout-btn');
                 checkoutBtn.disabled = false;
 
+                // Update mobile cart UI
+                updateMobileCartUI(totalItems, totalAmount - totalDiscount);
+
                 // REPLACE WITH THIS UPDATED EVENT LISTENER
                 document.body.addEventListener('click', async (e) => {
                     // Handle Checkout Button
@@ -3128,16 +4079,30 @@
                         sessionStorage.setItem('weee_return_url', window.location.pathname);
 
                         try {
-                            const response = await fetch('/api/auth-status', { method: 'GET', credentials: 'include' });
+                            const response = await fetch(getApiBaseUrl() + '/api/auth-status', { method: 'GET', credentials: 'include' });
                             const authData = await response.json();
                             if (authData.isLoggedIn) {
                                 showDeliveryDetailsModal();
                             } else {
-                                showLoginRequiredModal();
+                                // Fallback: Check localStorage for cross-origin local development
+                                const storedUser = getStoredUser();
+                                if (storedUser && storedUser.GUID) {
+                                    console.log('📦 Using localStorage user for auth:', storedUser.fullName);
+                                    showDeliveryDetailsModal();
+                                } else {
+                                    showLoginRequiredModal();
+                                }
                             }
                         } catch (error) {
                             console.error('Auth check failed:', error);
-                            showLoginRequiredModal();
+                            // Fallback: Check localStorage
+                            const storedUser = getStoredUser();
+                            if (storedUser && storedUser.GUID) {
+                                console.log('📦 Using localStorage user (API error fallback):', storedUser.fullName);
+                                showDeliveryDetailsModal();
+                            } else {
+                                showLoginRequiredModal();
+                            }
                         }
                     }
                     // ADDED: Handle Print PDF Button
@@ -3148,6 +4113,187 @@
                     }
                 });
             }
+
+            // --- MOBILE CART FUNCTIONS ---
+            function updateMobileCartUI(itemCount, totalAmount) {
+                const mobileCartBar = document.getElementById('mobile-cart-bar');
+                const mobileCartBadge = document.getElementById('mobile-cart-badge');
+                const mobileCartTotal = document.getElementById('mobile-cart-total');
+                const mobileCartDrawerTotal = document.getElementById('mobile-cart-drawer-total');
+                const mobileCheckoutBtn = document.getElementById('mobile-checkout-btn');
+
+                if (itemCount > 0) {
+                    mobileCartBar.style.display = 'flex';
+                    mobileCartBadge.textContent = itemCount;
+                    mobileCartTotal.textContent = `EGP ${totalAmount.toLocaleString()}`;
+                    mobileCartDrawerTotal.textContent = `EGP ${totalAmount.toLocaleString()}`;
+                    mobileCheckoutBtn.disabled = false;
+                } else {
+                    mobileCartBar.style.display = 'none';
+                    mobileCheckoutBtn.disabled = true;
+                }
+
+                // Update drawer body with cart items
+                updateMobileDrawerBody();
+            }
+
+            function updateMobileDrawerBody() {
+                const drawerBody = document.getElementById('mobile-cart-drawer-body');
+                const cartKeys = Object.keys(cart);
+
+                if (cartKeys.length === 0) {
+                    drawerBody.innerHTML = `
+                        <div class="mobile-cart-empty">
+                            <div class="mobile-cart-empty-icon">🛒</div>
+                            <p class="mobile-cart-empty-text">Your cart is empty</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                drawerBody.innerHTML = cartKeys.map(productId => {
+                    const cartItem = cart[productId];
+                    const { product, quantity, price, emptyCartridges = 0 } = cartItem;
+                    const subtotal = price * quantity;
+                    const discountAmount = (price * emptyCartridges * 0.1);
+                    const itemTotal = subtotal - discountAmount;
+                    const subtitle = product.familyName || product.productnumber;
+
+                    return `
+                        <div class="mobile-cart-item" data-product-id="${productId}">
+                            <div class="mobile-cart-item-header">
+                                <div class="mobile-cart-item-info">
+                                    <h4 class="mobile-cart-item-name">${product.name}</h4>
+                                    <p class="mobile-cart-item-subtitle">${subtitle}</p>
+                                </div>
+                                <button class="mobile-cart-item-remove" data-product-id="${productId}">×</button>
+                            </div>
+                            <div class="mobile-cart-item-controls">
+                                <div class="mobile-cart-control">
+                                    <span class="mobile-cart-control-label">Qty</span>
+                                    <button class="mobile-cart-control-btn mobile-qty-decrease" data-product-id="${productId}">−</button>
+                                    <span class="mobile-cart-control-value">${quantity}</span>
+                                    <button class="mobile-cart-control-btn mobile-qty-increase" data-product-id="${productId}">+</button>
+                                </div>
+                                <div class="mobile-cart-control">
+                                    <span class="mobile-cart-control-label">Empty</span>
+                                    <button class="mobile-cart-control-btn mobile-empty-decrease" data-product-id="${productId}">−</button>
+                                    <span class="mobile-cart-control-value">${emptyCartridges}</span>
+                                    <button class="mobile-cart-control-btn mobile-empty-increase" data-product-id="${productId}">+</button>
+                                </div>
+                                <span class="mobile-cart-item-price">EGP ${itemTotal.toLocaleString()}</span>
+                                ${emptyCartridges > 0 ? `<span class="mobile-cart-item-discount">-10%</span>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Add event listeners for mobile cart controls
+                drawerBody.querySelectorAll('.mobile-cart-item-remove').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const productId = e.currentTarget.dataset.productId;
+                        removeFromCart(productId);
+                    });
+                });
+
+                drawerBody.querySelectorAll('.mobile-qty-increase').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const productId = e.currentTarget.dataset.productId;
+                        if (cart[productId]) {
+                            updateQuantity(productId, cart[productId].quantity + 1);
+                        }
+                    });
+                });
+
+                drawerBody.querySelectorAll('.mobile-qty-decrease').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const productId = e.currentTarget.dataset.productId;
+                        if (cart[productId]) {
+                            updateQuantity(productId, cart[productId].quantity - 1);
+                        }
+                    });
+                });
+
+                drawerBody.querySelectorAll('.mobile-empty-increase').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const productId = e.currentTarget.dataset.productId;
+                        if (cart[productId]) {
+                            updateEmptyCartridges(productId, cart[productId].emptyCartridges + 1);
+                        }
+                    });
+                });
+
+                drawerBody.querySelectorAll('.mobile-empty-decrease').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const productId = e.currentTarget.dataset.productId;
+                        if (cart[productId]) {
+                            updateEmptyCartridges(productId, cart[productId].emptyCartridges - 1);
+                        }
+                    });
+                });
+            }
+
+            function openMobileDrawer() {
+                const backdrop = document.getElementById('mobile-cart-drawer-backdrop');
+                const drawer = document.getElementById('mobile-cart-drawer');
+
+                backdrop.style.display = 'block';
+                drawer.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+
+                setTimeout(() => {
+                    backdrop.classList.add('active');
+                    drawer.classList.add('active');
+                }, 10);
+            }
+
+            function closeMobileDrawer() {
+                const backdrop = document.getElementById('mobile-cart-drawer-backdrop');
+                const drawer = document.getElementById('mobile-cart-drawer');
+
+                backdrop.classList.remove('active');
+                drawer.classList.remove('active');
+
+                setTimeout(() => {
+                    backdrop.style.display = 'none';
+                    drawer.style.display = 'none';
+                    document.body.style.overflow = '';
+                }, 300);
+            }
+
+            // Mobile cart event listeners
+            document.getElementById('mobile-cart-view-btn')?.addEventListener('click', openMobileDrawer);
+            document.getElementById('mobile-cart-drawer-close')?.addEventListener('click', closeMobileDrawer);
+            document.getElementById('mobile-cart-drawer-backdrop')?.addEventListener('click', closeMobileDrawer);
+
+            // Mobile checkout button
+            document.getElementById('mobile-checkout-btn')?.addEventListener('click', async () => {
+                closeMobileDrawer();
+                saveCartToSession();
+                sessionStorage.setItem('weee_return_url', window.location.pathname);
+
+                try {
+                    const response = await fetch(getApiBaseUrl() + '/api/auth-status', { method: 'GET', credentials: 'include' });
+                    const authData = await response.json();
+                    if (authData.isLoggedIn) {
+                        showDeliveryDetailsModal();
+                    } else {
+                        const storedUser = getStoredUser();
+                        if (storedUser && storedUser.GUID) {
+                            showDeliveryDetailsModal();
+                        } else {
+                            showLoginRequiredModal();
+                        }
+                    }
+                } catch (error) {
+                    const storedUser = getStoredUser();
+                    if (storedUser && storedUser.GUID) {
+                        showDeliveryDetailsModal();
+                    } else {
+                        showLoginRequiredModal();
+                    }
+                }
+            });
 
             // --- PDF GENERATION (FINAL VERSION with MULTI-PAGE LOGIC) ---
             function generateOrderPDF() {
@@ -3437,7 +4583,10 @@
             function renderModalContent(product) {
                 const modalBody = document.getElementById('modal-body-content');
 
-                const imageUrls = [product.crd33_productimage, product.crd33_productimage2, product.crd33_productimage3].filter(Boolean);
+                // Filter out placeholder stock images
+                const placeholderImages = ['as2.ftcdn.net', 'ftcdn.net', 'stock.adobe.com'];
+                const imageUrls = [product.crd33_productimage, product.crd33_productimage2, product.crd33_productimage3]
+                    .filter(url => url && !placeholderImages.some(ph => url.includes(ph)));
 
                 // Generate thumbnails HTML
                 const thumbnailsHtml = imageUrls.length > 1 ? `
@@ -3846,7 +4995,7 @@
             // --- ADD: Map and Config Logic (adapted from weee-rewards) ---
             async function loadConfig() {
                 try {
-                    const response = await fetch('/api/config');
+                    const response = await fetch(getApiBaseUrl() + '/api/config');
                     if (!response.ok) throw new Error('Failed to load config');
                     const config = await response.json();
                     AZURE_MAPS_KEY = config.azureMapsKey;
@@ -3984,13 +5133,21 @@
                         }
                     };
 
-                    const response = await fetch('/api/submit-order', {
+                    // Get stored user for local dev fallback
+                    const storedUser = getStoredUser();
+
+                    const response = await fetch(getApiBaseUrl() + '/api/submit-order', {
                         method: 'POST',
+                        credentials: 'include',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             cart: cart,
                             deliveryDetails: deliveryDetails,
-                            paymentMethod: paymentMethodInput.value
+                            paymentMethod: paymentMethodInput.value,
+                            // Include user info from localStorage for local dev
+                            userGUID: storedUser?.GUID || null,
+                            userFullName: storedUser?.fullName || null,
+                            userPhoneNumber: storedUser?.phoneNumber || null
                         })
                     });
 
@@ -4001,9 +5158,9 @@
                     }
 
                     // Handle success
-                    alert(`Success! Your order has been placed.`);
+                    alert(`Success! Your order has been placed. You can track it in My Requests.`);
                     sessionStorage.removeItem('weee_store_cart'); // Clear cart from session
-                    window.location.href = '/index.html'; // Redirect to home
+                    window.location.href = '/my-requests.html'; // Redirect to My Requests
 
                 } catch (error) {
                     console.error('Order submission failed:', error);

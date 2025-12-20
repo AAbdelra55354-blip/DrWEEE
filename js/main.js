@@ -1,5 +1,16 @@
 // DR.WEEE Website - Main JavaScript
 
+// Helper function to get the API base URL for local development
+function getApiBaseUrl() {
+    const port = window.location.port;
+    // If running on Live Server (5500/5501) or file protocol, use localhost:3000
+    if (port === '5500' || port === '5501' || window.location.protocol === 'file:') {
+        return 'http://localhost:3000';
+    }
+    // Otherwise use relative paths (production)
+    return '';
+}
+
 // Single DOMContentLoaded initialization - DO NOT DUPLICATE
 document.addEventListener('DOMContentLoaded', function () {
     console.log('🚀 DOM Content Loaded - Initializing application...');
@@ -49,7 +60,7 @@ function initHeader() {
 async function checkAuthStatus() {
     try {
         console.log('🔍 Checking authentication status...');
-        const response = await fetch('/api/auth-status', {
+        const response = await fetch(getApiBaseUrl() + '/api/auth-status', {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -68,11 +79,51 @@ async function checkAuthStatus() {
             showLoggedInState(data.phoneNumber, data.fullName, data.userData);
             console.log('✅ User is logged in:', data.fullName, '(', data.phoneNumber, ')');
         } else {
+            // Fallback: Check localStorage for cross-origin local development
+            const storedUser = localStorage.getItem('drweee_user');
+            if (storedUser) {
+                try {
+                    const user = JSON.parse(storedUser);
+                    console.log('📦 Found user in localStorage (cross-origin fallback):', user.fullName);
+                    showLoggedInState(user.phoneNumber, user.fullName, {
+                        GUID: user.GUID,
+                        availableWeeePoints: user.availableWeeePoints,
+                        totalWeeePoints: user.totalWeeePoints,
+                        availableCash: user.availableCash,
+                        totalRedeemableCash: user.totalRedeemableCash,
+                        totalCarbonSaved: user.totalCarbonSaved
+                    });
+                    console.log('✅ User is logged in (from localStorage):', user.fullName);
+                    return;
+                } catch (e) {
+                    console.error('Error parsing stored user:', e);
+                    localStorage.removeItem('drweee_user');
+                }
+            }
             showLoggedOutState();
             console.log('❌ User is not logged in');
         }
     } catch (error) {
         console.error('🚨 Error checking auth status:', error);
+        // Also try localStorage fallback on error
+        const storedUser = localStorage.getItem('drweee_user');
+        if (storedUser) {
+            try {
+                const user = JSON.parse(storedUser);
+                console.log('📦 Using localStorage fallback due to API error:', user.fullName);
+                showLoggedInState(user.phoneNumber, user.fullName, {
+                    GUID: user.GUID,
+                    availableWeeePoints: user.availableWeeePoints,
+                    totalWeeePoints: user.totalWeeePoints,
+                    availableCash: user.availableCash,
+                    totalRedeemableCash: user.totalRedeemableCash,
+                    totalCarbonSaved: user.totalCarbonSaved
+                });
+                return;
+            } catch (e) {
+                localStorage.removeItem('drweee_user');
+            }
+        }
         showLoggedOutState();
     }
 }
@@ -237,17 +288,19 @@ function initUserDropdown() {
     });
 
     // Handle logout
-    // Handle logout
     const handleLogout = async () => {
         console.log('🚪 Logging out user...');
         try {
-            const response = await fetch('/api/logout', {
+            const response = await fetch(getApiBaseUrl() + '/api/logout', {
                 method: 'POST',
-                credentials: 'include', // ADD THIS
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
+
+            // Clear localStorage regardless of API response
+            localStorage.removeItem('drweee_user');
 
             if (response.ok) {
                 console.log('✅ Logout successful');
@@ -569,7 +622,7 @@ function initContactForm() {
         const phoneFieldGroup = document.getElementById('phone-field-group');
         const phoneInput = document.getElementById('phone');
 
-        fetch('/api/auth/status')
+        fetch(getApiBaseUrl() + '/api/auth-status', { credentials: 'include' })
             .then(response => response.json())
             .then(data => {
                 if (data.isLoggedIn && phoneFieldGroup) {
@@ -633,8 +686,9 @@ function initContactForm() {
                 }
 
                 // Send to backend API which will forward to Power Automate
-                const response = await fetch('/api/contact', {
+                const response = await fetch(getApiBaseUrl() + '/api/contact', {
                     method: 'POST',
+                    credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json'
                     },

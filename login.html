@@ -872,6 +872,17 @@
 
 
     <script>
+        // Helper function to get the API base URL for local development
+        function getApiBaseUrl() {
+            const port = window.location.port;
+            // If running on Live Server (5500/5501) or file protocol, use localhost:3000
+            if (port === '5500' || port === '5501' || window.location.protocol === 'file:') {
+                return 'http://localhost:3000';
+            }
+            // Otherwise use relative paths (production)
+            return '';
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             // --- 1. ELEMENT SELECTION ---
             const loginView = document.getElementById('loginView');
@@ -1023,8 +1034,9 @@
                 userPhoneNumberWithCode = normalizePhoneNumber(rawPhoneNumber);
 
                 try {
-                    const response = await fetch('/api/request-otp', {
+                    const response = await fetch(getApiBaseUrl() + '/api/request-otp', {
                         method: 'POST',
+                        credentials: 'include',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ phoneNumber: userPhoneNumberWithCode })
                     });
@@ -1046,8 +1058,9 @@
 
             async function handleResendOtp() {
                 try {
-                    const response = await fetch('/api/request-otp', {
+                    const response = await fetch(getApiBaseUrl() + '/api/request-otp', {
                         method: 'POST',
+                        credentials: 'include',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ phoneNumber: userPhoneNumberWithCode })
                     });
@@ -1069,8 +1082,9 @@
                 submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
                 const enteredOtp = Array.from(otpInputs).map(input => input.value).join('');
                 try {
-                    const response = await fetch('/api/verify-otp', {
+                    const response = await fetch(getApiBaseUrl() + '/api/verify-otp', {
                         method: 'POST',
+                        credentials: 'include',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ phoneNumber: userPhoneNumberWithCode, otp: enteredOtp })
                     });
@@ -1105,8 +1119,9 @@
                 submitButton.disabled = true;
                 submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
                 try {
-                    const response = await fetch('/api/create-contact', {
+                    const response = await fetch(getApiBaseUrl() + '/api/create-contact', {
                         method: 'POST',
+                        credentials: 'include',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             fullName: userFullName,
@@ -1165,14 +1180,20 @@
                 submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging In...';
 
                 try {
-                    const response = await fetch('/api/login', {
+                    const response = await fetch(getApiBaseUrl() + '/api/login', {
                         method: 'POST',
+                        credentials: 'include',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ phoneNumber: fullPhoneNumber, password })
                     });
                     if (!response.ok) {
                         const errorData = await response.json();
                         throw new Error(errorData.message || 'Login failed.');
+                    }
+                    const data = await response.json();
+                    // Store user data in localStorage for cross-origin local development
+                    if (data.user) {
+                        localStorage.setItem('drweee_user', JSON.stringify(data.user));
                     }
                     // UPDATED: Use redirect helper instead of hardcoded redirect
                     handleSuccessfulAuth();

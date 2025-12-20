@@ -74,7 +74,16 @@ function rateLimitMiddleware() {
         skipSuccessfulRequests: false,
     });
 
-    return { apiLimiter, authLimiter, otpLimiter };
+    // Rate limit for OG image generation (social crawlers are aggressive)
+    const ogLimiter = rateLimit({
+        windowMs: 15 * 60 * 1000, // 15 minutes
+        max: 50, // Allow 50 requests per windowMs (for social platform crawlers)
+        message: 'Too many image requests, please try again later.',
+        standardHeaders: true,
+        legacyHeaders: false,
+    });
+
+    return { apiLimiter, authLimiter, otpLimiter, ogLimiter };
 }
 
 // Cache control middleware for static assets
