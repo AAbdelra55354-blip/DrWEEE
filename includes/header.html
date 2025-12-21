@@ -132,24 +132,100 @@
         </div>
 
         <div class="mobile-menu__content">
+            <!-- Mobile User Info Card (shown when logged in) - At Top -->
+            <div class="mobile-user-card" id="mobile-user-card" style="display: none;">
+                <div class="mobile-user-details">
+                    <div class="user-info__avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <span class="user-info__phone" id="mobile-user-phone">+20XXXXXXXXXX</span>
+                        <span class="user-info__status">Active User</span>
+                    </div>
+                </div>
+
+                <!-- Mobile WEEE Data Summary -->
+                <div class="mobile-weee-summary">
+                    <div class="mobile-weee-title">
+                        <i class="fas fa-leaf"></i>
+                        Your WEEE Impact
+                    </div>
+                    <div class="mobile-weee-grid">
+                        <div class="mobile-weee-stat">
+                            <span class="mobile-weee-value" id="mobile-available-weee-points">0</span>
+                            <span class="mobile-weee-label">Available Points</span>
+                        </div>
+                        <div class="mobile-weee-stat">
+                            <span class="mobile-weee-value" id="mobile-total-weee-points">0</span>
+                            <span class="mobile-weee-label">Total Points</span>
+                        </div>
+                        <div class="mobile-weee-stat">
+                            <span class="mobile-weee-value" id="mobile-available-cash">0</span>
+                            <span class="mobile-weee-label">Available Cash</span>
+                        </div>
+                        <div class="mobile-weee-stat">
+                            <span class="mobile-weee-value" id="mobile-total-carbon-saved">0kg</span>
+                            <span class="mobile-weee-label">Carbon Saved</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <ul class="mobile-menu__list">
                 <li class="mobile-menu__item">
-                    <a href="index.html" class="mobile-menu__link" data-page="home">Home</a>
+                    <a href="index.html" class="mobile-menu__link" data-page="home">
+                        <i class="fas fa-home"></i>
+                        Home
+                    </a>
                 </li>
                 <li class="mobile-menu__item">
-                    <a href="about.html" class="mobile-menu__link" data-page="about">About</a>
+                    <a href="about.html" class="mobile-menu__link" data-page="about">
+                        <i class="fas fa-info-circle"></i>
+                        About
+                    </a>
                 </li>
                 <li class="mobile-menu__item">
-                    <a href="store.html" class="mobile-menu__link" data-page="store">Store</a>
+                    <a href="store.html" class="mobile-menu__link" data-page="store">
+                        <i class="fas fa-store"></i>
+                        Store
+                    </a>
                 </li>
                 <li class="mobile-menu__item">
-                    <a href="weee-rewards.html" class="mobile-menu__link" data-page="weee-rewards">E-waste</a>
+                    <a href="weee-rewards.html" class="mobile-menu__link" data-page="weee-rewards">
+                        <i class="fas fa-recycle"></i>
+                        E-waste
+                    </a>
                 </li>
                 <li class="mobile-menu__item">
-                    <a href="services.html" class="mobile-menu__link" data-page="services">Services</a>
+                    <a href="services.html" class="mobile-menu__link" data-page="services">
+                        <i class="fas fa-cogs"></i>
+                        Services
+                    </a>
                 </li>
                 <li class="mobile-menu__item">
-                    <a href="impact.html" class="mobile-menu__link" data-page="impact">Impact</a>
+                    <a href="impact.html" class="mobile-menu__link" data-page="impact">
+                        <i class="fas fa-chart-line"></i>
+                        Impact
+                    </a>
+                </li>
+                <!-- User menu items (shown when logged in) -->
+                <li class="mobile-menu__item mobile-user-menu-item" id="mobile-env-impact-item" style="display: none;">
+                    <a href="environmental-impact.html" class="mobile-menu__link">
+                        <i class="fas fa-leaf"></i>
+                        My Environmental Impact
+                    </a>
+                </li>
+                <li class="mobile-menu__item mobile-user-menu-item" id="mobile-my-requests-item" style="display: none;">
+                    <a href="my-requests.html" class="mobile-menu__link">
+                        <i class="fas fa-clipboard-list"></i>
+                        My Requests
+                    </a>
+                </li>
+                <li class="mobile-menu__item mobile-user-menu-item" id="mobile-redeem-item" style="display: none;">
+                    <a href="redeem-points.html" class="mobile-menu__link">
+                        <i class="fas fa-gift"></i>
+                        Redeem Points & Cash
+                    </a>
                 </li>
                 <!-- Mobile Login (shown when not logged in) -->
                 <li class="mobile-menu__item" id="mobile-login-item">
@@ -158,52 +234,16 @@
                         Login
                     </a>
                 </li>
-                <!-- Mobile User Info (shown when logged in) -->
-                <li class="mobile-menu__item mobile-user-info" id="mobile-user-info" style="display: none;">
-                    <div class="mobile-user-details">
-                        <div class="user-info__avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div>
-                            <span class="user-info__phone" id="mobile-user-phone">+20XXXXXXXXXX</span>
-                            <span class="user-info__status">Active User</span>
-                        </div>
-                    </div>
-
-                    <!-- Mobile WEEE Data Summary -->
-                    <div class="mobile-weee-summary">
-                        <div class="mobile-weee-title">
-                            <i class="fas fa-leaf"></i>
-                            Your WEEE Impact
-                        </div>
-                        <div class="mobile-weee-grid">
-                            <div class="mobile-weee-stat">
-                                <span class="mobile-weee-value" id="mobile-available-weee-points">0</span>
-                                <span class="mobile-weee-label">Available Points</span>
-                            </div>
-                            <div class="mobile-weee-stat">
-                                <span class="mobile-weee-value" id="mobile-total-weee-points">0</span>
-                                <span class="mobile-weee-label">Total Points</span>
-                            </div>
-                            <div class="mobile-weee-stat">
-                                <span class="mobile-weee-value" id="mobile-available-cash">0</span>
-                                <span class="mobile-weee-label">Available Cash</span>
-                            </div>
-                            <div class="mobile-weee-stat">
-                                <span class="mobile-weee-value" id="mobile-total-carbon-saved">0kg</span>
-                                <span class="mobile-weee-label">Carbon Saved</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="mobile-logout-btn" id="mobile-logout-btn">
-                        <i class="fas fa-sign-out-alt"></i>
-                        Sign Out
-                    </button>
-                </li>
+                <!-- Mobile Login (shown when not logged in) is above -->
             </ul>
 
             <a href="contact.html" class="btn btn--primary mobile-menu__cta">Contact Us</a>
+
+            <!-- Mobile Sign Out (shown when logged in) -->
+            <a href="#" class="btn btn--danger mobile-menu__cta" id="mobile-logout-btn" style="display: none;">
+                <i class="fas fa-sign-out-alt"></i>
+                Sign Out
+            </a>
 
             <div class="mobile-menu__footer">
                 <div class="mobile-menu__social">
@@ -453,6 +493,89 @@
         margin: 0.5rem 0;
     }
 
+    /* Mobile User Card Styles (at top of menu) */
+    .mobile-user-card {
+        background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        color: white;
+    }
+
+    .mobile-user-card .mobile-user-details {
+        margin-bottom: 1rem;
+    }
+
+    .mobile-user-card .user-info__avatar {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+    }
+
+    .mobile-user-card .user-info__phone,
+    .mobile-user-card .user-info__status {
+        color: white;
+    }
+
+    .mobile-user-card .mobile-weee-summary {
+        background: rgba(255, 255, 255, 0.15);
+        border: none;
+        margin: 0;
+    }
+
+    .mobile-user-card .mobile-weee-title {
+        color: white;
+    }
+
+    .mobile-user-card .mobile-weee-stat {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .mobile-user-card .mobile-weee-value {
+        color: white;
+    }
+
+    .mobile-user-card .mobile-weee-label {
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    /* Mobile Menu Links with Icons */
+    .mobile-menu__link {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .mobile-menu__link i {
+        color: var(--primary-green);
+        width: 20px;
+        text-align: center;
+        font-size: 1rem;
+    }
+
+    /* Danger Button - Same style as btn--primary but red */
+    .btn--danger {
+        background-color: var(--error-red);
+        color: white;
+        border-color: var(--error-red);
+    }
+
+    .btn--danger:hover {
+        background-color: #c62828;
+        border-color: #c62828;
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(211, 47, 47, 0.3);
+    }
+
+    .btn--danger i {
+        color: white;
+    }
+
+    /* Hide hamburger button when mobile menu is open */
+    .mobile-menu-open .mobile-menu-toggle {
+        display: none !important;
+    }
+
     /* Mobile User Info Styles */
     .mobile-user-info {
         background: rgba(77, 182, 172, 0.1);
@@ -513,25 +636,6 @@
         margin-top: 0.25rem;
     }
 
-    .mobile-logout-btn {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.75rem 1rem;
-        background: var(--error-red);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-size: 0.9rem;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        width: 100%;
-    }
-
-    .mobile-logout-btn:hover {
-        background: #c62828;
-        transform: translateY(-1px);
-    }
 
     /* Desktop-only class to hide login/user dropdown on mobile */
     @media (max-width: 991px) {

@@ -68,6 +68,14 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components.css">
 
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TM738SMJ');</script>
+    <!-- End Google Tag Manager -->
+
     <!-- jsPDF library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
@@ -3299,6 +3307,11 @@
 </head>
 
 <body class="store-page" data-page="store">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TM738SMJ"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <!-- Header Placeholder -->
     <div id="header-placeholder"></div>
 
@@ -3888,18 +3901,30 @@
                     return;
                 }
 
+                const firstPriceItem = product.price_lists[0]?.items[0];
+                const price = firstPriceItem ? parseFloat(firstPriceItem.amount) : 0;
+
                 if (cart[productId]) {
                     cart[productId].quantity++;
                     console.log('Increased quantity for:', product.name, 'to', cart[productId].quantity);
                 } else {
-                    const firstPriceItem = product.price_lists[0]?.items[0];
                     cart[productId] = {
                         product: product,
                         quantity: 1,
                         emptyCartridges: 0,
-                        price: firstPriceItem ? parseFloat(firstPriceItem.amount) : 0
+                        price: price
                     };
                     console.log('Added new item to cart:', product.name);
+                }
+
+                // Track add to cart event
+                if (window.DrWeeeAnalytics) {
+                    window.DrWeeeAnalytics.trackAddToCart({
+                        productId: productId,
+                        name: product.name,
+                        price: price,
+                        category: product.familyName || 'Printer Cartridges'
+                    }, 1);
                 }
 
                 updateCartUI();
@@ -4610,12 +4635,23 @@
                 document.getElementById('modal-product-name').textContent = product.name;
 
                 // Initialize modal state
+                const basePrice = product.price_lists[0]?.items[0]?.amount || 0;
                 modalState = {
                     productId: productId,
                     quantity: 1,
                     emptyCartridges: 0,
-                    basePrice: product.price_lists[0]?.items[0]?.amount || 0
+                    basePrice: basePrice
                 };
+
+                // Track product view
+                if (window.DrWeeeAnalytics) {
+                    window.DrWeeeAnalytics.trackViewItem({
+                        productId: productId,
+                        name: product.name,
+                        price: basePrice,
+                        category: product.familyName || 'Printer Cartridges'
+                    });
+                }
 
                 renderModalContent(product);
                 modalOverlay.classList.add('active');
@@ -5228,6 +5264,7 @@
 
     <!-- JavaScript Files -->
     <script src="js/main.js"></script>
+    <script src="js/analytics.js"></script>
 </body>
 
 </html>

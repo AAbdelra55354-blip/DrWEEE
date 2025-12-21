@@ -139,9 +139,13 @@ function showLoggedInState(phoneNumber, fullName = 'DR.WEEE User', userData = {}
     
     // Mobile elements
     const mobileLoginItem = document.getElementById('mobile-login-item');
-    const mobileUserInfo = document.getElementById('mobile-user-info');
+    const mobileUserCard = document.getElementById('mobile-user-card');
     const mobileUserPhone = document.getElementById('mobile-user-phone');
-    
+    const mobileEnvImpactItem = document.getElementById('mobile-env-impact-item');
+    const mobileMyRequestsItem = document.getElementById('mobile-my-requests-item');
+    const mobileRedeemItem = document.getElementById('mobile-redeem-item');
+    const mobileLogoutBtnEl = document.getElementById('mobile-logout-btn');
+
     // Desktop updates
     if (loginBtn) {
         loginBtn.style.display = 'none';
@@ -156,20 +160,37 @@ function showLoggedInState(phoneNumber, fullName = 'DR.WEEE User', userData = {}
         userPhoneDesktop.textContent = fullName;
         console.log('✓ Updated desktop name display');
     }
-    
+
     // Mobile updates
     if (mobileLoginItem) {
         mobileLoginItem.style.display = 'none';
         console.log('✓ Hidden mobile login item');
     }
-    if (mobileUserInfo) {
-        mobileUserInfo.style.display = 'block';
-        console.log('✓ Showed mobile user info');
+    if (mobileUserCard) {
+        mobileUserCard.style.display = 'block';
+        console.log('✓ Showed mobile user card');
     }
     if (mobileUserPhone) {
         // Display full name instead of phone number
         mobileUserPhone.textContent = fullName;
         console.log('✓ Updated mobile name display');
+    }
+    // Show user menu items
+    if (mobileEnvImpactItem) {
+        mobileEnvImpactItem.style.display = 'block';
+        console.log('✓ Showed mobile env impact item');
+    }
+    if (mobileMyRequestsItem) {
+        mobileMyRequestsItem.style.display = 'block';
+        console.log('✓ Showed mobile my requests item');
+    }
+    if (mobileRedeemItem) {
+        mobileRedeemItem.style.display = 'block';
+        console.log('✓ Showed mobile redeem item');
+    }
+    if (mobileLogoutBtnEl) {
+        mobileLogoutBtnEl.style.display = 'inline-flex';
+        console.log('✓ Showed mobile logout button');
     }
     
     // Update WEEE data in desktop dropdown
@@ -234,8 +255,12 @@ function showLoggedOutState() {
     
     // Mobile elements
     const mobileLoginItem = document.getElementById('mobile-login-item');
-    const mobileUserInfo = document.getElementById('mobile-user-info');
-    
+    const mobileUserCard = document.getElementById('mobile-user-card');
+    const mobileEnvImpactItem = document.getElementById('mobile-env-impact-item');
+    const mobileMyRequestsItem = document.getElementById('mobile-my-requests-item');
+    const mobileRedeemItem = document.getElementById('mobile-redeem-item');
+    const mobileLogoutBtnEl = document.getElementById('mobile-logout-btn');
+
     // Desktop updates
     if (loginBtn) {
         loginBtn.style.display = 'flex';
@@ -245,15 +270,28 @@ function showLoggedOutState() {
         userDropdown.style.display = 'none';
         console.log('✓ Hidden user dropdown');
     }
-    
+
     // Mobile updates
     if (mobileLoginItem) {
         mobileLoginItem.style.display = 'block';
         console.log('✓ Showed mobile login item');
     }
-    if (mobileUserInfo) {
-        mobileUserInfo.style.display = 'none';
-        console.log('✓ Hidden mobile user info');
+    if (mobileUserCard) {
+        mobileUserCard.style.display = 'none';
+        console.log('✓ Hidden mobile user card');
+    }
+    // Hide user menu items
+    if (mobileEnvImpactItem) {
+        mobileEnvImpactItem.style.display = 'none';
+    }
+    if (mobileMyRequestsItem) {
+        mobileMyRequestsItem.style.display = 'none';
+    }
+    if (mobileRedeemItem) {
+        mobileRedeemItem.style.display = 'none';
+    }
+    if (mobileLogoutBtnEl) {
+        mobileLogoutBtnEl.style.display = 'none';
     }
 }
 
@@ -304,6 +342,12 @@ function initUserDropdown() {
 
             if (response.ok) {
                 console.log('✅ Logout successful');
+
+                // Track logout event
+                if (window.DrWeeeAnalytics) {
+                    window.DrWeeeAnalytics.trackLogout();
+                }
+
                 showLoggedOutState();
 
                 // Show success message
@@ -329,7 +373,12 @@ function initUserDropdown() {
     };
 
     if (logoutBtn) logoutBtn.addEventListener('click', handleLogout);
-    if (mobileLogoutBtn) mobileLogoutBtn.addEventListener('click', handleLogout);
+    if (mobileLogoutBtn) {
+        mobileLogoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            handleLogout();
+        });
+    }
 }
 // REPLACE the existing initMobileMenu function in main.js with this improved version
 
@@ -352,25 +401,16 @@ function initMobileMenu() {
         document.body.appendChild(backdrop);
     }
 
-    const icon = mobileMenuToggle.querySelector('i');
-
     const openMenu = () => {
         // Add classes for open state
         mobileMenu.classList.add('is-open');
         backdrop.classList.add('is-visible');
         body.classList.add('mobile-menu-open');
 
-        // Update icon
-        if (icon) {
-            icon.classList.remove('fa-bars');
-            icon.classList.add('fa-times');
-        }
-
         // Update accessibility
         mobileMenuToggle.setAttribute('aria-expanded', 'true');
-        mobileMenuToggle.setAttribute('aria-label', 'Close menu');
 
-        // Focus management - focus the close button
+        // Focus management - focus the close button inside menu
         setTimeout(() => {
             mobileMenuClose.focus();
         }, 100);
@@ -384,15 +424,8 @@ function initMobileMenu() {
         backdrop.classList.remove('is-visible');
         body.classList.remove('mobile-menu-open');
 
-        // Update icon
-        if (icon) {
-            icon.classList.remove('fa-times');
-            icon.classList.add('fa-bars');
-        }
-
         // Update accessibility
         mobileMenuToggle.setAttribute('aria-expanded', 'false');
-        mobileMenuToggle.setAttribute('aria-label', 'Open menu');
 
         // Return focus to toggle button
         mobileMenuToggle.focus();
@@ -698,6 +731,14 @@ function initContactForm() {
                 const result = await response.json();
 
                 if (response.ok && result.success) {
+                    // Track contact form submission
+                    if (window.DrWeeeAnalytics) {
+                        window.DrWeeeAnalytics.trackContactFormSubmit({
+                            subject: data.subject,
+                            phone: data.phone || null
+                        });
+                    }
+
                     // Show innovative success modal instead of basic notification
                     if (typeof window.showContactSuccessModal === 'function') {
                         window.showContactSuccessModal();
