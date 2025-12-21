@@ -2210,12 +2210,11 @@ app.get('/api/share/my-code', apiLimiter, async (req, res) => {
     try {
         // Check authentication
         const isSessionAuth = req.session.user && req.session.user.GUID;
-        const isLocalDev = process.env.NODE_ENV !== 'production';
 
         let userGUID = null;
         if (isSessionAuth) {
             userGUID = req.session.user.GUID;
-        } else if (isLocalDev && req.query.userGUID) {
+        } else if (req.query.userGUID) { // Accept GUID from query param
             userGUID = req.query.userGUID;
         }
 
