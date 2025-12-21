@@ -2439,7 +2439,7 @@ app.get('/og/:shareCode', ogLimiter, async (req, res) => {
                     const equivalents = calculateEmissionEquivalents(totalCO2Saved);
                     const ecoLevel = getEcoLevel(totalCO2Saved);
 
-                    // Generate SVG certificate image
+                                        // Generate SVG certificate image (without emoji for better compatibility)
                     const svg = `
                     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
                         <defs>
@@ -2452,32 +2452,72 @@ app.get('/og/:shareCode', ogLimiter, async (req, res) => {
                                 <stop offset="50%" style="stop-color:#2E7D32"/>
                                 <stop offset="100%" style="stop-color:#43A047"/>
                             </linearGradient>
+                            <linearGradient id="statsBg" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#f1f8e9"/>
+                                <stop offset="100%" style="stop-color:#e8f5e9"/>
+                            </linearGradient>
                         </defs>
                         <rect width="1200" height="630" fill="url(#bg)"/>
-                        <rect width="1200" height="8" fill="url(#accent)"/>
-                        <text x="600" y="60" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#1B5E20" text-anchor="middle">DR.WEEE</text>
-                        <text x="600" y="100" font-family="Arial, sans-serif" font-size="24" fill="#2E7D32" text-anchor="middle">ENVIRONMENTAL IMPACT CERTIFICATE</text>
-                        <line x1="300" y1="120" x2="900" y2="120" stroke="#4CAF50" stroke-width="2"/>
-                        <text x="600" y="175" font-family="Arial, sans-serif" font-size="42" font-weight="bold" fill="#1B5E20" text-anchor="middle">${fullName}</text>
-                        <text x="600" y="250" font-family="Arial, sans-serif" font-size="72" text-anchor="middle">${ecoLevel.emoji}</text>
-                        <text x="600" y="300" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#2E7D32" text-anchor="middle">${ecoLevel.name}</text>
-                        <rect x="200" y="330" width="800" height="200" rx="20" fill="#f1f8e9" stroke="#81C784" stroke-width="2"/>
-                        <text x="333" y="390" font-family="Arial, sans-serif" font-size="40" text-anchor="middle">🌍</text>
-                        <text x="333" y="440" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#1B5E20" text-anchor="middle">${totalCO2Saved.toFixed(1)} kg</text>
-                        <text x="333" y="480" font-family="Arial, sans-serif" font-size="18" fill="#666666" text-anchor="middle">CO₂ Saved</text>
-                        <text x="600" y="390" font-family="Arial, sans-serif" font-size="40" text-anchor="middle">🌳</text>
-                        <text x="600" y="440" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#1B5E20" text-anchor="middle">${equivalents.treesEquivalent}</text>
-                        <text x="600" y="480" font-family="Arial, sans-serif" font-size="18" fill="#666666" text-anchor="middle">Trees Equivalent</text>
-                        <text x="867" y="390" font-family="Arial, sans-serif" font-size="40" text-anchor="middle">🚗</text>
-                        <text x="867" y="440" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#1B5E20" text-anchor="middle">${equivalents.drivingKm.toLocaleString()} km</text>
-                        <text x="867" y="480" font-family="Arial, sans-serif" font-size="18" fill="#666666" text-anchor="middle">Driving Avoided</text>
-                        <text x="600" y="570" font-family="Arial, sans-serif" font-size="16" fill="#666666" text-anchor="middle">Verified by Climatiq • 639,000+ Emission Factors</text>
-                        <text x="600" y="600" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#1B5E20" text-anchor="middle">www.drweee.com</text>
+                        <rect width="1200" height="10" fill="url(#accent)"/>
+                        <rect x="0" y="620" width="1200" height="10" fill="url(#accent)"/>
+
+                        <!-- Header -->
+                        <text x="600" y="70" font-family="Arial, sans-serif" font-size="42" font-weight="bold" fill="#1B5E20" text-anchor="middle">DR.WEEE</text>
+                        <text x="600" y="105" font-family="Arial, sans-serif" font-size="16" fill="#43A047" text-anchor="middle" letter-spacing="3">SMART GREEN IT SOLUTIONS</text>
+
+                        <!-- Certificate Title -->
+                        <text x="600" y="160" font-family="Arial, sans-serif" font-size="28" fill="#2E7D32" text-anchor="middle" letter-spacing="2">ENVIRONMENTAL IMPACT CERTIFICATE</text>
+
+                        <!-- Decorative line -->
+                        <line x1="350" y1="180" x2="850" y2="180" stroke="#81C784" stroke-width="2"/>
+
+                        <!-- User name -->
+                        <text x="600" y="240" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#1B5E20" text-anchor="middle">${fullName}</text>
+
+                        <!-- Eco Level -->
+                        <rect x="450" y="260" width="300" height="50" rx="25" fill="#2E7D32"/>
+                        <text x="600" y="295" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#ffffff" text-anchor="middle">${ecoLevel.name}</text>
+
+                        <!-- Stats Box -->
+                        <rect x="100" y="340" width="1000" height="200" rx="20" fill="url(#statsBg)" stroke="#81C784" stroke-width="3"/>
+
+                        <!-- CO2 Stat -->
+                        <circle cx="250" cy="400" r="45" fill="#1B5E20"/>
+                        <text x="250" y="410" font-family="Arial, sans-serif" font-size="24" fill="#ffffff" text-anchor="middle">CO2</text>
+                        <text x="250" y="480" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#1B5E20" text-anchor="middle">${totalCO2Saved.toFixed(1)}</text>
+                        <text x="250" y="510" font-family="Arial, sans-serif" font-size="16" fill="#666666" text-anchor="middle">kg CO2 Saved</text>
+
+                        <!-- Trees Stat -->
+                        <circle cx="600" cy="400" r="45" fill="#43A047"/>
+                        <text x="600" y="405" font-family="Arial, sans-serif" font-size="18" fill="#ffffff" text-anchor="middle">TREES</text>
+                        <text x="600" y="480" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#1B5E20" text-anchor="middle">${equivalents.treesEquivalent}</text>
+                        <text x="600" y="510" font-family="Arial, sans-serif" font-size="16" fill="#666666" text-anchor="middle">Trees Equivalent</text>
+
+                        <!-- Driving Stat -->
+                        <circle cx="950" cy="400" r="45" fill="#66BB6A"/>
+                        <text x="950" y="405" font-family="Arial, sans-serif" font-size="18" fill="#ffffff" text-anchor="middle">KM</text>
+                        <text x="950" y="480" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#1B5E20" text-anchor="middle">${equivalents.drivingKm.toLocaleString()}</text>
+                        <text x="950" y="510" font-family="Arial, sans-serif" font-size="16" fill="#666666" text-anchor="middle">Driving Avoided</text>
+
+                        <!-- Footer -->
+                        <text x="600" y="575" font-family="Arial, sans-serif" font-size="14" fill="#888888" text-anchor="middle">Verified Data - Powered by Climatiq API - 639,000+ Emission Factors</text>
+                        <text x="600" y="600" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1B5E20" text-anchor="middle">www.drweee.com</text>
                     </svg>`;
 
-                    res.setHeader('Content-Type', 'image/svg+xml');
-                    res.setHeader('Cache-Control', 'public, max-age=3600');
-                    return res.send(svg);
+                    // Try to convert SVG to PNG using sharp for LinkedIn compatibility
+                    try {
+                        const sharp = require('sharp');
+                        const pngBuffer = await sharp(Buffer.from(svg)).png().toBuffer();
+                        res.setHeader('Content-Type', 'image/png');
+                        res.setHeader('Cache-Control', 'public, max-age=3600');
+                        return res.send(pngBuffer);
+                    } catch (sharpError) {
+                        console.warn('Sharp conversion failed, sending SVG:', sharpError.message);
+                        res.setHeader('Content-Type', 'image/svg+xml');
+                        res.setHeader('Cache-Control', 'public, max-age=3600');
+                        return res.send(svg);
+                    }
+
                 }
             } catch (svgError) {
                 console.error('Error generating SVG fallback:', svgError.message);
