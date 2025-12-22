@@ -32,7 +32,7 @@ function securityMiddleware() {
                 fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdn.jsdelivr.net", "https://unpkg.com", "https://cdnjs.cloudflare.com", "data:"],
                 imgSrc: ["'self'", "data:", "https:", "blob:"],
                 mediaSrc: ["'self'", "https://assets.mixkit.co", "https://*.blob.core.windows.net", "blob:", "data:"],
-                connectSrc: ["'self'", "https://atlas.microsoft.com", "https://*.atlas.microsoft.com", "https://dc.services.visualstudio.com", "https://apis.cequens.com", "https://*.crm.dynamics.com", "https://*.railway.app", "https://www.google-analytics.com", "https://region1.google-analytics.com"],
+                connectSrc: ["'self'", "https://atlas.microsoft.com", "https://*.atlas.microsoft.com", "https://dc.services.visualstudio.com", "https://apis.cequens.com", "https://*.crm.dynamics.com", "https://*.railway.app", "https://www.google-analytics.com", "https://region1.google-analytics.com", "https://ipapi.co", "https://ipwho.is"],
                 frameSrc: ["'self'", "https://*.blob.core.windows.net"],
                 workerSrc: ["'self'", "blob:"],
                 childSrc: ["'self'", "blob:"],

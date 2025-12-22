@@ -241,6 +241,17 @@ async function getDataverseToken() {
     console.log('🔄 Authenticating with Dataverse...');
     const { DATAVERSE_URL, AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET } = process.env;
 
+    // Debug: Check if required environment variables are set
+    if (!DATAVERSE_URL || !AZURE_TENANT_ID || !AZURE_CLIENT_ID || !AZURE_CLIENT_SECRET) {
+        console.error('❌ Missing required Dataverse environment variables:', {
+            hasDataverseUrl: !!DATAVERSE_URL,
+            hasTenantId: !!AZURE_TENANT_ID,
+            hasClientId: !!AZURE_CLIENT_ID,
+            hasClientSecret: !!AZURE_CLIENT_SECRET
+        });
+        throw new Error('Missing required Dataverse configuration. Check environment variables.');
+    }
+
     const tokenEndpoint = `https://login.microsoftonline.com/${AZURE_TENANT_ID}/oauth2/v2.0/token`;
     const params = new URLSearchParams();
     params.append('client_id', AZURE_CLIENT_ID);
@@ -1585,6 +1596,7 @@ app.post('/api/fetch-products', async (req, res) => {
 
     } catch (error) {
         console.error('❌ Error fetching e-waste products:', error.message);
+        console.error('❌ Full error stack:', error.stack);
         const cachedData = ewasteProductCacheByTerritory.get(cacheKey);
         if (cachedData) {
             console.warn(`⚠️ Serving stale e-waste cache for territory ${cacheKey} due to fetch error.`);
@@ -1594,7 +1606,7 @@ app.post('/api/fetch-products', async (req, res) => {
                 cached: 'stale'
             });
         }
-        res.status(500).json({ message: 'Failed to fetch products', error: 'product_fetch_failed' });
+        res.status(500).json({ message: 'Failed to fetch products', error: 'product_fetch_failed', detail: error.message });
     }
 });
 // Add this endpoint to server.js after other endpoints
@@ -1932,6 +1944,7 @@ app.post('/api/store', async (req, res) => {
 
     } catch (error) {
         console.error('❌ Error in /api/store endpoint:', error.message);
+        console.error('❌ Full error stack:', error.stack);
         const cachedData = storeProductCacheByTerritory.get(cacheKey);
         if (cachedData) {
             console.warn('⚠️ Serving stale store cache due to fetch error.');
@@ -1942,7 +1955,7 @@ app.post('/api/store', async (req, res) => {
                 source: 'stale'
             });
         }
-        res.status(500).json({ message: 'Failed to fetch store products.' });
+        res.status(500).json({ message: 'Failed to fetch store products.', detail: error.message });
     }
 });
 
