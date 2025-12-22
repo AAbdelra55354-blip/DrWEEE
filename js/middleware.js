@@ -24,26 +24,42 @@ function securityMiddleware() {
         contentSecurityPolicy: {
             directives: {
                 defaultSrc: ["'self'"],
-                scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://atlas.microsoft.com", "https://cdn.jsdelivr.net", "https://unpkg.com", "https://cdnjs.cloudflare.com", "https://ajax.googleapis.com"],
-                scriptSrcAttr: ["'unsafe-inline'", "'unsafe-hashes'"],
+                // Removed 'unsafe-eval' - only keep 'unsafe-inline' for inline scripts
+                // Azure Maps SDK requires 'unsafe-inline' but not 'unsafe-eval'
+                scriptSrc: ["'self'", "'unsafe-inline'", "https://atlas.microsoft.com", "https://cdn.jsdelivr.net", "https://unpkg.com", "https://cdnjs.cloudflare.com", "https://ajax.googleapis.com", "https://www.googletagmanager.com", "https://www.google-analytics.com"],
+                scriptSrcAttr: ["'unsafe-inline'"],
                 styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdn.jsdelivr.net", "https://unpkg.com", "https://cdnjs.cloudflare.com", "https://atlas.microsoft.com"],
                 fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdn.jsdelivr.net", "https://unpkg.com", "https://cdnjs.cloudflare.com", "data:"],
                 imgSrc: ["'self'", "data:", "https:", "blob:"],
                 mediaSrc: ["'self'", "https://assets.mixkit.co", "https://*.blob.core.windows.net", "blob:", "data:"],
-                connectSrc: ["'self'", "https://atlas.microsoft.com", "https://*.atlas.microsoft.com", "https://dc.services.visualstudio.com", "https://apis.cequens.com", "https://*.crm.dynamics.com", "https://*.railway.app"],
+                connectSrc: ["'self'", "https://atlas.microsoft.com", "https://*.atlas.microsoft.com", "https://dc.services.visualstudio.com", "https://apis.cequens.com", "https://*.crm.dynamics.com", "https://*.railway.app", "https://www.google-analytics.com", "https://region1.google-analytics.com"],
                 frameSrc: ["'self'", "https://*.blob.core.windows.net"],
                 workerSrc: ["'self'", "blob:"],
                 childSrc: ["'self'", "blob:"],
                 objectSrc: ["'none'"],
+                baseUri: ["'self'"],
+                formAction: ["'self'"],
                 upgradeInsecureRequests: []
             }
         },
         crossOriginEmbedderPolicy: false, // Allow external resources
+        crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" },
+        crossOriginResourcePolicy: { policy: "cross-origin" },
+        // Additional security headers
+        referrerPolicy: { policy: "strict-origin-when-cross-origin" },
         hsts: {
             maxAge: 31536000, // 1 year
             includeSubDomains: true,
             preload: true
-        }
+        },
+        // Prevent MIME type sniffing
+        noSniff: true,
+        // Prevent clickjacking
+        frameguard: { action: "deny" },
+        // XSS protection (legacy browsers)
+        xssFilter: true,
+        // Hide X-Powered-By header
+        hidePoweredBy: true
     });
 }
 
@@ -155,16 +171,17 @@ function corsOptionsProduction() {
                 return allowed === origin;
             });
 
-            // In production, be more permissive for Railway domains
+            // In production, strictly enforce CORS whitelist
             if (process.env.NODE_ENV === 'production') {
-                // Allow if matches whitelist OR if it's same-origin
+                // Allow if matches whitelist OR if it's a Railway domain
                 if (isAllowed || origin.includes('railway.app')) {
                     callback(null, true);
                 } else {
                     console.log('⚠️ CORS blocked origin:', origin);
-                    callback(null, true); // Temporarily allow all for debugging - restrict later
+                    callback(new Error('CORS policy: Origin not allowed'), false);
                 }
             } else {
+                // In development, allow all origins for easier testing
                 callback(null, true);
             }
         },

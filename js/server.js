@@ -28,15 +28,96 @@ const dataverse = {
     accessToken: null,
     tokenExpiry: null
 };
-const storeProductCache = {
-    data: null,
-    lastFetch: 0
-};
 const STORE_CACHE_DURATION_MS = 15 * 60 * 1000; // Cache for 15 minutes
 
 // Translation cache for Azure Translator
 const translationCache = new Map();
 const TRANSLATION_CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
+
+// --- SECURE LOGGING UTILITIES ---
+// Production-safe logging that masks sensitive data
+const isProduction = () => process.env.NODE_ENV === 'production';
+
+// Mask phone number: +201234567890 -> +20****7890
+function maskPhone(phone) {
+    if (!phone || typeof phone !== 'string') return '[no-phone]';
+    if (phone.length <= 4) return '****';
+    return phone.slice(0, 3) + '****' + phone.slice(-4);
+}
+
+// Mask GUID: 12345678-1234-1234-1234-123456789012 -> 1234****9012
+function maskGUID(guid) {
+    if (!guid || typeof guid !== 'string') return '[no-guid]';
+    if (guid.length <= 8) return '****';
+    return guid.slice(0, 4) + '****' + guid.slice(-4);
+}
+
+// Mask email: user@domain.com -> u***@domain.com
+function maskEmail(email) {
+    if (!email || typeof email !== 'string') return '[no-email]';
+    const [local, domain] = email.split('@');
+    if (!domain) return '****';
+    return local.charAt(0) + '***@' + domain;
+}
+
+// Safe logger that only logs in development, masks sensitive data in production
+const secureLog = {
+    info: (message, ...args) => {
+        if (isProduction()) {
+            // In production, log without sensitive details
+            console.log(`[INFO] ${message}`);
+        } else {
+            console.log(`[INFO] ${message}`, ...args);
+        }
+    },
+    debug: (message, ...args) => {
+        // Debug logs only in development
+        if (!isProduction()) {
+            console.log(`[DEBUG] ${message}`, ...args);
+        }
+    },
+    warn: (message, ...args) => {
+        console.warn(`[WARN] ${message}`, ...args);
+    },
+    error: (message, error = null) => {
+        if (isProduction()) {
+            // In production, don't log stack traces or detailed error data
+            console.error(`[ERROR] ${message}`);
+        } else {
+            console.error(`[ERROR] ${message}`, error);
+        }
+    },
+    // Log with masked phone number
+    phone: (message, phone) => {
+        console.log(`${message} ${maskPhone(phone)}`);
+    },
+    // Log with masked GUID
+    guid: (message, guid) => {
+        console.log(`${message} ${maskGUID(guid)}`);
+    },
+    // Safe JSON logging - strips sensitive fields
+    safeJson: (message, obj) => {
+        if (isProduction()) {
+            console.log(`${message} [data redacted in production]`);
+        } else {
+            // In dev, redact known sensitive fields
+            const sanitized = JSON.parse(JSON.stringify(obj || {}));
+            const sensitiveFields = ['password', 'passwordhash', 'token', 'secret', 'apikey', 'authorization', 'otp', 'access_token'];
+            const redact = (o) => {
+                if (typeof o !== 'object' || o === null) return;
+                for (const key of Object.keys(o)) {
+                    if (sensitiveFields.some(f => key.toLowerCase().includes(f))) {
+                        o[key] = '[REDACTED]';
+                    } else if (typeof o[key] === 'object') {
+                        redact(o[key]);
+                    }
+                }
+            };
+            redact(sanitized);
+            console.log(`${message}`, JSON.stringify(sanitized, null, 2));
+        }
+    }
+};
 
 // --- 2. INITIALIZATION & CONFIGURATION ---
 const app = express();
@@ -269,24 +350,22 @@ async function getCequensToken() {
         });
 
         console.log('✅ Authentication successful');
-        console.log('Full response structure:', JSON.stringify(response.data, null, 2));
+        secureLog.safeJson('Cequens auth response:', response.data);
 
         // Extract token from the nested data object
         cequensApi.token = response.data.data?.access_token || response.data.data?.token;
 
         if (!cequensApi.token) {
-            console.error('❌ No token found in response data:', response.data.data);
+            secureLog.error('No token found in response data');
             throw new Error('Token not found in authentication response');
         }
 
         cequensApi.tokenExpiry = Date.now() + (23 * 60 * 60 * 1000);
 
-        console.log('✅ Token extracted successfully, length:', cequensApi.token.length);
+        secureLog.debug('Token extracted successfully');
         return cequensApi.token;
     } catch (error) {
-        console.error('❌ Authentication failed');
-        console.error('Status:', error.response?.status);
-        console.error('Data:', error.response?.data);
+        secureLog.error('SMS authentication failed', error.response?.status);
         throw new Error('Failed to authenticate with SMS service');
     }
 }
@@ -313,7 +392,7 @@ async function sendSMS(phoneNumber, message) {
             recipients: formattedPhone,
             shortURL: false
         });
-        console.log('Authorization header length:', token.length);
+        secureLog.debug('SMS request prepared');
 
         const response = await axios.post(`${cequensApi.baseUrl}/sms/v1/messages`, smsPayload, {
             headers: {
@@ -323,25 +402,46 @@ async function sendSMS(phoneNumber, message) {
             }
         });
 
-        console.log(`✅ SMS sent successfully to ${phoneNumber}`);
-        console.log('SMS Response:', response.data);
+        secureLog.phone('✅ SMS sent successfully to', phoneNumber);
         return response.data;
     } catch (error) {
-        console.error('❌ Error sending SMS:');
-        console.error('Status:', error.response?.status);
-        console.error('Response data:', JSON.stringify(error.response?.data, null, 2));
-
-        // Try to get more details about internal errors
-        if (error.response?.data?.error?.internalErrors) {
-            console.error('Internal errors:', error.response.data.error.internalErrors);
-        }
-
+        secureLog.error('Failed to send SMS', error.response?.status);
         throw new Error('Failed to send SMS');
     }
 }
 
+// Secure OTP generation using crypto
 function generateOTP() {
-    return Math.floor(100000 + Math.random() * 900000).toString();
+    // Use crypto.randomInt for cryptographically secure random numbers
+    return crypto.randomInt(100000, 999999).toString();
+}
+
+// Sanitize input for FetchXML to prevent injection attacks
+function sanitizeFetchXmlValue(value) {
+    if (value === null || value === undefined) return '';
+    // Convert to string and escape XML special characters
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+}
+
+// Validate GUID format (prevents injection via GUID fields)
+function isValidGUID(guid) {
+    if (!guid || typeof guid !== 'string') return false;
+    const guidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    return guidRegex.test(guid);
+}
+
+// Timing-safe OTP comparison to prevent timing attacks
+function verifyOTP(storedOtp, providedOtp) {
+    if (!storedOtp || !providedOtp) return false;
+    const storedBuffer = Buffer.from(String(storedOtp));
+    const providedBuffer = Buffer.from(String(providedOtp));
+    if (storedBuffer.length !== providedBuffer.length) return false;
+    return crypto.timingSafeEqual(storedBuffer, providedBuffer);
 }
 
 // --- 4. MIDDLEWARE ---
@@ -376,15 +476,24 @@ app.use(cors(process.env.NODE_ENV === 'production' ? corsOptionsProduction() : {
 // Request logging for slow requests
 app.use(requestLoggerMiddleware());
 
-app.use(express.json());
+// Add request body size limit to prevent DoS attacks
+app.use(express.json({ limit: '100kb' }));
+app.use(express.urlencoded({ extended: true, limit: '100kb' }));
 
 // Get rate limiters
 const { apiLimiter, authLimiter, otpLimiter, ogLimiter } = rateLimitMiddleware();
 
 
+// Require strong session secret in production
+if (process.env.NODE_ENV === 'production' && (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length < 32)) {
+    console.error('FATAL: SESSION_SECRET must be set to a strong random value (at least 32 characters) in production!');
+    console.error('Generate one with: node -e "console.log(require(\'crypto\').randomBytes(64).toString(\'hex\'))"');
+    process.exit(1);
+}
+
 app.use(session({
     store: sessionStore,
-    secret: process.env.SESSION_SECRET || 'drweee-secret-key-change-in-production',
+    secret: process.env.SESSION_SECRET || 'drweee-dev-secret-key-not-for-production',
     resave: false,
     saveUninitialized: false,
     name: 'drweee.sid', // Custom session name
@@ -425,15 +534,17 @@ app.post('/api/request-otp', otpLimiter, async (req, res) => {
     const normalizedPhone = normalizePhoneNumber(phoneNumber);
 
     try {
-        console.log(`[DEBUG] Checking for existing contact with phone: ${normalizedPhone}`);
+        secureLog.phone('[DEBUG] Checking for existing contact with phone:', normalizedPhone);
 
         // 1. Define an efficient FetchXML query to check for existence.
         // We use top="1" because we only need to know if at least one record exists.
+        // Sanitize phone number to prevent FetchXML injection
+        const sanitizedPhone = sanitizeFetchXmlValue(normalizedPhone);
         const checkUserFetchXml = `<fetch top="1">
                                       <entity name="contact">
                                         <attribute name="contactid" />
                                         <filter type="and">
-                                          <condition attribute="mobilephone" operator="eq" value="${normalizedPhone}" />
+                                          <condition attribute="mobilephone" operator="eq" value="${sanitizedPhone}" />
                                         </filter>
                                       </entity>
                                     </fetch>`;
@@ -443,7 +554,7 @@ app.post('/api/request-otp', otpLimiter, async (req, res) => {
 
         // 3. Check the result and respond if the user already exists.
         if (existingUsers.length > 0) {
-            console.log(`[INFO] Registration blocked: Phone number ${normalizedPhone} already exists.`);
+            secureLog.phone('[INFO] Registration blocked: Phone number already exists:', normalizedPhone);
             return res.status(409).json({ message: 'This phone number is already registered. Please login.' });
         }
 
@@ -471,7 +582,7 @@ app.post('/api/request-otp', otpLimiter, async (req, res) => {
                 console.error('Session save error for OTP:', err);
                 return res.status(500).json({ message: 'Server error while saving session.' });
             }
-            console.log(`[INFO] OTP sent to ${normalizedPhone}`);
+            secureLog.phone('[INFO] OTP sent to', normalizedPhone);
             // Send a clean success response.
             res.status(200).json({ success: true, message: 'OTP sent successfully.' });
         });
@@ -494,7 +605,7 @@ app.post('/api/verify-otp', authLimiter, (req, res) => {
         req.session.destroy();
         return res.status(400).json({ message: 'OTP has expired. Please request a new one.' });
     }
-    if (storedOtpData.otp === otp) {
+    if (verifyOTP(storedOtpData.otp, otp)) {
         req.session.otpData.verified = true;
         req.session.save((err) => {
             if (err) {
@@ -579,6 +690,8 @@ app.post('/api/login', authLimiter, async (req, res) => {
     const normalizedPhone = normalizePhoneNumber(phoneNumber);
 
     try {
+        // Sanitize phone number to prevent FetchXML injection
+        const sanitizedPhone = sanitizeFetchXmlValue(normalizedPhone);
         const fetchXml = `<fetch>
                             <entity name="contact">
                                 <attribute name="adx_identity_passwordhash" />
@@ -590,7 +703,7 @@ app.post('/api/login', authLimiter, async (req, res) => {
                                 <attribute name="crd33_totalredeemablecash" />
                                 <attribute name="crd33_totalcarbonsaved" />
                                 <filter type="and">
-                                    <condition attribute="mobilephone" operator="eq" value="${normalizedPhone}" />
+                                    <condition attribute="mobilephone" operator="eq" value="${sanitizedPhone}" />
                                 </filter>
                             </entity>
                           </fetch>`;
@@ -600,7 +713,7 @@ app.post('/api/login', authLimiter, async (req, res) => {
 
         // Step 2: Immediately check if a user was found. If not, exit early.
         if (results.length === 0) {
-            console.log(`Login failed: No contact found with phone ${normalizedPhone}`);
+            secureLog.phone('Login failed: No contact found with phone', normalizedPhone);
             return res.status(401).json({ message: 'Invalid credentials.' });
         }
 
@@ -609,7 +722,7 @@ app.post('/api/login', authLimiter, async (req, res) => {
         const passwordHash = userRecord.adx_identity_passwordhash;
 
         if (!passwordHash) {
-            console.log(`Login failed: Contact ${normalizedPhone} exists but has no password hash.`);
+            secureLog.phone('Login failed: Contact exists but has no password hash:', normalizedPhone);
             return res.status(401).json({ message: 'Invalid credentials.' });
         }
 
@@ -635,7 +748,7 @@ app.post('/api/login', authLimiter, async (req, res) => {
                     console.error('Session save error:', err);
                     return res.status(500).json({ message: 'Login successful but session error occurred.' });
                 }
-                console.log(`✅ User logged in via Dataverse: ${userRecord.firstname} (${normalizedPhone})`);
+                secureLog.info(`✅ User logged in successfully`);
                 // Return user data for client-side storage (helps with cross-origin local dev)
                 res.status(200).json({
                     message: 'Login successful.',
@@ -652,7 +765,7 @@ app.post('/api/login', authLimiter, async (req, res) => {
                 });
             });
         } else {
-            console.log(`Login failed: Incorrect password for ${normalizedPhone}`);
+            secureLog.phone('Login failed: Incorrect password for', normalizedPhone);
             res.status(401).json({ message: 'Invalid credentials.' });
         }
     } catch (error) {
@@ -775,7 +888,7 @@ app.post('/api/collection-request', apiLimiter, async (req, res) => {
             const errorData = error.response.data;
 
             console.error('Power Automate error status:', status);
-            console.error('Power Automate error data:', JSON.stringify(errorData, null, 2));
+            secureLog.error('Power Automate error', errorData?.error?.code);
 
             if (status === 502 && errorData?.error?.code === 'NoResponse') {
                 console.log('Power Automate 502 NoResponse - storing request for manual processing');
@@ -791,7 +904,7 @@ app.post('/api/collection-request', apiLimiter, async (req, res) => {
                     trackingId: errorData?.error?.message?.match(/Request tracking id '([^']+)'/)?.[1] || 'unknown'
                 };
 
-                console.log('Failed request stored:', JSON.stringify(failedRequest, null, 2));
+                secureLog.info('Failed request stored for manual processing');
 
                 return res.status(202).json({
                     success: false,
@@ -983,8 +1096,15 @@ app.get('/api/my-requests', async (req, res) => {
         return res.status(401).json({ message: 'User not logged in.' });
     }
 
+    // Validate GUID format to prevent injection
+    if (!isValidGUID(userGUID)) {
+        return res.status(400).json({ message: 'Invalid user identifier format.' });
+    }
+
     try {
         // FetchXML query to get online requests for this user (regardingobjectid = contact GUID)
+        // GUID is already validated, but sanitize for defense in depth
+        const sanitizedGUID = sanitizeFetchXmlValue(userGUID);
         const fetchXml = `
             <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
                 <entity name="crd33_onlinerequests">
@@ -998,7 +1118,7 @@ app.get('/api/my-requests', async (req, res) => {
                     <attribute name="crd33_orderitems" />
                     <order attribute="createdon" descending="true" />
                     <filter type="and">
-                        <condition attribute="regardingobjectid" operator="eq" value="${userGUID}" />
+                        <condition attribute="regardingobjectid" operator="eq" value="${sanitizedGUID}" />
                     </filter>
                 </entity>
             </fetch>
@@ -1035,7 +1155,7 @@ app.get('/api/my-requests', async (req, res) => {
             orderItems: request.crd33_orderitems
         }));
 
-        console.log(`✅ Found ${formattedRequests.length} requests for user ${userGUID}`);
+        secureLog.guid(`✅ Found ${formattedRequests.length} requests for user`, userGUID);
 
         res.status(200).json({
             success: true,
@@ -1248,7 +1368,7 @@ Voucher ID: ${voucher.id}
             const errorData = error.response.data;
 
             console.error('Power Automate error status:', status);
-            console.error('Power Automate error data:', JSON.stringify(errorData, null, 2));
+            secureLog.error('Power Automate error', errorData?.error?.code);
 
             if (status === 502 && errorData?.error?.code === 'NoResponse') {
                 console.log('Power Automate 502 NoResponse - accepting redemption for manual processing');
@@ -1280,50 +1400,144 @@ Voucher ID: ${voucher.id}
 
 // js/server.js
 
+// Per-territory e-waste product cache
+const ewasteProductCacheByTerritory = new Map();
+
 // REPLACE the existing /api/fetch-products endpoint with this one
 app.post('/api/fetch-products', async (req, res) => {
-    const { type } = req.body;
+    const { type, territoryId } = req.body;
 
     if (type !== 'product') {
         return res.status(400).json({ message: 'Invalid request type' });
     }
 
-    const isCacheValid = productCache.data && (Date.now() - productCache.lastFetch < CACHE_DURATION_MS);
+    // Use territory-specific cache key
+    const cacheKey = territoryId || 'global';
+    const cachedData = ewasteProductCacheByTerritory.get(cacheKey);
+    const isCacheValid = cachedData && (Date.now() - cachedData.lastFetch < CACHE_DURATION_MS);
 
     if (isCacheValid) {
-        console.log('✅ Returning e-waste products from global server cache');
+        console.log(`✅ Returning e-waste products from cache for territory: ${cacheKey}`);
         return res.status(200).json({
             success: true,
-            products: productCache.data,
+            products: cachedData.data,
             cached: true
         });
     }
 
     try {
-        console.log('🔄 Fetching e-waste products from Dataverse (cache expired or empty)...');
+        console.log(`🔄 Fetching e-waste products from Dataverse for territory: ${cacheKey}...`);
 
-        const fetchXml = `<fetch>
-                            <entity name="product">
-                                <attribute name="productid" />
-                                <attribute name="name" />
-                                <attribute name="crd33_emoji" />
-                                <attribute name="crd33_category" />
-                                <link-entity name="productpricelevel" from="productid" to="productid" alias="ppl">
-                                    <attribute name="crd33_weeepointequivalent" />
-                                    <attribute name="crd33_carbonsavingsperunit" />
-                                    <link-entity name="uom" from="uomid" to="uomid" alias="uom">
-                                        <attribute name="name" />
-                                    </link-entity>
-                                </link-entity>
-                                <filter type="and">
-                                    <condition attribute="statecode" operator="eq" value="0" />
-                                    <filter type="or">
-                                        <condition attribute="parentproductid" operator="ne" value="b1b4fce2-709a-f011-bbd2-6045bd5eed59" />
-                                        <condition attribute="parentproductid" operator="null" />
-                                    </filter>
-                                </filter>
-                            </entity>
-                          </fetch>`;
+        // If territoryId is provided, get the "E-waste" price list for this territory
+        // Price list types: E-waste = 269530000, Sell Products = 269530001
+        // Only get price lists where crd33_availableforwebsite = true
+        let priceListIds = [];
+        if (territoryId) {
+            // Validate and sanitize territory ID
+            if (!isValidGUID(territoryId)) {
+                return res.status(400).json({ success: false, message: 'Invalid territory ID format.' });
+            }
+            const sanitizedTerritoryId = sanitizeFetchXmlValue(territoryId);
+
+            const priceListTerritoryQuery = `<fetch version="1.0" mapping="logical">
+                <entity name="crd33_pricelistterritory">
+                    <attribute name="crd33_pricelistterritoryid"/>
+                    <filter type="and">
+                        <condition attribute="crd33_territory" operator="eq" value="${sanitizedTerritoryId}"/>
+                        <condition attribute="statecode" operator="eq" value="0"/>
+                    </filter>
+                    <link-entity name="pricelevel" from="pricelevelid" to="crd33_pricelist" alias="pricelist" link-type="inner">
+                        <attribute name="pricelevelid" alias="priceListId"/>
+                        <filter type="and">
+                            <condition attribute="statecode" operator="eq" value="0"/>
+                            <condition attribute="crd33_availableforwebsite" operator="eq" value="1"/>
+                            <condition attribute="crd33_pricelisttype" operator="eq" value="269530000"/>
+                        </filter>
+                    </link-entity>
+                </entity>
+            </fetch>`;
+
+            const priceListTerritories = await queryDataverse('crd33_pricelistterritories', priceListTerritoryQuery);
+            secureLog.debug(`Found ${priceListTerritories?.length || 0} price list territories`);
+
+            // Try both possible alias formats
+            priceListIds = (priceListTerritories || []).map(plt => {
+                // Dataverse may return as 'pricelist.priceListId' or just 'priceListId'
+                return plt['pricelist.priceListId'] || plt.priceListId || plt['pricelist_priceListId'];
+            }).filter(Boolean);
+            secureLog.debug(`Found ${priceListIds.length} price lists for territory`);
+
+            if (priceListIds.length === 0) {
+                console.log('⚠️ No price lists found for territory, returning empty products');
+                const emptyProducts = { computing: [], mobile: [], home: [], entertainment: [], accessories: [], office: [] };
+                ewasteProductCacheByTerritory.set(cacheKey, { data: emptyProducts, lastFetch: Date.now() });
+                return res.status(200).json({
+                    success: true,
+                    products: emptyProducts,
+                    cached: false
+                });
+            }
+        }
+
+        // Build FetchXML query - filter by price list if territory specified
+        let fetchXml;
+        if (territoryId && priceListIds.length > 0) {
+            // Build condition for multiple price lists - validate and sanitize each ID
+            const priceListConditions = priceListIds
+                .filter(id => isValidGUID(id))
+                .map(id => `<condition attribute="pricelevelid" operator="eq" value="${sanitizeFetchXmlValue(id)}"/>`)
+                .join('');
+
+            fetchXml = `<fetch>
+                <entity name="product">
+                    <attribute name="productid" />
+                    <attribute name="name" />
+                    <attribute name="crd33_emoji" />
+                    <attribute name="crd33_category" />
+                    <link-entity name="productpricelevel" from="productid" to="productid" alias="ppl">
+                        <attribute name="crd33_weeepointequivalent" />
+                        <attribute name="crd33_carbonsavingsperunit" />
+                        <filter type="or">
+                            ${priceListConditions}
+                        </filter>
+                        <link-entity name="uom" from="uomid" to="uomid" alias="uom">
+                            <attribute name="name" />
+                        </link-entity>
+                    </link-entity>
+                    <filter type="and">
+                        <condition attribute="statecode" operator="eq" value="0" />
+                        <filter type="or">
+                            <condition attribute="parentproductid" operator="ne" value="b1b4fce2-709a-f011-bbd2-6045bd5eed59" />
+                            <condition attribute="parentproductid" operator="null" />
+                        </filter>
+                    </filter>
+                </entity>
+            </fetch>`;
+        } else {
+            // No territory - fetch all products (backwards compatible)
+            fetchXml = `<fetch>
+                <entity name="product">
+                    <attribute name="productid" />
+                    <attribute name="name" />
+                    <attribute name="crd33_emoji" />
+                    <attribute name="crd33_category" />
+                    <link-entity name="productpricelevel" from="productid" to="productid" alias="ppl">
+                        <attribute name="crd33_weeepointequivalent" />
+                        <attribute name="crd33_carbonsavingsperunit" />
+                        <link-entity name="uom" from="uomid" to="uomid" alias="uom">
+                            <attribute name="name" />
+                        </link-entity>
+                    </link-entity>
+                    <filter type="and">
+                        <condition attribute="statecode" operator="eq" value="0" />
+                        <filter type="or">
+                            <condition attribute="parentproductid" operator="ne" value="b1b4fce2-709a-f011-bbd2-6045bd5eed59" />
+                            <condition attribute="parentproductid" operator="null" />
+                        </filter>
+                    </filter>
+                </entity>
+            </fetch>`;
+        }
 
         const rawData = await queryDataverse('products', fetchXml);
 
@@ -1359,9 +1573,9 @@ app.post('/api/fetch-products', async (req, res) => {
             }
         });
 
-        productCache.data = transformedProducts;
-        productCache.lastFetch = Date.now();
-        console.log('✅ Global e-waste product cache updated successfully from Dataverse.');
+        // Cache by territory
+        ewasteProductCacheByTerritory.set(cacheKey, { data: transformedProducts, lastFetch: Date.now() });
+        console.log(`✅ E-waste product cache updated for territory: ${cacheKey}`);
 
         res.status(200).json({
             success: true,
@@ -1371,11 +1585,12 @@ app.post('/api/fetch-products', async (req, res) => {
 
     } catch (error) {
         console.error('❌ Error fetching e-waste products:', error.message);
-        if (productCache.data) {
-            console.warn('⚠️ Serving stale e-waste cache due to fetch error.');
+        const cachedData = ewasteProductCacheByTerritory.get(cacheKey);
+        if (cachedData) {
+            console.warn(`⚠️ Serving stale e-waste cache for territory ${cacheKey} due to fetch error.`);
             return res.status(200).json({
                 success: true,
-                products: productCache.data,
+                products: cachedData.data,
                 cached: 'stale'
             });
         }
@@ -1400,23 +1615,107 @@ app.get('/api/config', (req, res) => {
 
 // js/server.js in --- 5. API ENDPOINTS ---
 
+// Territory-specific store product cache (keyed by territoryId)
+const storeProductCacheByTerritory = new Map();
+
 app.post('/api/store', async (req, res) => {
-    // 1. CHECK THE GLOBAL CACHE FIRST
-    const isCacheValid = storeProductCache.data && (Date.now() - storeProductCache.lastFetch < STORE_CACHE_DURATION_MS);
+    const { territoryId } = req.body;
+
+    // Use territory-specific cache key, or 'default' for backwards compatibility
+    const cacheKey = territoryId || 'default';
+    const cachedData = storeProductCacheByTerritory.get(cacheKey);
+    const isCacheValid = cachedData && (Date.now() - cachedData.lastFetch < STORE_CACHE_DURATION_MS);
 
     if (isCacheValid) {
-        console.log('✅ Returning store products from global server cache');
+        console.log(`✅ Returning store products from cache for territory: ${cacheKey}`);
         return res.status(200).json({
             success: true,
-            products: storeProductCache.data,
+            products: cachedData.data,
+            currency: cachedData.currency,
             source: 'cache'
         });
     }
 
     try {
-        console.log('🔄 Fetching store products directly from Dataverse (cache expired or empty)...');
+        console.log(`🔄 Fetching store products for territory: ${cacheKey}...`);
 
-        // Step A: Get the primary list of products with filters, now including a link to the parent product
+        let territoryPriceListIds = [];
+        let territoryCurrency = null;
+
+        // Step 1: If territoryId provided, get the "Sell Products" price list for this territory
+        // Price list types: E-waste = 269530000, Sell Products = 269530001
+        // Only get price lists where crd33_availableforwebsite = true
+        if (territoryId) {
+            // Validate and sanitize territory ID
+            if (!isValidGUID(territoryId)) {
+                return res.status(400).json({ success: false, message: 'Invalid territory ID format.' });
+            }
+            const sanitizedTerritoryId = sanitizeFetchXmlValue(territoryId);
+            console.log(`[Store] Fetching "Sell Products" price list for territory: ${territoryId}`);
+
+            // Query crd33_pricelistterritories to get the Sell Products price list for this territory
+            const priceListTerritoryQuery = `<fetch version="1.0" mapping="logical">
+                <entity name="crd33_pricelistterritory">
+                    <attribute name="crd33_pricelistterritoryid"/>
+                    <filter type="and">
+                        <condition attribute="crd33_territory" operator="eq" value="${sanitizedTerritoryId}"/>
+                        <condition attribute="statecode" operator="eq" value="0"/>
+                    </filter>
+                    <link-entity name="pricelevel" from="pricelevelid" to="crd33_pricelist" alias="pricelist" link-type="inner">
+                        <attribute name="pricelevelid" alias="priceListId"/>
+                        <attribute name="name" alias="priceListName"/>
+                        <attribute name="transactioncurrencyid" alias="currencyId"/>
+                        <attribute name="crd33_pricelisttype" alias="priceListType"/>
+                        <attribute name="crd33_availableforwebsite" alias="availableForWebsite"/>
+                        <filter type="and">
+                            <condition attribute="statecode" operator="eq" value="0"/>
+                            <condition attribute="crd33_availableforwebsite" operator="eq" value="1"/>
+                            <condition attribute="crd33_pricelisttype" operator="eq" value="269530001"/>
+                        </filter>
+                        <link-entity name="transactioncurrency" from="transactioncurrencyid" to="transactioncurrencyid" alias="currency" link-type="outer">
+                            <attribute name="currencyname" alias="currencyName"/>
+                            <attribute name="currencysymbol" alias="currencySymbol"/>
+                            <attribute name="isocurrencycode" alias="currencyIsoCode"/>
+                            <attribute name="currencyprecision" alias="currencyPrecision"/>
+                            <attribute name="exchangerate" alias="currencyExchangeRate"/>
+                        </link-entity>
+                    </link-entity>
+                </entity>
+            </fetch>`;
+
+            const priceListTerritories = await queryDataverse('crd33_pricelistterritories', priceListTerritoryQuery);
+
+            if (priceListTerritories.length === 0) {
+                console.log(`[Store] No price lists found for territory: ${territoryId}`);
+                return res.status(200).json({
+                    success: true,
+                    products: [],
+                    currency: null,
+                    message: 'No price lists configured for this territory',
+                    source: 'live'
+                });
+            }
+
+            // Extract price list IDs and currency info
+            territoryPriceListIds = priceListTerritories.map(plt => plt.priceListId);
+
+            // Get currency from the first price list (should be the same for all in a territory)
+            const firstPriceList = priceListTerritories[0];
+            if (firstPriceList.currencySymbol) {
+                territoryCurrency = {
+                    id: firstPriceList.currencyId,
+                    name: firstPriceList.currencyName,
+                    symbol: firstPriceList.currencySymbol,
+                    isoCode: firstPriceList.currencyIsoCode,
+                    precision: firstPriceList.currencyPrecision || 2,
+                    exchangeRate: firstPriceList.currencyExchangeRate
+                };
+            }
+
+            console.log(`[Store] Found ${territoryPriceListIds.length} price lists for territory. Currency: ${territoryCurrency?.symbol || 'N/A'}`);
+        }
+
+        // Step 2: Get the primary list of products with filters
         const productQuery = `<fetch version="1.0" mapping="logical">
                                 <entity name="product">
                                     <attribute name="productid"/>
@@ -1440,18 +1739,26 @@ app.post('/api/store', async (req, res) => {
 
         if (products.length === 0) {
             console.log('✅ No products found matching the criteria. Returning empty array.');
-            return res.status(200).json({ success: true, products: [], source: 'live' });
+            return res.status(200).json({ success: true, products: [], currency: territoryCurrency, source: 'live' });
         }
-
 
         const productIds = products.map(p => `<value>${p.productid}</value>`).join('');
         const parentProductIds = [...new Set(
             products.map(p => p.parentproductid || p._parentproductid_value).filter(Boolean)
         )].map(id => `<value>${id}</value>`).join('');
 
+        // Step 3: Build price query with territory filter if applicable
+        let priceItemQuery;
+        if (territoryPriceListIds.length > 0) {
+            // Filter to only get prices from the territory's price lists
+            const priceListIdsCondition = territoryPriceListIds.map(id => `<value>${id}</value>`).join('');
+            priceItemQuery = `<fetch><entity name="productpricelevel"><attribute name="productpricelevelid" alias="priceListItemId"/><attribute name="amount"/><attribute name="crd33_buyingamount" alias="buyingAmount"/><attribute name="crd33_drweeepercentageofsell" alias="weeePercentageOfSell"/><attribute name="crd33_maxdiscountpercentage" alias="maxDiscountPercentage"/><attribute name="crd33_costperpagefororiginal" alias="costPerPageOriginal"/><attribute name="crd33_costperpageforremanufactured" alias="costPerPageRemanufactured"/><attribute name="crd33_saving" alias="saving"/><attribute name="crd33_weeepointequivalent" alias="weeePoints"/><attribute name="crd33_carbonsavingsperunit" alias="carbonSavings"/><attribute name="productid" alias="productIdForJoin"/><link-entity name="pricelevel" from="pricelevelid" to="pricelevelid" alias="pricelist"><attribute name="pricelevelid" alias="priceListId"/><attribute name="name" alias="priceListName"/></link-entity><filter type="and"><condition attribute="productid" operator="in">${productIds}</condition><condition attribute="pricelevelid" operator="in">${priceListIdsCondition}</condition></filter></entity></fetch>`;
+        } else {
+            // No territory filter - get all price items (backwards compatibility)
+            priceItemQuery = `<fetch><entity name="productpricelevel"><attribute name="productpricelevelid" alias="priceListItemId"/><attribute name="amount"/><attribute name="crd33_buyingamount" alias="buyingAmount"/><attribute name="crd33_drweeepercentageofsell" alias="weeePercentageOfSell"/><attribute name="crd33_maxdiscountpercentage" alias="maxDiscountPercentage"/><attribute name="crd33_costperpagefororiginal" alias="costPerPageOriginal"/><attribute name="crd33_costperpageforremanufactured" alias="costPerPageRemanufactured"/><attribute name="crd33_saving" alias="saving"/><attribute name="crd33_weeepointequivalent" alias="weeePoints"/><attribute name="crd33_carbonsavingsperunit" alias="carbonSavings"/><attribute name="productid" alias="productIdForJoin"/><link-entity name="pricelevel" from="pricelevelid" to="pricelevelid" alias="pricelist"><attribute name="pricelevelid" alias="priceListId"/><attribute name="name" alias="priceListName"/></link-entity><filter><condition attribute="productid" operator="in">${productIds}</condition></filter></entity></fetch>`;
+        }
 
         const relationshipQuery = `<fetch><entity name="productsubstitute"><attribute name="productsubstituteid" alias="relationshipId"/><attribute name="salesrelationshiptype" alias="relationshipType"/><attribute name="direction"/><attribute name="productid" alias="parentProductIdForJoin"/><link-entity name="product" from="productid" to="substitutedproductid" alias="relatedProduct"><attribute name="productid" alias="productId"/><attribute name="name" alias="relatedName"/><attribute name="productnumber" alias="relatedProductNumber"/></link-entity><filter><condition attribute="productid" operator="in">${productIds}</condition></filter></entity></fetch>`;
-        const priceItemQuery = `<fetch><entity name="productpricelevel"><attribute name="productpricelevelid" alias="priceListItemId"/><attribute name="amount"/><attribute name="crd33_buyingamount" alias="buyingAmount"/><attribute name="crd33_drweeepercentageofsell" alias="weeePercentageOfSell"/><attribute name="crd33_maxdiscountpercentage" alias="maxDiscountPercentage"/><attribute name="crd33_costperpagefororiginal" alias="costPerPageOriginal"/><attribute name="crd33_costperpageforremanufactured" alias="costPerPageRemanufactured"/><attribute name="crd33_saving" alias="saving"/><attribute name="crd33_weeepointequivalent" alias="weeePoints"/><attribute name="crd33_carbonsavingsperunit" alias="carbonSavings"/><attribute name="productid" alias="productIdForJoin"/><link-entity name="pricelevel" from="pricelevelid" to="pricelevelid" alias="pricelist"><attribute name="pricelevelid" alias="priceListId"/><attribute name="name" alias="priceListName"/></link-entity><filter><condition attribute="productid" operator="in">${productIds}</condition></filter></entity></fetch>`;
         const propertyQuery = `<fetch>
     <entity name="dynamicproperty">
         <attribute name="dynamicpropertyid" alias="propertyId"/>
@@ -1485,18 +1792,10 @@ app.post('/api/store', async (req, res) => {
             queryDataverse('productpricelevels', priceItemQuery),
         ]);
 
-        const finalProducts = products.map(product => {
+        // Step 4: Build products with territory-specific pricing
+        const productsWithPricing = products.map(product => {
             const relationships = allRelationships.filter(r => r.parentProductIdForJoin === product.productid);
-
-            // FIX: Handle the parent product ID correctly - check multiple possible field names
             const parentProductId = product.parentproductid || product._parentproductid_value;
-
-            console.log(`[DEBUG] Product ${product.name} (${product.productid}):`);
-            console.log(`  - Raw parent product data:`, {
-                parentproductid: product.parentproductid,
-                _parentproductid_value: product._parentproductid_value
-            });
-            console.log(`  - Resolved Parent Product ID: ${parentProductId}`);
 
             // Filter properties for THIS SPECIFIC PRODUCT and its parent
             const productLevelProperties = allProperties.filter(p => {
@@ -1509,27 +1808,13 @@ app.post('/api/store', async (req, res) => {
                 return regardingId === parentProductId;
             });
 
-            console.log(`  - Family properties for parent ${parentProductId}: ${familyLevelProperties.length}`);
-            console.log(`  - Product properties for ${product.productid}: ${productLevelProperties.length}`);
-
-            // Debug: Show family property details
-            if (familyLevelProperties.length > 0) {
-                familyLevelProperties.forEach(fp => {
-                    console.log(`    - Family property: ${fp.propertyName} (${fp.propertyId}) regarding ${fp.parentRecordId || fp._regardingobjectid_value}`);
-                });
-            }
-
             // Create a property map specifically for THIS product
             const propertyMap = new Map();
 
-            // Step 1: Add family-level properties as templates
+            // Add family-level properties as templates
             familyLevelProperties.forEach(familyProp => {
                 const value = extractPropertyValue(familyProp);
-                const key = familyProp.propertyId; // Use property ID as unique key
-
-                console.log(`  - Family template: ${familyProp.propertyName} = ${value} (ID: ${familyProp.propertyId})`);
-
-                propertyMap.set(key, {
+                propertyMap.set(familyProp.propertyId, {
                     propertyId: familyProp.propertyId,
                     propertyName: familyProp.propertyName,
                     propertyValue: value,
@@ -1539,34 +1824,25 @@ app.post('/api/store', async (req, res) => {
                 });
             });
 
-            // Step 2: Process product-level properties
+            // Process product-level properties
             productLevelProperties.forEach(prodProp => {
                 const value = extractPropertyValue(prodProp);
-                console.log(`  - Product prop: ${prodProp.propertyName} = ${value} (Root: ${prodProp.rootPropertyId}, Base: ${prodProp.basePropertyId})`);
-
-                // Check if this product property links to a family template
                 const rootId = prodProp.rootPropertyId || prodProp.basePropertyId;
 
                 if (rootId && propertyMap.has(rootId)) {
                     const linkedFamilyProp = propertyMap.get(rootId);
-                    console.log(`    - Links to family template: ${linkedFamilyProp.propertyName} (${rootId})`);
-
-                    // Override/enhance the family template with product data
                     const finalValue = value !== null && value !== undefined && value !== '' ? value : linkedFamilyProp.propertyValue;
                     const finalSource = value !== null && value !== undefined && value !== '' ? 'product' : 'family';
 
                     propertyMap.set(rootId, {
                         propertyId: prodProp.propertyId,
-                        propertyName: linkedFamilyProp.propertyName, // Keep family property name
+                        propertyName: linkedFamilyProp.propertyName,
                         propertyValue: finalValue,
                         source: finalSource,
                         isTemplate: false,
                         hasValue: finalValue !== null && finalValue !== undefined && finalValue !== ''
                     });
                 } else {
-                    // This is a standalone product property
-                    console.log(`    - Standalone product property: ${prodProp.propertyName}`);
-
                     propertyMap.set(prodProp.propertyId, {
                         propertyId: prodProp.propertyId,
                         propertyName: prodProp.propertyName,
@@ -1578,12 +1854,8 @@ app.post('/api/store', async (req, res) => {
                 }
             });
 
-            // Step 3: Extract final properties
             const finalProperties = Array.from(propertyMap.values())
-                .filter(prop => {
-                    // Include properties that have values
-                    return prop.hasValue;
-                })
+                .filter(prop => prop.hasValue)
                 .map(prop => ({
                     propertyId: prop.propertyId,
                     propertyName: prop.propertyName,
@@ -1591,9 +1863,7 @@ app.post('/api/store', async (req, res) => {
                     source: prop.source
                 }));
 
-            console.log(`  - Final properties for ${product.name}: ${finalProperties.length}`);
-            finalProperties.forEach(fp => console.log(`    * ${fp.propertyName}: ${fp.propertyValue} (${fp.source})`));
-
+            // Get price items for this product (already filtered by territory if territoryId provided)
             const priceItems = allPriceItems.filter(item => item.productIdForJoin === product.productid);
 
             const priceListGroups = {};
@@ -1636,17 +1906,41 @@ app.post('/api/store', async (req, res) => {
             };
         });
 
-        storeProductCache.data = finalProducts;
-        storeProductCache.lastFetch = Date.now();
-        console.log(`✅ Global store cache updated. Found and merged ${finalProducts.length} products.`);
+        // Step 5: If territory specified, filter to only products that have prices in the territory
+        let finalProducts;
+        if (territoryId) {
+            finalProducts = productsWithPricing.filter(p => p.price_lists.length > 0);
+            console.log(`[Store] Filtered to ${finalProducts.length} products with prices in territory`);
+        } else {
+            finalProducts = productsWithPricing;
+        }
 
-        res.status(200).json({ success: true, products: finalProducts, source: 'live' });
+        // Update territory-specific cache
+        storeProductCacheByTerritory.set(cacheKey, {
+            data: finalProducts,
+            currency: territoryCurrency,
+            lastFetch: Date.now()
+        });
+        console.log(`✅ Store cache updated for territory: ${cacheKey}. Found ${finalProducts.length} products.`);
+
+        res.status(200).json({
+            success: true,
+            products: finalProducts,
+            currency: territoryCurrency,
+            source: 'live'
+        });
 
     } catch (error) {
         console.error('❌ Error in /api/store endpoint:', error.message);
-        if (storeProductCache.data) {
+        const cachedData = storeProductCacheByTerritory.get(cacheKey);
+        if (cachedData) {
             console.warn('⚠️ Serving stale store cache due to fetch error.');
-            return res.status(200).json({ success: true, products: storeProductCache.data, source: 'stale' });
+            return res.status(200).json({
+                success: true,
+                products: cachedData.data,
+                currency: cachedData.currency,
+                source: 'stale'
+            });
         }
         res.status(500).json({ message: 'Failed to fetch store products.' });
     }
@@ -1794,7 +2088,7 @@ ${message}
             const errorData = error.response.data;
 
             console.error('Power Automate error status:', status);
-            console.error('Power Automate error data:', JSON.stringify(errorData, null, 2));
+            secureLog.error('Power Automate error', errorData?.error?.code);
 
             if (status === 502) {
                 // Power Automate NoResponse error - still accept the submission
@@ -1847,7 +2141,15 @@ app.get('/api/environmental-impact', async (req, res) => {
         return res.status(401).json({ message: 'User not logged in.' });
     }
 
+    // Validate GUID format to prevent injection
+    if (!isValidGUID(userGUID)) {
+        return res.status(400).json({ message: 'Invalid user identifier format.' });
+    }
+
     try {
+        // Sanitize GUID for FetchXML (defense in depth)
+        const sanitizedGUID = sanitizeFetchXmlValue(userGUID);
+
         // Fetch user's contact record to get totalCarbonSaved from Dataverse
         const contactFetchXml = `
             <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
@@ -1857,7 +2159,7 @@ app.get('/api/environmental-impact', async (req, res) => {
                     <attribute name="crd33_totalcarbonsaved" />
                     <attribute name="crd33_totalweeepoints" />
                     <filter type="and">
-                        <condition attribute="contactid" operator="eq" value="${userGUID}" />
+                        <condition attribute="contactid" operator="eq" value="${sanitizedGUID}" />
                     </filter>
                 </entity>
             </fetch>
@@ -1881,7 +2183,7 @@ app.get('/api/environmental-impact', async (req, res) => {
                     <attribute name="createdon" />
                     <attribute name="crd33_requesttype" />
                     <filter type="and">
-                        <condition attribute="regardingobjectid" operator="eq" value="${userGUID}" />
+                        <condition attribute="regardingobjectid" operator="eq" value="${sanitizedGUID}" />
                         <condition attribute="crd33_requesttype" operator="eq" value="269530000" />
                     </filter>
                     <order attribute="createdon" descending="true" />
@@ -2044,7 +2346,7 @@ app.get('/api/environmental-impact', async (req, res) => {
             hashtags: ['DrWEEE', 'EcoWarrior', 'RecycleElectronics', 'SaveThePlanet', 'CircularEconomy']
         };
 
-        console.log(`🌍 Environmental impact for ${userGUID}: ${totalCO2Saved.toFixed(1)} kg CO2, ${totalItemsRecycled} items`);
+        secureLog.info(`🌍 Environmental impact calculated: ${totalCO2Saved.toFixed(1)} kg CO2, ${totalItemsRecycled} items`);
 
         res.status(200).json({
             success: true,
@@ -2342,13 +2644,12 @@ app.get('/api/translation-stats', (req, res) => {
 
 // Logout endpoint
 app.post('/api/logout', (req, res) => {
-    const userPhone = req.session.user?.phoneNumber;
     req.session.destroy((err) => {
         if (err) {
             console.error('Error destroying session:', err);
             return res.status(500).json({ message: 'Logout failed' });
         }
-        console.log(`✅ User logged out: ${userPhone}`);
+        secureLog.info('✅ User logged out successfully');
         res.clearCookie('drweee.sid');
         res.status(200).json({ message: 'Logged out successfully' });
     });
@@ -2430,6 +2731,14 @@ app.get('/api/share/my-code', apiLimiter, async (req, res) => {
             return res.status(401).json({ success: false, message: 'User not logged in.' });
         }
 
+        // Validate GUID format to prevent injection
+        if (!isValidGUID(userGUID)) {
+            return res.status(400).json({ success: false, message: 'Invalid user identifier format.' });
+        }
+
+        // Sanitize GUID for FetchXML
+        const sanitizedGUID = sanitizeFetchXmlValue(userGUID);
+
         // Get access token for Dataverse
         const accessToken = await getDataverseToken();
 
@@ -2447,7 +2756,7 @@ app.get('/api/share/my-code', apiLimiter, async (req, res) => {
                         <attribute name="firstname" />
                         <attribute name="crd33_sharecode" />
                         <filter>
-                            <condition attribute="contactid" operator="eq" value="${userGUID}" />
+                            <condition attribute="contactid" operator="eq" value="${sanitizedGUID}" />
                         </filter>
                     </entity>
                 </fetch>
@@ -2466,7 +2775,7 @@ app.get('/api/share/my-code', apiLimiter, async (req, res) => {
                         <attribute name="contactid" />
                         <attribute name="firstname" />
                         <filter>
-                            <condition attribute="contactid" operator="eq" value="${userGUID}" />
+                            <condition attribute="contactid" operator="eq" value="${sanitizedGUID}" />
                         </filter>
                     </entity>
                 </fetch>
@@ -2499,7 +2808,7 @@ app.get('/api/share/my-code', apiLimiter, async (req, res) => {
                         'OData-Version': '4.0'
                     }
                 });
-                console.log(`✅ Generated share code ${shareCode} for user ${userGUID}`);
+                secureLog.info('✅ Generated new share code for user');
             } catch (updateError) {
                 console.error('Error updating share code in Dataverse:', updateError.message);
                 // Still return the code - it might work for this session
@@ -2537,6 +2846,9 @@ app.get('/api/public/impact/:shareCode', apiLimiter, async (req, res) => {
             return res.status(400).json({ success: false, message: 'Invalid share code format.' });
         }
 
+        // Sanitize share code for FetchXML (defense in depth after validation)
+        const sanitizedShareCode = sanitizeFetchXmlValue(shareCode);
+
         // Get access token for Dataverse
         const accessToken = await getDataverseToken();
 
@@ -2551,7 +2863,7 @@ app.get('/api/public/impact/:shareCode', apiLimiter, async (req, res) => {
                     <attribute name="crd33_sharecode" />
                     <attribute name="createdon" />
                     <filter>
-                        <condition attribute="crd33_sharecode" operator="eq" value="${shareCode}" />
+                        <condition attribute="crd33_sharecode" operator="eq" value="${sanitizedShareCode}" />
                     </filter>
                 </entity>
             </fetch>
@@ -2623,6 +2935,8 @@ app.get('/og/:shareCode', ogLimiter, async (req, res) => {
             // Fetch user data even without canvas to generate SVG
             try {
                 const accessToken = await getDataverseToken();
+                // Sanitize share code for FetchXML
+                const sanitizedShareCode = sanitizeFetchXmlValue(shareCode);
                 const fetchXml = `
                     <fetch top="1">
                         <entity name="contact">
@@ -2630,7 +2944,7 @@ app.get('/og/:shareCode', ogLimiter, async (req, res) => {
                             <attribute name="lastname" />
                             <attribute name="crd33_totalcarbonsaved" />
                             <filter>
-                                <condition attribute="crd33_sharecode" operator="eq" value="${shareCode}" />
+                                <condition attribute="crd33_sharecode" operator="eq" value="${sanitizedShareCode}" />
                             </filter>
                         </entity>
                     </fetch>
@@ -2734,6 +3048,9 @@ app.get('/og/:shareCode', ogLimiter, async (req, res) => {
             return res.redirect('/images/logos/dr-weee-logo.png');
         }
 
+        // Sanitize share code for FetchXML
+        const sanitizedShareCode = sanitizeFetchXmlValue(shareCode);
+
         // Get access token for Dataverse
         const accessToken = await getDataverseToken();
 
@@ -2745,7 +3062,7 @@ app.get('/og/:shareCode', ogLimiter, async (req, res) => {
                     <attribute name="lastname" />
                     <attribute name="crd33_totalcarbonsaved" />
                     <filter>
-                        <condition attribute="crd33_sharecode" operator="eq" value="${shareCode}" />
+                        <condition attribute="crd33_sharecode" operator="eq" value="${sanitizedShareCode}" />
                     </filter>
                 </entity>
             </fetch>
@@ -2894,6 +3211,9 @@ app.get('/certificate/:shareCode', async (req, res) => {
             return res.sendFile(path.join(__dirname, '..', 'index.html'));
         }
 
+        // Sanitize share code for FetchXML
+        const sanitizedShareCode = sanitizeFetchXmlValue(shareCode);
+
         // Get access token for Dataverse
         const accessToken = await getDataverseToken();
 
@@ -2905,7 +3225,7 @@ app.get('/certificate/:shareCode', async (req, res) => {
                     <attribute name="lastname" />
                     <attribute name="crd33_totalcarbonsaved" />
                     <filter>
-                        <condition attribute="crd33_sharecode" operator="eq" value="${shareCode}" />
+                        <condition attribute="crd33_sharecode" operator="eq" value="${sanitizedShareCode}" />
                     </filter>
                 </entity>
             </fetch>
@@ -2964,6 +3284,86 @@ app.get('/certificate/:shareCode', async (req, res) => {
 
 // =====================================================================
 // END SHAREABLE CERTIFICATE FEATURE
+// =====================================================================
+
+
+// =====================================================================
+// TERRITORIES/COUNTRIES API
+// =====================================================================
+
+// Cache for territories data
+const territoriesCache = {
+    data: null,
+    lastFetch: 0
+};
+const TERRITORIES_CACHE_DURATION_MS = 60 * 60 * 1000; // Cache for 1 hour
+
+// GET /api/territories - Fetch countries from Dataverse with currency info
+app.get('/api/territories', async (req, res) => {
+    try {
+        // Check cache first
+        if (territoriesCache.data && (Date.now() - territoriesCache.lastFetch) < TERRITORIES_CACHE_DURATION_MS) {
+            console.log('[Territories] Serving from cache');
+            return res.json(territoriesCache.data);
+        }
+
+        console.log('[Territories] Fetching territories from Dataverse...');
+        const accessToken = await getDataverseToken();
+        const { DATAVERSE_URL } = process.env;
+
+        // Fetch territories where crd33_iscountry is true, expanding to get currency data
+        const url = `${DATAVERSE_URL}/api/data/v9.2/territories?$filter=crd33_iscountry eq true&$select=territoryid,name,crd33_flag,crd33_weeepointequivalent,exchangerate,_transactioncurrencyid_value&$expand=transactioncurrencyid($select=transactioncurrencyid,currencyname,currencysymbol,isocurrencycode,currencyprecision,exchangerate)`;
+
+        const response = await axios.get(url, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Accept': 'application/json',
+                'OData-MaxVersion': '4.0',
+                'OData-Version': '4.0',
+                'Prefer': 'odata.include-annotations="*"'
+            }
+        });
+
+        // Transform the data for frontend use
+        const territories = response.data.value.map(territory => ({
+            id: territory.territoryid,
+            name: territory.name,
+            flag: territory.crd33_flag,
+            weeePointEquivalent: territory.crd33_weeepointequivalent,
+            exchangeRate: territory.exchangerate,
+            currency: territory.transactioncurrencyid ? {
+                id: territory.transactioncurrencyid.transactioncurrencyid,
+                name: territory.transactioncurrencyid.currencyname,
+                symbol: territory.transactioncurrencyid.currencysymbol,
+                isoCode: territory.transactioncurrencyid.isocurrencycode,
+                precision: territory.transactioncurrencyid.currencyprecision,
+                exchangeRate: territory.transactioncurrencyid.exchangerate
+            } : null
+        }));
+
+        console.log(`[Territories] Fetched ${territories.length} countries`);
+
+        // Update cache
+        territoriesCache.data = { territories };
+        territoriesCache.lastFetch = Date.now();
+
+        res.json({ territories });
+
+    } catch (error) {
+        console.error('[Territories] Error fetching territories:', error.response?.data || error.message);
+
+        // If we have cached data, return it even if expired
+        if (territoriesCache.data) {
+            console.log('[Territories] Returning stale cache due to error');
+            return res.json(territoriesCache.data);
+        }
+
+        res.status(500).json({ error: 'Failed to fetch territories' });
+    }
+});
+
+// =====================================================================
+// END TERRITORIES/COUNTRIES API
 // =====================================================================
 
 

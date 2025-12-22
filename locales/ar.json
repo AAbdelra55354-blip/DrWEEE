@@ -15,6 +15,7 @@
     "activeUser": "مستخدم نشط",
     "openMenu": "فتح القائمة",
     "closeMenu": "إغلاق القائمة",
+    "country": "الدولة",
     "language": "اللغة"
   },
   "user": {
@@ -584,7 +585,18 @@
       "emptyReturns": "فارغة",
       "subtotal": "المجموع الفرعي:",
       "discount": "الخصم:",
-      "priceNotAvailable": "السعر غير متوفر"
+      "priceNotAvailable": "السعر غير متوفر",
+      "countryChangeWarning": "سيؤدي تغيير بلدك إلى إفراغ سلة التسوق لأن الأسعار قد تختلف. هل تريد المتابعة؟"
+    },
+    "countryValidation": {
+      "title": "عدم تطابق الموقع",
+      "changedTitle": "تم اختيار دولة خاطئة",
+      "changedDescription": "أنت تتصفح من {{detectedCountry}}، ولكنك اخترت {{selectedCountry}}. لإتمام الطلب، يرجى اختيار موقعك الصحيح ({{expectedTerritory}}).",
+      "unavailableTitle": "الخدمة غير متوفرة في منطقتك",
+      "unavailableDescription": "تم اكتشاف أنك تتصفح من {{detectedCountry}}، وهي ليست ضمن مناطق خدمتنا حالياً. لقد اخترت {{selectedCountry}}، ولكن يمكن تقديم الطلبات فقط من المناطق المدعومة.",
+      "changeCountryBtn": "التغيير إلى {{territory}}",
+      "contactSupport": "تواصل مع الدعم",
+      "dismiss": "أفهم ذلك"
     },
     "mobile": {
       "yourCart": "سلتك",
@@ -1093,6 +1105,7 @@
       "categoryMessage": "لا توجد عناصر نفايات إلكترونية متاحة في هذه الفئة.",
       "clearSearch": "مسح البحث"
     },
+    "countryChangeWarning": "تغيير البلد سيؤدي إلى مسح اختياراتك الحالية. هل تريد المتابعة؟",
     "loginModal": {
       "title": "تسجيل الدخول مطلوب",
       "description": "للمتابعة في طلب جمع النفايات الإلكترونية، يرجى تسجيل الدخول إلى حسابك أو إنشاء حساب جديد. هذا يساعدنا في تتبع تأثيرك البيئي ونقاط WEEE!",

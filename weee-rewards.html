@@ -1855,6 +1855,29 @@
                 </div>
             </div>
 
+            <!-- Country Validation Modal -->
+            <div id="countryValidationModal" class="modal-overlay">
+                <div class="modal login-modal" style="max-width: 520px; padding: 2.5rem; text-align: center;">
+                    <div class="country-validation-icon"
+                        style="background: linear-gradient(135deg, #f44336, #e91e63); width: 80px; height: 80px; margin: 0 auto 1.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h2 id="countryValidationTitle" style="margin-bottom: 1rem; color: #333;">Location Mismatch</h2>
+                    <p id="countryValidationDescription" style="color: #666; margin-bottom: 2rem; line-height: 1.6;"></p>
+                    <div class="country-validation-buttons" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <button id="countryValidationChangeBtn" class="btn btn-primary" style="display: none;">
+                            <i class="fas fa-globe"></i> <span id="countryValidationChangeBtnText">Change Country</span>
+                        </button>
+                        <a href="/contact.html" id="countryValidationContactBtn" class="btn btn-secondary" style="display: none;">
+                            <i class="fas fa-headset"></i> <span data-i18n="store.countryValidation.contactSupport">Contact Support</span>
+                        </a>
+                        <button id="countryValidationDismissBtn" class="btn btn-secondary" onclick="closeCountryValidationModal()">
+                            <i class="fas fa-times"></i> <span data-i18n="store.countryValidation.dismiss">I understand</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Location Picker Modal -->
             <div id="locationModal" class="modal-overlay">
                 <div class="modal location-modal">
@@ -1966,7 +1989,15 @@
         // Add this new function to fetch products from server
         async function fetchEwasteProducts() {
             try {
-                console.log('Fetching e-waste products...');
+                // Get current territory from i18n
+                let territoryId = null;
+                if (window.DrWeeeI18n && typeof window.DrWeeeI18n.getCurrentCountry === 'function') {
+                    const country = window.DrWeeeI18n.getCurrentCountry();
+                    territoryId = country?.id || null;
+                    console.log('Fetching e-waste products for territory:', country?.name || 'all');
+                } else {
+                    console.log('Fetching e-waste products (no territory selected)...');
+                }
 
                 const apiBase = getApiBaseUrl();
                 console.log('Using API base:', apiBase || '(same origin)');
@@ -1974,7 +2005,7 @@
                 const response = await fetch(`${apiBase}/api/fetch-products`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ type: 'product' })
+                    body: JSON.stringify({ type: 'product', territoryId })
                 });
 
                 if (!response.ok) {
@@ -2685,6 +2716,13 @@
 
         // UPDATED: Handle proceed action with return URL
         async function handleProceed() {
+            // First, validate country selection
+            const countryValidation = validateCountryBeforeCheckout();
+            if (!countryValidation.valid) {
+                showCountryValidationModal(countryValidation);
+                return;
+            }
+
             // Store selected items and return URL in sessionStorage before checking auth
             sessionStorage.setItem('weee_selected_items', JSON.stringify(selectedItems));
             sessionStorage.setItem('weee_return_url', window.location.pathname); // Store current page
@@ -2741,6 +2779,84 @@
             const modal = document.getElementById('loginRequiredModal');
             modal.classList.remove('active');
             document.body.style.overflow = '';
+        }
+
+        // --- Country Validation Functions ---
+        function showCountryValidationModal(validationResult) {
+            const modal = document.getElementById('countryValidationModal');
+            const titleEl = document.getElementById('countryValidationTitle');
+            const descEl = document.getElementById('countryValidationDescription');
+            const changeBtn = document.getElementById('countryValidationChangeBtn');
+            const changeBtnText = document.getElementById('countryValidationChangeBtnText');
+            const contactBtn = document.getElementById('countryValidationContactBtn');
+
+            if (validationResult.type === 'changed') {
+                // User's country IS on the list but they selected different
+                titleEl.textContent = getI18n('store.countryValidation.changedTitle') || 'Wrong Country Selected';
+
+                let desc = getI18n('store.countryValidation.changedDescription') ||
+                    'You are browsing from {{detectedCountry}}, but you have selected {{selectedCountry}}. To place an order, please select your correct location ({{expectedTerritory}}).';
+                desc = desc.replace('{{detectedCountry}}', validationResult.detectedCountryName);
+                desc = desc.replace('{{selectedCountry}}', validationResult.selectedCountryName);
+                desc = desc.replace('{{expectedTerritory}}', validationResult.expectedTerritoryName);
+                descEl.textContent = desc;
+
+                // Show change button
+                changeBtn.style.display = 'flex';
+                let changeBtnLabel = getI18n('store.countryValidation.changeCountryBtn') || 'Change to {{territory}}';
+                changeBtnLabel = changeBtnLabel.replace('{{territory}}', validationResult.expectedTerritoryName);
+                changeBtnText.textContent = changeBtnLabel;
+                changeBtn.onclick = () => {
+                    // Find and switch to the correct territory
+                    if (window.DrWeeeI18n) {
+                        const territories = window.DrWeeeI18n.getTerritories();
+                        const territory = territories.find(t =>
+                            t.name.toLowerCase() === validationResult.expectedTerritoryName.toLowerCase()
+                        );
+                        if (territory) {
+                            window.DrWeeeI18n.setCountry(territory.id);
+                            closeCountryValidationModal();
+                            // Reload to refresh products for new territory
+                            location.reload();
+                        }
+                    }
+                };
+                contactBtn.style.display = 'none';
+            } else {
+                // User's country is NOT on the territory list
+                titleEl.textContent = getI18n('store.countryValidation.unavailableTitle') || 'Service Not Available in Your Area';
+
+                let desc = getI18n('store.countryValidation.unavailableDescription') ||
+                    'We detected that you are browsing from {{detectedCountry}}, which is not currently in our service area. You have selected {{selectedCountry}}, but orders can only be placed from supported regions.';
+                desc = desc.replace('{{detectedCountry}}', validationResult.detectedCountryName);
+                desc = desc.replace('{{selectedCountry}}', validationResult.selectedCountryName);
+                descEl.textContent = desc;
+
+                // Hide change button, show contact support
+                changeBtn.style.display = 'none';
+                contactBtn.style.display = 'flex';
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCountryValidationModal() {
+            const modal = document.getElementById('countryValidationModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Check country validation before proceeding
+        function validateCountryBeforeCheckout() {
+            if (!window.DrWeeeI18n || typeof window.DrWeeeI18n.validateCountrySelection !== 'function') {
+                console.log('[WEEE Rewards] Country validation not available, proceeding');
+                return { valid: true };
+            }
+
+            const validation = window.DrWeeeI18n.validateCountrySelection();
+            console.log('[WEEE Rewards] Country validation result:', validation);
+            return validation;
         }
 
         // Show location picker modal
@@ -3294,13 +3410,31 @@ ${itemsListForDescription.map(item => `- ${item}`).join('\n')}
             await loadConfig();
 
             // NOTE: loadIncludes() removed - now handled by main.js
-            await init(); // Make sure init completes before continuing
             setupLocationModal();
 
-            // Restore selected items if user just logged in or returned to page
-            if (restoreSelectedItems()) {
-                console.log('Items restored from session storage');
-                updateUI();
+            // Wait for i18n to be ready with territories loaded before initializing
+            // This ensures we fetch products for the correct territory
+            const initializeWithTerritory = async () => {
+                await init(); // Make sure init completes before continuing
+
+                // Restore selected items if user just logged in or returned to page
+                if (restoreSelectedItems()) {
+                    console.log('Items restored from session storage');
+                    updateUI();
+                }
+            };
+
+            // Check if i18n is already ready with territories
+            if (window.DrWeeeI18n && window.DrWeeeI18n.getTerritories && window.DrWeeeI18n.getTerritories().length > 0) {
+                console.log('i18n already ready with territories, initializing immediately');
+                await initializeWithTerritory();
+            } else {
+                // Wait for i18nReady event
+                console.log('Waiting for i18n to be ready with territories...');
+                window.addEventListener('i18nReady', async () => {
+                    console.log('i18nReady event received, initializing...');
+                    await initializeWithTerritory();
+                }, { once: true });
             }
         });
 
@@ -3328,6 +3462,49 @@ ${itemsListForDescription.map(item => `- ${item}`).join('\n')}
             renderMobileDrawerItems();
 
             console.log('Product names re-translated for new language');
+        });
+
+        // Listen for country/territory changes and refetch products
+        window.addEventListener('countryChanged', async (event) => {
+            console.log(`Country changed to: ${event.detail.country?.name}, refetching e-waste products...`);
+
+            // Check if user has selected items - warn them that changing country will clear selection
+            const hasSelectedItems = Object.keys(selectedItems).length > 0;
+            if (hasSelectedItems) {
+                const confirmMsg = getI18n('weeeRewards.countryChangeWarning') ||
+                    'Changing country will clear your current selection. Continue?';
+                if (!confirm(confirmMsg)) {
+                    // User cancelled - restore previous country
+                    // The i18n module should handle this, but we don't proceed
+                    return;
+                }
+                // Clear selected items
+                Object.keys(selectedItems).forEach(key => delete selectedItems[key]);
+            }
+
+            // Show loading state
+            const ewasteGrid = document.getElementById('ewaste-grid');
+            ewasteGrid.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #666;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                    <h3 style="color: #333;">${getI18n('weeeRewards.loading.title')}</h3>
+                    <p>${getI18n('weeeRewards.loading.message')}</p>
+                </div>
+            `;
+
+            // Refetch products for new territory
+            const success = await fetchEwasteProducts();
+            if (success) {
+                renderEwasteItems();
+                renderSelectedItems();
+                renderMobileDrawerItems();
+                updateImpactSummary();
+                updateProceedButton();
+            }
+
+            console.log('E-waste products refetched for new country');
         });
     </script>
     <!-- Footer Placeholder -->

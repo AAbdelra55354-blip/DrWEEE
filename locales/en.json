@@ -15,6 +15,7 @@
     "activeUser": "Active User",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
+    "country": "Country",
     "language": "Language"
   },
   "user": {
@@ -584,7 +585,18 @@
       "emptyReturns": "Empty",
       "subtotal": "Subtotal:",
       "discount": "Discount:",
-      "priceNotAvailable": "Price not available"
+      "priceNotAvailable": "Price not available",
+      "countryChangeWarning": "Changing your country will clear your cart as prices may differ. Continue?"
+    },
+    "countryValidation": {
+      "title": "Location Mismatch",
+      "changedTitle": "Wrong Country Selected",
+      "changedDescription": "You are browsing from {{detectedCountry}}, but you have selected {{selectedCountry}}. To place an order, please select your correct location ({{expectedTerritory}}).",
+      "unavailableTitle": "Service Not Available in Your Area",
+      "unavailableDescription": "We detected that you are browsing from {{detectedCountry}}, which is not currently in our service area. You have selected {{selectedCountry}}, but orders can only be placed from supported regions.",
+      "changeCountryBtn": "Change to {{territory}}",
+      "contactSupport": "Contact Support",
+      "dismiss": "I understand"
     },
     "mobile": {
       "yourCart": "Your Cart",
@@ -1093,6 +1105,7 @@
       "categoryMessage": "No e-waste items available in this category.",
       "clearSearch": "Clear Search"
     },
+    "countryChangeWarning": "Changing country will clear your current selection. Continue?",
     "loginModal": {
       "title": "Login Required",
       "description": "To proceed with your e-waste collection request, please log in to your account or create a new one. This helps us track your environmental impact and WEEE points!",

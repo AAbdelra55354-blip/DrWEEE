@@ -3444,6 +3444,29 @@
         </div>
     </div>
 
+    <!-- Country Validation Modal -->
+    <div id="countryValidationModal" class="modal-overlay">
+        <div class="modal login-modal" style="max-width: 520px; padding: 2.5rem; text-align: center;">
+            <div class="country-validation-icon"
+                style="background: linear-gradient(135deg, #f44336, #e91e63); width: 80px; height: 80px; margin: 0 auto 1.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+                <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <h2 id="countryValidationTitle" style="margin-bottom: 1rem; color: #333;">Location Mismatch</h2>
+            <p id="countryValidationDescription" style="color: #666; margin-bottom: 2rem; line-height: 1.6;"></p>
+            <div class="country-validation-buttons" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <button id="countryValidationChangeBtn" class="btn btn-primary" style="display: none;">
+                    <i class="fas fa-globe"></i> <span id="countryValidationChangeBtnText">Change Country</span>
+                </button>
+                <a href="/contact.html" id="countryValidationContactBtn" class="btn btn-secondary" style="display: none;">
+                    <i class="fas fa-headset"></i> <span data-i18n="store.countryValidation.contactSupport">Contact Support</span>
+                </a>
+                <button id="countryValidationDismissBtn" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> <span data-i18n="store.countryValidation.dismiss">I understand</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div id="deliveryDetailsModal" class="modal-overlay">
         <div class="modal location-modal" style="max-width: 800px;">
             <div class="location-modal-header">
@@ -3654,6 +3677,20 @@
             let filteredProducts = [];
             let currentSearchTerm = '';
             let searchByCompatibility = false;
+            let currentCurrency = { symbol: 'EGP', isoCode: 'EGP', precision: 2 }; // Default currency
+
+            // Format price with current currency
+            function formatPrice(amount) {
+                if (amount === null || amount === undefined || isNaN(amount)) {
+                    return getI18n('store.priceNotAvailable') || 'Price not available';
+                }
+                const precision = currentCurrency.precision || 2;
+                const formattedAmount = parseFloat(amount).toLocaleString(undefined, {
+                    minimumFractionDigits: precision,
+                    maximumFractionDigits: precision
+                });
+                return `${currentCurrency.symbol} ${formattedAmount}`;
+            }
 
             // Add modal state management
             let modalState = {
@@ -3865,10 +3902,28 @@
             // --- 1. DATA FETCHING ---
             async function fetchStoreProducts() {
                 console.log('Fetching store products...');
+
+                // Show loading state
+                if (loadingState) {
+                    loadingState.style.display = 'flex';
+                }
+                if (productGrid) {
+                    productGrid.innerHTML = '';
+                }
+
                 try {
+                    // Get current territory ID from i18n module
+                    let territoryId = null;
+                    if (window.DrWeeeI18n && typeof window.DrWeeeI18n.getCurrentCountry === 'function') {
+                        const country = window.DrWeeeI18n.getCurrentCountry();
+                        territoryId = country?.id || null;
+                        console.log('Current territory:', country?.name, 'ID:', territoryId);
+                    }
+
                     const response = await fetch(getApiBaseUrl() + '/api/store', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' }
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ territoryId })
                     });
 
                     if (!response.ok) {
@@ -3879,6 +3934,21 @@
                     console.log('Store API Response:', data);
 
                     if (data.success && data.products) {
+                        // Update currency from API response
+                        if (data.currency) {
+                            currentCurrency = data.currency;
+                            console.log('Currency set to:', currentCurrency.symbol, currentCurrency.isoCode);
+                        } else {
+                            // Fallback: try to get currency from territory
+                            if (window.DrWeeeI18n && typeof window.DrWeeeI18n.getCurrentCountry === 'function') {
+                                const country = window.DrWeeeI18n.getCurrentCountry();
+                                if (country?.currency) {
+                                    currentCurrency = country.currency;
+                                    console.log('Currency set from territory:', currentCurrency.symbol);
+                                }
+                            }
+                        }
+
                         // Translate products if needed
                         allProducts = await translateProducts(data.products);
                         console.log('Products loaded:', allProducts.length);
@@ -3900,11 +3970,13 @@
                 productGrid.innerHTML = '';
 
                 if (products.length === 0) {
+                    const noProductsTitle = getI18n('store.noProducts.title') || 'No Products Found';
+                    const noProductsMessage = getI18n('store.noProducts.description') || 'We couldn\'t find any products matching the criteria. Please check back later.';
                     productGrid.innerHTML = `
                 <div class="state-container">
                     <i class="fas fa-box-open"></i>
-                    <h3>No Products Found</h3>
-                    <p>We couldn't find any products matching the criteria. Please check back later.</p>
+                    <h3>${noProductsTitle}</h3>
+                    <p>${noProductsMessage}</p>
                 </div>
             `;
                     return;
@@ -3918,7 +3990,7 @@
                     card.dataset.productId = product.productid;
 
                     const firstPriceItem = product.price_lists[0]?.items[0];
-                    const displayPrice = firstPriceItem ? `EGP ${parseFloat(firstPriceItem.amount).toLocaleString()}` : 'Price not available';
+                    const displayPrice = firstPriceItem ? formatPrice(parseFloat(firstPriceItem.amount)) : getI18n('store.priceNotAvailable') || 'Price not available';
 
                     // Filter out placeholder stock images
                     const placeholderImages = ['as2.ftcdn.net', 'ftcdn.net', 'stock.adobe.com'];
@@ -4264,17 +4336,17 @@
                 <div class="cart-pricing-summary">
                     <div class="price-row">
                         <span>${subtotalLabel}</span>
-                        <span>EGP ${subtotal.toLocaleString()}</span>
+                        <span>${formatPrice(subtotal)}</span>
                     </div>
                     ${discountAmount > 0 ? `
                         <div class="price-row">
                             <span>${discountLabel}</span>
-                            <span class="price-discount">-EGP ${discountAmount.toLocaleString()}</span>
+                            <span class="price-discount">-${formatPrice(discountAmount)}</span>
                         </div>
                     ` : ''}
                     <div class="price-row" style="border-top: 1px solid var(--light-gray); padding-top: 0.5rem; margin-top: 0.5rem; font-weight: 600;">
                         <span>${totalLabelItem}</span>
-                        <span class="price-total">EGP ${itemTotal.toLocaleString()}</span>
+                        <span class="price-total">${formatPrice(itemTotal)}</span>
                     </div>
                 </div>
             `;
@@ -4314,13 +4386,13 @@
             <div class="summary-content">
                 <div class="summary-total-section">
                     <span class="summary-total-label">${totalLabel}</span>
-                    <span class="summary-total-amount">EGP ${finalTotal.toLocaleString()}</span>
+                    <span class="summary-total-amount">${formatPrice(finalTotal)}</span>
                 </div>
 
                 ${totalDiscount > 0 ? `
                     <div class="summary-discount-badge">
                         <i class="fas fa-recycle"></i>
-                        ${tradeInLabel} EGP ${totalDiscount.toLocaleString()}
+                        ${tradeInLabel} ${formatPrice(totalDiscount)}
                     </div>
                 ` : ''}
 
@@ -4370,6 +4442,9 @@
                 // Update mobile cart UI
                 updateMobileCartUI(totalItems, totalAmount - totalDiscount);
 
+                // Setup country validation modal event listeners
+                setupCountryValidationModal();
+
                 // REPLACE WITH THIS UPDATED EVENT LISTENER
                 document.body.addEventListener('click', async (e) => {
                     // Handle Checkout Button
@@ -4377,6 +4452,13 @@
                         e.preventDefault();
                         const checkoutButton = e.target;
                         if (checkoutButton.disabled) return;
+
+                        // First, validate country selection
+                        const countryValidation = validateCountryBeforeCheckout();
+                        if (!countryValidation.valid) {
+                            showCountryValidationModal(countryValidation);
+                            return;
+                        }
 
                         saveCartToSession();
                         sessionStorage.setItem('weee_return_url', window.location.pathname);
@@ -4428,8 +4510,8 @@
                 if (itemCount > 0) {
                     mobileCartBar.style.display = 'flex';
                     mobileCartBadge.textContent = itemCount;
-                    mobileCartTotal.textContent = `EGP ${totalAmount.toLocaleString()}`;
-                    mobileCartDrawerTotal.textContent = `EGP ${totalAmount.toLocaleString()}`;
+                    mobileCartTotal.textContent = formatPrice(totalAmount);
+                    mobileCartDrawerTotal.textContent = formatPrice(totalAmount);
                     mobileCheckoutBtn.disabled = false;
                 } else {
                     mobileCartBar.style.display = 'none';
@@ -4484,7 +4566,7 @@
                                     <span class="mobile-cart-control-value">${emptyCartridges}</span>
                                     <button class="mobile-cart-control-btn mobile-empty-increase" data-product-id="${productId}">+</button>
                                 </div>
-                                <span class="mobile-cart-item-price">EGP ${itemTotal.toLocaleString()}</span>
+                                <span class="mobile-cart-item-price">${formatPrice(itemTotal)}</span>
                                 ${emptyCartridges > 0 ? `<span class="mobile-cart-item-discount">-10%</span>` : ''}
                             </div>
                         </div>
@@ -4572,6 +4654,14 @@
             // Mobile checkout button
             document.getElementById('mobile-checkout-btn')?.addEventListener('click', async () => {
                 closeMobileDrawer();
+
+                // First, validate country selection
+                const countryValidation = validateCountryBeforeCheckout();
+                if (!countryValidation.valid) {
+                    showCountryValidationModal(countryValidation);
+                    return;
+                }
+
                 saveCartToSession();
                 sessionStorage.setItem('weee_return_url', window.location.pathname);
 
@@ -4746,17 +4836,17 @@
 
                         doc.text(doc.splitTextToSize(product.name, 90), margin + 3, yPos + 6);
                         doc.text(quantity.toString(), 115, yPos + 6, { align: 'center' });
-                        doc.text(`EGP ${price.toLocaleString()}`, 142, yPos + 6, { align: 'right' });
+                        doc.text(formatPrice(price), 142, yPos + 6, { align: 'right' });
 
                         doc.setFont('helvetica', 'bold');
-                        doc.text(`EGP ${(price * quantity).toLocaleString()}`, pageWidth - margin - 3, yPos + 6, { align: 'right' });
+                        doc.text(formatPrice(price * quantity), pageWidth - margin - 3, yPos + 6, { align: 'right' });
                         doc.setFont('helvetica', 'normal');
 
                         if (emptyCartridges > 0) {
                             const itemDiscount = price * emptyCartridges * 0.1;
                             doc.setFontSize(8);
                             doc.setTextColor(...primaryGreen);
-                            doc.text(`  Includes trade-in for ${emptyCartridges} unit(s) (-EGP ${itemDiscount.toLocaleString()})`, margin + 5, yPos + 13);
+                            doc.text(`  Includes trade-in for ${emptyCartridges} unit(s) (-${formatPrice(itemDiscount)})`, margin + 5, yPos + 13);
                         }
                         yPos += rowHeight;
                     });
@@ -4775,9 +4865,9 @@
                     doc.setFontSize(10);
                     doc.setTextColor(...mutedTextColor);
                     doc.text('Subtotal:', summaryX - 50, yPos + 5, { align: 'right' });
-                    doc.text(`EGP ${totalAmount.toLocaleString()}`, summaryX, yPos + 5, { align: 'right' });
+                    doc.text(formatPrice(totalAmount), summaryX, yPos + 5, { align: 'right' });
                     doc.text('Trade-in Discount:', summaryX - 50, yPos + 11, { align: 'right' });
-                    doc.text(`- EGP ${totalDiscount.toLocaleString()}`, summaryX, yPos + 11, { align: 'right' });
+                    doc.text(`- ${formatPrice(totalDiscount)}`, summaryX, yPos + 11, { align: 'right' });
 
                     doc.setDrawColor(...textColor);
                     doc.line(summaryX - 50, yPos + 14, summaryX, yPos + 14);
@@ -4786,7 +4876,7 @@
                     doc.setFont('helvetica', 'bold');
                     doc.setTextColor(...darkGreen);
                     doc.text('Total:', summaryX - 50, yPos + 20, { align: 'right' });
-                    doc.text(`EGP ${(totalAmount - totalDiscount).toLocaleString()}`, summaryX, yPos + 20, { align: 'right' });
+                    doc.text(formatPrice(totalAmount - totalDiscount), summaryX, yPos + 20, { align: 'right' });
                     yPos += 30;
 
                     doc.setFillColor(...lightOrangeBg);
@@ -4977,11 +5067,11 @@
                             <ul class="info-list">
                                 <li class="info-item">
                                     <span class="info-item-name">${getI18n('store.modal.originalCost')}</span>
-                                    <span class="info-item-value">EGP ${originalCost.toLocaleString()}</span>
+                                    <span class="info-item-value">${formatPrice(originalCost)}</span>
                                 </li>
                                 <li class="info-item">
                                     <span class="info-item-name">${getI18n('store.modal.recycledPrice')}</span>
-                                    <span class="info-item-value value-highlight">EGP ${recycledPrice.toLocaleString()}</span>
+                                    <span class="info-item-value value-highlight">${formatPrice(recycledPrice)}</span>
                                 </li>
                                 <li class="info-item">
                                     <span class="info-item-name">${getI18n('store.modal.youSave')}</span>
@@ -5000,15 +5090,15 @@
                             <ul class="info-list">
                                 <li class="info-item">
                                     <span class="info-item-name">${getI18n('store.modal.original')}</span>
-                                    <span class="info-item-value">EGP ${costPerPageOriginal.toFixed(3)}</span>
+                                    <span class="info-item-value">${formatPrice(costPerPageOriginal)}</span>
                                 </li>
                                 <li class="info-item">
                                     <span class="info-item-name">${getI18n('store.modal.remanufactured')}</span>
-                                    <span class="info-item-value value-highlight">EGP ${costPerPageRemanufactured.toFixed(3)}</span>
+                                    <span class="info-item-value value-highlight">${formatPrice(costPerPageRemanufactured)}</span>
                                 </li>
                                 <li class="info-item">
                                     <span class="info-item-name">${getI18n('store.modal.savingsPerPage')}</span>
-                                    <span class="info-item-value value-savings">EGP ${(costPerPageOriginal - costPerPageRemanufactured).toFixed(3)}</span>
+                                    <span class="info-item-value value-savings">${formatPrice(costPerPageOriginal - costPerPageRemanufactured)}</span>
                                 </li>
                                 <li class="info-item">
                                     <span class="info-item-name">${getI18n('store.modal.co2Saved')}</span>
@@ -5071,7 +5161,7 @@
                             <div class="price-summary">
                                 <div class="price-row">
                                     <span>${getI18n('store.modal.unitPrice')}</span>
-                                    <span id="modal-unit-price">EGP ${modalState.basePrice.toLocaleString()}</span>
+                                    <span id="modal-unit-price">${formatPrice(modalState.basePrice)}</span>
                                 </div>
                                 <div class="price-row">
                                     <span>${getI18n('store.modal.quantityLabel')}</span>
@@ -5079,15 +5169,15 @@
                                 </div>
                                 <div class="price-row">
                                     <span>${getI18n('store.modal.subtotal')}</span>
-                                    <span id="modal-subtotal">EGP ${modalState.basePrice.toLocaleString()}</span>
+                                    <span id="modal-subtotal">${formatPrice(modalState.basePrice)}</span>
                                 </div>
                                 <div class="price-row" id="modal-discount-row" style="display: none;">
                                     <span>${getI18n('store.modal.discount')}</span>
-                                    <span class="price-discount" id="modal-discount">-EGP 0</span>
+                                    <span class="price-discount" id="modal-discount">-${formatPrice(0)}</span>
                                 </div>
                                 <div class="price-row">
                                     <span>${getI18n('store.modal.total')}</span>
-                                    <span class="price-total" id="modal-total">EGP ${modalState.basePrice.toLocaleString()}</span>
+                                    <span class="price-total" id="modal-total">${formatPrice(modalState.basePrice)}</span>
                                 </div>
                             </div>
                         </div>
@@ -5176,13 +5266,13 @@
                 document.getElementById('modal-qty-display').textContent = modalState.quantity;
                 document.getElementById('modal-empty-display').textContent = modalState.emptyCartridges;
                 document.getElementById('modal-quantity-display').textContent = modalState.quantity;
-                document.getElementById('modal-subtotal').textContent = `EGP ${subtotal.toLocaleString()}`;
-                document.getElementById('modal-total').textContent = `EGP ${total.toLocaleString()}`;
+                document.getElementById('modal-subtotal').textContent = formatPrice(subtotal);
+                document.getElementById('modal-total').textContent = formatPrice(total);
 
                 const discountRow = document.getElementById('modal-discount-row');
                 if (modalState.emptyCartridges > 0) {
                     discountRow.style.display = 'flex';
-                    document.getElementById('modal-discount').textContent = `-EGP ${discountAmount.toLocaleString()}`;
+                    document.getElementById('modal-discount').textContent = `-${formatPrice(discountAmount)}`;
                 } else {
                     discountRow.style.display = 'none';
                 }
@@ -5234,6 +5324,92 @@
                 document.body.style.overflow = '';
             }
 
+            // --- Country Validation Functions ---
+            function showCountryValidationModal(validationResult) {
+                const modal = document.getElementById('countryValidationModal');
+                const titleEl = document.getElementById('countryValidationTitle');
+                const descEl = document.getElementById('countryValidationDescription');
+                const changeBtn = document.getElementById('countryValidationChangeBtn');
+                const changeBtnText = document.getElementById('countryValidationChangeBtnText');
+                const contactBtn = document.getElementById('countryValidationContactBtn');
+
+                if (validationResult.type === 'changed') {
+                    // User's country IS on the list but they selected different
+                    titleEl.textContent = getI18n('store.countryValidation.changedTitle') || 'Wrong Country Selected';
+
+                    let desc = getI18n('store.countryValidation.changedDescription') ||
+                        'You are browsing from {{detectedCountry}}, but you have selected {{selectedCountry}}. To place an order, please select your correct location ({{expectedTerritory}}).';
+                    desc = desc.replace('{{detectedCountry}}', validationResult.detectedCountryName);
+                    desc = desc.replace('{{selectedCountry}}', validationResult.selectedCountryName);
+                    desc = desc.replace('{{expectedTerritory}}', validationResult.expectedTerritoryName);
+                    descEl.textContent = desc;
+
+                    // Show change button
+                    changeBtn.style.display = 'flex';
+                    let changeBtnLabel = getI18n('store.countryValidation.changeCountryBtn') || 'Change to {{territory}}';
+                    changeBtnLabel = changeBtnLabel.replace('{{territory}}', validationResult.expectedTerritoryName);
+                    changeBtnText.textContent = changeBtnLabel;
+                    changeBtn.onclick = () => {
+                        // Find and switch to the correct territory
+                        if (window.DrWeeeI18n) {
+                            const territories = window.DrWeeeI18n.getTerritories();
+                            const territory = territories.find(t =>
+                                t.name.toLowerCase() === validationResult.expectedTerritoryName.toLowerCase()
+                            );
+                            if (territory) {
+                                window.DrWeeeI18n.setCountry(territory.id);
+                                closeCountryValidationModal();
+                                // Reload to refresh products for new territory
+                                location.reload();
+                            }
+                        }
+                    };
+                    contactBtn.style.display = 'none';
+                } else {
+                    // User's country is NOT on the territory list
+                    titleEl.textContent = getI18n('store.countryValidation.unavailableTitle') || 'Service Not Available in Your Area';
+
+                    let desc = getI18n('store.countryValidation.unavailableDescription') ||
+                        'We detected that you are browsing from {{detectedCountry}}, which is not currently in our service area. You have selected {{selectedCountry}}, but orders can only be placed from supported regions.';
+                    desc = desc.replace('{{detectedCountry}}', validationResult.detectedCountryName);
+                    desc = desc.replace('{{selectedCountry}}', validationResult.selectedCountryName);
+                    descEl.textContent = desc;
+
+                    // Hide change button, show contact support
+                    changeBtn.style.display = 'none';
+                    contactBtn.style.display = 'flex';
+                }
+
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeCountryValidationModal() {
+                const modal = document.getElementById('countryValidationModal');
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            // Check country validation before proceeding to checkout
+            function validateCountryBeforeCheckout() {
+                if (!window.DrWeeeI18n || typeof window.DrWeeeI18n.validateCountrySelection !== 'function') {
+                    console.log('[Store] Country validation not available, proceeding');
+                    return { valid: true };
+                }
+
+                const validation = window.DrWeeeI18n.validateCountrySelection();
+                console.log('[Store] Country validation result:', validation);
+                return validation;
+            }
+
+            // Setup country validation modal event listeners
+            function setupCountryValidationModal() {
+                const dismissBtn = document.getElementById('countryValidationDismissBtn');
+                if (dismissBtn) {
+                    dismissBtn.addEventListener('click', closeCountryValidationModal);
+                }
+            }
+
             async function showDeliveryDetailsModal() {
                 if (!AZURE_MAPS_KEY) {
                     await loadConfig(); // Fetch Azure Maps key if not already present
@@ -5266,7 +5442,7 @@
                     const itemDiscount = (item.price * item.emptyCartridges * 0.1);
                     subtotal += itemTotal;
                     discount += itemDiscount;
-                    itemsHtml += `<div class="detail-row"><span>${item.product.name} (x${item.quantity})</span> <strong>EGP ${itemTotal.toLocaleString()}</strong></div>`;
+                    itemsHtml += `<div class="detail-row"><span>${item.product.name} (x${item.quantity})</span> <strong>${formatPrice(itemTotal)}</strong></div>`;
                 });
 
                 // ADDED: Safely handle the delivery time value
@@ -5287,9 +5463,9 @@
                 detailsContainer.innerHTML = `
         <div style="font-weight: 600; color: var(--primary-green);">${getI18n('store.confirmation.orderSummary')}</div>
         ${itemsHtml}
-        <div class="detail-row"><span>${getI18n('store.confirmation.subtotal')}</span> <span>EGP ${subtotal.toLocaleString()}</span></div>
-        <div class="detail-row"><span>${getI18n('store.confirmation.tradeInDiscount')}</span> <span style="color: #4CAF50;">-EGP ${discount.toLocaleString()}</span></div>
-        <div class="detail-row" style="font-size: 1.2rem;"><strong>${getI18n('store.confirmation.total')}</strong> <strong>EGP ${(subtotal - discount).toLocaleString()}</strong></div>
+        <div class="detail-row"><span>${getI18n('store.confirmation.subtotal')}</span> <span>${formatPrice(subtotal)}</span></div>
+        <div class="detail-row"><span>${getI18n('store.confirmation.tradeInDiscount')}</span> <span style="color: #4CAF50;">-${formatPrice(discount)}</span></div>
+        <div class="detail-row" style="font-size: 1.2rem;"><strong>${getI18n('store.confirmation.total')}</strong> <strong>${formatPrice(subtotal - discount)}</strong></div>
         <hr style="margin: 1rem 0; border: 0; border-top: 1px solid #eee;">
         <div style="font-weight: 600; color: var(--primary-green);">${getI18n('store.confirmation.deliveryDetails')}</div>
         <div class="detail-row"><span><i class="fas fa-map-marker-alt"></i> ${getI18n('store.confirmation.address')}</span> <span style="text-align: right;">${formattedAddress}</span></div>
@@ -5500,12 +5676,16 @@
                 updateCartUI();
             }
 
-            // Check if i18n is already initialized
-            if (window.DrWeeeI18n) {
+            // Wait for i18n to be fully ready (with territories and country loaded)
+            // We need to wait for the i18nReady event to ensure getCurrentCountry() returns the saved country
+            window.addEventListener('i18nReady', initializeStore, { once: true });
+
+            // If i18n already dispatched the event before we added the listener, check if it's initialized
+            // by checking if territories are loaded
+            if (window.DrWeeeI18n && window.DrWeeeI18n.getTerritories && window.DrWeeeI18n.getTerritories().length > 0) {
+                // Already initialized, call directly
+                window.removeEventListener('i18nReady', initializeStore);
                 initializeStore();
-            } else {
-                // Wait for i18n to be ready
-                window.addEventListener('i18nReady', initializeStore, { once: true });
             }
 
             // Listen for language changes to re-translate products
@@ -5523,6 +5703,27 @@
                     }
                 });
                 // Update cart UI with new translations
+                updateCartUI();
+            });
+
+            // Listen for country changes to refetch products with new pricing
+            window.addEventListener('countryChanged', async (e) => {
+                console.log('🌍 Country changed to:', e.detail?.country?.name);
+                // Clear cart when country changes (prices will be different)
+                const shouldClearCart = Object.keys(cart).length > 0;
+                if (shouldClearCart) {
+                    const confirmClear = confirm(getI18n('store.countryChangeWarning') || 'Changing your country will clear your cart as prices may differ. Continue?');
+                    if (!confirmClear) {
+                        // User cancelled - revert the country change
+                        // Note: The i18n module should handle this if needed
+                        return;
+                    }
+                    cart = {};
+                    saveCartToSession();
+                }
+                // Re-fetch products for the new territory
+                await fetchStoreProducts();
+                // Update cart UI
                 updateCartUI();
             });
         });

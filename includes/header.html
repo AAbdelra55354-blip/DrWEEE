@@ -18,33 +18,37 @@
             </nav>
 
             <div class="header__actions">
-                <!-- Language Switcher -->
+                <!-- Country & Language Switcher -->
                 <div class="language-switcher" id="language-switcher">
-                    <button class="language-switcher__trigger" aria-expanded="false" aria-label="Select language">
-                        <img src="https://flagcdn.com/w40/gb.png" alt="" class="language-switcher__flag" id="current-lang-flag">
+                    <button class="language-switcher__trigger" aria-expanded="false" aria-label="Select country and language">
+                        <img src="https://flagcdn.com/w40/eg.png" alt="" class="language-switcher__flag" id="current-country-flag">
                         <span class="language-switcher__current">EN</span>
                         <i class="fas fa-chevron-down"></i>
                     </button>
-                    <ul class="language-switcher__menu">
-                        <li>
-                            <button data-lang="en">
-                                <img src="https://flagcdn.com/w40/gb.png" alt="" class="language-switcher__flag">
-                                <span>English</span>
-                            </button>
-                        </li>
-                        <li>
-                            <button data-lang="ar">
-                                <img src="https://flagcdn.com/w40/eg.png" alt="" class="language-switcher__flag">
-                                <span>العربية</span>
-                            </button>
-                        </li>
-                        <li>
-                            <button data-lang="it">
-                                <img src="https://flagcdn.com/w40/it.png" alt="" class="language-switcher__flag">
-                                <span>Italiano</span>
-                            </button>
-                        </li>
-                    </ul>
+                    <div class="language-switcher__menu">
+                        <div class="switcher-section">
+                            <div class="switcher-section__title" data-i18n="header.country">Country</div>
+                            <!-- Country options are rendered dynamically by i18n.js -->
+                            <div class="switcher-section__options">
+                                <div class="country-loading">Loading...</div>
+                            </div>
+                        </div>
+                        <div class="switcher-divider"></div>
+                        <div class="switcher-section">
+                            <div class="switcher-section__title" data-i18n="header.language">Language</div>
+                            <div class="switcher-section__options switcher-section__options--lang">
+                                <button class="lang-option" data-lang="en">
+                                    <span>English</span>
+                                </button>
+                                <button class="lang-option" data-lang="ar">
+                                    <span>العربية</span>
+                                </button>
+                                <button class="lang-option" data-lang="it">
+                                    <span>Italiano</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <a href="contact.html" class="btn btn--primary" data-i18n="nav.contact">Contact Us</a>
@@ -161,21 +165,30 @@
         </div>
 
         <div class="mobile-menu__content">
-            <!-- Mobile Language Selector - At Top -->
+            <!-- Mobile Country & Language Selector - At Top -->
             <div class="mobile-lang-selector" id="mobile-lang-selector">
-                <div class="mobile-lang-selector__pills">
-                    <button class="mobile-lang-pill" data-lang="en" aria-label="English">
-                        <img src="https://flagcdn.com/w40/gb.png" alt="EN" class="mobile-lang-pill__flag">
-                        <span class="mobile-lang-pill__name">English</span>
-                    </button>
-                    <button class="mobile-lang-pill" data-lang="ar" aria-label="العربية">
-                        <img src="https://flagcdn.com/w40/eg.png" alt="AR" class="mobile-lang-pill__flag">
-                        <span class="mobile-lang-pill__name">العربية</span>
-                    </button>
-                    <button class="mobile-lang-pill" data-lang="it" aria-label="Italiano">
-                        <img src="https://flagcdn.com/w40/it.png" alt="IT" class="mobile-lang-pill__flag">
-                        <span class="mobile-lang-pill__name">Italiano</span>
-                    </button>
+                <!-- Country Selection -->
+                <div class="mobile-selector-section">
+                    <div class="mobile-selector-label" data-i18n="header.country">Country</div>
+                    <!-- Country pills are rendered dynamically by i18n.js -->
+                    <div class="mobile-country-pills">
+                        <div class="country-loading">Loading...</div>
+                    </div>
+                </div>
+                <!-- Language Selection -->
+                <div class="mobile-selector-section">
+                    <div class="mobile-selector-label" data-i18n="header.language">Language</div>
+                    <div class="mobile-lang-selector__pills">
+                        <button class="mobile-lang-pill" data-lang="en" aria-label="English">
+                            <span class="mobile-lang-pill__name">English</span>
+                        </button>
+                        <button class="mobile-lang-pill" data-lang="ar" aria-label="العربية">
+                            <span class="mobile-lang-pill__name">العربية</span>
+                        </button>
+                        <button class="mobile-lang-pill" data-lang="it" aria-label="Italiano">
+                            <span class="mobile-lang-pill__name">Italiano</span>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -689,15 +702,84 @@
         margin-top: 0.25rem;
     }
 
-    /* Mobile Language Selector - Innovative Pill Design */
+    /* Mobile Country & Language Selector */
     .mobile-lang-selector {
         margin: 0 0 1rem 0;
-        padding: 0.5rem;
+        padding: 0.75rem;
         background: rgba(255, 255, 255, 0.9);
         border-radius: 12px;
         border: 1px solid rgba(0, 137, 123, 0.15);
     }
 
+    .mobile-selector-section {
+        margin-bottom: 0.75rem;
+    }
+
+    .mobile-selector-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .mobile-selector-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--text-gray);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Mobile Country Pills */
+    .mobile-country-pills {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.35rem;
+    }
+
+    .mobile-country-pill {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        padding: 0.5rem 0.6rem;
+        background: rgba(0, 137, 123, 0.08);
+        border: 2px solid transparent;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-family: inherit;
+    }
+
+    .mobile-country-pill:hover {
+        background: rgba(0, 137, 123, 0.15);
+    }
+
+    .mobile-country-pill.active {
+        background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+        border-color: var(--primary-green);
+        box-shadow: 0 4px 12px rgba(0, 137, 123, 0.3);
+    }
+
+    .mobile-country-pill__flag {
+        width: 20px;
+        height: 14px;
+        object-fit: cover;
+        border-radius: 2px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+    }
+
+    .mobile-country-pill__name {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        transition: color 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .mobile-country-pill.active .mobile-country-pill__name {
+        color: white;
+    }
+
+    /* Mobile Language Pills */
     .mobile-lang-selector__pills {
         display: flex;
         gap: 0.35rem;
@@ -712,7 +794,7 @@
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
-        padding: 0.65rem 0.5rem;
+        padding: 0.55rem 0.5rem;
         background: rgba(0, 137, 123, 0.08);
         border: 2px solid transparent;
         border-radius: 10px;
@@ -733,16 +815,8 @@
         box-shadow: 0 4px 12px rgba(0, 137, 123, 0.3);
     }
 
-    .mobile-lang-pill__flag {
-        width: 20px;
-        height: 14px;
-        object-fit: cover;
-        border-radius: 2px;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
-    }
-
     .mobile-lang-pill__name {
-        font-size: 0.65rem;
+        font-size: 0.7rem;
         font-weight: 600;
         color: var(--text-dark);
         transition: color 0.3s ease;
@@ -761,7 +835,7 @@
         transform: scale(0.99);
     }
 
-    /* RTL adjustments for mobile language selector */
+    /* RTL adjustments for mobile language/country selector */
     html[dir="rtl"] .mobile-lang-selector__pills,
     body.rtl .mobile-lang-selector__pills {
         flex-direction: row-reverse;
@@ -770,6 +844,16 @@
     html[dir="rtl"] .mobile-lang-pill,
     body.rtl .mobile-lang-pill {
         flex-direction: row-reverse;
+    }
+
+    html[dir="rtl"] .mobile-country-pill,
+    body.rtl .mobile-country-pill {
+        flex-direction: row-reverse;
+    }
+
+    html[dir="rtl"] .mobile-selector-label,
+    body.rtl .mobile-selector-label {
+        text-align: right;
     }
 
     /* Desktop-only class to hide login/user dropdown on mobile */
@@ -886,7 +970,7 @@
         position: absolute;
         top: calc(100% + 8px);
         right: 0;
-        min-width: 140px;
+        min-width: 200px;
         background: white;
         border-radius: 12px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
@@ -897,8 +981,7 @@
         transition: all 0.3s ease;
         z-index: 1001;
         overflow: hidden;
-        list-style: none;
-        padding: 0.5rem 0;
+        padding: 0.75rem;
         margin: 0;
     }
 
@@ -908,42 +991,107 @@
         transform: translateY(0);
     }
 
-    .language-switcher__menu li {
-        margin: 0;
+    /* Switcher Section Styles */
+    .switcher-section {
+        margin-bottom: 0.5rem;
     }
 
-    .language-switcher__menu button {
+    .switcher-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .switcher-section__title {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--text-gray);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+        padding: 0 0.25rem;
+    }
+
+    .switcher-section__options {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.35rem;
+    }
+
+    .switcher-section__options--lang {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .switcher-divider {
+        height: 1px;
+        background: #eee;
+        margin: 0.75rem 0;
+    }
+
+    /* Country Loading State */
+    .country-loading {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 1rem;
+        color: var(--text-gray);
+        font-size: 0.75rem;
+    }
+
+    /* Country Option Styles */
+    .country-option {
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        width: 100%;
-        padding: 0.6rem 1rem;
-        background: none;
-        border: none;
-        text-align: left;
+        padding: 0.5rem 0.6rem;
+        background: rgba(0, 137, 123, 0.05);
+        border: 2px solid transparent;
+        border-radius: 8px;
         cursor: pointer;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         color: var(--text-dark);
         transition: all 0.2s ease;
+        font-family: inherit;
     }
 
-    .language-switcher__menu button span {
-        flex: 1;
+    .country-option:hover {
+        background: rgba(0, 137, 123, 0.12);
+        border-color: rgba(0, 137, 123, 0.2);
     }
 
-    .language-switcher__menu button:hover {
-        background: var(--light-green);
-        color: var(--dark-green);
-    }
-
-    .language-switcher__menu button.active {
+    .country-option.active {
         background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
         color: white;
-        font-weight: 600;
+        border-color: var(--primary-green);
     }
 
-    .language-switcher__menu button.active .language-switcher__flag {
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    .country-option .language-switcher__flag {
+        width: 18px;
+        height: 13px;
+    }
+
+    /* Language Option Styles */
+    .lang-option {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.45rem 0.5rem;
+        background: rgba(0, 137, 123, 0.05);
+        border: 2px solid transparent;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.75rem;
+        color: var(--text-dark);
+        transition: all 0.2s ease;
+        font-family: inherit;
+    }
+
+    .lang-option:hover {
+        background: rgba(0, 137, 123, 0.12);
+        border-color: rgba(0, 137, 123, 0.2);
+    }
+
+    .lang-option.active {
+        background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+        color: white;
+        border-color: var(--primary-green);
     }
 
     /* RTL adjustments for language switcher */

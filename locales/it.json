@@ -15,6 +15,7 @@
     "activeUser": "Utente Attivo",
     "openMenu": "Apri menu",
     "closeMenu": "Chiudi menu",
+    "country": "Paese",
     "language": "Lingua"
   },
   "user": {
@@ -584,7 +585,18 @@
       "emptyReturns": "Vuote",
       "subtotal": "Subtotale:",
       "discount": "Sconto:",
-      "priceNotAvailable": "Prezzo non disponibile"
+      "priceNotAvailable": "Prezzo non disponibile",
+      "countryChangeWarning": "Cambiare il paese svuoterà il carrello poiché i prezzi potrebbero essere diversi. Continuare?"
+    },
+    "countryValidation": {
+      "title": "Posizione Non Corrispondente",
+      "changedTitle": "Paese Selezionato Errato",
+      "changedDescription": "Stai navigando da {{detectedCountry}}, ma hai selezionato {{selectedCountry}}. Per effettuare un ordine, seleziona la tua posizione corretta ({{expectedTerritory}}).",
+      "unavailableTitle": "Servizio Non Disponibile nella Tua Area",
+      "unavailableDescription": "Abbiamo rilevato che stai navigando da {{detectedCountry}}, che attualmente non è nella nostra area di servizio. Hai selezionato {{selectedCountry}}, ma gli ordini possono essere effettuati solo dalle regioni supportate.",
+      "changeCountryBtn": "Cambia a {{territory}}",
+      "contactSupport": "Contatta il Supporto",
+      "dismiss": "Ho capito"
     },
     "mobile": {
       "yourCart": "Il Tuo Carrello",
@@ -1094,6 +1106,7 @@
       "categoryMessage": "Nessun rifiuto elettronico disponibile in questa categoria.",
       "clearSearch": "Cancella Ricerca"
     },
+    "countryChangeWarning": "Cambiare paese cancellerà la tua selezione attuale. Continuare?",
     "loginModal": {
       "title": "Accesso Richiesto",
       "description": "Per procedere con la tua richiesta di raccolta rifiuti elettronici, accedi al tuo account o creane uno nuovo. Questo ci aiuta a tracciare il tuo impatto ambientale e i punti WEEE!",
