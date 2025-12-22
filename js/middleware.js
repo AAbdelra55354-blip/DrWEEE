@@ -159,6 +159,8 @@ function corsOptionsProduction() {
             // In production, whitelist Railway domains and custom domains
             const allowedOrigins = [
                 process.env.FRONTEND_URL,
+                'https://www.drweee.com',
+                'https://drweee.com',
                 /\.railway\.app$/, // Allow all Railway subdomains
                 /^https:\/\/[^\/]+\.railway\.app$/ // Allow Railway domains with https
             ].filter(Boolean);
@@ -173,8 +175,8 @@ function corsOptionsProduction() {
 
             // In production, strictly enforce CORS whitelist
             if (process.env.NODE_ENV === 'production') {
-                // Allow if matches whitelist OR if it's a Railway domain
-                if (isAllowed || origin.includes('railway.app')) {
+                // Allow if matches whitelist OR if it's a Railway domain OR drweee.com
+                if (isAllowed || origin.includes('railway.app') || origin.includes('drweee.com')) {
                     callback(null, true);
                 } else {
                     console.log('⚠️ CORS blocked origin:', origin);
