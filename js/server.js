@@ -1185,7 +1185,21 @@ app.get('/api/my-requests', async (req, res) => {
 
 // API endpoint to fetch vouchers and gifts from Dataverse
 app.get('/api/vouchers', async (req, res) => {
+    const { territoryId } = req.query;
+
     try {
+        // Build territory filter if provided
+        let territoryFilter = '';
+        if (territoryId) {
+            // Validate and sanitize territory ID
+            if (!isValidGUID(territoryId)) {
+                return res.status(400).json({ success: false, message: 'Invalid territory ID format.' });
+            }
+            const sanitizedTerritoryId = sanitizeFetchXmlValue(territoryId);
+            territoryFilter = `<condition attribute="crd33_availableonlineterritory" operator="eq" value="${sanitizedTerritoryId}" />`;
+            console.log(`[Vouchers] Filtering by territory: ${territoryId}`);
+        }
+
         // FetchXML query to get vouchers that are available online and have available quantity
         // Note: FetchXML uses logical name (singular), URL uses EntitySetName (plural)
         const fetchXml = `
@@ -1205,6 +1219,7 @@ app.get('/api/vouchers', async (req, res) => {
                         <condition attribute="crd33_availableonline" operator="eq" value="1" />
                         <condition attribute="crd33_availablequantity" operator="gt" value="0" />
                         <condition attribute="statecode" operator="eq" value="0" />
+                        ${territoryFilter}
                     </filter>
                 </entity>
             </fetch>

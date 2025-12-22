@@ -1099,6 +1099,29 @@
         </div>
     </div>
 
+    <!-- Country Validation Modal -->
+    <div id="countryValidationModal" class="modal-overlay">
+        <div class="voucher-modal" style="max-width: 520px; padding: 2.5rem; text-align: center;">
+            <div class="country-validation-icon"
+                style="background: linear-gradient(135deg, #f44336, #e91e63); width: 80px; height: 80px; margin: 0 auto 1.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+                <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <h2 id="countryValidationTitle" style="margin-bottom: 1rem; color: #333;">Location Mismatch</h2>
+            <p id="countryValidationDescription" style="color: #666; margin-bottom: 2rem; line-height: 1.6;"></p>
+            <div class="modal-actions" style="flex-direction: column; gap: 0.75rem;">
+                <button id="countryValidationChangeBtn" class="modal-btn modal-btn-confirm" style="display: none; width: 100%;">
+                    <i class="fas fa-globe"></i> <span id="countryValidationChangeBtnText">Change Country</span>
+                </button>
+                <a href="contact.html" id="countryValidationContactBtn" class="modal-btn modal-btn-confirm" style="display: none; width: 100%;">
+                    <i class="fas fa-headset"></i> <span data-i18n="countryValidation.contactSupport">Contact Support</span>
+                </a>
+                <button id="countryValidationDismissBtn" class="modal-btn modal-btn-cancel" style="width: 100%;">
+                    <i class="fas fa-times"></i> <span data-i18n="countryValidation.dismiss">I understand</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- JavaScript Files -->
     <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
@@ -1155,6 +1178,7 @@
         document.addEventListener('DOMContentLoaded', async () => {
             setupFilters();
             setupModal();
+            setupCountryValidationModal();
 
             // Wait for i18n to be ready before loading vouchers
             if (isI18nReady()) {
@@ -1166,6 +1190,28 @@
                     await loadVouchers();
                 }, { once: true });
             }
+
+            // Listen for country changes to reload vouchers with new territory
+            window.addEventListener('countryChanged', async (e) => {
+                console.log('[Redeem Points] Country changed to:', e.detail?.country?.name);
+                // Reset vouchers data and reload
+                vouchersData = [];
+                const rewardsGrid = document.getElementById('rewards-grid');
+                const loadingState = document.getElementById('loadingState');
+                const emptyState = document.getElementById('emptyState');
+
+                if (rewardsGrid) rewardsGrid.style.display = 'none';
+                if (emptyState) emptyState.style.display = 'none';
+                if (loadingState) {
+                    loadingState.style.display = 'flex';
+                    loadingState.innerHTML = `
+                        <div class="loading-spinner"></div>
+                        <p>${getI18n('redeemPoints.loading.text')}</p>
+                    `;
+                }
+
+                await loadVouchers();
+            });
         });
 
         // Load user balance from localStorage
@@ -1196,7 +1242,18 @@
 
             try {
                 const baseUrl = getApiBaseUrl();
-                const response = await fetch(`${baseUrl}/api/vouchers`, {
+
+                // Get territory ID from i18n module
+                const currentCountry = window.DrWeeeI18n?.getCurrentCountry();
+                const territoryId = currentCountry?.id || '';
+                console.log(`Fetching vouchers for territory: ${currentCountry?.name || 'none'} ID: ${territoryId}`);
+
+                // Build URL with territory filter
+                const url = territoryId
+                    ? `${baseUrl}/api/vouchers?territoryId=${encodeURIComponent(territoryId)}`
+                    : `${baseUrl}/api/vouchers`;
+
+                const response = await fetch(url, {
                     credentials: 'include'
                 });
 
@@ -1467,11 +1524,104 @@
             document.body.style.overflow = '';
         }
 
+        // --- Country Validation Functions ---
+        function showCountryValidationModal(validationResult) {
+            const modal = document.getElementById('countryValidationModal');
+            const titleEl = document.getElementById('countryValidationTitle');
+            const descEl = document.getElementById('countryValidationDescription');
+            const changeBtn = document.getElementById('countryValidationChangeBtn');
+            const changeBtnText = document.getElementById('countryValidationChangeBtnText');
+            const contactBtn = document.getElementById('countryValidationContactBtn');
+
+            if (validationResult.type === 'changed') {
+                // User's country IS on the list but they selected different
+                titleEl.textContent = getI18n('redeemPoints.countryValidation.changedTitle') || 'Wrong Country Selected';
+
+                let desc = getI18n('redeemPoints.countryValidation.changedDescription') ||
+                    'You are browsing from {{detectedCountry}}, but you have selected {{selectedCountry}}. To redeem vouchers, please select your correct location ({{expectedTerritory}}).';
+                desc = desc.replace('{{detectedCountry}}', validationResult.detectedCountryName);
+                desc = desc.replace('{{selectedCountry}}', validationResult.selectedCountryName);
+                desc = desc.replace('{{expectedTerritory}}', validationResult.expectedTerritoryName);
+                descEl.textContent = desc;
+
+                // Show change button
+                changeBtn.style.display = 'flex';
+                let changeBtnLabel = getI18n('redeemPoints.countryValidation.changeCountryBtn') || 'Change to {{territory}}';
+                changeBtnLabel = changeBtnLabel.replace('{{territory}}', validationResult.expectedTerritoryName);
+                changeBtnText.textContent = changeBtnLabel;
+                changeBtn.onclick = () => {
+                    // Find and switch to the correct territory
+                    if (window.DrWeeeI18n) {
+                        const territories = window.DrWeeeI18n.getTerritories();
+                        const territory = territories.find(t =>
+                            t.name.toLowerCase() === validationResult.expectedTerritoryName.toLowerCase()
+                        );
+                        if (territory) {
+                            window.DrWeeeI18n.setCountry(territory.id);
+                            closeCountryValidationModal();
+                            // Reload to refresh vouchers for new territory
+                            location.reload();
+                        }
+                    }
+                };
+                contactBtn.style.display = 'none';
+            } else {
+                // User's country is NOT on the territory list
+                titleEl.textContent = getI18n('redeemPoints.countryValidation.unavailableTitle') || 'Service Not Available in Your Area';
+
+                let desc = getI18n('redeemPoints.countryValidation.unavailableDescription') ||
+                    'We detected that you are browsing from {{detectedCountry}}, which is not currently in our service area. You have selected {{selectedCountry}}, but vouchers can only be redeemed from supported regions.';
+                desc = desc.replace('{{detectedCountry}}', validationResult.detectedCountryName);
+                desc = desc.replace('{{selectedCountry}}', validationResult.selectedCountryName);
+                descEl.textContent = desc;
+
+                // Hide change button, show contact support
+                changeBtn.style.display = 'none';
+                contactBtn.style.display = 'flex';
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCountryValidationModal() {
+            const modal = document.getElementById('countryValidationModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Check country validation before proceeding to redeem
+        function validateCountryBeforeRedeem() {
+            if (!window.DrWeeeI18n || typeof window.DrWeeeI18n.validateCountrySelection !== 'function') {
+                console.log('[Redeem Points] Country validation not available, proceeding');
+                return { valid: true };
+            }
+
+            const validation = window.DrWeeeI18n.validateCountrySelection();
+            console.log('[Redeem Points] Country validation result:', validation);
+            return validation;
+        }
+
+        // Setup country validation modal event listeners
+        function setupCountryValidationModal() {
+            const dismissBtn = document.getElementById('countryValidationDismissBtn');
+            if (dismissBtn) {
+                dismissBtn.addEventListener('click', closeCountryValidationModal);
+            }
+        }
+
         // Submit redemption
         async function submitRedemption() {
             const storedUser = getStoredUser();
             if (!storedUser || !storedUser.GUID) {
                 alert(getI18n('redeemPoints.alerts.loginRequired'));
+                return;
+            }
+
+            // Validate country before redemption
+            const countryValidation = validateCountryBeforeRedeem();
+            if (!countryValidation.valid) {
+                showCountryValidationModal(countryValidation);
                 return;
             }
 
