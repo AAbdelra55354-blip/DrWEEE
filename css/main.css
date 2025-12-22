@@ -1400,6 +1400,58 @@ a:hover {
     z-index: 2;
 }
 
+/* About Page: Personal Story Timeline - Simple Version */
+.personal-story {
+    background: var(--off-white);
+}
+
+.personal-story__content {
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.story-timeline {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+}
+
+.timeline-item {
+    background: var(--white);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    border-left: 4px solid var(--primary-green);
+}
+
+.timeline-item:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.timeline-content h4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--primary-green);
+    margin-bottom: var(--space-xs);
+}
+
+.timeline-content p {
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+    .personal-story__content {
+        max-width: 100%;
+    }
+
+    .story-timeline {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* About Page: Story Images */
 .personal-story__visual {
     display: flex;
@@ -1449,7 +1501,7 @@ a:hover {
 }
 
 .vm-card {
-    padding: var(--space-xl);
+    padding: var(--space-lg);
     border-radius: var(--radius-lg);
     background-color: var(--white);
     box-shadow: var(--shadow-md);
@@ -1463,10 +1515,10 @@ a:hover {
 }
 
 .vm-card__icon {
-    font-size: 2.5rem;
-    width: 80px;
-    height: 80px;
-    margin: 0 auto var(--space-lg);
+    font-size: 2rem;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto var(--space-md);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1482,27 +1534,30 @@ a:hover {
 }
 
 .vm-card__title {
-    font-size: 2rem;
-    margin-bottom: var(--space-md);
+    font-size: 1.5rem;
+    margin-bottom: var(--space-sm);
 }
 
 .vm-card--values .values-list {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-md);
+    gap: var(--space-sm);
     text-align: left;
 }
 
 .value-item {
     display: flex;
     align-items: center;
-    gap: var(--space-sm);
+    gap: var(--space-xs);
+    font-size: 0.95rem;
+    line-height: 1.3;
 }
 
 .value-item i {
     color: var(--secondary-green);
-    font-size: 1.25rem;
-    width: 25px;
+    font-size: 1.1rem;
+    width: 22px;
+    flex-shrink: 0;
     text-align: center;
 }
 
@@ -1626,6 +1681,16 @@ a:hover {
 }
 
 /* About Page: Philosophy Section */
+.philosophy-content {
+    text-align: center;
+}
+
+.philosophy-content .section__subtitle,
+.philosophy-content .section__title,
+.philosophy-content .section__description {
+    text-align: center;
+}
+
 .philosophy-principles {
     margin-top: var(--space-xl);
     display: flex;

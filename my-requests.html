@@ -54,11 +54,21 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+Arabic:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/rtl.css">
+
+    <!-- i18n FOUC Prevention -->
+    <script>
+    (function() {
+        var lang = localStorage.getItem('drweee_language') || 'en';
+        document.documentElement.lang = lang;
+        if (lang === 'ar') document.documentElement.dir = 'rtl';
+    })();
+    </script>
 
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -787,10 +797,10 @@
                 <div class="hero-content">
                     <div class="hero-badge">
                         <i class="fas fa-clipboard-list"></i>
-                        My Activity
+                        <span data-i18n="myRequests.hero.badge">My Activity</span>
                     </div>
-                    <h1 class="hero-title">My Requests</h1>
-                    <p class="hero-subtitle">
+                    <h1 class="hero-title" data-i18n="myRequests.hero.title">My Requests</h1>
+                    <p class="hero-subtitle" data-i18n="myRequests.hero.subtitle">
                         Track all your e-waste collection requests and store orders in one place
                     </p>
                 </div>
@@ -804,7 +814,7 @@
                     <!-- Loading State -->
                     <div id="loadingState" class="loading-state">
                         <div class="loading-spinner"></div>
-                        <p class="loading-text">Loading your requests...</p>
+                        <p class="loading-text" data-i18n="myRequests.loading.text">Loading your requests...</p>
                     </div>
 
                     <!-- Login Required State -->
@@ -812,12 +822,12 @@
                         <div class="login-required-icon">
                             <i class="fas fa-user-lock"></i>
                         </div>
-                        <h2 class="empty-state-title">Login Required</h2>
-                        <p class="empty-state-text">
+                        <h2 class="empty-state-title" data-i18n="myRequests.loginRequired.title">Login Required</h2>
+                        <p class="empty-state-text" data-i18n="myRequests.loginRequired.description">
                             Please log in to view your requests and order history.
                         </p>
                         <a href="login.html" class="btn btn--primary">
-                            <i class="fas fa-sign-in-alt"></i> Login
+                            <i class="fas fa-sign-in-alt"></i> <span data-i18n="myRequests.loginRequired.loginButton">Login</span>
                         </a>
                     </div>
 
@@ -836,10 +846,10 @@
                                 </div>
                             </div>
                             <div class="filter-tabs">
-                                <button class="filter-tab active" data-filter="all">All</button>
-                                <button class="filter-tab" data-filter="store">Purchases</button>
-                                <button class="filter-tab" data-filter="ewaste">E-waste</button>
-                                <button class="filter-tab" data-filter="redeem">Redeem</button>
+                                <button class="filter-tab active" data-filter="all" data-i18n="myRequests.filters.all">All</button>
+                                <button class="filter-tab" data-filter="store" data-i18n="myRequests.filters.purchases">Purchases</button>
+                                <button class="filter-tab" data-filter="ewaste" data-i18n="myRequests.filters.ewaste">E-waste</button>
+                                <button class="filter-tab" data-filter="redeem" data-i18n="myRequests.filters.redeem">Redeem</button>
                             </div>
                         </div>
 
@@ -853,16 +863,16 @@
                             <div class="empty-state-icon">
                                 <i class="fas fa-inbox"></i>
                             </div>
-                            <h2 class="empty-state-title">No Requests Yet</h2>
-                            <p class="empty-state-text">
+                            <h2 class="empty-state-title" data-i18n="myRequests.emptyState.title">No Requests Yet</h2>
+                            <p class="empty-state-text" data-i18n="myRequests.emptyState.description">
                                 You haven't made any requests yet. Start recycling e-waste or shop for eco-friendly products!
                             </p>
                             <div class="empty-state-buttons">
                                 <a href="weee-rewards.html" class="btn btn--primary">
-                                    <i class="fas fa-recycle"></i> Recycle E-waste
+                                    <i class="fas fa-recycle"></i> <span data-i18n="myRequests.emptyState.recycleButton">Recycle E-waste</span>
                                 </a>
                                 <a href="store.html" class="btn btn--outline">
-                                    <i class="fas fa-shopping-cart"></i> Visit Store
+                                    <i class="fas fa-shopping-cart"></i> <span data-i18n="myRequests.emptyState.shopButton">Visit Store</span>
                                 </a>
                             </div>
                         </div>
@@ -876,7 +886,7 @@
     <div id="requestDetailModal" class="modal-overlay">
         <div class="request-modal">
             <div class="modal-header">
-                <h3><i class="fas fa-file-alt"></i> Request Details</h3>
+                <h3><i class="fas fa-file-alt"></i> <span data-i18n="myRequests.modal.title">Request Details</span></h3>
                 <button class="modal-close" id="closeModalBtn">
                     <i class="fas fa-times"></i>
                 </button>
@@ -891,9 +901,28 @@
     <div id="footer-placeholder"></div>
 
     <!-- JavaScript Files -->
+    <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
     <script src="js/analytics.js"></script>
     <script>
+        // Helper function for i18n translations
+        function getI18n(key, replacements = {}) {
+            if (window.DrWeeeI18n && window.DrWeeeI18n.translate) {
+                const translated = window.DrWeeeI18n.translate(key, replacements);
+                // If translation returns the key itself, it means not found
+                return translated;
+            }
+            // Fallback to key if i18n not loaded
+            return key;
+        }
+
+        // Check if i18n is fully initialized with translations
+        function isI18nReady() {
+            return window.DrWeeeI18n &&
+                   window.DrWeeeI18n.translate &&
+                   window.DrWeeeI18n.translate('myRequests.hero.title') !== 'myRequests.hero.title';
+        }
+
         // Helper function to get API base URL (for local development)
         function getApiBaseUrl() {
             const port = window.location.port;
@@ -918,6 +947,46 @@
 
         // Store all requests for filtering
         let allRequests = [];
+
+        // Translate dynamic request subjects via API
+        async function translateRequestSubjects() {
+            const currentLang = window.DrWeeeI18n?.getCurrentLanguage() || 'en';
+
+            // Skip translation if language is English
+            if (currentLang === 'en') {
+                console.log('[my-requests] Skipping translation - already in English');
+                return;
+            }
+
+            // Get all unique subjects that need translation
+            const subjects = [...new Set(allRequests.map(r => r.subject).filter(s => s))];
+
+            if (subjects.length === 0) return;
+
+            console.log(`[my-requests] Translating ${subjects.length} request subjects to ${currentLang}...`);
+
+            try {
+                const translations = await window.DrWeeeI18n.translateBatch(subjects, currentLang);
+
+                // Create a map of original -> translated
+                const translationMap = {};
+                subjects.forEach((subject, index) => {
+                    translationMap[subject] = translations[index] || subject;
+                });
+
+                // Update all requests with translated subjects (store original in subjectEn)
+                allRequests.forEach(request => {
+                    if (!request.subjectEn) {
+                        request.subjectEn = request.subject; // Store original English subject
+                    }
+                    request.subject = translationMap[request.subjectEn] || request.subject;
+                });
+
+                console.log('[my-requests] Request subjects translated successfully');
+            } catch (error) {
+                console.error('[my-requests] Error translating request subjects:', error);
+            }
+        }
 
         // Format date for display
         function formatDate(dateString) {
@@ -958,11 +1027,36 @@
             return status.toLowerCase();
         }
 
+        // Get translated request type
+        function getTranslatedRequestType(requestTypeCode) {
+            switch (requestTypeCode) {
+                case 269530000: return getI18n('myRequests.requestTypes.ewasteCollection');
+                case 269530001: return getI18n('myRequests.requestTypes.formSubmit');
+                case 269530002: return getI18n('myRequests.requestTypes.onlinePurchase');
+                case 269530003: return getI18n('myRequests.requestTypes.redeemingRequest');
+                default: return getI18n('myRequests.requestTypes.general');
+            }
+        }
+
+        // Get translated status
+        function getTranslatedStatus(status) {
+            const statusKey = status.toLowerCase();
+            const translated = getI18n(`myRequests.status.${statusKey}`);
+            // If translation returns the key, use original status
+            if (translated.includes('myRequests.status')) {
+                return status;
+            }
+            return translated;
+        }
+
         // Create request card HTML
         function createRequestCard(request) {
             const iconClass = getRequestIconClass(request.requestTypeCode);
             const icon = getRequestIcon(request.requestTypeCode);
             const statusClass = getStatusClass(request.status);
+            const translatedType = getTranslatedRequestType(request.requestTypeCode);
+            const translatedStatus = getTranslatedStatus(request.status);
+            const viewText = getI18n('myRequests.card.viewButton');
 
             return `
                 <div class="request-card" data-type="${iconClass}" data-id="${request.id}">
@@ -974,7 +1068,7 @@
                         <div class="request-meta">
                             <span class="request-type-badge ${iconClass}">
                                 <i class="fas ${icon}"></i>
-                                ${request.requestType}
+                                ${translatedType}
                             </span>
                             <span>
                                 <i class="fas fa-calendar-alt"></i>
@@ -983,10 +1077,10 @@
                         </div>
                     </div>
                     <div class="request-status">
-                        <span class="status-badge ${statusClass}">${request.status}</span>
+                        <span class="status-badge ${statusClass}">${translatedStatus}</span>
                         <button class="view-details-btn" onclick="showRequestDetails('${request.id}')">
                             <i class="fas fa-eye"></i>
-                            View
+                            ${viewText}
                         </button>
                     </div>
                 </div>
@@ -1000,23 +1094,30 @@
 
             const iconClass = getRequestIconClass(request.requestTypeCode);
             const statusClass = getStatusClass(request.status);
+            const translatedType = getTranslatedRequestType(request.requestTypeCode);
+            const translatedStatus = getTranslatedStatus(request.status);
+            const statusLabel = getI18n('myRequests.modal.statusLabel');
+            const typeLabel = getI18n('myRequests.modal.typeLabel');
+            const dateLabel = getI18n('myRequests.modal.dateLabel');
+            const detailsLabel = getI18n('myRequests.modal.detailsLabel');
+            const noDetails = getI18n('myRequests.modal.noDetails');
 
             const modalBody = document.getElementById('modalBody');
             modalBody.innerHTML = `
                 <!-- Status and Type Side by Side -->
                 <div class="detail-row">
                     <div class="detail-card">
-                        <div class="detail-card-label">Status</div>
+                        <div class="detail-card-label">${statusLabel}</div>
                         <div class="detail-card-value">
-                            <span class="status-badge ${statusClass}">${request.status}</span>
+                            <span class="status-badge ${statusClass}">${translatedStatus}</span>
                         </div>
                     </div>
                     <div class="detail-card">
-                        <div class="detail-card-label">Request Type</div>
+                        <div class="detail-card-label">${typeLabel}</div>
                         <div class="detail-card-value">
                             <span class="request-type-badge ${iconClass}">
                                 <i class="fas ${getRequestIcon(request.requestTypeCode)}"></i>
-                                ${request.requestType}
+                                ${translatedType}
                             </span>
                         </div>
                     </div>
@@ -1028,7 +1129,7 @@
                         <i class="fas fa-calendar-alt"></i>
                     </div>
                     <div class="detail-date-info">
-                        <div class="detail-date-label">Date Created</div>
+                        <div class="detail-date-label">${dateLabel}</div>
                         <div class="detail-date-value">${formatDate(request.createdOn)}</div>
                     </div>
                 </div>
@@ -1037,9 +1138,9 @@
                 <div class="detail-description-section">
                     <div class="detail-description-header">
                         <i class="fas fa-align-left"></i>
-                        <span>Details</span>
+                        <span>${detailsLabel}</span>
                     </div>
-                    <div class="detail-value description">${request.description || 'No details available'}</div>
+                    <div class="detail-value description">${request.description || noDetails}</div>
                 </div>
             `;
 
@@ -1074,8 +1175,12 @@
             const total = requests.length;
             const completed = requests.filter(r => r.status === 'Completed').length;
 
-            document.getElementById('totalRequests').textContent = `${total} Request${total !== 1 ? 's' : ''}`;
-            document.getElementById('completedRequests').textContent = `${completed} Completed`;
+            // Get translated labels
+            const requestsLabel = total !== 1 ? getI18n('myRequests.stats.requests') : getI18n('myRequests.stats.request');
+            const completedLabel = getI18n('myRequests.stats.completed');
+
+            document.getElementById('totalRequests').textContent = `${total} ${requestsLabel}`;
+            document.getElementById('completedRequests').textContent = `${completed} ${completedLabel}`;
         }
 
         // Fetch and display requests
@@ -1117,6 +1222,10 @@
                 }
 
                 allRequests = data.requests;
+
+                // Translate request subjects if not in English
+                await translateRequestSubjects();
+
                 updateStats(allRequests);
 
                 // Render request cards
@@ -1124,24 +1233,35 @@
 
             } catch (error) {
                 console.error('Error loading requests:', error);
+                const errorTitle = getI18n('myRequests.error.title');
+                const errorDescription = getI18n('myRequests.error.description');
+                const retryButton = getI18n('myRequests.error.retryButton');
                 loadingState.innerHTML = `
                     <div class="empty-state-icon" style="background: #FFEBEE;">
                         <i class="fas fa-exclamation-triangle" style="color: #C62828;"></i>
                     </div>
-                    <p class="empty-state-title">Error Loading Requests</p>
-                    <p class="empty-state-text">Unable to load your requests. Please try again later.</p>
+                    <p class="empty-state-title">${errorTitle}</p>
+                    <p class="empty-state-text">${errorDescription}</p>
                     <button class="btn btn--primary" onclick="location.reload()">
-                        <i class="fas fa-redo"></i> Retry
+                        <i class="fas fa-redo"></i> ${retryButton}
                     </button>
                 `;
             }
         }
 
+        // Re-render all dynamic content (called when language changes)
+        function renderAllContent() {
+            // Re-render request cards if we have requests
+            if (allRequests.length > 0) {
+                const requestsList = document.getElementById('requestsList');
+                requestsList.innerHTML = allRequests.map(createRequestCard).join('');
+                updateStats(allRequests);
+            }
+            console.log('My Requests page re-rendered for new language');
+        }
+
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
-            // Load requests
-            loadRequests();
-
             // Setup filter tabs
             document.querySelectorAll('.filter-tab').forEach(tab => {
                 tab.addEventListener('click', () => {
@@ -1163,6 +1283,41 @@
                     closeModal();
                 }
             });
+
+            // Wait for i18n to be ready before loading requests (so translations work)
+            if (isI18nReady()) {
+                // i18n already initialized with translations
+                console.log('[my-requests] i18n already ready, loading requests...');
+                loadRequests();
+            } else {
+                // Wait for i18n ready event
+                console.log('[my-requests] Waiting for i18n to be ready...');
+                window.addEventListener('i18nReady', function() {
+                    console.log('[my-requests] i18n ready event received, loading requests...');
+                    loadRequests();
+                }, { once: true });
+            }
+        });
+
+        // Listen for language changes and re-render dynamic content
+        window.addEventListener('languageChanged', async (event) => {
+            console.log(`Language changed to: ${event.detail.language}, re-rendering My Requests...`);
+
+            // Close modal if open (content will be stale)
+            closeModal();
+
+            // Reset subjects to English before re-translating
+            allRequests.forEach(request => {
+                if (request.subjectEn) {
+                    request.subject = request.subjectEn;
+                }
+            });
+
+            // Translate subjects to new language
+            await translateRequestSubjects();
+
+            // Re-render all dynamic content
+            renderAllContent();
         });
     </script>
 </body>

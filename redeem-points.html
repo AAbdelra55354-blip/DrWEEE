@@ -54,11 +54,21 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+Arabic:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/rtl.css">
+
+    <!-- i18n FOUC Prevention -->
+    <script>
+    (function() {
+        var lang = localStorage.getItem('drweee_language') || 'en';
+        document.documentElement.lang = lang;
+        if (lang === 'ar') document.documentElement.dir = 'rtl';
+    })();
+    </script>
 
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -901,8 +911,8 @@
         <section class="redeem-header">
             <div class="container">
                 <div class="header-content">
-                    <h1 class="header-title">Redeem Your WEEE Points</h1>
-                    <p class="header-subtitle">Turn your eco-friendly actions into valuable rewards. Choose from our
+                    <h1 class="header-title" data-i18n="redeemPoints.hero.title">Redeem Your WEEE Points</h1>
+                    <p class="header-subtitle" data-i18n="redeemPoints.hero.subtitle">Turn your eco-friendly actions into valuable rewards. Choose from our
                         selection of vouchers and gifts.</p>
 
                     <div class="user-balance-display">
@@ -911,10 +921,10 @@
                                 <i class="fas fa-coins"></i>
                             </div>
                             <div class="balance-info">
-                                <span class="balance-label">Available Points</span>
+                                <span class="balance-label" data-i18n="redeemPoints.balance.availablePoints">Available Points</span>
                                 <div class="balance-value">
                                     <span id="user-points">0</span>
-                                    <small>Points</small>
+                                    <small data-i18n="redeemPoints.balance.points">Points</small>
                                 </div>
                             </div>
                         </div>
@@ -923,10 +933,10 @@
                                 <i class="fas fa-wallet"></i>
                             </div>
                             <div class="balance-info">
-                                <span class="balance-label">Available Cash</span>
+                                <span class="balance-label" data-i18n="redeemPoints.balance.availableCash">Available Cash</span>
                                 <div class="balance-value">
                                     <span id="user-cash">0</span>
-                                    <small>EGP</small>
+                                    <small data-i18n="redeemPoints.balance.egp">EGP</small>
                                 </div>
                             </div>
                         </div>
@@ -940,12 +950,12 @@
             <div class="container">
                 <div class="filter-controls">
                     <div class="filter-tabs">
-                        <button class="filter-tab active" data-category="all">All Rewards</button>
-                        <button class="filter-tab" data-category="retail">Retail & Shopping</button>
-                        <button class="filter-tab" data-category="food">Food & Dining</button>
-                        <button class="filter-tab" data-category="entertainment">Entertainment</button>
-                        <button class="filter-tab" data-category="tech">Technology</button>
-                        <button class="filter-tab" data-category="cash">Cash</button>
+                        <button class="filter-tab active" data-category="all" data-i18n="redeemPoints.filters.all">All Rewards</button>
+                        <button class="filter-tab" data-category="retail" data-i18n="redeemPoints.filters.retail">Retail & Shopping</button>
+                        <button class="filter-tab" data-category="food" data-i18n="redeemPoints.filters.food">Food & Dining</button>
+                        <button class="filter-tab" data-category="entertainment" data-i18n="redeemPoints.filters.entertainment">Entertainment</button>
+                        <button class="filter-tab" data-category="tech" data-i18n="redeemPoints.filters.tech">Technology</button>
+                        <button class="filter-tab" data-category="cash" data-i18n="redeemPoints.filters.cash">Cash</button>
                     </div>
                 </div>
             </div>
@@ -957,7 +967,7 @@
                 <!-- Loading State -->
                 <div id="loadingState" class="loading-state">
                     <div class="loading-spinner"></div>
-                    <p>Loading vouchers...</p>
+                    <p data-i18n="redeemPoints.loading.text">Loading vouchers...</p>
                 </div>
 
                 <!-- Login Required (hidden by default) -->
@@ -965,10 +975,10 @@
                     <div class="login-required-icon">
                         <i class="fas fa-user-lock"></i>
                     </div>
-                    <h3>Login Required</h3>
-                    <p style="color: var(--text-gray); margin-bottom: 1rem;">Please log in to view and redeem vouchers.</p>
+                    <h3 data-i18n="redeemPoints.loginRequired.title">Login Required</h3>
+                    <p style="color: var(--text-gray); margin-bottom: 1rem;" data-i18n="redeemPoints.loginRequired.description">Please log in to view and redeem vouchers.</p>
                     <a href="login.html" class="btn btn--primary">
-                        <i class="fas fa-sign-in-alt"></i> Login
+                        <i class="fas fa-sign-in-alt"></i> <span data-i18n="redeemPoints.loginRequired.loginButton">Login</span>
                     </a>
                 </div>
 
@@ -982,8 +992,8 @@
                     <div class="empty-state-icon">
                         <i class="fas fa-gift"></i>
                     </div>
-                    <h3>No Vouchers Available</h3>
-                    <p style="color: var(--text-gray);">Check back later for new rewards!</p>
+                    <h3 data-i18n="redeemPoints.emptyState.title">No Vouchers Available</h3>
+                    <p style="color: var(--text-gray);" data-i18n="redeemPoints.emptyState.description">Check back later for new rewards!</p>
                 </div>
             </div>
         </section>
@@ -1015,30 +1025,30 @@
                 <div class="modal-controls-row">
                     <!-- Payment Method Selection -->
                     <div class="payment-section">
-                        <div class="section-title">Pay with</div>
+                        <div class="section-title" data-i18n="redeemPoints.modal.payWith">Pay with</div>
                         <div class="payment-options">
                             <div class="payment-option points selected" data-method="points" id="payPoints">
                                 <div class="payment-option-icon">
                                     <i class="fas fa-coins"></i>
                                 </div>
-                                <div class="payment-option-label">Points</div>
+                                <div class="payment-option-label" data-i18n="redeemPoints.modal.points">Points</div>
                                 <div class="payment-option-value" id="modalPointsCost">0</div>
-                                <div class="insufficient-badge" id="pointsInsufficient" style="display: none;">Insufficient</div>
+                                <div class="insufficient-badge" id="pointsInsufficient" style="display: none;" data-i18n="redeemPoints.modal.insufficient">Insufficient</div>
                             </div>
                             <div class="payment-option cash" data-method="cash" id="payCash">
                                 <div class="payment-option-icon">
                                     <i class="fas fa-wallet"></i>
                                 </div>
-                                <div class="payment-option-label">Cash</div>
+                                <div class="payment-option-label" data-i18n="redeemPoints.modal.cash">Cash</div>
                                 <div class="payment-option-value" id="modalCashCost">EGP 0</div>
-                                <div class="insufficient-badge" id="cashInsufficient" style="display: none;">Insufficient</div>
+                                <div class="insufficient-badge" id="cashInsufficient" style="display: none;" data-i18n="redeemPoints.modal.insufficient">Insufficient</div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Quantity Selector -->
                     <div class="quantity-section">
-                        <div class="section-title">Quantity</div>
+                        <div class="section-title" data-i18n="redeemPoints.modal.quantity">Quantity</div>
                         <div class="quantity-controls">
                             <button class="qty-btn" id="qtyMinus">-</button>
                             <span class="qty-value" id="qtyValue">1</span>
@@ -1050,17 +1060,17 @@
                 <!-- Order Summary -->
                 <div class="order-summary">
                     <div class="summary-row total">
-                        <span class="summary-label">Total (<span id="summaryQuantity">1</span>x)</span>
+                        <span class="summary-label"><span data-i18n="redeemPoints.modal.total">Total</span> (<span id="summaryQuantity">1</span>x)</span>
                         <span class="summary-value" id="summaryTotal">0 Points</span>
                     </div>
                 </div>
 
                 <!-- Actions -->
                 <div class="modal-actions">
-                    <button class="modal-btn modal-btn-cancel" id="btnCancel">Cancel</button>
+                    <button class="modal-btn modal-btn-cancel" id="btnCancel" data-i18n="redeemPoints.modal.cancel">Cancel</button>
                     <button class="modal-btn modal-btn-confirm" id="btnRedeem">
                         <i class="fas fa-gift"></i>
-                        Redeem
+                        <span data-i18n="redeemPoints.modal.redeem">Redeem</span>
                     </button>
                 </div>
             </div>
@@ -1074,15 +1084,15 @@
                 <div class="success-icon">
                     <i class="fas fa-check"></i>
                 </div>
-                <h2 class="success-title">Request Submitted!</h2>
-                <p class="success-message">
+                <h2 class="success-title" data-i18n="redeemPoints.success.title">Request Submitted!</h2>
+                <p class="success-message" data-i18n="redeemPoints.success.message">
                     Your redemption request has been submitted successfully.
                     You can track it in the "My Requests" section.
                 </p>
                 <div class="modal-actions">
                     <a href="my-requests.html" class="modal-btn modal-btn-confirm">
                         <i class="fas fa-clipboard-list"></i>
-                        View My Requests
+                        <span data-i18n="redeemPoints.success.viewRequests">View My Requests</span>
                     </a>
                 </div>
             </div>
@@ -1090,9 +1100,26 @@
     </div>
 
     <!-- JavaScript Files -->
+    <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
     <script src="js/analytics.js"></script>
     <script>
+        // Helper function for i18n translations
+        function getI18n(key, replacements = {}) {
+            if (window.DrWeeeI18n && window.DrWeeeI18n.translate) {
+                const translated = window.DrWeeeI18n.translate(key, replacements);
+                return translated;
+            }
+            return key;
+        }
+
+        // Check if i18n is fully initialized with translations
+        function isI18nReady() {
+            return window.DrWeeeI18n &&
+                   window.DrWeeeI18n.translate &&
+                   window.DrWeeeI18n.translate('redeemPoints.hero.title') !== 'redeemPoints.hero.title';
+        }
+
         // Helper function to get API base URL
         function getApiBaseUrl() {
             const port = window.location.port;
@@ -1126,10 +1153,19 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
-            await loadUserBalance();
-            await loadVouchers();
             setupFilters();
             setupModal();
+
+            // Wait for i18n to be ready before loading vouchers
+            if (isI18nReady()) {
+                await loadUserBalance();
+                await loadVouchers();
+            } else {
+                window.addEventListener('i18nReady', async function() {
+                    await loadUserBalance();
+                    await loadVouchers();
+                }, { once: true });
+            }
         });
 
         // Load user balance from localStorage
@@ -1175,6 +1211,9 @@
 
                 vouchersData = data.vouchers;
                 rewardsGrid.style.display = 'grid';
+
+                // Translate voucher data before rendering
+                await translateVoucherData();
                 renderVouchers();
 
             } catch (error) {
@@ -1183,10 +1222,10 @@
                     <div class="empty-state-icon" style="background: #FFEBEE;">
                         <i class="fas fa-exclamation-triangle" style="color: #C62828;"></i>
                     </div>
-                    <p style="font-weight: 600; margin-bottom: 0.5rem;">Error Loading Vouchers</p>
-                    <p style="color: var(--text-gray);">Please try again later.</p>
+                    <p style="font-weight: 600; margin-bottom: 0.5rem;">${getI18n('redeemPoints.error.title')}</p>
+                    <p style="color: var(--text-gray);">${getI18n('redeemPoints.error.description')}</p>
                     <button class="btn btn--primary" onclick="location.reload()" style="margin-top: 1rem;">
-                        <i class="fas fa-redo"></i> Retry
+                        <i class="fas fa-redo"></i> ${getI18n('redeemPoints.error.retryButton')}
                     </button>
                 `;
             }
@@ -1205,7 +1244,7 @@
             if (filteredVouchers.length === 0) {
                 grid.innerHTML = `
                     <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
-                        <p style="color: var(--text-gray);">No vouchers found in this category.</p>
+                        <p style="color: var(--text-gray);">${getI18n('redeemPoints.noCategory.description')}</p>
                     </div>
                 `;
                 return;
@@ -1226,30 +1265,32 @@
         // Create voucher card HTML
         function createVoucherCard(voucher) {
             const isCash = voucher.category === 'cash';
+            const displayName = voucher.translatedName || voucher.name;
+            const displayCategory = voucher.translatedCategory || voucher.categoryName;
 
             return `
                 <div class="gift-card" data-category="${voucher.category}">
-                    ${isCash ? '<div class="card-badge cash">Cash</div>' : ''}
+                    ${isCash ? `<div class="card-badge cash">${getI18n('redeemPoints.filters.cash')}</div>` : ''}
                     <div class="card-image">
-                        <img src="${voucher.image}" alt="${voucher.name}" loading="lazy"
+                        <img src="${voucher.image}" alt="${displayName}" loading="lazy"
                              onerror="this.src='https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop'">
-                        <div class="card-category-tag">${voucher.categoryName}</div>
+                        <div class="card-category-tag">${displayCategory}</div>
                     </div>
                     <div class="card-content">
-                        <h3 class="card-title">${voucher.name}</h3>
+                        <h3 class="card-title">${displayName}</h3>
                         <div class="card-pricing">
                             <div class="price-option">
-                                <span class="price-label"><i class="fas fa-coins"></i> Points</span>
+                                <span class="price-label"><i class="fas fa-coins"></i> ${getI18n('redeemPoints.card.points')}</span>
                                 <span class="price-value">${voucher.pointsCost.toLocaleString()}</span>
                             </div>
                             <div class="price-option">
-                                <span class="price-label"><i class="fas fa-wallet"></i> Cash</span>
-                                <span class="price-value">EGP ${voucher.cashCost.toLocaleString()}</span>
+                                <span class="price-label"><i class="fas fa-wallet"></i> ${getI18n('redeemPoints.card.cash')}</span>
+                                <span class="price-value">${getI18n('redeemPoints.balance.egp')} ${voucher.cashCost.toLocaleString()}</span>
                             </div>
                         </div>
                         <button class="view-details-btn" data-voucher-id="${voucher.id}">
                             <i class="fas fa-eye"></i>
-                            View Details
+                            ${getI18n('redeemPoints.card.viewDetails')}
                         </button>
                     </div>
                 </div>
@@ -1277,12 +1318,16 @@
             selectedQuantity = 1;
             selectedPaymentMethod = 'points';
 
+            // Get translated names
+            const displayName = selectedVoucher.translatedName || selectedVoucher.name;
+            const displayCategory = selectedVoucher.translatedCategory || selectedVoucher.categoryName;
+
             // Populate modal
             document.getElementById('modalImage').src = selectedVoucher.image;
-            document.getElementById('modalTitle').textContent = selectedVoucher.name;
-            document.getElementById('modalCategory').innerHTML = `<i class="fas fa-tag"></i> ${selectedVoucher.categoryName}`;
+            document.getElementById('modalTitle').textContent = displayName;
+            document.getElementById('modalCategory').innerHTML = `<i class="fas fa-tag"></i> ${displayCategory}`;
             document.getElementById('modalPointsCost').textContent = selectedVoucher.pointsCost.toLocaleString();
-            document.getElementById('modalCashCost').textContent = `EGP ${selectedVoucher.cashCost.toLocaleString()}`;
+            document.getElementById('modalCashCost').textContent = `${getI18n('redeemPoints.balance.egp')} ${selectedVoucher.cashCost.toLocaleString()}`;
             document.getElementById('qtyValue').textContent = '1';
 
             // Check affordability
@@ -1338,10 +1383,10 @@
             const redeemBtn = document.getElementById('btnRedeem');
             if (!canAffordPoints && !canAffordCash) {
                 redeemBtn.disabled = true;
-                redeemBtn.innerHTML = '<i class="fas fa-lock"></i> Insufficient Balance';
+                redeemBtn.innerHTML = `<i class="fas fa-lock"></i> ${getI18n('redeemPoints.modal.insufficientBalance')}`;
             } else {
                 redeemBtn.disabled = false;
-                redeemBtn.innerHTML = '<i class="fas fa-gift"></i> Redeem Now';
+                redeemBtn.innerHTML = `<i class="fas fa-gift"></i> ${getI18n('redeemPoints.modal.redeem')}`;
             }
         }
 
@@ -1352,8 +1397,8 @@
                 : selectedVoucher.cashCost * selectedQuantity;
 
             const totalDisplay = selectedPaymentMethod === 'points'
-                ? `${totalCost.toLocaleString()} Points`
-                : `EGP ${totalCost.toLocaleString()}`;
+                ? `${totalCost.toLocaleString()} ${getI18n('redeemPoints.modal.points')}`
+                : `${getI18n('redeemPoints.balance.egp')} ${totalCost.toLocaleString()}`;
 
             document.getElementById('summaryQuantity').textContent = selectedQuantity;
             document.getElementById('summaryTotal').textContent = totalDisplay;
@@ -1426,7 +1471,7 @@
         async function submitRedemption() {
             const storedUser = getStoredUser();
             if (!storedUser || !storedUser.GUID) {
-                alert('Please log in to redeem vouchers.');
+                alert(getI18n('redeemPoints.alerts.loginRequired'));
                 return;
             }
 
@@ -1436,7 +1481,7 @@
 
             const redeemBtn = document.getElementById('btnRedeem');
             redeemBtn.disabled = true;
-            redeemBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            redeemBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${getI18n('redeemPoints.modal.processing')}`;
 
             try {
                 const baseUrl = getApiBaseUrl();
@@ -1466,18 +1511,92 @@
                         document.getElementById('successModal').classList.add('active');
                     }, 200);
                 } else {
-                    alert(data.message || 'Failed to submit redemption request.');
+                    alert(data.message || getI18n('redeemPoints.alerts.submitFailed'));
                     redeemBtn.disabled = false;
-                    redeemBtn.innerHTML = '<i class="fas fa-gift"></i> Redeem Now';
+                    redeemBtn.innerHTML = `<i class="fas fa-gift"></i> ${getI18n('redeemPoints.modal.redeem')}`;
                 }
 
             } catch (error) {
                 console.error('Error submitting redemption:', error);
-                alert('An error occurred. Please try again.');
+                alert(getI18n('redeemPoints.alerts.genericError'));
                 redeemBtn.disabled = false;
-                redeemBtn.innerHTML = '<i class="fas fa-gift"></i> Redeem Now';
+                redeemBtn.innerHTML = `<i class="fas fa-gift"></i> ${getI18n('redeemPoints.modal.redeem')}`;
             }
         }
+
+        // Translate voucher names and categories via batch translation API
+        async function translateVoucherData() {
+            const currentLang = window.DrWeeeI18n?.getCurrentLanguage() || 'en';
+            if (currentLang === 'en') {
+                // Reset to original English
+                vouchersData.forEach(voucher => {
+                    voucher.translatedName = voucher.nameEn || voucher.name;
+                    voucher.translatedCategory = voucher.categoryNameEn || voucher.categoryName;
+                });
+                return;
+            }
+
+            // Collect unique names and categories
+            const names = [...new Set(vouchersData.map(v => v.nameEn || v.name).filter(n => n))];
+            const categories = [...new Set(vouchersData.map(v => v.categoryNameEn || v.categoryName).filter(c => c))];
+            const textsToTranslate = [...names, ...categories];
+
+            if (textsToTranslate.length === 0) return;
+
+            try {
+                const translations = await window.DrWeeeI18n.translateBatch(textsToTranslate, currentLang);
+
+                // Create translation maps
+                const nameTranslations = {};
+                const categoryTranslations = {};
+
+                names.forEach((name, index) => {
+                    nameTranslations[name] = translations[index] || name;
+                });
+
+                categories.forEach((category, index) => {
+                    categoryTranslations[category] = translations[names.length + index] || category;
+                });
+
+                // Apply translations to vouchers
+                vouchersData.forEach(voucher => {
+                    // Store original English values if not already stored
+                    if (!voucher.nameEn) {
+                        voucher.nameEn = voucher.name;
+                    }
+                    if (!voucher.categoryNameEn) {
+                        voucher.categoryNameEn = voucher.categoryName;
+                    }
+
+                    voucher.translatedName = nameTranslations[voucher.nameEn] || voucher.name;
+                    voucher.translatedCategory = categoryTranslations[voucher.categoryNameEn] || voucher.categoryName;
+                });
+            } catch (error) {
+                console.error('[redeem-points] Error translating voucher data:', error);
+            }
+        }
+
+        // Listen for language changes
+        window.addEventListener('languageChanged', async (event) => {
+            // Close any open modals
+            closeModal();
+            document.getElementById('successModal').classList.remove('active');
+            document.body.style.overflow = '';
+
+            // Reset to English names before re-translating
+            vouchersData.forEach(voucher => {
+                if (voucher.nameEn) {
+                    voucher.name = voucher.nameEn;
+                }
+                if (voucher.categoryNameEn) {
+                    voucher.categoryName = voucher.categoryNameEn;
+                }
+            });
+
+            // Translate and re-render
+            await translateVoucherData();
+            renderVouchers();
+        });
     </script>
 </body>
 

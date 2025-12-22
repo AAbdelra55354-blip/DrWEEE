@@ -54,11 +54,22 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+Arabic:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/rtl.css">
+
+    <!-- i18n FOUC Prevention -->
+    <script>
+    (function() {
+        var lang = localStorage.getItem('drweee_language') || 'en';
+        document.documentElement.lang = lang;
+        if (lang === 'ar') document.documentElement.dir = 'rtl';
+    })();
+    </script>
+
     <style>
         /* DR.WEEE Website - Main Styles */
         /* Modernized White and Green Sustainability Theme */
@@ -2277,6 +2288,7 @@
     <div id="footer-placeholder"></div>
 
     <!-- JavaScript Files -->
+    <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
     <script src="js/analytics.js"></script>
 

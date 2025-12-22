@@ -1,0 +1,525 @@
+/* rtl.css - Right-to-Left Layout Support for Arabic */
+/* This stylesheet is dynamically loaded when Arabic language is selected */
+
+/* ===== BASE RTL DIRECTION ===== */
+html[dir="rtl"] {
+    direction: rtl;
+}
+
+/* Arabic Font Support */
+html[dir="rtl"] body {
+    font-family: 'Noto Sans Arabic', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+html[dir="rtl"] h1,
+html[dir="rtl"] h2,
+html[dir="rtl"] h3,
+html[dir="rtl"] h4,
+html[dir="rtl"] h5,
+html[dir="rtl"] h6 {
+    font-family: 'Noto Sans Arabic', 'DM Serif Display', Georgia, serif;
+}
+
+/* ===== HEADER & NAVIGATION ===== */
+html[dir="rtl"] .header__container {
+    flex-direction: row-reverse !important;
+}
+
+html[dir="rtl"] .header__logo {
+    flex-direction: row-reverse !important;
+}
+
+html[dir="rtl"] .header__brand {
+    margin-left: 0 !important;
+    margin-right: 0.5rem !important;
+}
+
+html[dir="rtl"] .header__brand::after {
+    left: auto !important;
+    right: 0 !important;
+}
+
+html[dir="rtl"] .nav__list {
+    flex-direction: row-reverse !important;
+}
+
+html[dir="rtl"] .nav__link::after {
+    left: auto !important;
+    right: 0 !important;
+}
+
+html[dir="rtl"] .header__actions {
+    flex-direction: row-reverse !important;
+}
+
+/* ===== MOBILE MENU ===== */
+html[dir="rtl"] .mobile-menu-toggle {
+    left: var(--space-md) !important;
+    right: auto !important;
+}
+
+html[dir="rtl"] .mobile-menu {
+    right: auto !important;
+    left: 0 !important;
+    transform: translateX(-100%) !important;
+}
+
+html[dir="rtl"] .mobile-menu.is-open {
+    transform: translateX(0) !important;
+}
+
+html[dir="rtl"] .mobile-menu__header {
+    flex-direction: row-reverse !important;
+}
+
+html[dir="rtl"] .mobile-menu__close {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+}
+
+html[dir="rtl"] .mobile-menu__link {
+    text-align: right;
+    padding-left: 0;
+    padding-right: 1rem;
+}
+
+html[dir="rtl"] .mobile-menu__link::before {
+    left: auto;
+    right: 0;
+}
+
+html[dir="rtl"] .mobile-menu__link i {
+    margin-right: 0;
+    margin-left: 0.75rem;
+}
+
+/* ===== USER DROPDOWN ===== */
+html[dir="rtl"] .user-dropdown {
+    text-align: right;
+}
+
+html[dir="rtl"] .user-dropdown__menu {
+    left: 0;
+    right: auto;
+}
+
+html[dir="rtl"] .user-dropdown__item i {
+    margin-right: 0;
+    margin-left: 0.5rem;
+}
+
+/* ===== LANGUAGE SWITCHER ===== */
+html[dir="rtl"] .language-switcher {
+    margin-left: 0;
+    margin-right: 0.5rem;
+}
+
+html[dir="rtl"] .language-switcher__menu {
+    left: 0;
+    right: auto;
+}
+
+html[dir="rtl"] .language-switcher__trigger i:last-child {
+    margin-left: 0;
+    margin-right: 0.25rem;
+}
+
+/* ===== BUTTONS ===== */
+html[dir="rtl"] .btn i {
+    margin-right: 0;
+    margin-left: 0.5rem;
+}
+
+html[dir="rtl"] .btn i:last-child {
+    margin-left: 0;
+    margin-right: 0.5rem;
+}
+
+/* ===== HERO SECTION ===== */
+/* Hero content stays centered - RTL only affects text direction, not alignment */
+html[dir="rtl"] .hero__stats {
+    flex-direction: row-reverse;
+}
+
+/* ===== SECTIONS & CARDS ===== */
+/* Section headers remain centered for visual balance */
+
+html[dir="rtl"] .section__title::after {
+    left: auto;
+    right: 0;
+}
+
+html[dir="rtl"] .card__content {
+    text-align: right;
+}
+
+html[dir="rtl"] .service-card,
+html[dir="rtl"] .venture-card,
+html[dir="rtl"] .feature-card {
+    text-align: right;
+}
+
+/* ===== STATS SECTION ===== */
+html[dir="rtl"] .stat-item {
+    text-align: right;
+}
+
+html[dir="rtl"] .stat-item i {
+    margin-right: 0;
+    margin-left: 0.5rem;
+}
+
+/* ===== LISTS ===== */
+html[dir="rtl"] ul,
+html[dir="rtl"] ol {
+    padding-left: 0;
+    padding-right: 1.5rem;
+}
+
+html[dir="rtl"] li {
+    text-align: right;
+}
+
+html[dir="rtl"] .feature-list li::before {
+    left: auto;
+    right: 0;
+}
+
+html[dir="rtl"] .feature-list li {
+    padding-left: 0;
+    padding-right: 1.5rem;
+}
+
+/* ===== FORMS ===== */
+html[dir="rtl"] .form-group {
+    text-align: right;
+}
+
+html[dir="rtl"] .form-label {
+    text-align: right;
+}
+
+html[dir="rtl"] .form-input,
+html[dir="rtl"] .form-textarea,
+html[dir="rtl"] .form-select {
+    text-align: right;
+}
+
+html[dir="rtl"] .form-input::placeholder,
+html[dir="rtl"] .form-textarea::placeholder {
+    text-align: right;
+}
+
+html[dir="rtl"] .input-icon-left {
+    left: auto;
+    right: 1rem;
+}
+
+html[dir="rtl"] .input-icon-left ~ input {
+    padding-left: 1rem;
+    padding-right: 3rem;
+}
+
+html[dir="rtl"] .form-error {
+    text-align: right;
+}
+
+/* ===== FOOTER ===== */
+html[dir="rtl"] .footer__content {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .footer__section {
+    text-align: right;
+}
+
+html[dir="rtl"] .footer__links {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+html[dir="rtl"] .footer__links li {
+    text-align: right;
+}
+
+html[dir="rtl"] .footer__social {
+    justify-content: flex-end;
+}
+
+html[dir="rtl"] .footer__contact i {
+    margin-right: 0;
+    margin-left: 0.5rem;
+}
+
+html[dir="rtl"] .footer__bottom {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .footer__bottom-links {
+    flex-direction: row-reverse;
+}
+
+/* ===== GRID & FLEXBOX HELPERS ===== */
+html[dir="rtl"] .row {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .text-left {
+    text-align: right;
+}
+
+html[dir="rtl"] .text-right {
+    text-align: left;
+}
+
+html[dir="rtl"] .ml-auto {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+html[dir="rtl"] .mr-auto {
+    margin-right: 0;
+    margin-left: auto;
+}
+
+/* ===== ICONS & ARROWS ===== */
+html[dir="rtl"] .fa-arrow-right::before {
+    content: "\f060"; /* arrow-left icon */
+}
+
+html[dir="rtl"] .fa-arrow-left::before {
+    content: "\f061"; /* arrow-right icon */
+}
+
+html[dir="rtl"] .fa-chevron-right::before {
+    content: "\f053"; /* chevron-left icon */
+}
+
+html[dir="rtl"] .fa-chevron-left::before {
+    content: "\f054"; /* chevron-right icon */
+}
+
+/* ===== STORE PAGE ===== */
+html[dir="rtl"] .product-card {
+    text-align: right;
+}
+
+html[dir="rtl"] .product-card__price {
+    text-align: right;
+}
+
+html[dir="rtl"] .product-card__actions {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .cart-sidebar {
+    right: auto;
+    left: 0;
+    transform: translateX(-100%);
+}
+
+html[dir="rtl"] .cart-sidebar.is-open {
+    transform: translateX(0);
+}
+
+html[dir="rtl"] .cart-item {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .cart-item__details {
+    text-align: right;
+}
+
+/* ===== WEEE REWARDS PAGE ===== */
+html[dir="rtl"] .reward-card {
+    text-align: right;
+}
+
+html[dir="rtl"] .pickup-form {
+    text-align: right;
+}
+
+html[dir="rtl"] .category-item {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .category-item__info {
+    text-align: right;
+    margin-left: 0;
+    margin-right: 1rem;
+}
+
+/* ===== ENVIRONMENTAL IMPACT PAGE ===== */
+html[dir="rtl"] .certificate-card {
+    text-align: right;
+}
+
+html[dir="rtl"] .impact-stat {
+    text-align: right;
+}
+
+html[dir="rtl"] .share-buttons {
+    flex-direction: row-reverse;
+}
+
+/* ===== LOGIN PAGE ===== */
+html[dir="rtl"] .login-form {
+    text-align: right;
+}
+
+html[dir="rtl"] .login-form__header {
+    text-align: right;
+}
+
+html[dir="rtl"] .phone-input-group {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .country-code {
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    border-right: none;
+    border-left: 1px solid var(--medium-gray);
+}
+
+html[dir="rtl"] .phone-number-input {
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+/* ===== ABOUT PAGE ===== */
+/* Story Timeline RTL */
+html[dir="rtl"] .timeline-item {
+    border-left: none;
+    border-right: 4px solid var(--primary-green);
+}
+
+html[dir="rtl"] .timeline-content {
+    text-align: right;
+}
+
+/* ===== CONTACT PAGE ===== */
+html[dir="rtl"] .contact-info {
+    text-align: right;
+}
+
+html[dir="rtl"] .contact-info__item {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .contact-info__item i {
+    margin-right: 0;
+    margin-left: 1rem;
+}
+
+/* ===== BREADCRUMBS ===== */
+html[dir="rtl"] .breadcrumb {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .breadcrumb__separator {
+    transform: rotate(180deg);
+}
+
+/* ===== NOTIFICATIONS ===== */
+html[dir="rtl"] .notification {
+    left: var(--space-md);
+    right: auto;
+}
+
+html[dir="rtl"] .notification__content {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .notification__close {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+/* ===== TABLES ===== */
+html[dir="rtl"] table {
+    direction: rtl;
+}
+
+html[dir="rtl"] th,
+html[dir="rtl"] td {
+    text-align: right;
+}
+
+/* ===== MODALS ===== */
+html[dir="rtl"] .modal__close {
+    right: auto;
+    left: 1rem;
+}
+
+html[dir="rtl"] .modal__content {
+    text-align: right;
+}
+
+/* ===== ACCORDION / FAQ ===== */
+html[dir="rtl"] .accordion__header {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .accordion__icon {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+/* ===== TESTIMONIALS ===== */
+html[dir="rtl"] .testimonial {
+    text-align: right;
+}
+
+html[dir="rtl"] .testimonial__author {
+    flex-direction: row-reverse;
+}
+
+/* ===== CTA SECTIONS ===== */
+html[dir="rtl"] .cta-content {
+    text-align: right;
+}
+
+html[dir="rtl"] .cta-content__actions {
+    flex-direction: row-reverse;
+}
+
+/* ===== MEDIA QUERIES FOR RTL ===== */
+@media (max-width: 991px) {
+    html[dir="rtl"] .mobile-menu-toggle {
+        left: 1rem;
+        right: auto;
+    }
+
+    html[dir="rtl"] .header__logo {
+        margin-left: 0;
+        margin-right: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    html[dir="rtl"] .footer__content {
+        flex-direction: column;
+    }
+
+    html[dir="rtl"] .footer__section {
+        text-align: center;
+    }
+
+    html[dir="rtl"] .footer__social {
+        justify-content: center;
+    }
+
+    html[dir="rtl"] .hero__content {
+        text-align: center;
+    }
+
+    html[dir="rtl"] .hero__actions {
+        justify-content: center;
+    }
+}
+
+/* ===== PRINT STYLES FOR RTL ===== */
+@media print {
+    html[dir="rtl"] body {
+        direction: rtl;
+    }
+}

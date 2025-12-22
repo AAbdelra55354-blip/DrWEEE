@@ -41,10 +41,11 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="https://www.drweee.com/store.html">
 
-    <!-- Cache Control -->
+    <!-- Cache Control - Updated 2025-12-21 for i18n -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
+    <meta name="version" content="2.4.0">
 
     <!-- Favicon - Complete Set -->
     <link rel="icon" type="image/png" sizes="96x96" href="images/favicon/favicon-96x96.png">
@@ -62,11 +63,23 @@
     <script src="https://atlas.microsoft.com/sdk/javascript/service/2/atlas-service.min.js"></script>
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=DM+Serif+Display&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- CSS Files -->
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/main.css?v=2.4.0">
+    <link rel="stylesheet" href="css/components.css?v=2.4.0">
+    <link rel="stylesheet" href="css/rtl.css?v=2.4.0">
+
+    <!-- i18n FOUC Prevention -->
+    <script>
+    (function() {
+        var lang = localStorage.getItem('drweee_language') || 'en';
+        document.documentElement.lang = lang;
+        if (lang === 'ar') document.documentElement.dir = 'rtl';
+    })();
+    </script>
 
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -3330,8 +3343,8 @@
             </div>
             <div class="container">
                 <div class="header-content">
-                    <h1 class="header-title">Dr. WEEE Store</h1>
-                    <p class="header-subtitle">Premium Remanufactured Printer Supplies for a Sustainable Future</p>
+                    <h1 class="header-title" data-i18n="store.hero.title">Dr. WEEE Store</h1>
+                    <p class="header-subtitle" data-i18n="store.hero.subtitle">Premium Remanufactured Printer Supplies for a Sustainable Future</p>
                 </div>
             </div>
         </section>
@@ -3343,8 +3356,8 @@
                     <!-- Products Section (Left 2/3) -->
                     <div class="products-section">
                         <div class="products-header">
-                            <h2 class="products-title">Our Products</h2>
-                            <p class="products-subtitle">Click on products to view details and add them to your cart!
+                            <h2 class="products-title" data-i18n="store.products.title">Our Products</h2>
+                            <p class="products-subtitle" data-i18n="store.products.subtitle">Click on products to view details and add them to your cart!
                             </p>
                         </div>
                         <!-- Search Bar -->
@@ -3352,7 +3365,7 @@
                             <div class="search-input-wrapper">
                                 <i class="fas fa-search search-icon"></i>
                                 <input type="text" id="product-search" class="search-input"
-                                    placeholder="Search by product name or printer model (e.g., HP LaserJet, Canon MX920)...">
+                                    data-i18n-placeholder="store.search.placeholder" placeholder="Search by product name or printer model (e.g., HP LaserJet, Canon MX920)...">
                                 <button class="search-clear" id="search-clear" style="display: none;">
                                     <i class="fas fa-times"></i>
                                 </button>
@@ -3364,8 +3377,8 @@
                             <!-- Loading State Placeholder -->
                             <div class="state-container" id="loading-state">
                                 <i class="fas fa-spinner fa-spin"></i>
-                                <h3>Loading Products...</h3>
-                                <p>Please wait while we fetch our latest inventory.</p>
+                                <h3 data-i18n="store.loading.title">Loading Products...</h3>
+                                <p data-i18n="store.loading.description">Please wait while we fetch our latest inventory.</p>
                             </div>
                             <!-- Products will be dynamically inserted here -->
                         </div>
@@ -3374,15 +3387,15 @@
                     <!-- Cart Panel (Right 1/3) -->
                     <div class="cart-panel">
                         <div class="panel-header">
-                            <h3 class="panel-title">Shopping Cart</h3>
-                            <p class="panel-subtitle">Eco-friendly supplies for your business</p>
+                            <h3 class="panel-title" data-i18n="store.cart.title">Shopping Cart</h3>
+                            <p class="panel-subtitle" data-i18n="store.cart.subtitle">Eco-friendly supplies for your business</p>
                         </div>
 
                         <!-- Cart Items Container -->
                         <div class="cart-items" id="cart-items">
                             <div class="empty-cart">
                                 <div class="empty-icon">🛒</div>
-                                <p>Your cart is empty<br>Start shopping to see items here!</p>
+                                <p data-i18n-html="store.cart.empty">Your cart is empty<br>Start shopping to see items here!</p>
                             </div>
                         </div>
 
@@ -3417,15 +3430,15 @@
                 style="background: linear-gradient(135deg, #FF9800, #F57C00); width: 80px; height: 80px; margin: 0 auto 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
                 <i class="fas fa-lock"></i>
             </div>
-            <h2>Login Required</h2>
-            <p style="color: #666; margin-bottom: 2rem; line-height: 1.6;">To proceed with your order, please log in or
+            <h2 data-i18n="store.loginRequired.title">Login Required</h2>
+            <p style="color: #666; margin-bottom: 2rem; line-height: 1.6;" data-i18n="store.loginRequired.description">To proceed with your order, please log in or
                 create an account. This allows you to track your orders and manage your details.</p>
             <div class="login-modal-buttons" style="display: flex; gap: 1rem; justify-content: center;">
                 <a href="/login.html" class="btn btn-primary">
-                    <i class="fas fa-sign-in-alt"></i> Login / Register
+                    <i class="fas fa-sign-in-alt"></i> <span data-i18n="store.loginRequired.loginButton">Login / Register</span>
                 </a>
                 <button id="loginCancelBtn" class="btn btn-secondary">
-                    <i class="fas fa-times"></i> Cancel
+                    <i class="fas fa-times"></i> <span data-i18n="common.cancel">Cancel</span>
                 </button>
             </div>
         </div>
@@ -3434,7 +3447,7 @@
     <div id="deliveryDetailsModal" class="modal-overlay">
         <div class="modal location-modal" style="max-width: 800px;">
             <div class="location-modal-header">
-                <h2><i class="fas fa-shipping-fast"></i> Delivery Details</h2>
+                <h2><i class="fas fa-shipping-fast"></i> <span data-i18n="store.delivery.title">Delivery Details</span></h2>
                 <button class="close-btn" id="deliveryDetailsCloseBtn"><i class="fas fa-times"></i></button>
             </div>
             <div class="location-modal-body">
@@ -3442,17 +3455,17 @@
                 <div class="delivery-options"
                     style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
                     <div class="form-group">
-                        <label for="deliveryTime" style="font-weight: 500; margin-bottom: 0.5rem;">Preferred Delivery
+                        <label for="deliveryTime" style="font-weight: 500; margin-bottom: 0.5rem;" data-i18n="store.delivery.preferredTime">Preferred Delivery
                             Time</label>
                         <input type="datetime-local" id="deliveryTime" class="form-control"
                             style="width: 100%; padding: 0.875rem; border: 2px solid var(--medium-gray); border-radius: 12px; font-size: 1rem;">
                     </div>
                     <div class="form-group">
-                        <label for="paymentMethod" style="font-weight: 500; margin-bottom: 0.5rem;">Payment
+                        <label for="paymentMethod" style="font-weight: 500; margin-bottom: 0.5rem;" data-i18n="store.delivery.paymentMethod">Payment
                             Method</label>
                         <select id="paymentMethod" class="form-control"
                             style="width: 100%; padding: 0.875rem; border: 2px solid var(--medium-gray); border-radius: 12px; font-size: 1rem; background-color: white;">
-                            <option value="Cash on delivery" selected>Cash on delivery</option>
+                            <option value="Cash on delivery" selected data-i18n="store.delivery.cashOnDelivery">Cash on delivery</option>
                         </select>
                     </div>
                 </div>
@@ -3461,7 +3474,7 @@
                     <div class="search-container"
                         style="position: absolute; top: 10px; left: 10px; right: 10px; z-index: 10;">
                         <input type="text" id="locationSearchInput" class="search-input"
-                            placeholder="Search for your address..." autocomplete="off"
+                            data-i18n-placeholder="store.delivery.searchAddress" placeholder="Search for your address..." autocomplete="off"
                             style="width: 100%; padding: 12px 15px; border: 2px solid var(--medium-gray); border-radius: 50px; font-size: 14px; outline: none; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); background: white;">
                     </div>
                     <div id="locationMap" style="height: 100%; border-radius: 12px;"></div>
@@ -3471,29 +3484,29 @@
                 <div class="address-fields" id="addressFieldsContainer" style="display: none; margin-top: 1rem;">
                     <div class="address-field-row" style="display: flex; gap: 1rem;">
                         <div class="form-group" style="flex: 1;">
-                            <label for="addressStreet">Street Address</label>
-                            <input type="text" id="addressStreet" class="form-input" placeholder="Enter street address">
+                            <label for="addressStreet" data-i18n="store.delivery.streetAddress">Street Address</label>
+                            <input type="text" id="addressStreet" class="form-input" data-i18n-placeholder="store.delivery.enterStreet" placeholder="Enter street address">
                         </div>
                         <div class="form-group" style="flex: 1;">
-                            <label for="addressCity">City</label>
-                            <input type="text" id="addressCity" class="form-input" placeholder="Enter city">
+                            <label for="addressCity" data-i18n="store.delivery.city">City</label>
+                            <input type="text" id="addressCity" class="form-input" data-i18n-placeholder="store.delivery.enterCity" placeholder="Enter city">
                         </div>
                     </div>
                     <div class="address-field-row" style="display: flex; gap: 1rem;">
                         <div class="form-group" style="flex: 1;">
-                            <label for="addressState">State/Province</label>
-                            <input type="text" id="addressState" class="form-input" placeholder="Enter state">
+                            <label for="addressState" data-i18n="store.delivery.state">State/Province</label>
+                            <input type="text" id="addressState" class="form-input" data-i18n-placeholder="store.delivery.enterState" placeholder="Enter state">
                         </div>
                         <div class="form-group" style="flex: 1;">
-                            <label for="addressCountry">Country/Region</label>
-                            <input type="text" id="addressCountry" class="form-input" placeholder="Enter country">
+                            <label for="addressCountry" data-i18n="store.delivery.country">Country/Region</label>
+                            <input type="text" id="addressCountry" class="form-input" data-i18n-placeholder="store.delivery.enterCountry" placeholder="Enter country">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="location-modal-footer">
                 <button id="confirmDeliveryBtn" class="confirm-location-btn" disabled>
-                    <i class="fas fa-check"></i> Review Order
+                    <i class="fas fa-check"></i> <span data-i18n="store.delivery.reviewOrder">Review Order</span>
                 </button>
             </div>
         </div>
@@ -3502,18 +3515,18 @@
 
     <div id="confirmationModal" class="modal-overlay">
         <div class="modal success-modal" style="max-width: 600px; text-align: left;">
-            <h2 style="text-align: center; color: var(--primary-green);">Confirm Your Order</h2>
-            <p style="text-align: center; color: #666; margin-bottom: 2rem;">Please review the details below before
+            <h2 style="text-align: center; color: var(--primary-green);" data-i18n="store.confirmation.title">Confirm Your Order</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 2rem;" data-i18n="store.confirmation.description">Please review the details below before
                 submitting your order.</p>
             <div id="confirmationDetails" class="request-details">
             </div>
             <div class="login-modal-buttons"
                 style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
                 <button id="submitOrderBtn" class="btn btn-primary">
-                    <i class="fas fa-check-circle"></i> Submit Order
+                    <i class="fas fa-check-circle"></i> <span data-i18n="store.confirmation.submitOrder">Submit Order</span>
                 </button>
                 <button id="confirmationCancelBtn" class="btn btn-secondary">
-                    <i class="fas fa-edit"></i> Edit Details
+                    <i class="fas fa-edit"></i> <span data-i18n="store.confirmation.editDetails">Edit Details</span>
                 </button>
             </div>
         </div>
@@ -3530,12 +3543,12 @@
                     <span class="mobile-cart-badge" id="mobile-cart-badge">0</span>
                 </div>
                 <div class="mobile-cart-details">
-                    <span class="mobile-cart-label">Your Cart</span>
+                    <span class="mobile-cart-label" data-i18n="store.mobile.yourCart">Your Cart</span>
                     <span class="mobile-cart-total" id="mobile-cart-total">EGP 0</span>
                 </div>
             </div>
             <button class="mobile-cart-view-btn" id="mobile-cart-view-btn">
-                View
+                <span data-i18n="store.mobile.view">View</span>
                 <i class="fas fa-chevron-up"></i>
             </button>
         </div>
@@ -3549,7 +3562,7 @@
         <div class="mobile-cart-drawer-header">
             <h3 class="mobile-cart-drawer-title">
                 <i class="fas fa-shopping-cart"></i>
-                Shopping Cart
+                <span data-i18n="store.cart.title">Shopping Cart</span>
             </h3>
             <button class="mobile-cart-drawer-close" id="mobile-cart-drawer-close">
                 <i class="fas fa-times"></i>
@@ -3560,12 +3573,12 @@
         </div>
         <div class="mobile-cart-drawer-footer">
             <div class="mobile-cart-summary">
-                <span class="mobile-cart-summary-label">Total:</span>
+                <span class="mobile-cart-summary-label" data-i18n="store.cart.total">Total:</span>
                 <span class="mobile-cart-summary-value" id="mobile-cart-drawer-total">EGP 0</span>
             </div>
             <button class="mobile-checkout-btn" id="mobile-checkout-btn" disabled>
                 <i class="fas fa-credit-card"></i>
-                Proceed to Checkout
+                <span data-i18n="store.cart.proceedToCheckout">Proceed to Checkout</span>
             </button>
         </div>
     </div>
@@ -3650,6 +3663,205 @@
                 basePrice: 0
             };
 
+            // --- TRANSLATION HELPERS ---
+            // Cache for translated products to avoid re-translating
+            const translationCache = new Map();
+
+            // Get current language
+            function getCurrentLanguage() {
+                return localStorage.getItem('drweee_language') || 'en';
+            }
+
+            // Get i18n translation from loaded translations
+            function getI18n(key, replacements = {}) {
+                // Try to use the global DrWeeeI18n translate function
+                if (window.DrWeeeI18n && typeof window.DrWeeeI18n.translate === 'function') {
+                    // Pass replacements to translate function (uses {{param}} syntax internally)
+                    let text = window.DrWeeeI18n.translate(key, replacements);
+                    return text;
+                }
+                // Fallback: return key
+                console.warn('[Store] DrWeeeI18n not available for key:', key);
+                return key;
+            }
+
+            // Terminology corrections for known mistranslations
+            const terminologyCorrections = {
+                'ar': {
+                    'عربات': 'خراطيش',           // cartridges (not carts)
+                    'عربة': 'خرطوشة',            // cartridge (singular)
+                    'الطباعة': 'الطابعات',        // printers (context fix)
+                    'عربات الطابعات': 'خراطيش الطابعات', // printer cartridges
+                    'عربات الطباعة': 'خراطيش الطباعة'    // printing cartridges
+                },
+                'it': {
+                    // Add Italian corrections if needed
+                }
+            };
+
+            // Apply terminology corrections to translated text
+            function applyTerminologyCorrections(text, lang) {
+                if (!text || !terminologyCorrections[lang]) return text;
+
+                let correctedText = text;
+                const corrections = terminologyCorrections[lang];
+
+                for (const [wrong, correct] of Object.entries(corrections)) {
+                    correctedText = correctedText.replace(new RegExp(wrong, 'g'), correct);
+                }
+
+                return correctedText;
+            }
+
+            // Translate products using Azure Translator API
+            async function translateProducts(products) {
+                const currentLang = getCurrentLanguage();
+                console.log('🌐 Current language:', currentLang);
+
+                // Skip translation for English (source language)
+                if (currentLang === 'en') {
+                    console.log('🌐 English selected, skipping translation');
+                    return products;
+                }
+
+                // Map language codes
+                const langMap = { 'ar': 'ar', 'it': 'it' };
+                const targetLang = langMap[currentLang];
+                if (!targetLang) {
+                    console.log('🌐 Unknown language, skipping translation');
+                    return products;
+                }
+
+                // Check cache first
+                const cacheKey = `products_${targetLang}`;
+                if (translationCache.has(cacheKey)) {
+                    console.log('🌐 Using cached translations');
+                    const cachedTranslations = translationCache.get(cacheKey);
+                    return products.map(p => ({
+                        ...p,
+                        name: cachedTranslations[p.productid]?.name || p.name,
+                        description: cachedTranslations[p.productid]?.description || p.description,
+                        familyName: cachedTranslations[p.productid]?.familyName || p.familyName,
+                        _originalName: p.name,
+                        _originalDescription: p.description,
+                        _originalFamilyName: p.familyName
+                    }));
+                }
+
+                console.log(`🌐 Translating ${products.length} products to ${targetLang}...`);
+
+                try {
+                    // Collect all texts to translate (names, descriptions, and familyNames)
+                    const textsToTranslate = [];
+                    const textMap = []; // Maps index to {productId, field}
+
+                    products.forEach(product => {
+                        if (product.name) {
+                            textsToTranslate.push(product.name);
+                            textMap.push({ productId: product.productid, field: 'name' });
+                        }
+                        if (product.description) {
+                            textsToTranslate.push(product.description);
+                            textMap.push({ productId: product.productid, field: 'description' });
+                        }
+                        if (product.familyName) {
+                            textsToTranslate.push(product.familyName);
+                            textMap.push({ productId: product.productid, field: 'familyName' });
+                        }
+                    });
+
+                    console.log(`🌐 Texts to translate: ${textsToTranslate.length}`);
+
+                    if (textsToTranslate.length === 0) {
+                        return products;
+                    }
+
+                    // Call batch translation API
+                    const apiUrl = getApiBaseUrl() + '/api/translate-batch';
+                    console.log('🌐 Calling translation API:', apiUrl);
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({
+                            texts: textsToTranslate,
+                            targetLang: targetLang
+                        })
+                    });
+
+                    console.log('🌐 Translation API response status:', response.status);
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        console.warn('Translation API error:', response.status, errorText);
+                        return products;
+                    }
+
+                    const data = await response.json();
+                    console.log('🌐 Translation API response:', data);
+
+                    const translations = data.translations || [];
+
+                    // Check for warning (translation not configured)
+                    if (data.warning) {
+                        console.warn('⚠️ Translation warning:', data.warning);
+                    }
+
+                    // Build translation map with terminology corrections
+                    const productTranslations = {};
+                    translations.forEach((translatedText, index) => {
+                        const { productId, field } = textMap[index];
+                        if (!productTranslations[productId]) {
+                            productTranslations[productId] = {};
+                        }
+                        // Apply terminology corrections to fix known mistranslations
+                        productTranslations[productId][field] = applyTerminologyCorrections(translatedText, targetLang);
+                    });
+
+                    // Cache translations
+                    translationCache.set(cacheKey, productTranslations);
+
+                    console.log(`✅ Translated ${translations.length} texts`);
+
+                    // Apply translations to products
+                    return products.map(p => ({
+                        ...p,
+                        name: productTranslations[p.productid]?.name || p.name,
+                        description: productTranslations[p.productid]?.description || p.description,
+                        familyName: productTranslations[p.productid]?.familyName || p.familyName,
+                        _originalName: p.name,
+                        _originalDescription: p.description,
+                        _originalFamilyName: p.familyName
+                    }));
+
+                } catch (error) {
+                    console.error('❌ Translation error:', error);
+                    return products;
+                }
+            }
+
+            // Translate a single text
+            async function translateText(text, targetLang) {
+                if (!text || targetLang === 'en') return text;
+
+                try {
+                    const response = await fetch(getApiBaseUrl() + '/api/translate', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ text, targetLang })
+                    });
+
+                    if (!response.ok) return text;
+
+                    const data = await response.json();
+                    return data.translatedText || text;
+                } catch (error) {
+                    console.error('Translation error:', error);
+                    return text;
+                }
+            }
+
             // --- 1. DATA FETCHING ---
             async function fetchStoreProducts() {
                 console.log('Fetching store products...');
@@ -3667,7 +3879,8 @@
                     console.log('Store API Response:', data);
 
                     if (data.success && data.products) {
-                        allProducts = data.products;
+                        // Translate products if needed
+                        allProducts = await translateProducts(data.products);
                         console.log('Products loaded:', allProducts.length);
                         renderProducts(allProducts);
                     } else {
@@ -3933,6 +4146,7 @@
             function removeFromCart(productId) {
                 console.log('Removing from cart:', productId);
                 delete cart[productId];
+                saveCartToSession(); // Persist the removal to session storage
                 updateCartUI();
             }
 
@@ -3946,6 +4160,7 @@
                     if (cart[productId].emptyCartridges > newQuantity) {
                         cart[productId].emptyCartridges = newQuantity;
                     }
+                    saveCartToSession(); // Persist changes to session storage
                     updateCartUI();
                 }
             }
@@ -3957,6 +4172,7 @@
                 const validCount = Math.max(0, Math.min(newEmptyCount, maxEmpty));
 
                 cart[productId].emptyCartridges = validCount;
+                saveCartToSession(); // Persist changes to session storage
                 updateCartUI();
             }
 
@@ -3966,10 +4182,11 @@
                 const hasItems = cartItemsCount > 0;
 
                 if (!hasItems) {
+                    const emptyCartText = getI18n('store.cart.empty');
                     cartItems.innerHTML = `
                 <div class="empty-cart">
                     <div class="empty-icon">🛒</div>
-                    <p>Your cart is empty<br>Start shopping to see items here!</p>
+                    <p>${emptyCartText}</p>
                 </div>
             `;
                     cartSummary.style.display = 'none';
@@ -4008,6 +4225,13 @@
 
                     const subtitle = product.familyName || product.productnumber;
 
+                    // Get translated labels for cart item
+                    const cartridgesLabel = getI18n('store.cart.cartridges');
+                    const emptyLabel = getI18n('store.cart.emptyReturns');
+                    const subtotalLabel = getI18n('store.cart.subtotal');
+                    const discountLabel = getI18n('store.cart.discount');
+                    const totalLabelItem = getI18n('store.cart.total');
+
                     cartItemEl.innerHTML = `
                 <div class="cart-item-header-enhanced">
                     <div class="item-info">
@@ -4016,19 +4240,19 @@
                     </div>
                     <button class="remove-btn" data-product-id="${productId}">×</button>
                 </div>
-                
+
                 <div class="cart-item-details">
                     <div class="cart-control-group">
-                        <div class="control-group-title">Cartridges</div>
+                        <div class="control-group-title">${cartridgesLabel}</div>
                         <div class="quantity-controls">
                             <button class="qty-btn qty-decrease" data-product-id="${productId}">-</button>
                             <span class="qty-display">${quantity}</span>
                             <button class="qty-btn qty-increase" data-product-id="${productId}">+</button>
                         </div>
                     </div>
-                    
+
                     <div class="cart-control-group">
-                        <div class="control-group-title">Empty</div>
+                        <div class="control-group-title">${emptyLabel}</div>
                         <div class="quantity-controls">
                             <button class="qty-btn empty-decrease" data-product-id="${productId}" ${emptyCartridges <= 0 ? 'disabled' : ''}>-</button>
                             <span class="qty-display">${emptyCartridges}</span>
@@ -4039,17 +4263,17 @@
 
                 <div class="cart-pricing-summary">
                     <div class="price-row">
-                        <span>Subtotal:</span>
+                        <span>${subtotalLabel}</span>
                         <span>EGP ${subtotal.toLocaleString()}</span>
                     </div>
                     ${discountAmount > 0 ? `
                         <div class="price-row">
-                            <span>Discount:</span>
+                            <span>${discountLabel}</span>
                             <span class="price-discount">-EGP ${discountAmount.toLocaleString()}</span>
                         </div>
                     ` : ''}
                     <div class="price-row" style="border-top: 1px solid var(--light-gray); padding-top: 0.5rem; margin-top: 0.5rem; font-weight: 600;">
-                        <span>Total:</span>
+                        <span>${totalLabelItem}</span>
                         <span class="price-total">EGP ${itemTotal.toLocaleString()}</span>
                     </div>
                 </div>
@@ -4078,28 +4302,36 @@
                 const finalTotal = totalAmount - totalDiscount;
                 cartSummary.style.display = 'block';
 
+                // Get translated labels
+                const totalLabel = totalItems !== 1
+                    ? getI18n('store.cart.totalItemsPlural', { count: totalItems })
+                    : getI18n('store.cart.totalItems', { count: totalItems });
+                const tradeInLabel = getI18n('store.cart.tradeInSavings');
+                const earnPointsLabel = getI18n('store.cart.earnPoints', { points: totalWeeePoints.toLocaleString() });
+                const saveCO2Label = getI18n('store.cart.saveCO2', { amount: totalCo2Savings.toFixed(1) });
+
                 cartSummary.innerHTML = `
             <div class="summary-content">
                 <div class="summary-total-section">
-                    <span class="summary-total-label">Total (${totalItems} item${totalItems !== 1 ? 's' : ''})</span>
+                    <span class="summary-total-label">${totalLabel}</span>
                     <span class="summary-total-amount">EGP ${finalTotal.toLocaleString()}</span>
                 </div>
 
                 ${totalDiscount > 0 ? `
                     <div class="summary-discount-badge">
                         <i class="fas fa-recycle"></i>
-                        Trade-in savings: EGP ${totalDiscount.toLocaleString()}
+                        ${tradeInLabel} EGP ${totalDiscount.toLocaleString()}
                     </div>
                 ` : ''}
 
                 <div class="eco-impact-inline">
                     <div class="eco-impact-item">
                         <i class="fas fa-coins weee-icon"></i>
-                        <span>Earn <strong>${totalWeeePoints.toLocaleString()}</strong> points</span>
+                        <span>${earnPointsLabel}</span>
                     </div>
                     <div class="eco-impact-item">
                         <i class="fas fa-leaf co2-icon"></i>
-                        <span>Save <strong>${totalCo2Savings.toFixed(1)} kg</strong> CO₂</span>
+                        <span>${saveCO2Label}</span>
                     </div>
                 </div>
             </div>
@@ -4111,17 +4343,21 @@
                     existingButtonContainer.remove();
                 }
 
+                // Get translated button labels
+                const generateQuoteLabel = getI18n('store.cart.generateQuote');
+                const checkoutLabel = getI18n('store.cart.proceedToCheckout');
+
                 // Add buttons after cart summary
                 const buttonContainer = document.createElement('div');
                 buttonContainer.className = 'cart-action-buttons';
                 buttonContainer.innerHTML = `
             <button class="print-order-btn" id="print-order-btn">
                 <i class="fas fa-file-pdf"></i>
-                Generate Quote PDF
+                ${generateQuoteLabel}
             </button>
             <button class="checkout-btn" id="checkout-btn">
                 <i class="fas fa-shopping-cart"></i>
-                Proceed to Checkout
+                ${checkoutLabel}
             </button>
         `;
 
@@ -4706,7 +4942,7 @@
                     <span class="info-item-value">${prop.propertyValue}</span>
                 </li>
             `).join('') :
-                    '<li class="info-item"><span class="info-item-name">No specifications available</span><span class="info-item-value">—</span></li>';
+                    `<li class="info-item"><span class="info-item-name">${getI18n('store.modal.noSpecifications')}</span><span class="info-item-value">—</span></li>`;
 
                 // Compatible products
                 const compatibleProductsHtml = product.product_relationships.length > 0 ?
@@ -4716,7 +4952,7 @@
                     <div class="compatible-name">${rel.name}</div>
                 </div>
             `).join('') :
-                    '<div class="compatible-product-item"><div class="compatible-name">No compatible products listed</div></div>';
+                    `<div class="compatible-product-item"><div class="compatible-name">${getI18n('store.modal.noCompatibleProducts')}</div></div>`;
 
                 modalBody.innerHTML = `
             <div class="modal__content">
@@ -4727,9 +4963,9 @@
                         ${imageUrls.length > 0 ? mainImageHtml : ''}
                         <div class="modal__description-section">
                             <div class="modal__description-content">
-                                <p>${product.description || 'High-quality remanufactured cartridge designed to deliver exceptional print quality while supporting environmental sustainability.'}</p>
+                                <p>${product.description || getI18n('store.modal.defaultDescription')}</p>
                             </div>
-                          
+
                         </div>
                     </div>
 
@@ -4737,22 +4973,22 @@
                     <div class="modal__info-grid">
                         <!-- Pricing Information -->
                         <div class="info-card">
-                            <h4 class="info-card-title">Pricing Details</h4>
+                            <h4 class="info-card-title">${getI18n('store.modal.pricingDetails')}</h4>
                             <ul class="info-list">
                                 <li class="info-item">
-                                    <span class="info-item-name">Original Cost</span>
+                                    <span class="info-item-name">${getI18n('store.modal.originalCost')}</span>
                                     <span class="info-item-value">EGP ${originalCost.toLocaleString()}</span>
                                 </li>
                                 <li class="info-item">
-                                    <span class="info-item-name">Recycled Price</span>
+                                    <span class="info-item-name">${getI18n('store.modal.recycledPrice')}</span>
                                     <span class="info-item-value value-highlight">EGP ${recycledPrice.toLocaleString()}</span>
                                 </li>
                                 <li class="info-item">
-                                    <span class="info-item-name">You Save</span>
+                                    <span class="info-item-name">${getI18n('store.modal.youSave')}</span>
                                     <span class="info-item-value value-savings">${savings.toFixed(1)}%</span>
                                 </li>
                                 <li class="info-item">
-                                    <span class="info-item-name">WEEE Points</span>
+                                    <span class="info-item-name">${getI18n('store.modal.weeePoints')}</span>
                                     <span class="info-item-value value-eco">${weeePoints.toLocaleString()}</span>
                                 </li>
                             </ul>
@@ -4760,22 +4996,22 @@
 
                         <!-- Cost Analysis -->
                         <div class="info-card">
-                            <h4 class="info-card-title">Cost Per Page</h4>
+                            <h4 class="info-card-title">${getI18n('store.modal.costPerPage')}</h4>
                             <ul class="info-list">
                                 <li class="info-item">
-                                    <span class="info-item-name">Original</span>
+                                    <span class="info-item-name">${getI18n('store.modal.original')}</span>
                                     <span class="info-item-value">EGP ${costPerPageOriginal.toFixed(3)}</span>
                                 </li>
                                 <li class="info-item">
-                                    <span class="info-item-name">Remanufactured</span>
+                                    <span class="info-item-name">${getI18n('store.modal.remanufactured')}</span>
                                     <span class="info-item-value value-highlight">EGP ${costPerPageRemanufactured.toFixed(3)}</span>
                                 </li>
                                 <li class="info-item">
-                                    <span class="info-item-name">Savings/Page</span>
+                                    <span class="info-item-name">${getI18n('store.modal.savingsPerPage')}</span>
                                     <span class="info-item-value value-savings">EGP ${(costPerPageOriginal - costPerPageRemanufactured).toFixed(3)}</span>
                                 </li>
                                 <li class="info-item">
-                                    <span class="info-item-name">CO₂ Saved</span>
+                                    <span class="info-item-name">${getI18n('store.modal.co2Saved')}</span>
                                     <span class="info-item-value value-eco">${carbonSavings.toFixed(2)} kg</span>
                                 </li>
                             </ul>
@@ -4783,7 +5019,7 @@
 
                         <!-- Specifications -->
                         <div class="info-card">
-                            <h4 class="info-card-title">Specifications</h4>
+                            <h4 class="info-card-title">${getI18n('store.modal.specifications')}</h4>
                             <ul class="info-list">
                                 ${specificationsHtml}
                             </ul>
@@ -4792,17 +5028,17 @@
 
                     <!-- Compatible Products -->
                     <div class="modal__compatible-products">
-                        <h4 class="info-card-title">Compatible Printers</h4>
+                        <h4 class="info-card-title">${getI18n('store.modal.compatiblePrinters')}</h4>
                         <div class="compatible-products-grid">
                             ${compatibleProductsHtml}
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="modal__actions-panel">
                     <div class="actions-panel__scroll-area">
                         <div class="action-section quantity-section">
-                            <h4 class="action-section__title">Quantity</h4>
+                            <h4 class="action-section__title">${getI18n('store.modal.quantity')}</h4>
                             <div class="quantity-controls-modal">
                                 <button class="qty-btn-modal" id="modal-qty-decrease">-</button>
                                 <div class="qty-display-modal" id="modal-qty-display">1</div>
@@ -4813,14 +5049,14 @@
                         <div class="action-section">
                             <div class="trade-in-incentive">
                                 <div class="incentive-icon">♻️</div>
-                                <div class="incentive-title">Trade-In Program</div>
-                                <div class="incentive-description">Get 10% discount for each empty cartridge you return to us!</div>
+                                <div class="incentive-title">${getI18n('store.modal.tradeInProgram')}</div>
+                                <div class="incentive-description">${getI18n('store.modal.tradeInDescription')}</div>
                             </div>
-                            
+
                             <div class="empty-cartridge-section">
-                                <div class="control-group-title">Empty Cartridges to Trade</div>
+                                <div class="control-group-title">${getI18n('store.modal.emptyCartridgesToTrade')}</div>
                                 <div class="empty-cartridge-controls">
-                                    <span style="font-size: 0.9rem; color: var(--text-gray);">Count:</span>
+                                    <span style="font-size: 0.9rem; color: var(--text-gray);">${getI18n('store.modal.count')}</span>
                                     <div class="empty-qty-controls">
                                         <button class="empty-qty-btn" id="modal-empty-decrease">-</button>
                                         <div class="empty-qty-display" id="modal-empty-display">0</div>
@@ -4831,26 +5067,26 @@
                         </div>
 
                         <div class="action-section">
-                            <h4 class="action-section__title">Price Summary</h4>
+                            <h4 class="action-section__title">${getI18n('store.modal.priceSummary')}</h4>
                             <div class="price-summary">
                                 <div class="price-row">
-                                    <span>Unit Price:</span>
+                                    <span>${getI18n('store.modal.unitPrice')}</span>
                                     <span id="modal-unit-price">EGP ${modalState.basePrice.toLocaleString()}</span>
                                 </div>
                                 <div class="price-row">
-                                    <span>Quantity:</span>
+                                    <span>${getI18n('store.modal.quantityLabel')}</span>
                                     <span id="modal-quantity-display">1</span>
                                 </div>
                                 <div class="price-row">
-                                    <span>Subtotal:</span>
+                                    <span>${getI18n('store.modal.subtotal')}</span>
                                     <span id="modal-subtotal">EGP ${modalState.basePrice.toLocaleString()}</span>
                                 </div>
                                 <div class="price-row" id="modal-discount-row" style="display: none;">
-                                    <span>Discount:</span>
+                                    <span>${getI18n('store.modal.discount')}</span>
                                     <span class="price-discount" id="modal-discount">-EGP 0</span>
                                 </div>
                                 <div class="price-row">
-                                    <span>Total:</span>
+                                    <span>${getI18n('store.modal.total')}</span>
                                     <span class="price-total" id="modal-total">EGP ${modalState.basePrice.toLocaleString()}</span>
                                 </div>
                             </div>
@@ -4860,7 +5096,7 @@
                     <div class="actions-panel__fixed-bottom">
                         <div class="action-buttons">
                             <button class="btn-modal btn-add-to-cart-modal" id="modal-add-to-cart">
-                                <i class="fas fa-shopping-cart"></i> Add to Cart
+                                <i class="fas fa-shopping-cart"></i> ${getI18n('store.modal.addToCart')}
                             </button>
                         </div>
                     </div>
@@ -5036,7 +5272,7 @@
                 // ADDED: Safely handle the delivery time value
                 const deliveryTimeValue = deliveryTimeInput.value
                     ? new Date(deliveryTimeInput.value).toLocaleString('en-GB')
-                    : 'Not specified';
+                    : getI18n('store.confirmation.notSpecified');
 
                 // Get user-edited address from fields
                 const street = document.getElementById('addressStreet').value || '';
@@ -5049,16 +5285,16 @@
                 const formattedAddress = addressParts.length > 0 ? addressParts.join(', ') : selectedLocation.address;
 
                 detailsContainer.innerHTML = `
-        <div style="font-weight: 600; color: var(--primary-green);">Order Summary</div>
+        <div style="font-weight: 600; color: var(--primary-green);">${getI18n('store.confirmation.orderSummary')}</div>
         ${itemsHtml}
-        <div class="detail-row"><span>Subtotal</span> <span>EGP ${subtotal.toLocaleString()}</span></div>
-        <div class="detail-row"><span>Trade-in Discount</span> <span style="color: #4CAF50;">-EGP ${discount.toLocaleString()}</span></div>
-        <div class="detail-row" style="font-size: 1.2rem;"><strong>Total</strong> <strong>EGP ${(subtotal - discount).toLocaleString()}</strong></div>
+        <div class="detail-row"><span>${getI18n('store.confirmation.subtotal')}</span> <span>EGP ${subtotal.toLocaleString()}</span></div>
+        <div class="detail-row"><span>${getI18n('store.confirmation.tradeInDiscount')}</span> <span style="color: #4CAF50;">-EGP ${discount.toLocaleString()}</span></div>
+        <div class="detail-row" style="font-size: 1.2rem;"><strong>${getI18n('store.confirmation.total')}</strong> <strong>EGP ${(subtotal - discount).toLocaleString()}</strong></div>
         <hr style="margin: 1rem 0; border: 0; border-top: 1px solid #eee;">
-        <div style="font-weight: 600; color: var(--primary-green);">Delivery Details</div>
-        <div class="detail-row"><span><i class="fas fa-map-marker-alt"></i> Address</span> <span style="text-align: right;">${formattedAddress}</span></div>
-        <div class="detail-row"><span><i class="fas fa-clock"></i> Time</span> <span>${deliveryTimeValue}</span></div>
-        <div class="detail-row"><span><i class="fas fa-money-bill-wave"></i> Payment</span> <span>${paymentMethodInput.value}</span></div>
+        <div style="font-weight: 600; color: var(--primary-green);">${getI18n('store.confirmation.deliveryDetails')}</div>
+        <div class="detail-row"><span><i class="fas fa-map-marker-alt"></i> ${getI18n('store.confirmation.address')}</span> <span style="text-align: right;">${formattedAddress}</span></div>
+        <div class="detail-row"><span><i class="fas fa-clock"></i> ${getI18n('store.confirmation.time')}</span> <span>${deliveryTimeValue}</span></div>
+        <div class="detail-row"><span><i class="fas fa-money-bill-wave"></i> ${getI18n('store.confirmation.payment')}</span> <span>${paymentMethodInput.value}</span></div>
     `;
 
                 closeDeliveryDetailsModal(); // Hide the previous modal
@@ -5254,17 +5490,50 @@
             console.log('Initializing store page...');
             // NOTE: Header/footer loading is handled by main.js loadIncludes()
             // We just initialize store-specific functionality here
-            fetchStoreProducts();
             initializeSearch();
-            restoreCartFromSession();
+
+            // Function to initialize store after i18n is ready
+            async function initializeStore() {
+                console.log('🌐 i18n ready, initializing store...');
+                await fetchStoreProducts();
+                restoreCartFromSession();
+                updateCartUI();
+            }
+
+            // Check if i18n is already initialized
+            if (window.DrWeeeI18n) {
+                initializeStore();
+            } else {
+                // Wait for i18n to be ready
+                window.addEventListener('i18nReady', initializeStore, { once: true });
+            }
+
+            // Listen for language changes to re-translate products
+            window.addEventListener('languageChanged', async (e) => {
+                console.log('🌐 Language changed to:', e.detail?.language);
+                // Clear translation cache to force re-translation
+                translationCache.clear();
+                // Re-fetch and translate products
+                await fetchStoreProducts();
+                // Update cart items with translated product names
+                Object.keys(cart).forEach(productId => {
+                    const translatedProduct = allProducts.find(p => p.productid === productId);
+                    if (translatedProduct && cart[productId]) {
+                        cart[productId].product = translatedProduct;
+                    }
+                });
+                // Update cart UI with new translations
+                updateCartUI();
+            });
         });
    
    
    </script>
 
     <!-- JavaScript Files -->
-    <script src="js/main.js"></script>
-    <script src="js/analytics.js"></script>
+    <script src="js/i18n.js?v=2.4.0"></script>
+    <script src="js/main.js?v=2.4.0"></script>
+    <script src="js/analytics.js?v=2.4.0"></script>
 </body>
 
 </html>

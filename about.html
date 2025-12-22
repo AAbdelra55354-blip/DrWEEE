@@ -55,12 +55,22 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@300;400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+Arabic:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/rtl.css">
+
+    <!-- i18n FOUC Prevention -->
+    <script>
+    (function() {
+        var lang = localStorage.getItem('drweee_language') || 'en';
+        document.documentElement.lang = lang;
+        if (lang === 'ar') document.documentElement.dir = 'rtl';
+    })();
+    </script>
 
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -97,12 +107,12 @@
             <div class="container">
                 <div class="hero__content">
                     <div class="hero__text">
-                        <span class="hero__subtitle">Founder & Chairman</span>
+                        <span class="hero__subtitle" data-i18n="about.hero.subtitle">Founder & Chairman</span>
                         <h1 class="hero__title" data-animate-reveal>
-                            <span class="hero__title-main">Essam Hashem</span>
-                            <span class="hero__title-sub">Environmental Entrepreneur & Sustainability Leader</span>
+                            <span class="hero__title-main" data-i18n="about.hero.name">Essam Hashem</span>
+                            <span class="hero__title-sub" data-i18n="about.hero.role">Environmental Entrepreneur & Sustainability Leader</span>
                         </h1>
-                        <p class="hero__description">
+                        <p class="hero__description" data-i18n="about.hero.description">
                             A visionary Egyptian entrepreneur with extensive experience in e-waste management,
                             circular economy principles, and green technology innovation. Leading the transformation
                             of environmental challenges into sustainable business opportunities across multiple
@@ -111,10 +121,10 @@
 
                         <div class="hero__actions">
                             <a href="#personal-story" class="btn btn--white btn--lg magnetic-btn">
-                                <span><i class="fas fa-book-open"></i> Read My Story</span>
+                                <span data-i18n="about.hero.readStory"><i class="fas fa-book-open"></i> Read My Story</span>
                             </a>
                             <a href="#achievements" class="btn btn--outline btn--lg magnetic-btn">
-                                <span><i class="fas fa-trophy"></i> View Achievements</span>
+                                <span data-i18n="about.hero.viewAchievements"><i class="fas fa-trophy"></i> View Achievements</span>
                             </a>
                         </div>
                     </div>
@@ -125,65 +135,58 @@
         <!-- Personal Story Section -->
         <section class="section personal-story" id="personal-story">
             <div class="container">
-                <div class="row">
-                    <div class="col-6">
-                        <div class="personal-story__content animate-on-scroll">
-                            <span class="section__subtitle">My Journey</span>
-                            <h2 class="section__title">From Vision to Global Impact</h2>
-                            
+                <!-- Section Header - Full Width Centered -->
+                <div class="section__header animate-on-scroll">
+                    <span class="section__subtitle" data-i18n="about.story.subtitle">My Journey</span>
+                    <h2 class="section__title" data-i18n="about.story.title">From Vision to Global Impact</h2>
+                </div>
 
-                            <div class="story-timeline">
-                                <div class="timeline-item">
-                                    
-                                    <div class="timeline-content">
-                                        <h4>The Beginning</h4>
-                                        <p>
-                                            Recognizing the growing e-waste crisis in Egypt and the MENA region,
-                                            I saw an opportunity to create innovative solutions that could turn
-                                            environmental challenges into business opportunities.
-                                        </p>
-                                    </div>
-                                </div>
+                <div class="personal-story__content animate-on-scroll">
+                    <div class="story-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <h4 data-i18n="about.story.beginning.title">The Beginning</h4>
+                                <p data-i18n="about.story.beginning.description">
+                                    Recognizing the growing e-waste crisis in Egypt and the MENA region,
+                                    I saw an opportunity to create innovative solutions that could turn
+                                    environmental challenges into business opportunities.
+                                </p>
+                            </div>
+                        </div>
 
-                                <div class="timeline-item">
-                                    
-                                    <div class="timeline-content">
-                                        <h4>Education & Expertise</h4>
-                                        <p>
-                                            Pursued specialized education at the United Nations University in Italy,
-                                            earning a Diploma in E-Waste Management with focus on circular economy,
-                                            regulatory compliance, and sustainable recycling methods.
-                                        </p>
-                                    </div>
-                                </div>
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <h4 data-i18n="about.story.education.title">Education & Expertise</h4>
+                                <p data-i18n="about.story.education.description">
+                                    Pursued specialized education at the United Nations University in Italy,
+                                    earning a Diploma in E-Waste Management with focus on circular economy,
+                                    regulatory compliance, and sustainable recycling methods.
+                                </p>
+                            </div>
+                        </div>
 
-                                <div class="timeline-item">
-                                   
-                                    <div class="timeline-content">
-                                        <h4>Founding DR.WEEE</h4>
-                                        <p>
-                                            Established Egypt's first comprehensive e-waste recycling company,
-                                            creating innovative collection schemes and developing local manufacturing
-                                            capabilities for recycling equipment.
-                                        </p>
-                                    </div>
-                                </div>
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <h4 data-i18n="about.story.founding.title">Founding DR.WEEE</h4>
+                                <p data-i18n="about.story.founding.description">
+                                    Established Egypt's first comprehensive e-waste recycling company,
+                                    creating innovative collection schemes and developing local manufacturing
+                                    capabilities for recycling equipment.
+                                </p>
+                            </div>
+                        </div>
 
-                                <div class="timeline-item">
-                                   
-                                    <div class="timeline-content">
-                                        <h4>Global Expansion</h4>
-                                        <p>
-                                            Expanded operations internationally through strategic partnerships and
-                                            franchise models, reaching 11+ countries across Africa, Europe, and Asia
-                                            while maintaining focus on sustainable practices.
-                                        </p>
-                                    </div>
-                                </div>
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <h4 data-i18n="about.story.expansion.title">Global Expansion</h4>
+                                <p data-i18n="about.story.expansion.description">
+                                    Expanded operations internationally through strategic partnerships and
+                                    franchise models, reaching 11+ countries across Africa, Europe, and Asia
+                                    while maintaining focus on sustainable practices.
+                                </p>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>
@@ -192,9 +195,9 @@
         <section class="section section--light vision-mission" id="vision-mission">
             <div class="container">
                 <div class="section__header animate-on-scroll">
-                    <span class="section__subtitle">Our Foundation</span>
-                    <h2 class="section__title">Vision, Mission & Values</h2>
-                    <p class="section__description">
+                    <span class="section__subtitle" data-i18n="about.visionMission.subtitle">Our Foundation</span>
+                    <h2 class="section__title" data-i18n="about.visionMission.title">Vision, Mission & Values</h2>
+                    <p class="section__description" data-i18n="about.visionMission.description">
                         Our guiding principles drive every decision and action as we work towards
                         a more sustainable and environmentally conscious future.
                     </p>
@@ -205,8 +208,8 @@
                         <div class="vm-card__icon">
                             <i class="fas fa-eye"></i>
                         </div>
-                        <h3 class="vm-card__title">Our Vision</h3>
-                        <p class="vm-card__description">
+                        <h3 class="vm-card__title" data-i18n="about.visionMission.vision.title">Our Vision</h3>
+                        <p class="vm-card__description" data-i18n="about.visionMission.vision.description">
                             To maximize the use of resources and their optimal exploitation to achieve profits
                             while finding smarter and more innovative sustainable solutions through green
                             information technology. Supporting appropriate methods for preserving the environment
@@ -219,8 +222,8 @@
                         <div class="vm-card__icon">
                             <i class="fas fa-bullseye"></i>
                         </div>
-                        <h3 class="vm-card__title">Our Mission</h3>
-                        <p class="vm-card__description">
+                        <h3 class="vm-card__title" data-i18n="about.visionMission.mission.title">Our Mission</h3>
+                        <p class="vm-card__description" data-i18n="about.visionMission.mission.description">
                             To transform challenges into opportunities through continuous development and
                             innovation. We overcome environmental and business challenges by providing
                             comprehensive solutions using green information technology, creating value
@@ -232,31 +235,31 @@
                         <div class="vm-card__icon">
                             <i class="fas fa-heart"></i>
                         </div>
-                        <h3 class="vm-card__title">Our Values</h3>
+                        <h3 class="vm-card__title" data-i18n="about.visionMission.values.title">Our Values</h3>
                         <div class="values-list">
                             <div class="value-item">
                                 <i class="fas fa-leaf"></i>
-                                <span>Environmental Stewardship</span>
+                                <span data-i18n="about.visionMission.values.stewardship">Environmental Stewardship</span>
                             </div>
                             <div class="value-item">
                                 <i class="fas fa-lightbulb"></i>
-                                <span>Innovation Excellence</span>
+                                <span data-i18n="about.visionMission.values.innovation">Innovation Excellence</span>
                             </div>
                             <div class="value-item">
                                 <i class="fas fa-handshake"></i>
-                                <span>Collaborative Partnerships</span>
+                                <span data-i18n="about.visionMission.values.partnerships">Collaborative Partnerships</span>
                             </div>
                             <div class="value-item">
                                 <i class="fas fa-chart-line"></i>
-                                <span>Sustainable Growth</span>
+                                <span data-i18n="about.visionMission.values.growth">Sustainable Growth</span>
                             </div>
                             <div class="value-item">
                                 <i class="fas fa-users"></i>
-                                <span>Social Responsibility</span>
+                                <span data-i18n="about.visionMission.values.responsibility">Social Responsibility</span>
                             </div>
                             <div class="value-item">
                                 <i class="fas fa-shield-alt"></i>
-                                <span>Quality Assurance</span>
+                                <span data-i18n="about.visionMission.values.quality">Quality Assurance</span>
                             </div>
                         </div>
                     </div>
@@ -268,9 +271,9 @@
         <section class="section section--light leadership-roles" id="leadership-roles">
             <div class="container">
                 <div class="section__header animate-on-scroll">
-                    <span class="section__subtitle">Professional Leadership</span>
-                    <h2 class="section__title">Multiple Companies, One Vision</h2>
-                    <p class="section__description">
+                    <span class="section__subtitle" data-i18n="about.leadership.subtitle">Professional Leadership</span>
+                    <h2 class="section__title" data-i18n="about.leadership.title">Multiple Companies, One Vision</h2>
+                    <p class="section__description" data-i18n="about.leadership.description">
                         Leading a diverse portfolio of companies, each contributing to the circular economy
                         and sustainable development across different industries and markets.
                     </p>
@@ -283,19 +286,19 @@
                                 <i class="fas fa-recycle"></i>
                             </div>
                             <div class="leadership-card__title">
-                                <h3>Chairman</h3>
-                                <h4>DR.WEEE Smart Green IT Solutions</h4>
+                                <h3 data-i18n="about.leadership.drweee.role">Chairman</h3>
+                                <h4 data-i18n="about.leadership.drweee.company">DR.WEEE Smart Green IT Solutions</h4>
                             </div>
                         </div>
-                        <p class="leadership-card__description">
+                        <p class="leadership-card__description" data-i18n="about.leadership.drweee.description">
                             Egypt's first e-waste recycling company, focusing on comprehensive material recovery,
                             environmental awareness, and innovative collection schemes including mobile applications
                             for individual users.
                         </p>
                         <div class="leadership-card__achievements">
-                            <span class="achievement-tag">First in Egypt</span>
-                            <span class="achievement-tag">Mobile App Innovation</span>
-                            <span class="achievement-tag">Material Recovery</span>
+                            <span class="achievement-tag" data-i18n="about.leadership.drweee.tag1">First in Egypt</span>
+                            <span class="achievement-tag" data-i18n="about.leadership.drweee.tag2">Mobile App Innovation</span>
+                            <span class="achievement-tag" data-i18n="about.leadership.drweee.tag3">Material Recovery</span>
                         </div>
                     </div>
 
@@ -305,18 +308,18 @@
                                 <i class="fas fa-industry"></i>
                             </div>
                             <div class="leadership-card__title">
-                                <h3>Chairman</h3>
-                                <h4>Ecoo Industrial Systems</h4>
+                                <h3 data-i18n="about.leadership.ecoo.role">Chairman</h3>
+                                <h4 data-i18n="about.leadership.ecoo.company">Ecoo Industrial Systems</h4>
                             </div>
                         </div>
-                        <p class="leadership-card__description">
+                        <p class="leadership-card__description" data-i18n="about.leadership.ecoo.description">
                             Develops locally manufactured recycling equipment, reducing import dependency
                             and providing cost-effective machinery solutions for the regional market.
                         </p>
                         <div class="leadership-card__achievements">
-                            <span class="achievement-tag">Local Manufacturing</span>
-                            <span class="achievement-tag">Import Reduction</span>
-                            <span class="achievement-tag">Cost-Effective</span>
+                            <span class="achievement-tag" data-i18n="about.leadership.ecoo.tag1">Local Manufacturing</span>
+                            <span class="achievement-tag" data-i18n="about.leadership.ecoo.tag2">Import Reduction</span>
+                            <span class="achievement-tag" data-i18n="about.leadership.ecoo.tag3">Cost-Effective</span>
                         </div>
                     </div>
 
@@ -326,18 +329,18 @@
                                 <i class="fas fa-print"></i>
                             </div>
                             <div class="leadership-card__title">
-                                <h3>Co-founder & Managing Partner</h3>
-                                <h4>Spear Ink</h4>
+                                <h3 data-i18n="about.leadership.spearink.role">Co-founder & Managing Partner</h3>
+                                <h4 data-i18n="about.leadership.spearink.company">Spear Ink</h4>
                             </div>
                         </div>
-                        <p class="leadership-card__description">
+                        <p class="leadership-card__description" data-i18n="about.leadership.spearink.description">
                             Specializes in remanufactured toner cartridges and Managed Print Services (MPS),
                             with international expansion including franchising in India and exports to 11+ countries.
                         </p>
                         <div class="leadership-card__achievements">
-                            <span class="achievement-tag">Global Reach</span>
-                            <span class="achievement-tag">11+ Countries</span>
-                            <span class="achievement-tag">Franchise Model</span>
+                            <span class="achievement-tag" data-i18n="about.leadership.spearink.tag1">Global Reach</span>
+                            <span class="achievement-tag" data-i18n="about.leadership.spearink.tag2">11+ Countries</span>
+                            <span class="achievement-tag" data-i18n="about.leadership.spearink.tag3">Franchise Model</span>
                         </div>
                     </div>
 
@@ -347,18 +350,18 @@
                                 <i class="fas fa-globe-middle-east"></i>
                             </div>
                             <div class="leadership-card__title">
-                                <h3>Co-founder & Managing Partner</h3>
-                                <h4>Kayan for Sustainable Development</h4>
+                                <h3 data-i18n="about.leadership.kayan.role">Co-founder & Managing Partner</h3>
+                                <h4 data-i18n="about.leadership.kayan.company">Kayan for Sustainable Development</h4>
                             </div>
                         </div>
-                        <p class="leadership-card__description">
+                        <p class="leadership-card__description" data-i18n="about.leadership.kayan.description">
                             Expands waste management initiatives into the MENA region, fostering cross-border
                             collaboration in sustainable development and environmental solutions.
                         </p>
                         <div class="leadership-card__achievements">
-                            <span class="achievement-tag">MENA Expansion</span>
-                            <span class="achievement-tag">Regional Focus</span>
-                            <span class="achievement-tag">Cross-border</span>
+                            <span class="achievement-tag" data-i18n="about.leadership.kayan.tag1">MENA Expansion</span>
+                            <span class="achievement-tag" data-i18n="about.leadership.kayan.tag2">Regional Focus</span>
+                            <span class="achievement-tag" data-i18n="about.leadership.kayan.tag3">Cross-border</span>
                         </div>
                     </div>
 
@@ -368,18 +371,18 @@
                                 <i class="fas fa-cogs"></i>
                             </div>
                             <div class="leadership-card__title">
-                                <h3>Executive Director</h3>
-                                <h4>R.E.G Italy (Egypt Branch)</h4>
+                                <h3 data-i18n="about.leadership.reg.role">Executive Director</h3>
+                                <h4 data-i18n="about.leadership.reg.company">R.E.G Italy (Egypt Branch)</h4>
                             </div>
                         </div>
-                        <p class="leadership-card__description">
+                        <p class="leadership-card__description" data-i18n="about.leadership.reg.description">
                             Oversees industrial waste recycling solutions, contributing to cleaner industrial
                             practices and large-scale resource recovery operations.
                         </p>
                         <div class="leadership-card__achievements">
-                            <span class="achievement-tag">Industrial Scale</span>
-                            <span class="achievement-tag">Italian Partnership</span>
-                            <span class="achievement-tag">Resource Recovery</span>
+                            <span class="achievement-tag" data-i18n="about.leadership.reg.tag1">Industrial Scale</span>
+                            <span class="achievement-tag" data-i18n="about.leadership.reg.tag2">Italian Partnership</span>
+                            <span class="achievement-tag" data-i18n="about.leadership.reg.tag3">Resource Recovery</span>
                         </div>
                     </div>
 
@@ -389,18 +392,18 @@
                                 <i class="fas fa-tools"></i>
                             </div>
                             <div class="leadership-card__title">
-                                <h3>Official Agent</h3>
-                                <h4>Rimac Swiss Machines</h4>
+                                <h3 data-i18n="about.leadership.rimac.role">Official Agent</h3>
+                                <h4 data-i18n="about.leadership.rimac.company">Rimac Swiss Machines</h4>
                             </div>
                         </div>
-                        <p class="leadership-card__description">
+                        <p class="leadership-card__description" data-i18n="about.leadership.rimac.description">
                             Represents advanced Swiss recycling technology in Egypt, facilitating technology
                             transfer and enhancing local waste management capabilities.
                         </p>
                         <div class="leadership-card__achievements">
-                            <span class="achievement-tag">Swiss Technology</span>
-                            <span class="achievement-tag">Technology Transfer</span>
-                            <span class="achievement-tag">Local Enhancement</span>
+                            <span class="achievement-tag" data-i18n="about.leadership.rimac.tag1">Swiss Technology</span>
+                            <span class="achievement-tag" data-i18n="about.leadership.rimac.tag2">Technology Transfer</span>
+                            <span class="achievement-tag" data-i18n="about.leadership.rimac.tag3">Local Enhancement</span>
                         </div>
                     </div>
                 </div>
@@ -411,9 +414,9 @@
         <section class="section section--dark expertise-section" id="expertise">
             <div class="container">
                 <div class="section__header animate-on-scroll">
-                    <span class="section__subtitle">Core Expertise</span>
-                    <h2 class="section__title">Specialized Knowledge & Skills</h2>
-                    <p class="section__description">
+                    <span class="section__subtitle" data-i18n="about.expertise.subtitle">Core Expertise</span>
+                    <h2 class="section__title" data-i18n="about.expertise.title">Specialized Knowledge & Skills</h2>
+                    <p class="section__description" data-i18n="about.expertise.description">
                         Deep expertise across multiple domains of sustainability, technology, and business
                         development, enabling comprehensive solutions for complex environmental challenges.
                     </p>
@@ -424,8 +427,8 @@
                         <div class="expertise-card__icon">
                             <i class="fas fa-recycle"></i>
                         </div>
-                        <h3 class="expertise-card__title">E-Waste Recycling</h3>
-                        <p class="expertise-card__description">
+                        <h3 class="expertise-card__title" data-i18n="about.expertise.ewaste.title">E-Waste Recycling</h3>
+                        <p class="expertise-card__description" data-i18n="about.expertise.ewaste.description">
                             Advanced electronic waste disposal techniques, material recovery systems,
                             and pollution reduction strategies with focus on extracting valuable materials
                             while safely handling hazardous components.
@@ -436,8 +439,8 @@
                         <div class="expertise-card__icon">
                             <i class="fas fa-print"></i>
                         </div>
-                        <h3 class="expertise-card__title">Sustainable Printing</h3>
-                        <p class="expertise-card__description">
+                        <h3 class="expertise-card__title" data-i18n="about.expertise.printing.title">Sustainable Printing</h3>
+                        <p class="expertise-card__description" data-i18n="about.expertise.printing.description">
                             Remanufacturing toner cartridges, reducing plastic waste, and integrating
                             carbon footprint tracking into printing solutions for environmental impact reduction.
                         </p>
@@ -447,8 +450,8 @@
                         <div class="expertise-card__icon">
                             <i class="fas fa-cogs"></i>
                         </div>
-                        <h3 class="expertise-card__title">Green Technology</h3>
-                        <p class="expertise-card__description">
+                        <h3 class="expertise-card__title" data-i18n="about.expertise.greentech.title">Green Technology</h3>
+                        <p class="expertise-card__description" data-i18n="about.expertise.greentech.description">
                             Localized green technology development, cost-effective recycling machinery
                             production, and innovative solutions for industrial sustainability challenges.
                         </p>
@@ -458,8 +461,8 @@
                         <div class="expertise-card__icon">
                             <i class="fas fa-store"></i>
                         </div>
-                        <h3 class="expertise-card__title">Franchise Development</h3>
-                        <p class="expertise-card__description">
+                        <h3 class="expertise-card__title" data-i18n="about.expertise.franchise.title">Franchise Development</h3>
+                        <p class="expertise-card__description" data-i18n="about.expertise.franchise.description">
                             Scalable franchise models for e-waste collection and sustainable printing solutions,
                             enabling global expansion while maintaining quality and environmental standards.
                         </p>
@@ -469,8 +472,8 @@
                         <div class="expertise-card__icon">
                             <i class="fas fa-globe"></i>
                         </div>
-                        <h3 class="expertise-card__title">International Partnerships</h3>
-                        <p class="expertise-card__description">
+                        <h3 class="expertise-card__title" data-i18n="about.expertise.partnerships.title">International Partnerships</h3>
+                        <p class="expertise-card__description" data-i18n="about.expertise.partnerships.description">
                             Building strategic partnerships with international organizations, governments,
                             and industry leaders to advance global sustainability initiatives.
                         </p>
@@ -480,8 +483,8 @@
                         <div class="expertise-card__icon">
                             <i class="fas fa-graduation-cap"></i>
                         </div>
-                        <h3 class="expertise-card__title">Education & Awareness</h3>
-                        <p class="expertise-card__description">
+                        <h3 class="expertise-card__title" data-i18n="about.expertise.education.title">Education & Awareness</h3>
+                        <p class="expertise-card__description" data-i18n="about.expertise.education.description">
                             Developing educational programs, awareness campaigns, and training initiatives
                             to promote environmental consciousness and sustainable practices.
                         </p>
@@ -494,9 +497,9 @@
         <section class="section achievements-section" id="achievements">
             <div class="container">
                 <div class="section__header animate-on-scroll">
-                    <span class="section__subtitle">Recognition</span>
-                    <h2 class="section__title">Key Achievements & Milestones</h2>
-                    <p class="section__description">
+                    <span class="section__subtitle" data-i18n="about.achievements.subtitle">Recognition</span>
+                    <h2 class="section__title" data-i18n="about.achievements.title">Key Achievements & Milestones</h2>
+                    <p class="section__description" data-i18n="about.achievements.description">
                         Significant accomplishments that demonstrate our commitment to environmental
                         innovation and sustainable business development.
                     </p>
@@ -506,8 +509,8 @@
                     <div class="achievement-item animate-on-scroll">
                         <div class="achievement-year">2024</div>
                         <div class="achievement-content">
-                            <h4>Regional Sustainability Excellence Award</h4>
-                            <p>Recognition for outstanding contribution to environmental protection and circular economy
+                            <h4 data-i18n="about.achievements.y2024.title">Regional Sustainability Excellence Award</h4>
+                            <p data-i18n="about.achievements.y2024.description">Recognition for outstanding contribution to environmental protection and circular economy
                                 implementation in the MENA region.</p>
                         </div>
                     </div>
@@ -515,8 +518,8 @@
                     <div class="achievement-item animate-on-scroll">
                         <div class="achievement-year">2023</div>
                         <div class="achievement-content">
-                            <h4>AI-Powered Technology Implementation</h4>
-                            <p>Successfully implemented AI-driven sorting technology, increasing processing efficiency
+                            <h4 data-i18n="about.achievements.y2023.title">AI-Powered Technology Implementation</h4>
+                            <p data-i18n="about.achievements.y2023.description">Successfully implemented AI-driven sorting technology, increasing processing efficiency
                                 by 40% across all facilities.</p>
                         </div>
                     </div>
@@ -524,8 +527,8 @@
                     <div class="achievement-item animate-on-scroll">
                         <div class="achievement-year">2022</div>
                         <div class="achievement-content">
-                            <h4>Global Expansion Milestone</h4>
-                            <p>Reached 11+ countries through strategic partnerships and franchise development,
+                            <h4 data-i18n="about.achievements.y2022.title">Global Expansion Milestone</h4>
+                            <p data-i18n="about.achievements.y2022.description">Reached 11+ countries through strategic partnerships and franchise development,
                                 establishing DR.WEEE as a global brand.</p>
                         </div>
                     </div>
@@ -533,8 +536,8 @@
                     <div class="achievement-item animate-on-scroll">
                         <div class="achievement-year">2021</div>
                         <div class="achievement-content">
-                            <h4>UN University Graduation</h4>
-                            <p>Completed specialized Diploma in E-Waste Management at United Nations University, Italy,
+                            <h4 data-i18n="about.achievements.y2021.title">UN University Graduation</h4>
+                            <p data-i18n="about.achievements.y2021.description">Completed specialized Diploma in E-Waste Management at United Nations University, Italy,
                                 focusing on circular economy principles.</p>
                         </div>
                     </div>
@@ -542,8 +545,8 @@
                     <div class="achievement-item animate-on-scroll">
                         <div class="achievement-year">2020</div>
                         <div class="achievement-content">
-                            <h4>First E-Waste Shredder Manufacturing</h4>
-                            <p>Pioneered manufacturing of e-waste shredder machines in Egypt, the first of its kind in
+                            <h4 data-i18n="about.achievements.y2020.title">First E-Waste Shredder Manufacturing</h4>
+                            <p data-i18n="about.achievements.y2020.description">Pioneered manufacturing of e-waste shredder machines in Egypt, the first of its kind in
                                 the MENA region.</p>
                         </div>
                     </div>
@@ -551,8 +554,8 @@
                     <div class="achievement-item animate-on-scroll">
                         <div class="achievement-year">2018</div>
                         <div class="achievement-content">
-                            <h4>DR.WEEE Foundation</h4>
-                            <p>Established Egypt's first comprehensive e-waste recycling company, setting new standards
+                            <h4 data-i18n="about.achievements.y2018.title">DR.WEEE Foundation</h4>
+                            <p data-i18n="about.achievements.y2018.description">Established Egypt's first comprehensive e-waste recycling company, setting new standards
                                 for environmental responsibility.</p>
                         </div>
                     </div>
@@ -566,15 +569,15 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="philosophy-content animate-on-scroll">
-                            <span class="section__subtitle">My Philosophy</span>
-                            <h2 class="section__title">Transforming Challenges into Opportunities</h2>
-                            <p class="section__description">
+                            <span class="section__subtitle" data-i18n="about.philosophy.subtitle">My Philosophy</span>
+                            <h2 class="section__title" data-i18n="about.philosophy.title">Transforming Challenges into Opportunities</h2>
+                            <p class="section__description" data-i18n="about.philosophy.description">
                                 My approach to business and environmental stewardship is rooted in the belief
                                 that every challenge presents an opportunity for innovation and positive change.
                             </p>
 
                             <div class="circular-economy-diagram">
-                                <img src="images/about/circular-economy-diagram.png" alt="Circular Economy Principles">
+                                <img src="images/about/circular-economy-diagram.png" data-i18n-alt="about.philosophy.diagramAlt" alt="Circular Economy Principles">
 
                             </div>
 
@@ -584,8 +587,8 @@
                                         <i class="fas fa-lightbulb"></i>
                                     </div>
                                     <div class="principle-content">
-                                        <h4>Innovation-Driven Solutions</h4>
-                                        <p>Leveraging cutting-edge technology and creative thinking to solve complex
+                                        <h4 data-i18n="about.philosophy.innovation.title">Innovation-Driven Solutions</h4>
+                                        <p data-i18n="about.philosophy.innovation.description">Leveraging cutting-edge technology and creative thinking to solve complex
                                             environmental problems.</p>
                                     </div>
                                 </div>
@@ -595,8 +598,8 @@
                                         <i class="fas fa-handshake"></i>
                                     </div>
                                     <div class="principle-content">
-                                        <h4>Collaborative Approach</h4>
-                                        <p>Building strong partnerships with stakeholders across industries,
+                                        <h4 data-i18n="about.philosophy.collaborative.title">Collaborative Approach</h4>
+                                        <p data-i18n="about.philosophy.collaborative.description">Building strong partnerships with stakeholders across industries,
                                             governments, and communities.</p>
                                     </div>
                                 </div>
@@ -606,8 +609,8 @@
                                         <i class="fas fa-chart-line"></i>
                                     </div>
                                     <div class="principle-content">
-                                        <h4>Sustainable Growth</h4>
-                                        <p>Creating business models that generate profits while contributing to
+                                        <h4 data-i18n="about.philosophy.growth.title">Sustainable Growth</h4>
+                                        <p data-i18n="about.philosophy.growth.description">Creating business models that generate profits while contributing to
                                             environmental protection.</p>
                                     </div>
                                 </div>
@@ -617,8 +620,8 @@
                                         <i class="fas fa-graduation-cap"></i>
                                     </div>
                                     <div class="principle-content">
-                                        <h4>Continuous Learning</h4>
-                                        <p>Staying at the forefront of sustainability science and business innovation
+                                        <h4 data-i18n="about.philosophy.learning.title">Continuous Learning</h4>
+                                        <p data-i18n="about.philosophy.learning.description">Staying at the forefront of sustainability science and business innovation
                                             through ongoing education.</p>
                                     </div>
                                 </div>
@@ -634,8 +637,8 @@
             <div class="container">
                 <div class="cta-content animate-on-scroll">
                     <div class="cta-content__text">
-                        <h2 class="cta-content__title">Let's Create Sustainable Solutions Together</h2>
-                        <p class="cta-content__description">
+                        <h2 class="cta-content__title" data-i18n="about.cta.title">Let's Create Sustainable Solutions Together</h2>
+                        <p class="cta-content__description" data-i18n="about.cta.description">
                             I'm always interested in connecting with like-minded individuals and organizations
                             who share our passion for environmental innovation and sustainable business development.
                         </p>
@@ -644,12 +647,9 @@
                     <div class="cta-content__actions">
                         <a href="contact.html" class="btn btn--white btn--lg">
                             <i class="fas fa-envelope"></i>
-                            Get In Touch
+                            <span data-i18n="about.cta.getInTouch">Get In Touch</span>
                         </a>
-                        <a href="ventures.html" class="btn btn--outline btn--lg">
-                            <i class="fas fa-building"></i>
-                            Explore Our Ventures
-                        </a>
+                       
                     </div>
                 </div>
             </div>
@@ -660,6 +660,7 @@
     <div id="footer-placeholder"></div>
 
     <!-- JavaScript Files -->
+    <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
     <script src="js/analytics.js"></script>
 </body>

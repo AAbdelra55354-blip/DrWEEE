@@ -54,16 +54,26 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- === UPDATED: Google Fonts === -->
+    <!-- === UPDATED: Google Fonts (including Arabic support) === -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@300;400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+Arabic:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+
+    <!-- i18n FOUC Prevention -->
+    <script>
+    (function() {
+        var lang = localStorage.getItem('drweee_language') || 'en';
+        document.documentElement.lang = lang;
+        if (lang === 'ar') document.documentElement.dir = 'rtl';
+    })();
+    </script>
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/rtl.css">
 
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -116,41 +126,41 @@
             <div class="container">
                 <div class="hero__content">
                     <div class="hero__text">
-                        <span class="hero__subtitle">Pioneering Sustainable Innovation</span>
+                        <span class="hero__subtitle" data-i18n="home.hero.subtitle">Pioneering Sustainable Innovation</span>
                         <h1 class="hero__title" data-animate-reveal>
                             <span class="hero__title-main">DR.WEEE</span>
-                            <span class="hero__title-sub">Smart Green IT Solutions</span>
+                            <span class="hero__title-sub" data-i18n="home.hero.title">Smart Green IT Solutions</span>
                         </h1>
-                        <p class="hero__description">
+                        <p class="hero__description" data-i18n="home.hero.description">
                             Transforming environmental challenges into profitable opportunities through cutting-edge
                             e-waste recycling and circular economy solutions.
                         </p>
 
                         <div class="hero__actions">
                             <a href="about.html" class="btn btn--primary btn--lg magnetic-btn">
-                                <span>Discover Our Story</span>
+                                <span data-i18n="home.hero.cta.primary">Discover Our Story</span>
                             </a>
                             <a href="contact.html" class="btn btn--outline btn--lg magnetic-btn">
-                                <span>Partner With Us</span>
+                                <span data-i18n="home.hero.cta.secondary">Partner With Us</span>
                             </a>
                         </div>
                     </div>
                     <div class="hero__stats">
                         <div class="hero__stat">
                             <span class="hero__stat-number counter" data-target="5">5</span>
-                            <span class="hero__stat-label">Companies Founded</span>
+                            <span class="hero__stat-label" data-i18n="home.stats.companies">Companies Founded</span>
                         </div>
                         <div class="hero__stat">
                             <span class="hero__stat-number counter" data-target="11">11</span>
-                            <span class="hero__stat-label">Countries Reached</span>
+                            <span class="hero__stat-label" data-i18n="home.stats.countries">Countries Reached</span>
                         </div>
                         <div class="hero__stat">
                             <span class="hero__stat-number counter" data-target="1000">1000</span>
-                            <span class="hero__stat-label">Tons E-waste Processed</span>
+                            <span class="hero__stat-label" data-i18n="home.stats.tons">Tons E-waste Processed</span>
                         </div>
                         <div class="hero__stat">
                             <span class="hero__stat-number counter" data-target="25">25</span>
-                            <span class="hero__stat-label">Franchise Partners</span>
+                            <span class="hero__stat-label" data-i18n="home.stats.partners">Franchise Partners</span>
                         </div>
                     </div>
                 </div>
@@ -161,9 +171,9 @@
         <section class="section video-section" id="video-section">
             <div class="container">
                 <div class="section__header animate-on-scroll">
-                    <span class="section__subtitle">Our Mission in Motion</span>
-                    <h2 class="section__title">The Journey of E-Waste Valorization</h2>
-                    <p class="section__description">
+                    <span class="section__subtitle" data-i18n="home.video.subtitle">Our Mission in Motion</span>
+                    <h2 class="section__title" data-i18n="home.video.title">The Journey of E-Waste Valorization</h2>
+                    <p class="section__description" data-i18n="home.video.description">
                         Discover how Dr. WEEE is transforming the e-waste challenge into a global business opportunity,
                         creating value and championing a sustainable circular economy.
                     </p>
@@ -185,9 +195,9 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="about-preview__content animate-on-scroll">
-                            <span class="section__subtitle">Who We Are</span>
-                            <h2 class="section__title">Leading the Circular Economy Revolution</h2>
-                            <p class="section__description">
+                            <span class="section__subtitle" data-i18n="home.about.subtitle">Who We Are</span>
+                            <h2 class="section__title" data-i18n="home.about.title">Leading the Circular Economy Revolution</h2>
+                            <p class="section__description" data-i18n="home.about.description">
                                 DR.WEEE Smart Green IT Solutions is Egypt's pioneering e-waste recycling company,
                                 founded by visionary environmental entrepreneur Essam Hashem. We specialize in
                                 transforming electronic waste into valuable resources while creating sustainable
@@ -224,9 +234,9 @@
         <section class="section section--light services-overview" id="services-overview">
             <div class="container">
                 <div class="section__header animate-on-scroll">
-                    <span class="section__subtitle">Our Services</span>
-                    <h2 class="section__title">Comprehensive Sustainability Solutions</h2>
-                    <p class="section__description">
+                    <span class="section__subtitle" data-i18n="home.services.subtitle">Our Services</span>
+                    <h2 class="section__title" data-i18n="home.services.title">Comprehensive Sustainability Solutions</h2>
+                    <p class="section__description" data-i18n="home.services.description">
                         From e-waste recycling to equipment manufacturing, we provide end-to-end solutions
                         that transform environmental challenges into profitable business opportunities.
                     </p>
@@ -237,15 +247,15 @@
                     <div class="service-card animate-on-scroll">
                         <div class="service-card__icon"><i class="fas fa-recycle"></i></div>
                         <div class="service-card__content">
-                            <h3 class="service-card__title">E-Waste Recycling</h3>
-                            <p class="service-card__description">Comprehensive electronic waste processing with advanced
+                            <h3 class="service-card__title" data-i18n="home.services.ewaste.title">E-Waste Recycling</h3>
+                            <p class="service-card__description" data-i18n="home.services.ewaste.description">Comprehensive electronic waste processing with advanced
                                 material recovery systems extracting valuable metals.</p>
                             <ul class="service-card__features">
-                                <li>Gold, copper, and iron recovery</li>
-                                <li>Safe hazardous element disposal</li>
-                                <li>100% secure data destruction</li>
+                                <li data-i18n="home.services.ewaste.feature1">Gold, copper, and iron recovery</li>
+                                <li data-i18n="home.services.ewaste.feature2">Safe hazardous element disposal</li>
+                                <li data-i18n="home.services.ewaste.feature3">100% secure data destruction</li>
                             </ul>
-                            <a href="services.html#ewaste-recycling" class="service-card__link"><span>Learn
+                            <a href="services.html#ewaste-recycling" class="service-card__link"><span data-i18n="common.learnMore">Learn
                                     More</span><i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
@@ -253,15 +263,15 @@
                     <div class="service-card animate-on-scroll">
                         <div class="service-card__icon"><i class="fas fa-print"></i></div>
                         <div class="service-card__content">
-                            <h3 class="service-card__title">Ink Cartridge Remanufacturing</h3>
-                            <p class="service-card__description">Professional remanufacturing of toner cartridges using
+                            <h3 class="service-card__title" data-i18n="home.services.ink.title">Ink Cartridge Remanufacturing</h3>
+                            <p class="service-card__description" data-i18n="home.services.ink.description">Professional remanufacturing of toner cartridges using
                                 reverse engineering principles with 100% quality inspection.</p>
                             <ul class="service-card__features">
-                                <li>50% cost savings for customers</li>
-                                <li>Automatic filling systems</li>
-                                <li>Environmental impact reduction</li>
+                                <li data-i18n="home.services.ink.feature1">50% cost savings for customers</li>
+                                <li data-i18n="home.services.ink.feature2">Automatic filling systems</li>
+                                <li data-i18n="home.services.ink.feature3">Environmental impact reduction</li>
                             </ul>
-                            <a href="services.html#ink-remanufacturing" class="service-card__link"><span>Learn
+                            <a href="services.html#ink-remanufacturing" class="service-card__link"><span data-i18n="common.learnMore">Learn
                                     More</span><i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
@@ -285,15 +295,15 @@
                     <div class="service-card animate-on-scroll">
                         <div class="service-card__icon"><i class="fas fa-store"></i></div>
                         <div class="service-card__content">
-                            <h3 class="service-card__title">Franchise Opportunities</h3>
-                            <p class="service-card__description">Scalable franchise models for e-waste collection and
+                            <h3 class="service-card__title" data-i18n="home.services.franchise.title">Franchise Opportunities</h3>
+                            <p class="service-card__description" data-i18n="home.services.franchise.description">Scalable franchise models for e-waste collection and
                                 sustainable printing solutions with comprehensive support.</p>
                             <ul class="service-card__features">
-                                <li>Proven business model</li>
-                                <li>Complete training programs</li>
-                                <li>Global expansion opportunities</li>
+                                <li data-i18n="home.services.franchise.feature1">Proven business model</li>
+                                <li data-i18n="home.services.franchise.feature2">Complete training programs</li>
+                                <li data-i18n="home.services.franchise.feature3">Global expansion opportunities</li>
                             </ul>
-                            <a href="services.html#franchise" class="service-card__link"><span>Learn More</span><i
+                            <a href="services.html#franchise" class="service-card__link"><span data-i18n="common.learnMore">Learn More</span><i
                                     class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
@@ -305,9 +315,9 @@
         <section class="section section--dark impact-section" id="impact-section">
             <div class="container">
                 <div class="section__header animate-on-scroll">
-                    <span class="section__subtitle">Our Impact</span>
-                    <h2 class="section__title">Creating Measurable Environmental Change</h2>
-                    <p class="section__description">
+                    <span class="section__subtitle" data-i18n="home.impact.subtitle">Our Impact</span>
+                    <h2 class="section__title" data-i18n="home.impact.title">Creating Measurable Environmental Change</h2>
+                    <p class="section__description" data-i18n="home.impact.description">
                         Through innovative solutions and strategic partnerships, we're making a significant
                         impact on environmental protection, economic development, and social progress.
                     </p>
@@ -323,9 +333,9 @@
         <section class="section ventures-preview" id="ventures-preview">
             <div class="container">
                 <div class="section__header animate-on-scroll">
-                    <span class="section__subtitle">Our Portfolio</span>
-                    <h2 class="section__title">Building the Future of Sustainability</h2>
-                    <p class="section__description">
+                    <span class="section__subtitle" data-i18n="home.ventures.subtitle">Our Portfolio</span>
+                    <h2 class="section__title" data-i18n="home.ventures.title">Building the Future of Sustainability</h2>
+                    <p class="section__description" data-i18n="home.ventures.description">
                         A comprehensive portfolio of companies and partnerships driving environmental
                         change across industries and continents.
                     </p>
@@ -337,17 +347,17 @@
                             <img src="images/facilities/ewaste-facility-2.jpg" alt="DR.WEEE Facility">
                         </div>
                         <div class="venture-card__content">
-                            <h3 class="venture-card__title">DR.WEEE Smart Green IT Solutions</h3>
-                            <p class="venture-card__description">
+                            <h3 class="venture-card__title" data-i18n="home.ventures.drweee.title">DR.WEEE Smart Green IT Solutions</h3>
+                            <p class="venture-card__description" data-i18n="home.ventures.drweee.description">
                                 Egypt's first e-waste recycling company, establishing comprehensive frameworks
                                 for material recovery and environmental awareness.
                             </p>
                             <div class="venture-card__stats">
-                                <span class="venture-stat">Flagship Company</span>
-                                <span class="venture-stat">Egypt HQ</span>
+                                <span class="venture-stat" data-i18n="home.ventures.drweee.stat1">Flagship Company</span>
+                                <span class="venture-stat" data-i18n="home.ventures.drweee.stat2">Egypt HQ</span>
                             </div>
                             <a href="ventures.html#dr-weee" class="venture-card__link">
-                                <span>Learn More</span>
+                                <span data-i18n="common.learnMore">Learn More</span>
                                 <i class="fas fa-arrow-right"></i>
                             </a>
                         </div>
@@ -358,17 +368,17 @@
                             <img src="images/manufacturing/modern-facility-1.jpg" alt="Ecoo Industrial Systems">
                         </div>
                         <div class="venture-card__content">
-                            <h3 class="venture-card__title">Ecoo Industrial Systems</h3>
-                            <p class="venture-card__description">
+                            <h3 class="venture-card__title" data-i18n="home.ventures.ecoo.title">Ecoo Industrial Systems</h3>
+                            <p class="venture-card__description" data-i18n="home.ventures.ecoo.description">
                                 Local manufacturing of recycling equipment, reducing import dependency
                                 and providing cost-effective solutions.
                             </p>
                             <div class="venture-card__stats">
-                                <span class="venture-stat">Manufacturing</span>
-                                <span class="venture-stat">Production</span>
+                                <span class="venture-stat" data-i18n="home.ventures.ecoo.stat1">Manufacturing</span>
+                                <span class="venture-stat" data-i18n="home.ventures.ecoo.stat2">Production</span>
                             </div>
                             <a href="ventures.html#ecoo" class="venture-card__link">
-                                <span>Learn More</span>
+                                <span data-i18n="common.learnMore">Learn More</span>
                                 <i class="fas fa-arrow-right"></i>
                             </a>
                         </div>
@@ -379,17 +389,17 @@
                             <img src="images/services/recycling-process.jpg" alt="Spear Ink Operations">
                         </div>
                         <div class="venture-card__content">
-                            <h3 class="venture-card__title">Spear Ink</h3>
-                            <p class="venture-card__description">
+                            <h3 class="venture-card__title" data-i18n="home.ventures.spearink.title">Spear Ink</h3>
+                            <p class="venture-card__description" data-i18n="home.ventures.spearink.description">
                                 Remanufactured toner cartridges and Managed Print Services with
                                 international expansion and franchising.
                             </p>
                             <div class="venture-card__stats">
-                                <span class="venture-stat">Global Reach</span>
-                                <span class="venture-stat">11+ Countries</span>
+                                <span class="venture-stat" data-i18n="home.ventures.spearink.stat1">Global Reach</span>
+                                <span class="venture-stat" data-i18n="home.ventures.spearink.stat2">11+ Countries</span>
                             </div>
                             <a href="ventures.html#spear-ink" class="venture-card__link">
-                                <span>Learn More</span>
+                                <span data-i18n="common.learnMore">Learn More</span>
                                 <i class="fas fa-arrow-right"></i>
                             </a>
                         </div>
@@ -399,7 +409,7 @@
                 <div class="ventures-preview__cta animate-on-scroll">
                     <a href="ventures.html" class="btn btn--primary btn--lg">
                         <i class="fas fa-building"></i>
-                        Explore All Ventures
+                        <span data-i18n="home.ventures.exploreAll">Explore All Ventures</span>
                     </a>
                 </div>
             </div>
@@ -411,8 +421,8 @@
             <div class="container">
                 <div class="cta-content animate-on-scroll">
                     <div class="cta-content__text">
-                        <h2 class="cta-content__title">Ready to Build a Sustainable Future Together?</h2>
-                        <p class="cta-content__description">
+                        <h2 class="cta-content__title" data-i18n="home.cta.title">Ready to Build a Sustainable Future Together?</h2>
+                        <p class="cta-content__description" data-i18n="home.cta.description">
                             Whether you're interested in partnerships, franchise opportunities, or collaboration
                             on sustainability projects, we're always open to discussing how we can create
                             positive environmental impact together.
@@ -422,12 +432,9 @@
                     <div class="cta-content__actions">
                         <a href="contact.html" class="btn btn--white btn--lg">
                             <i class="fas fa-handshake"></i>
-                            Start a Conversation
+                            <span data-i18n="home.cta.startConversation">Start a Conversation</span>
                         </a>
-                        <a href="services.html" class="btn btn--outline btn--lg">
-                            <i class="fas fa-recycle"></i>
-                            Explore Services
-                        </a>
+                        
                     </div>
                 </div>
             </div>
@@ -440,8 +447,17 @@
     <div id="footer-placeholder"></div>
 
     <!-- JavaScript Files -->
+    <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
     <script src="js/analytics.js"></script>
+    <script>
+        // Initialize i18n when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.DrWeeeI18n) {
+                window.DrWeeeI18n.init();
+            }
+        });
+    </script>
 </body>
 
 </html>

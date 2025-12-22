@@ -787,6 +787,11 @@ function loadIncludes() {
                 setTimeout(() => {
                     checkAuthStatus();
                     console.log('✅ Header initialization complete');
+
+                    // Initialize i18n after header is loaded (for language switcher)
+                    if (window.DrWeeeI18n) {
+                        window.DrWeeeI18n.refresh();
+                    }
                 }, 100);
             })
             .catch(error => {
@@ -815,6 +820,11 @@ function loadIncludes() {
             .then(response => response.text())
             .then(html => {
                 footerPlaceholder.innerHTML = html;
+
+                // Refresh i18n after footer is loaded
+                if (window.DrWeeeI18n) {
+                    window.DrWeeeI18n.refresh();
+                }
             })
             .catch(error => console.error('Error loading footer:', error));
     }

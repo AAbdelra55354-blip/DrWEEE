@@ -51,12 +51,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=DM+Serif+Display&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/contact-revamp.css">
+    <link rel="stylesheet" href="css/rtl.css">
+
+    <!-- i18n FOUC Prevention -->
+    <script>
+    (function() {
+        var lang = localStorage.getItem('drweee_language') || 'en';
+        document.documentElement.lang = lang;
+        if (lang === 'ar') document.documentElement.dir = 'rtl';
+    })();
+    </script>
 
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -87,9 +99,9 @@
             </div>
             <div class="container">
                 <div class="hero__content">
-                    <span class="hero__subtitle">Connect With Us</span>
-                    <h1 class="hero__title">Let's Innovate for a Greener Tomorrow</h1>
-                    <p class="hero__description">
+                    <span class="hero__subtitle" data-i18n="contact.hero.subtitle">Connect With Us</span>
+                    <h1 class="hero__title" data-i18n="contact.hero.title">Let's Innovate for a Greener Tomorrow</h1>
+                    <p class="hero__description" data-i18n="contact.hero.description">
                         Your journey towards sustainability starts with a conversation. We're ready to listen and collaborate.
                     </p>
                 </div>
@@ -102,39 +114,39 @@
                 <div class="contact-grid">
                     <!-- Contact Form -->
                     <div class="contact-form-wrapper">
-                        <h2 class="form-title">Send Us a Message</h2>
-                        <p class="form-subtitle">Fill out the form and our team will get back to you within 24 business hours.</p>
+                        <h2 class="form-title" data-i18n="contact.form.title">Send Us a Message</h2>
+                        <p class="form-subtitle" data-i18n="contact.form.subtitle">Fill out the form and our team will get back to you within 24 business hours.</p>
                         <form class="contact-form" id="contact-form">
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label for="name">Full Name</label>
-                                    <input type="text" id="name" name="name" placeholder="John Doe" required>
+                                    <label for="name" data-i18n="contact.form.name">Full Name</label>
+                                    <input type="text" id="name" name="name" placeholder="John Doe" data-i18n-placeholder="contact.form.namePlaceholder" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="email">Email Address</label>
-                                    <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                                    <label for="email" data-i18n="contact.form.email">Email Address</label>
+                                    <input type="email" id="email" name="email" placeholder="you@example.com" data-i18n-placeholder="contact.form.emailPlaceholder" required>
                                 </div>
                             </div>
                             <div class="form-group" id="phone-field-group" style="display: none;">
-                                <label for="phone">Phone Number</label>
-                                <input type="tel" id="phone" name="phone" placeholder="+20 123 456 7890">
+                                <label for="phone" data-i18n="contact.form.phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" placeholder="+20 123 456 7890" data-i18n-placeholder="contact.form.phonePlaceholder">
                             </div>
                             <div class="form-group">
-                                <label for="subject">What can we help you with?</label>
+                                <label for="subject" data-i18n="contact.form.subject">What can we help you with?</label>
                                 <select id="subject" name="subject" required>
-                                    <option value="">Select a subject...</option>
-                                    <option value="services">Service Inquiry</option>
-                                    <option value="partnership">Partnership Opportunity</option>
-                                    <option value="franchise">Franchise Information</option>
-                                    <option value="other">Other</option>
+                                    <option value="" data-i18n="contact.form.subjectPlaceholder">Select a subject...</option>
+                                    <option value="services" data-i18n="contact.form.subjectServices">Service Inquiry</option>
+                                    <option value="partnership" data-i18n="contact.form.subjectPartnership">Partnership Opportunity</option>
+                                    <option value="franchise" data-i18n="contact.form.subjectFranchise">Franchise Information</option>
+                                    <option value="other" data-i18n="contact.form.subjectOther">Other</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="message">Your Message</label>
-                                <textarea id="message" name="message" rows="5" placeholder="Tell us more about your inquiry..." required></textarea>
+                                <label for="message" data-i18n="contact.form.message">Your Message</label>
+                                <textarea id="message" name="message" rows="5" placeholder="Tell us more about your inquiry..." data-i18n-placeholder="contact.form.messagePlaceholder" required></textarea>
                             </div>
                             <button type="submit" class="btn btn--primary btn--full">
-                                <i class="fas fa-paper-plane"></i> Send Message
+                                <i class="fas fa-paper-plane"></i> <span data-i18n="contact.form.submit">Send Message</span>
                             </button>
                         </form>
                     </div>
@@ -144,24 +156,24 @@
                         <div class="info-card">
                             <div class="info-icon"><i class="fas fa-envelope-open-text"></i></div>
                             <div class="info-content">
-                                <h4>Email Us</h4>
-                                <p>For general inquiries and partnerships.</p>
+                                <h4 data-i18n="contact.info.emailTitle">Email Us</h4>
+                                <p data-i18n="contact.info.emailDescription">For general inquiries and partnerships.</p>
                                 <a href="mailto:essam@drweee.com">essam@drweee.com</a>
                             </div>
                         </div>
                         <div class="info-card">
                             <div class="info-icon"><i class="fas fa-phone-alt"></i></div>
                             <div class="info-content">
-                                <h4>Call Us</h4>
-                                <p>Sun - Thu, 9:00 AM - 6:00 PM (GMT+2)</p>
-                                <a href="tel:+201234567890">+20 111 588 7928</a>
+                                <h4 data-i18n="contact.info.callTitle">Call Us</h4>
+                                <p data-i18n="contact.info.callDescription">Sun - Thu, 9:00 AM - 6:00 PM (GMT+2)</p>
+                                <a href="tel:+201115887928" dir="ltr" style="direction: ltr; unicode-bidi: embed;">+20 111 588 7928</a>
                             </div>
                         </div>
                         <div class="info-card">
                             <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
                             <div class="info-content">
-                                <h4>Our Headquarters</h4>
-                                <p>Cairo, Egypt</p>
+                                <h4 data-i18n="contact.info.headquartersTitle">Our Headquarters</h4>
+                                <p data-i18n="contact.info.headquartersDescription">Cairo, Egypt</p>
                                 <a href="#map-section" class="link">View on Map</a>
                             </div>
                         </div>
@@ -195,7 +207,7 @@
             </div>
 
             <div class="success-content">
-                <h2 class="success-title">Message Sent Successfully! 🎉</h2>
+                <h2 class="success-title" data-i18n="contact.successModal.title">Message Sent Successfully! 🎉</h2>
                 <p class="success-message">
                     Thank you for reaching out to <strong>DR.WEEE</strong>. We've received your message and our team is already on it!
                 </p>
@@ -203,18 +215,17 @@
                 <div class="success-timeline">
                     <div class="timeline-header">
                         <i class="fas fa-clock"></i>
-                        <span>What Happens Next?</span>
+                        <span data-i18n="contact.successModal.whatHappensNext">What Happens Next?</span>
                     </div>
 
                     <div class="timeline-steps">
-                      
+
                         <div class="timeline-step">
                             <div class="step-icon">
                                 <i class="fas fa-user-check"></i>
                             </div>
                             <div class="step-content">
-                                <h4>Within 24 Hours</h4>
-                                <p>Our team will personally review your inquiry</p>
+                                <p data-i18n="contact.successModal.step1">Our team will personally review your inquiry</p>
                             </div>
                         </div>
 
@@ -223,8 +234,16 @@
                                 <i class="fas fa-phone-alt"></i>
                             </div>
                             <div class="step-content">
-                                <h4>Within 48 Hours</h4>
-                                <p>We'll contact you with a detailed response</p>
+                                <p data-i18n="contact.successModal.step2">We'll contact you with a detailed response</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-step">
+                            <div class="step-icon">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <div class="step-content">
+                                <p data-i18n="contact.successModal.step3">If your request requires more information, we'll reach out</p>
                             </div>
                         </div>
                     </div>
@@ -234,22 +253,22 @@
                     <div class="extra-card">
                         <i class="fas fa-headset"></i>
                         <div>
-                            <strong>Need Urgent Help?</strong>
-                            <p>Call us at <a href="tel:+20123456789">+20 123 456 789</a></p>
+                            <strong data-i18n="contact.successModal.needUrgentHelp">Need Urgent Help?</strong>
+                            <p><span data-i18n="contact.successModal.callUsAt">Call us at</span> <a href="tel:+201115887928" dir="ltr" style="direction: ltr; unicode-bidi: embed;">+20 111 588 7928</a></p>
                         </div>
                     </div>
                     <div class="extra-card">
                         <i class="fas fa-comments"></i>
                         <div>
-                            <strong>Have More Questions?</strong>
-                            <p>Check our <a href="index.html#faq">FAQ section</a></p>
+                            <strong data-i18n="contact.successModal.haveMoreQuestions">Have More Questions?</strong>
+                            <p><span data-i18n="contact.successModal.checkFaq">Check our</span> <a href="index.html#faq" data-i18n="contact.successModal.faqSection">FAQ section</a></p>
                         </div>
                     </div>
                 </div>
 
                 <button class="success-action-btn" id="success-action-btn">
-                    <i class="fas fa-home"></i>
-                    Back to Home
+                    <i class="fas fa-times"></i>
+                    <span data-i18n="contact.successModal.closeButton">Close</span>
                 </button>
             </div>
         </div>
@@ -645,6 +664,7 @@
     </style>
 
     <!-- JavaScript Files -->
+    <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
     <script src="js/analytics.js"></script>
 
@@ -667,7 +687,7 @@
 
             if (actionBtn) {
                 actionBtn.addEventListener('click', function() {
-                    window.location.href = 'index.html';
+                    closeSuccessModal();
                 });
             }
 

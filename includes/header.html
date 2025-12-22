@@ -8,22 +8,51 @@
 
             <nav class="nav" id="nav">
                 <ul class="nav__list">
-                    <li class="nav__item"><a href="index.html" class="nav__link" data-page="home">Home</a></li>
-                    <li class="nav__item"><a href="about.html" class="nav__link" data-page="about">About</a></li>
-                    <li class="nav__item"><a href="store.html" class="nav__link" data-page="store">Store</a></li>
-                    <li class="nav__item"><a href="weee-rewards.html" class="nav__link" data-page="weee-rewards">E-waste</a></li>
-                    <li class="nav__item"><a href="services.html" class="nav__link" data-page="services">Services</a></li>
-                    <li class="nav__item"><a href="impact.html" class="nav__link" data-page="impact">Impact</a></li>
+                    <li class="nav__item"><a href="index.html" class="nav__link" data-page="home" data-i18n="nav.home">Home</a></li>
+                    <li class="nav__item"><a href="about.html" class="nav__link" data-page="about" data-i18n="nav.about">About</a></li>
+                    <li class="nav__item"><a href="store.html" class="nav__link" data-page="store" data-i18n="nav.store">Store</a></li>
+                    <li class="nav__item"><a href="weee-rewards.html" class="nav__link" data-page="weee-rewards" data-i18n="nav.ewaste">E-waste</a></li>
+                    <li class="nav__item"><a href="services.html" class="nav__link" data-page="services" data-i18n="nav.services">Services</a></li>
+                    <li class="nav__item"><a href="impact.html" class="nav__link" data-page="impact" data-i18n="nav.impact">Impact</a></li>
                 </ul>
             </nav>
 
             <div class="header__actions">
-                <a href="contact.html" class="btn btn--primary">Contact Us</a>
+                <!-- Language Switcher -->
+                <div class="language-switcher" id="language-switcher">
+                    <button class="language-switcher__trigger" aria-expanded="false" aria-label="Select language">
+                        <img src="https://flagcdn.com/w40/gb.png" alt="" class="language-switcher__flag" id="current-lang-flag">
+                        <span class="language-switcher__current">EN</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <ul class="language-switcher__menu">
+                        <li>
+                            <button data-lang="en">
+                                <img src="https://flagcdn.com/w40/gb.png" alt="" class="language-switcher__flag">
+                                <span>English</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button data-lang="ar">
+                                <img src="https://flagcdn.com/w40/eg.png" alt="" class="language-switcher__flag">
+                                <span>العربية</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button data-lang="it">
+                                <img src="https://flagcdn.com/w40/it.png" alt="" class="language-switcher__flag">
+                                <span>Italiano</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <a href="contact.html" class="btn btn--primary" data-i18n="nav.contact">Contact Us</a>
 
                 <!-- Login Button (shown when not logged in) - Desktop Only -->
                 <a href="login.html" class="btn btn--outline btn--login desktop-only" id="login-btn">
                     <i class="fas fa-sign-in-alt"></i>
-                    <span>Login</span>
+                    <span data-i18n="header.login">Login</span>
                 </a>
 
                 <!-- User Dropdown (shown when logged in) - Desktop Only -->
@@ -42,7 +71,7 @@
                                 </div>
                                 <div class="user-info__details">
                                     <span class="user-info__phone" id="user-phone">+20XXXXXXXXXX</span>
-                                    <span class="user-info__status">Active User</span>
+                                    <span class="user-info__status" data-i18n="header.activeUser">Active User</span>
                                 </div>
                             </div>
                         </div>
@@ -50,7 +79,7 @@
                         <!-- WEEE Data Section -->
                         <div class="user-dropdown__weee-data">
                             <h4 class="weee-data__title">
-                                <i class="fas fa-leaf"></i> Your WEEE Impact
+                                <i class="fas fa-leaf"></i> <span data-i18n="user.yourWeeeImpact">Your WEEE Impact</span>
                             </h4>
                             <div class="weee-data__grid">
                                 <div class="weee-stat">
@@ -59,7 +88,7 @@
                                     </div>
                                     <div class="weee-stat__info">
                                         <span class="weee-stat__value" id="available-weee-points">0</span>
-                                        <span class="weee-stat__label">Available Points</span>
+                                        <span class="weee-stat__label" data-i18n="user.availablePoints">Available Points</span>
                                     </div>
                                 </div>
                                 <div class="weee-stat">
@@ -68,7 +97,7 @@
                                     </div>
                                     <div class="weee-stat__info">
                                         <span class="weee-stat__value" id="total-weee-points">0</span>
-                                        <span class="weee-stat__label">Total Points</span>
+                                        <span class="weee-stat__label" data-i18n="user.totalPoints">Total Points</span>
                                     </div>
                                 </div>
                                 <div class="weee-stat">
@@ -77,7 +106,7 @@
                                     </div>
                                     <div class="weee-stat__info">
                                         <span class="weee-stat__value" id="available-cash">0</span>
-                                        <span class="weee-stat__label">Available Cash</span>
+                                        <span class="weee-stat__label" data-i18n="user.availableCash">Available Cash</span>
                                     </div>
                                 </div>
                                 <div class="weee-stat">
@@ -86,7 +115,7 @@
                                     </div>
                                     <div class="weee-stat__info">
                                         <span class="weee-stat__value" id="total-carbon-saved">0</span>
-                                        <span class="weee-stat__label">Carbon Saved (kg)</span>
+                                        <span class="weee-stat__label" data-i18n="user.carbonSaved">Carbon Saved (kg)</span>
                                     </div>
                                 </div>
                             </div>
@@ -96,21 +125,21 @@
                             
                             <a href="environmental-impact.html" class="user-dropdown__item">
                                 <i class="fas fa-leaf"></i>
-                                My Environmental Impact
+                                <span data-i18n="user.myEnvironmentalImpact">My Environmental Impact</span>
                             </a>
                             <a href="my-requests.html" class="user-dropdown__item">
                                 <i class="fas fa-clipboard-list"></i>
-                                My Requests
+                                <span data-i18n="user.myRequests">My Requests</span>
                             </a>
                             <a href="redeem-points.html" class="user-dropdown__item">
                                 <i class="fas fa-gift"></i>
-                                Redeem Points & Cash
+                                <span data-i18n="user.redeemPointsCash">Redeem Points & Cash</span>
                             </a>
                           
                             <div class="user-dropdown__separator"></div>
                             <button class="user-dropdown__item user-dropdown__logout" id="logout-btn">
                                 <i class="fas fa-sign-out-alt"></i>
-                                Sign Out
+                                <span data-i18n="header.signOut">Sign Out</span>
                             </button>
                         </div>
                     </div>
@@ -132,7 +161,25 @@
         </div>
 
         <div class="mobile-menu__content">
-            <!-- Mobile User Info Card (shown when logged in) - At Top -->
+            <!-- Mobile Language Selector - At Top -->
+            <div class="mobile-lang-selector" id="mobile-lang-selector">
+                <div class="mobile-lang-selector__pills">
+                    <button class="mobile-lang-pill" data-lang="en" aria-label="English">
+                        <img src="https://flagcdn.com/w40/gb.png" alt="EN" class="mobile-lang-pill__flag">
+                        <span class="mobile-lang-pill__name">English</span>
+                    </button>
+                    <button class="mobile-lang-pill" data-lang="ar" aria-label="العربية">
+                        <img src="https://flagcdn.com/w40/eg.png" alt="AR" class="mobile-lang-pill__flag">
+                        <span class="mobile-lang-pill__name">العربية</span>
+                    </button>
+                    <button class="mobile-lang-pill" data-lang="it" aria-label="Italiano">
+                        <img src="https://flagcdn.com/w40/it.png" alt="IT" class="mobile-lang-pill__flag">
+                        <span class="mobile-lang-pill__name">Italiano</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile User Info Card (shown when logged in) -->
             <div class="mobile-user-card" id="mobile-user-card" style="display: none;">
                 <div class="mobile-user-details">
                     <div class="user-info__avatar">
@@ -140,7 +187,7 @@
                     </div>
                     <div>
                         <span class="user-info__phone" id="mobile-user-phone">+20XXXXXXXXXX</span>
-                        <span class="user-info__status">Active User</span>
+                        <span class="user-info__status" data-i18n="header.activeUser">Active User</span>
                     </div>
                 </div>
 
@@ -148,24 +195,24 @@
                 <div class="mobile-weee-summary">
                     <div class="mobile-weee-title">
                         <i class="fas fa-leaf"></i>
-                        Your WEEE Impact
+                        <span data-i18n="user.yourWeeeImpact">Your WEEE Impact</span>
                     </div>
                     <div class="mobile-weee-grid">
                         <div class="mobile-weee-stat">
                             <span class="mobile-weee-value" id="mobile-available-weee-points">0</span>
-                            <span class="mobile-weee-label">Available Points</span>
+                            <span class="mobile-weee-label" data-i18n="user.availablePoints">Available Points</span>
                         </div>
                         <div class="mobile-weee-stat">
                             <span class="mobile-weee-value" id="mobile-total-weee-points">0</span>
-                            <span class="mobile-weee-label">Total Points</span>
+                            <span class="mobile-weee-label" data-i18n="user.totalPoints">Total Points</span>
                         </div>
                         <div class="mobile-weee-stat">
                             <span class="mobile-weee-value" id="mobile-available-cash">0</span>
-                            <span class="mobile-weee-label">Available Cash</span>
+                            <span class="mobile-weee-label" data-i18n="user.availableCash">Available Cash</span>
                         </div>
                         <div class="mobile-weee-stat">
                             <span class="mobile-weee-value" id="mobile-total-carbon-saved">0kg</span>
-                            <span class="mobile-weee-label">Carbon Saved</span>
+                            <span class="mobile-weee-label" data-i18n="user.carbonSavedShort">Carbon Saved</span>
                         </div>
                     </div>
                 </div>
@@ -175,74 +222,73 @@
                 <li class="mobile-menu__item">
                     <a href="index.html" class="mobile-menu__link" data-page="home">
                         <i class="fas fa-home"></i>
-                        Home
+                        <span data-i18n="nav.home">Home</span>
                     </a>
                 </li>
                 <li class="mobile-menu__item">
                     <a href="about.html" class="mobile-menu__link" data-page="about">
                         <i class="fas fa-info-circle"></i>
-                        About
+                        <span data-i18n="nav.about">About</span>
                     </a>
                 </li>
                 <li class="mobile-menu__item">
                     <a href="store.html" class="mobile-menu__link" data-page="store">
                         <i class="fas fa-store"></i>
-                        Store
+                        <span data-i18n="nav.store">Store</span>
                     </a>
                 </li>
                 <li class="mobile-menu__item">
                     <a href="weee-rewards.html" class="mobile-menu__link" data-page="weee-rewards">
                         <i class="fas fa-recycle"></i>
-                        E-waste
+                        <span data-i18n="nav.ewaste">E-waste</span>
                     </a>
                 </li>
                 <li class="mobile-menu__item">
                     <a href="services.html" class="mobile-menu__link" data-page="services">
                         <i class="fas fa-cogs"></i>
-                        Services
+                        <span data-i18n="nav.services">Services</span>
                     </a>
                 </li>
                 <li class="mobile-menu__item">
                     <a href="impact.html" class="mobile-menu__link" data-page="impact">
                         <i class="fas fa-chart-line"></i>
-                        Impact
+                        <span data-i18n="nav.impact">Impact</span>
                     </a>
                 </li>
                 <!-- User menu items (shown when logged in) -->
                 <li class="mobile-menu__item mobile-user-menu-item" id="mobile-env-impact-item" style="display: none;">
                     <a href="environmental-impact.html" class="mobile-menu__link">
                         <i class="fas fa-leaf"></i>
-                        My Environmental Impact
+                        <span data-i18n="user.myEnvironmentalImpact">My Environmental Impact</span>
                     </a>
                 </li>
                 <li class="mobile-menu__item mobile-user-menu-item" id="mobile-my-requests-item" style="display: none;">
                     <a href="my-requests.html" class="mobile-menu__link">
                         <i class="fas fa-clipboard-list"></i>
-                        My Requests
+                        <span data-i18n="user.myRequests">My Requests</span>
                     </a>
                 </li>
                 <li class="mobile-menu__item mobile-user-menu-item" id="mobile-redeem-item" style="display: none;">
                     <a href="redeem-points.html" class="mobile-menu__link">
                         <i class="fas fa-gift"></i>
-                        Redeem Points & Cash
+                        <span data-i18n="user.redeemPointsCash">Redeem Points & Cash</span>
                     </a>
                 </li>
                 <!-- Mobile Login (shown when not logged in) -->
                 <li class="mobile-menu__item" id="mobile-login-item">
                     <a href="login.html" class="mobile-menu__link">
                         <i class="fas fa-sign-in-alt"></i>
-                        Login
+                        <span data-i18n="header.login">Login</span>
                     </a>
                 </li>
-                <!-- Mobile Login (shown when not logged in) is above -->
             </ul>
 
-            <a href="contact.html" class="btn btn--primary mobile-menu__cta">Contact Us</a>
+            <a href="contact.html" class="btn btn--primary mobile-menu__cta" data-i18n="nav.contact">Contact Us</a>
 
             <!-- Mobile Sign Out (shown when logged in) -->
             <a href="#" class="btn btn--danger mobile-menu__cta" id="mobile-logout-btn" style="display: none;">
                 <i class="fas fa-sign-out-alt"></i>
-                Sign Out
+                <span data-i18n="header.signOut">Sign Out</span>
             </a>
 
             <div class="mobile-menu__footer">
@@ -267,6 +313,19 @@
         --text-gray: #5F6368;
         --success-green: #388E3C;
         --error-red: #D32F2F;
+    }
+
+    /* Prevent header items from wrapping to multiple lines */
+    .nav__link,
+    .nav__item,
+    .header__brand,
+    .btn,
+    .language-switcher__trigger,
+    .language-switcher__current,
+    .user-dropdown__trigger,
+    .mobile-menu__link,
+    .mobile-menu__link span {
+        white-space: nowrap;
     }
 
     /* Enhanced User Dropdown Styles */
@@ -570,11 +629,6 @@
         color: white;
     }
 
-    /* Hide hamburger button when mobile menu is open */
-    .mobile-menu-open .mobile-menu-toggle {
-        display: none !important;
-    }
-
     /* Mobile User Info Styles */
     .mobile-user-info {
         background: rgba(77, 182, 172, 0.1);
@@ -635,12 +689,419 @@
         margin-top: 0.25rem;
     }
 
+    /* Mobile Language Selector - Innovative Pill Design */
+    .mobile-lang-selector {
+        margin: 0 0 1rem 0;
+        padding: 0.5rem;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+        border: 1px solid rgba(0, 137, 123, 0.15);
+    }
+
+    .mobile-lang-selector__pills {
+        display: flex;
+        gap: 0.35rem;
+        background: transparent;
+        padding: 0;
+        border-radius: 10px;
+    }
+
+    .mobile-lang-pill {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.65rem 0.5rem;
+        background: rgba(0, 137, 123, 0.08);
+        border: 2px solid transparent;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-family: inherit;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .mobile-lang-pill:hover {
+        background: rgba(0, 137, 123, 0.15);
+    }
+
+    .mobile-lang-pill.active {
+        background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+        border-color: var(--primary-green);
+        box-shadow: 0 4px 12px rgba(0, 137, 123, 0.3);
+    }
+
+    .mobile-lang-pill__flag {
+        width: 20px;
+        height: 14px;
+        object-fit: cover;
+        border-radius: 2px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+    }
+
+    .mobile-lang-pill__name {
+        font-size: 0.65rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        transition: color 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .mobile-lang-pill.active .mobile-lang-pill__name {
+        color: white;
+    }
+
+    .mobile-lang-pill:active {
+        transform: scale(0.97);
+    }
+
+    .mobile-lang-pill.active:active {
+        transform: scale(0.99);
+    }
+
+    /* RTL adjustments for mobile language selector */
+    html[dir="rtl"] .mobile-lang-selector__pills,
+    body.rtl .mobile-lang-selector__pills {
+        flex-direction: row-reverse;
+    }
+
+    html[dir="rtl"] .mobile-lang-pill,
+    body.rtl .mobile-lang-pill {
+        flex-direction: row-reverse;
+    }
 
     /* Desktop-only class to hide login/user dropdown on mobile */
     @media (max-width: 991px) {
         .desktop-only {
             display: none !important;
         }
+
+        /* Hide desktop language switcher on mobile */
+        .language-switcher {
+            display: none !important;
+        }
+
+        /* Ensure hamburger is visible on mobile */
+        .mobile-menu-toggle {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            min-width: 44px;
+            min-height: 44px;
+        }
+
+        /* Hide hamburger when mobile menu is open */
+        .mobile-menu.is-open ~ .header__container .mobile-menu-toggle,
+        body.mobile-menu-open .mobile-menu-toggle {
+            display: none !important;
+        }
+
+        /* Ensure header actions don't overflow */
+        .header__actions {
+            flex-shrink: 0;
+            gap: 0.5rem;
+        }
+
+        /* Hide Contact Us button on very small screens to make room for hamburger */
+        .header__actions .btn--primary {
+            display: none !important;
+        }
+    }
+
+    /* Extra small screens - ensure hamburger visibility */
+    @media (max-width: 400px) {
+        .header__container {
+            padding: 0.5rem 0.75rem !important;
+        }
+
+        .header__logo img {
+            height: 32px !important;
+        }
+
+        .header__brand {
+            font-size: 1rem !important;
+        }
+
+        .mobile-menu-toggle {
+            width: 40px !important;
+            height: 40px !important;
+            min-width: 40px !important;
+            font-size: 1.25rem !important;
+        }
+    }
+
+    /* Language Switcher Styles (Desktop only) */
+    .language-switcher {
+        position: relative;
+        display: inline-block;
+        margin-right: 0.5rem;
+    }
+
+    .language-switcher__trigger {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.4rem 0.75rem;
+        background: transparent;
+        border: 1px solid rgba(0, 137, 123, 0.3);
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: var(--primary-green);
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+    .language-switcher__trigger:hover {
+        background: rgba(0, 137, 123, 0.1);
+        border-color: var(--primary-green);
+    }
+
+    .language-switcher__flag {
+        width: 20px;
+        height: 14px;
+        object-fit: cover;
+        border-radius: 2px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        flex-shrink: 0;
+    }
+
+    .language-switcher__trigger .fa-chevron-down {
+        font-size: 0.65rem;
+        transition: transform 0.3s ease;
+    }
+
+    .language-switcher__trigger[aria-expanded="true"] .fa-chevron-down {
+        transform: rotate(180deg);
+    }
+
+    .language-switcher__current {
+        font-weight: 600;
+    }
+
+    .language-switcher__menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        min-width: 140px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        z-index: 1001;
+        overflow: hidden;
+        list-style: none;
+        padding: 0.5rem 0;
+        margin: 0;
+    }
+
+    .language-switcher__menu.is-open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .language-switcher__menu li {
+        margin: 0;
+    }
+
+    .language-switcher__menu button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+        padding: 0.6rem 1rem;
+        background: none;
+        border: none;
+        text-align: left;
+        cursor: pointer;
+        font-size: 0.85rem;
+        color: var(--text-dark);
+        transition: all 0.2s ease;
+    }
+
+    .language-switcher__menu button span {
+        flex: 1;
+    }
+
+    .language-switcher__menu button:hover {
+        background: var(--light-green);
+        color: var(--dark-green);
+    }
+
+    .language-switcher__menu button.active {
+        background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+        color: white;
+        font-weight: 600;
+    }
+
+    .language-switcher__menu button.active .language-switcher__flag {
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    /* RTL adjustments for language switcher */
+    html[dir="rtl"] .language-switcher,
+    body.rtl .language-switcher {
+        margin-right: 0;
+        margin-left: 0.5rem;
+    }
+
+    html[dir="rtl"] .language-switcher__trigger,
+    body.rtl .language-switcher__trigger {
+        flex-direction: row-reverse;
+    }
+
+    html[dir="rtl"] .language-switcher__menu,
+    body.rtl .language-switcher__menu {
+        right: auto;
+        left: 0;
+    }
+
+    html[dir="rtl"] .language-switcher__menu button,
+    body.rtl .language-switcher__menu button {
+        flex-direction: row-reverse;
+        text-align: right;
+    }
+
+    /* RTL adjustments for header layout - using both selectors for compatibility */
+    html[dir="rtl"] .header__container,
+    body.rtl .header__container {
+        flex-direction: row-reverse !important;
+    }
+
+    html[dir="rtl"] .header__logo,
+    body.rtl .header__logo {
+        flex-direction: row-reverse !important;
+    }
+
+    html[dir="rtl"] .header__brand,
+    body.rtl .header__brand {
+        margin-left: 0 !important;
+        margin-right: 0.5rem !important;
+    }
+
+    html[dir="rtl"] .nav__list,
+    body.rtl .nav__list {
+        flex-direction: row-reverse !important;
+    }
+
+    html[dir="rtl"] .header__actions,
+    body.rtl .header__actions {
+        flex-direction: row-reverse !important;
+    }
+
+    /* RTL adjustments for mobile menu */
+    html[dir="rtl"] .mobile-menu,
+    body.rtl .mobile-menu {
+        right: auto !important;
+        left: 0 !important;
+        transform: translateX(-100%) !important;
+    }
+
+    html[dir="rtl"] .mobile-menu.is-open,
+    body.rtl .mobile-menu.is-open {
+        transform: translateX(0) !important;
+    }
+
+    /* RTL: Mobile menu header - keep same layout (title left, close right becomes title right, close left) */
+    html[dir="rtl"] .mobile-menu__header,
+    body.rtl .mobile-menu__header {
+        flex-direction: row !important;
+    }
+
+    html[dir="rtl"] .mobile-menu__title,
+    body.rtl .mobile-menu__title {
+        text-align: right !important;
+    }
+
+    html[dir="rtl"] .mobile-menu__close,
+    body.rtl .mobile-menu__close {
+        margin-left: 0 !important;
+        margin-right: auto !important;
+    }
+
+    html[dir="rtl"] .mobile-menu__link,
+    body.rtl .mobile-menu__link {
+        flex-direction: row-reverse !important;
+        text-align: right !important;
+    }
+
+    html[dir="rtl"] .mobile-menu__link i,
+    body.rtl .mobile-menu__link i {
+        margin-right: 0 !important;
+        margin-left: 0.75rem !important;
+    }
+
+    html[dir="rtl"] .mobile-menu__list,
+    body.rtl .mobile-menu__list {
+        text-align: right !important;
+    }
+
+    /* RTL adjustments for user dropdown */
+    html[dir="rtl"] .user-dropdown__menu,
+    body.rtl .user-dropdown__menu {
+        left: 0 !important;
+        right: auto !important;
+    }
+
+    html[dir="rtl"] .user-dropdown__item,
+    body.rtl .user-dropdown__item {
+        flex-direction: row-reverse !important;
+        text-align: right !important;
+    }
+
+    html[dir="rtl"] .user-dropdown__item i,
+    body.rtl .user-dropdown__item i {
+        margin-right: 0 !important;
+        margin-left: 0.75rem !important;
+    }
+
+    html[dir="rtl"] .user-info,
+    body.rtl .user-info {
+        flex-direction: row-reverse !important;
+    }
+
+    html[dir="rtl"] .user-info__details,
+    body.rtl .user-info__details {
+        text-align: right !important;
+    }
+
+    html[dir="rtl"] .weee-data__title,
+    body.rtl .weee-data__title {
+        flex-direction: row-reverse !important;
+    }
+
+    html[dir="rtl"] .weee-stat,
+    body.rtl .weee-stat {
+        flex-direction: row-reverse !important;
+    }
+
+    html[dir="rtl"] .weee-stat__info,
+    body.rtl .weee-stat__info {
+        text-align: right !important;
+    }
+
+    /* RTL adjustments for mobile user card */
+    html[dir="rtl"] .mobile-user-details,
+    body.rtl .mobile-user-details {
+        flex-direction: row-reverse !important;
+    }
+
+    html[dir="rtl"] .mobile-weee-title,
+    body.rtl .mobile-weee-title {
+        flex-direction: row-reverse !important;
+    }
+
+    html[dir="rtl"] .mobile-weee-stat,
+    body.rtl .mobile-weee-stat {
+        text-align: right !important;
     }
 </style>
 

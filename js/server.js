@@ -33,6 +33,11 @@ const storeProductCache = {
     lastFetch: 0
 };
 const STORE_CACHE_DURATION_MS = 15 * 60 * 1000; // Cache for 15 minutes
+
+// Translation cache for Azure Translator
+const translationCache = new Map();
+const TRANSLATION_CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
+
 // --- 2. INITIALIZATION & CONFIGURATION ---
 const app = express();
 const port = process.env.PORT || 3000;
@@ -2130,6 +2135,209 @@ app.get('/api/environmental-impact', async (req, res) => {
         });
     }
 });
+
+
+// =====================================================================
+// AZURE TRANSLATOR API INTEGRATION
+// Multi-language support for Arabic and Italian translations
+// =====================================================================
+
+// Helper: Get cache key for translation
+function getTranslationCacheKey(text, targetLang) {
+    return `${targetLang}:${text.substring(0, 100)}`;
+}
+
+// Helper: Clean expired cache entries
+function cleanTranslationCache() {
+    const now = Date.now();
+    for (const [key, value] of translationCache.entries()) {
+        if (now - value.timestamp > TRANSLATION_CACHE_TTL) {
+            translationCache.delete(key);
+        }
+    }
+}
+
+// Clean cache every hour
+setInterval(cleanTranslationCache, 60 * 60 * 1000);
+
+// POST /api/translate - Translate single text
+app.post('/api/translate', apiLimiter, async (req, res) => {
+    try {
+        const { text, targetLang } = req.body;
+
+        // Validate input
+        if (!text || typeof text !== 'string') {
+            return res.status(400).json({ error: 'Text is required' });
+        }
+
+        if (!targetLang || !['ar', 'it'].includes(targetLang)) {
+            return res.status(400).json({ error: 'Valid target language required (ar, it)' });
+        }
+
+        // Check Azure Translator credentials
+        if (!process.env.AZURE_TRANSLATOR_KEY || !process.env.AZURE_TRANSLATOR_REGION) {
+            console.warn('⚠️ Azure Translator credentials not configured');
+            return res.json({ translatedText: text, cached: false, warning: 'Translation not configured' });
+        }
+
+        // Check cache first
+        const cacheKey = getTranslationCacheKey(text, targetLang);
+        const cached = translationCache.get(cacheKey);
+        if (cached && Date.now() - cached.timestamp < TRANSLATION_CACHE_TTL) {
+            return res.json({ translatedText: cached.translation, cached: true });
+        }
+
+        // Call Azure Translator API
+        const endpoint = 'https://api.cognitive.microsofttranslator.com';
+        const response = await axios.post(
+            `${endpoint}/translate?api-version=3.0&from=en&to=${targetLang}`,
+            [{ text }],
+            {
+                headers: {
+                    'Ocp-Apim-Subscription-Key': process.env.AZURE_TRANSLATOR_KEY,
+                    'Ocp-Apim-Subscription-Region': process.env.AZURE_TRANSLATOR_REGION,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        const translatedText = response.data[0]?.translations[0]?.text || text;
+
+        // Cache the result
+        translationCache.set(cacheKey, {
+            translation: translatedText,
+            timestamp: Date.now()
+        });
+
+        console.log(`🌐 Translated to ${targetLang}: "${text.substring(0, 30)}..." → "${translatedText.substring(0, 30)}..."`);
+
+        res.json({ translatedText, cached: false });
+
+    } catch (error) {
+        console.error('❌ Translation error:', error.response?.data || error.message);
+        // Return original text on error
+        res.json({ translatedText: req.body.text, error: 'Translation failed' });
+    }
+});
+
+// POST /api/translate-batch - Translate multiple texts
+app.post('/api/translate-batch', apiLimiter, async (req, res) => {
+    try {
+        const { texts, targetLang } = req.body;
+
+        // Validate input
+        if (!Array.isArray(texts) || texts.length === 0) {
+            return res.status(400).json({ error: 'Texts array is required' });
+        }
+
+        if (texts.length > 100) {
+            return res.status(400).json({ error: 'Maximum 100 texts per request' });
+        }
+
+        if (!targetLang || !['ar', 'it'].includes(targetLang)) {
+            return res.status(400).json({ error: 'Valid target language required (ar, it)' });
+        }
+
+        // Check Azure Translator credentials
+        if (!process.env.AZURE_TRANSLATOR_KEY || !process.env.AZURE_TRANSLATOR_REGION) {
+            console.warn('⚠️ Azure Translator credentials not configured');
+            return res.json({ translations: texts, warning: 'Translation not configured' });
+        }
+
+        const results = [];
+        const textsToTranslate = [];
+        const indexMap = []; // Map of original index to texts needing translation
+
+        // Check cache for each text
+        texts.forEach((text, index) => {
+            const cacheKey = getTranslationCacheKey(text, targetLang);
+            const cached = translationCache.get(cacheKey);
+
+            if (cached && Date.now() - cached.timestamp < TRANSLATION_CACHE_TTL) {
+                results[index] = cached.translation;
+            } else {
+                textsToTranslate.push({ text });
+                indexMap.push(index);
+                results[index] = null; // Placeholder
+            }
+        });
+
+        // If all were cached, return immediately
+        if (textsToTranslate.length === 0) {
+            return res.json({ translations: results, allCached: true });
+        }
+
+        // Call Azure Translator API for uncached texts
+        const endpoint = 'https://api.cognitive.microsofttranslator.com';
+        const response = await axios.post(
+            `${endpoint}/translate?api-version=3.0&from=en&to=${targetLang}`,
+            textsToTranslate,
+            {
+                headers: {
+                    'Ocp-Apim-Subscription-Key': process.env.AZURE_TRANSLATOR_KEY,
+                    'Ocp-Apim-Subscription-Region': process.env.AZURE_TRANSLATOR_REGION,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        // Process results and update cache
+        response.data.forEach((item, i) => {
+            const originalIndex = indexMap[i];
+            const originalText = texts[originalIndex];
+            const translatedText = item.translations[0]?.text || originalText;
+
+            results[originalIndex] = translatedText;
+
+            // Cache the result
+            const cacheKey = getTranslationCacheKey(originalText, targetLang);
+            translationCache.set(cacheKey, {
+                translation: translatedText,
+                timestamp: Date.now()
+            });
+        });
+
+        console.log(`🌐 Batch translated ${textsToTranslate.length} texts to ${targetLang}`);
+
+        res.json({
+            translations: results,
+            translated: textsToTranslate.length,
+            cached: texts.length - textsToTranslate.length
+        });
+
+    } catch (error) {
+        console.error('❌ Batch translation error:', error.response?.data || error.message);
+        // Return original texts on error
+        res.json({ translations: req.body.texts, error: 'Translation failed' });
+    }
+});
+
+// GET /api/translation-stats - Get translation cache stats (for monitoring)
+app.get('/api/translation-stats', (req, res) => {
+    const now = Date.now();
+    let validEntries = 0;
+    let expiredEntries = 0;
+
+    for (const [, value] of translationCache.entries()) {
+        if (now - value.timestamp < TRANSLATION_CACHE_TTL) {
+            validEntries++;
+        } else {
+            expiredEntries++;
+        }
+    }
+
+    res.json({
+        cacheSize: translationCache.size,
+        validEntries,
+        expiredEntries,
+        ttlHours: TRANSLATION_CACHE_TTL / (60 * 60 * 1000),
+        configured: !!(process.env.AZURE_TRANSLATOR_KEY && process.env.AZURE_TRANSLATOR_REGION)
+    });
+});
+
+// =====================================================================
+// END AZURE TRANSLATOR API INTEGRATION
+// =====================================================================
 
 
 // Logout endpoint

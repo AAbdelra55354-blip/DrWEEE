@@ -1,0 +1,1383 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "store": "Store",
+    "ewaste": "E-waste",
+    "services": "Services",
+    "impact": "Impact",
+    "contact": "Contact Us"
+  },
+  "header": {
+    "brand": "DR.WEEE",
+    "login": "Login",
+    "signOut": "Sign Out",
+    "activeUser": "Active User",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "language": "Language"
+  },
+  "user": {
+    "yourWeeeImpact": "Your WEEE Impact",
+    "availablePoints": "Available Points",
+    "totalPoints": "Total Points",
+    "availableCash": "Available Cash",
+    "carbonSaved": "Carbon Saved (kg)",
+    "carbonSavedShort": "Carbon Saved",
+    "myEnvironmentalImpact": "My Environmental Impact",
+    "myRequests": "My Requests",
+    "redeemPointsCash": "Redeem Points & Cash"
+  },
+  "footer": {
+    "tagline": "Pioneering sustainable innovation through e-waste management and circular economy solutions.",
+    "services": "Services",
+    "ewasteRecycling": "E-Waste Recycling",
+    "inkRemanufacturing": "Ink Remanufacturing",
+    "equipmentManufacturing": "Equipment Manufacturing",
+    "franchiseOpportunities": "Franchise Opportunities",
+    "sustainabilityConsulting": "Sustainability Consulting",
+    "contact": "Contact",
+    "location": "Cairo, Egypt",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "copyright": "© 2024 DR.WEEE. Sustainable Solutions."
+  },
+  "home": {
+    "hero": {
+      "title": "Smart Green IT Solutions",
+      "subtitle": "Pioneering Sustainable Innovation",
+      "description": "Transforming environmental challenges into profitable opportunities through cutting-edge e-waste recycling and circular economy solutions.",
+      "cta": {
+        "primary": "Discover Our Story",
+        "secondary": "Partner With Us"
+      }
+    },
+    "stats": {
+      "companies": "Companies Founded",
+      "countries": "Countries Reached",
+      "tons": "Tons E-waste Processed",
+      "partners": "Franchise Partners",
+      "jobs": "Jobs Created"
+    },
+    "video": {
+      "subtitle": "Our Mission in Motion",
+      "title": "The Journey of E-Waste Valorization",
+      "description": "Discover how Dr. WEEE is transforming the e-waste challenge into a global business opportunity, creating value and championing a sustainable circular economy."
+    },
+    "about": {
+      "subtitle": "Who We Are",
+      "title": "Leading the Circular Economy Revolution",
+      "description": "DR.WEEE Smart Green IT Solutions is Egypt's pioneering e-waste recycling company, founded by visionary environmental entrepreneur Essam Hashem. We specialize in transforming electronic waste into valuable resources while creating sustainable business opportunities."
+    },
+    "services": {
+      "subtitle": "Our Services",
+      "title": "Comprehensive Sustainability Solutions",
+      "description": "From e-waste recycling to equipment manufacturing, we provide end-to-end solutions that transform environmental challenges into profitable business opportunities.",
+      "ewaste": {
+        "title": "E-Waste Recycling",
+        "description": "Comprehensive electronic waste processing with advanced material recovery systems extracting valuable metals.",
+        "feature1": "Gold, copper, and iron recovery",
+        "feature2": "Safe hazardous element disposal",
+        "feature3": "100% secure data destruction"
+      },
+      "ink": {
+        "title": "Ink Cartridge Remanufacturing",
+        "description": "Professional remanufacturing of toner cartridges using reverse engineering principles with 100% quality inspection.",
+        "feature1": "50% cost savings for customers",
+        "feature2": "Automatic filling systems",
+        "feature3": "Environmental impact reduction"
+      },
+      "franchise": {
+        "title": "Franchise Opportunities",
+        "description": "Scalable franchise models for e-waste collection and sustainable printing solutions with comprehensive support.",
+        "feature1": "Proven business model",
+        "feature2": "Complete training programs",
+        "feature3": "Global expansion opportunities"
+      }
+    },
+    "impact": {
+      "subtitle": "Our Impact",
+      "title": "Creating Measurable Environmental Change",
+      "description": "Through innovative solutions and strategic partnerships, we're making a significant impact on environmental protection, economic development, and social progress."
+    },
+    "ventures": {
+      "subtitle": "Our Portfolio",
+      "title": "Building the Future of Sustainability",
+      "description": "A comprehensive portfolio of companies and partnerships driving environmental change across industries and continents.",
+      "exploreAll": "Explore All Ventures",
+      "drweee": {
+        "title": "DR.WEEE Smart Green IT Solutions",
+        "description": "Egypt's first e-waste recycling company, establishing comprehensive frameworks for material recovery and environmental awareness.",
+        "stat1": "Flagship Company",
+        "stat2": "Egypt HQ"
+      },
+      "ecoo": {
+        "title": "Ecoo Industrial Systems",
+        "description": "Local manufacturing of recycling equipment, reducing import dependency and providing cost-effective solutions.",
+        "stat1": "Manufacturing",
+        "stat2": "Production"
+      },
+      "spearink": {
+        "title": "Spear Ink",
+        "description": "Remanufactured toner cartridges and Managed Print Services with international expansion and franchising.",
+        "stat1": "Global Reach",
+        "stat2": "11+ Countries"
+      }
+    },
+    "cta": {
+      "title": "Ready to Build a Sustainable Future Together?",
+      "description": "Whether you're interested in partnerships, franchise opportunities, or collaboration on sustainability projects, we're always open to discussing how we can create positive environmental impact together.",
+      "startConversation": "Start a Conversation",
+      "exploreServices": "Explore Services"
+    }
+  },
+  "about": {
+    "hero": {
+      "subtitle": "Founder & Chairman",
+      "name": "Essam Hashem",
+      "role": "Environmental Entrepreneur & Sustainability Leader",
+      "description": "A visionary Egyptian entrepreneur with extensive experience in e-waste management, circular economy principles, and green technology innovation. Leading the transformation of environmental challenges into sustainable business opportunities across multiple continents.",
+      "readStory": "Read My Story",
+      "viewAchievements": "View Achievements"
+    },
+    "story": {
+      "subtitle": "My Journey",
+      "title": "From Vision to Global Impact",
+      "beginning": {
+        "title": "The Beginning",
+        "description": "Recognizing the growing e-waste crisis in Egypt and the MENA region, I saw an opportunity to create innovative solutions that could turn environmental challenges into business opportunities."
+      },
+      "education": {
+        "title": "Education & Expertise",
+        "description": "Pursued specialized education at the United Nations University in Italy, earning a Diploma in E-Waste Management with focus on circular economy, regulatory compliance, and sustainable recycling methods."
+      },
+      "founding": {
+        "title": "Founding DR.WEEE",
+        "description": "Established Egypt's first comprehensive e-waste recycling company, creating innovative collection schemes and developing local manufacturing capabilities for recycling equipment."
+      },
+      "expansion": {
+        "title": "Global Expansion",
+        "description": "Expanded operations internationally through strategic partnerships and franchise models, reaching 11+ countries across Africa, Europe, and Asia while maintaining focus on sustainable practices."
+      }
+    },
+    "visionMission": {
+      "subtitle": "Our Foundation",
+      "title": "Vision, Mission & Values",
+      "description": "Our guiding principles drive every decision and action as we work towards a more sustainable and environmentally conscious future.",
+      "vision": {
+        "title": "Our Vision",
+        "description": "To maximize the use of resources and their optimal exploitation to achieve profits while finding smarter and more innovative sustainable solutions through green information technology. Supporting appropriate methods for preserving the environment and sustainable development, creating a sustainable environment and environmentally friendly investment opportunities."
+      },
+      "mission": {
+        "title": "Our Mission",
+        "description": "To transform challenges into opportunities through continuous development and innovation. We overcome environmental and business challenges by providing comprehensive solutions using green information technology, creating value for all stakeholders while protecting our planet."
+      },
+      "values": {
+        "title": "Our Values",
+        "stewardship": "Environmental Stewardship",
+        "innovation": "Innovation Excellence",
+        "partnerships": "Collaborative Partnerships",
+        "growth": "Sustainable Growth",
+        "responsibility": "Social Responsibility",
+        "quality": "Quality Assurance"
+      }
+    },
+    "leadership": {
+      "subtitle": "Professional Leadership",
+      "title": "Multiple Companies, One Vision",
+      "description": "Leading a diverse portfolio of companies, each contributing to the circular economy and sustainable development across different industries and markets.",
+      "drweee": {
+        "role": "Chairman",
+        "company": "DR.WEEE Smart Green IT Solutions",
+        "description": "Egypt's first e-waste recycling company, focusing on comprehensive material recovery, environmental awareness, and innovative collection schemes including mobile applications for individual users.",
+        "tag1": "First in Egypt",
+        "tag2": "Mobile App Innovation",
+        "tag3": "Material Recovery"
+      },
+      "ecoo": {
+        "role": "Chairman",
+        "company": "Ecoo Industrial Systems",
+        "description": "Develops locally manufactured recycling equipment, reducing import dependency and providing cost-effective machinery solutions for the regional market.",
+        "tag1": "Local Manufacturing",
+        "tag2": "Import Reduction",
+        "tag3": "Cost-Effective"
+      },
+      "spearink": {
+        "role": "Co-founder & Managing Partner",
+        "company": "Spear Ink",
+        "description": "Specializes in remanufactured toner cartridges and Managed Print Services (MPS), with international expansion including franchising in India and exports to 11+ countries.",
+        "tag1": "Global Reach",
+        "tag2": "11+ Countries",
+        "tag3": "Franchise Model"
+      },
+      "kayan": {
+        "role": "Co-founder & Managing Partner",
+        "company": "Kayan for Sustainable Development",
+        "description": "Expands waste management initiatives into the MENA region, fostering cross-border collaboration in sustainable development and environmental solutions.",
+        "tag1": "MENA Expansion",
+        "tag2": "Regional Focus",
+        "tag3": "Cross-border"
+      },
+      "reg": {
+        "role": "Executive Director",
+        "company": "R.E.G Italy (Egypt Branch)",
+        "description": "Oversees industrial waste recycling solutions, contributing to cleaner industrial practices and large-scale resource recovery operations.",
+        "tag1": "Industrial Scale",
+        "tag2": "Italian Partnership",
+        "tag3": "Resource Recovery"
+      },
+      "rimac": {
+        "role": "Official Agent",
+        "company": "Rimac Swiss Machines",
+        "description": "Represents advanced Swiss recycling technology in Egypt, facilitating technology transfer and enhancing local waste management capabilities.",
+        "tag1": "Swiss Technology",
+        "tag2": "Technology Transfer",
+        "tag3": "Local Enhancement"
+      }
+    },
+    "expertise": {
+      "subtitle": "Core Expertise",
+      "title": "Specialized Knowledge & Skills",
+      "description": "Deep expertise across multiple domains of sustainability, technology, and business development, enabling comprehensive solutions for complex environmental challenges.",
+      "ewaste": {
+        "title": "E-Waste Recycling",
+        "description": "Advanced electronic waste disposal techniques, material recovery systems, and pollution reduction strategies with focus on extracting valuable materials while safely handling hazardous components."
+      },
+      "printing": {
+        "title": "Sustainable Printing",
+        "description": "Remanufacturing toner cartridges, reducing plastic waste, and integrating carbon footprint tracking into printing solutions for environmental impact reduction."
+      },
+      "greentech": {
+        "title": "Green Technology",
+        "description": "Localized green technology development, cost-effective recycling machinery production, and innovative solutions for industrial sustainability challenges."
+      },
+      "franchise": {
+        "title": "Franchise Development",
+        "description": "Scalable franchise models for e-waste collection and sustainable printing solutions, enabling global expansion while maintaining quality and environmental standards."
+      },
+      "partnerships": {
+        "title": "International Partnerships",
+        "description": "Building strategic partnerships with international organizations, governments, and industry leaders to advance global sustainability initiatives."
+      },
+      "education": {
+        "title": "Education & Awareness",
+        "description": "Developing educational programs, awareness campaigns, and training initiatives to promote environmental consciousness and sustainable practices."
+      }
+    },
+    "achievements": {
+      "subtitle": "Recognition",
+      "title": "Key Achievements & Milestones",
+      "description": "Significant accomplishments that demonstrate our commitment to environmental innovation and sustainable business development.",
+      "y2024": {
+        "title": "Regional Sustainability Excellence Award",
+        "description": "Recognition for outstanding contribution to environmental protection and circular economy implementation in the MENA region."
+      },
+      "y2023": {
+        "title": "AI-Powered Technology Implementation",
+        "description": "Successfully implemented AI-driven sorting technology, increasing processing efficiency by 40% across all facilities."
+      },
+      "y2022": {
+        "title": "Global Expansion Milestone",
+        "description": "Reached 11+ countries through strategic partnerships and franchise development, establishing DR.WEEE as a global brand."
+      },
+      "y2021": {
+        "title": "UN University Graduation",
+        "description": "Completed specialized Diploma in E-Waste Management at United Nations University, Italy, focusing on circular economy principles."
+      },
+      "y2020": {
+        "title": "First E-Waste Shredder Manufacturing",
+        "description": "Pioneered manufacturing of e-waste shredder machines in Egypt, the first of its kind in the MENA region."
+      },
+      "y2018": {
+        "title": "DR.WEEE Foundation",
+        "description": "Established Egypt's first comprehensive e-waste recycling company, setting new standards for environmental responsibility."
+      }
+    },
+    "philosophy": {
+      "subtitle": "My Philosophy",
+      "title": "Transforming Challenges into Opportunities",
+      "description": "My approach to business and environmental stewardship is rooted in the belief that every challenge presents an opportunity for innovation and positive change.",
+      "diagramAlt": "Circular Economy Principles",
+      "innovation": {
+        "title": "Innovation-Driven Solutions",
+        "description": "Leveraging cutting-edge technology and creative thinking to solve complex environmental problems."
+      },
+      "collaborative": {
+        "title": "Collaborative Approach",
+        "description": "Building strong partnerships with stakeholders across industries, governments, and communities."
+      },
+      "growth": {
+        "title": "Sustainable Growth",
+        "description": "Creating business models that generate profits while contributing to environmental protection."
+      },
+      "learning": {
+        "title": "Continuous Learning",
+        "description": "Staying at the forefront of sustainability science and business innovation through ongoing education."
+      }
+    },
+    "cta": {
+      "title": "Let's Create Sustainable Solutions Together",
+      "description": "I'm always interested in connecting with like-minded individuals and organizations who share our passion for environmental innovation and sustainable business development.",
+      "getInTouch": "Get In Touch",
+      "exploreVentures": "Explore Our Ventures"
+    }
+  },
+  "services": {
+    "hero": {
+      "subtitle": "Our Solutions",
+      "titleMain": "Comprehensive",
+      "titleSub": "Sustainability Services",
+      "description": "From advanced e-waste recycling to innovative equipment manufacturing, we provide end-to-end solutions that transform environmental challenges into profitable business opportunities while building a sustainable future.",
+      "exploreServices": "Explore Services",
+      "getQuote": "Get Quote"
+    },
+    "ewaste": {
+      "subtitle": "Core Service",
+      "title": "E-Waste Recycling",
+      "description": "Our comprehensive electronic waste recycling service is designed to meet all market needs related to e-waste management through advanced collection, sorting, dismantling, and recycling processes.",
+      "whatWeProcess": "What We Process:",
+      "items": {
+        "computers": "Computers & Laptops",
+        "mobile": "Mobile Devices",
+        "televisions": "Televisions & Monitors",
+        "printers": "Printers & Scanners",
+        "circuits": "Circuit Boards",
+        "batteries": "Batteries"
+      },
+      "ourProcess": "Our Process:",
+      "steps": {
+        "collection": {
+          "title": "Collection",
+          "description": "Mobile app-based collection system and pickup services"
+        },
+        "sorting": {
+          "title": "Sorting",
+          "description": "AI-powered sorting technology for maximum efficiency"
+        },
+        "dismantling": {
+          "title": "Dismantling",
+          "description": "Safe disassembly with 100% secure data destruction"
+        },
+        "recovery": {
+          "title": "Recovery",
+          "description": "Advanced material recovery and purification processes"
+        }
+      },
+      "stats": {
+        "tonsProcessed": "Tons Processed",
+        "recoveryRate": "Recovery Rate",
+        "dataSecurity": "Data Security"
+      },
+      "imageCaption1": "State-of-the-art Processing Facility",
+      "imageCaption2": "Circuit Board Material Recovery"
+    },
+    "franchise": {
+      "subtitle": "See the Opportunity",
+      "title": "Our Franchise Success in Action",
+      "description": "Watch our video to see how our franchise partners are making a real impact in their communities while building a profitable, sustainable business.",
+      "cards": {
+        "collection": {
+          "title": "E-Waste Collection",
+          "price": "Starting from $25,000",
+          "features": {
+            "f1": "Mobile collection services",
+            "f2": "Community engagement programs",
+            "f3": "Reward system implementation",
+            "f4": "Local partnership development"
+          }
+        },
+        "fullService": {
+          "title": "Full Service Center",
+          "price": "Starting from $75,000",
+          "features": {
+            "f1": "Complete e-waste processing",
+            "f2": "Ink cartridge remanufacturing",
+            "f3": "Equipment sales and service",
+            "f4": "B2B and B2C operations"
+          }
+        },
+        "regional": {
+          "title": "Regional Master",
+          "price": "Starting from $150,000",
+          "features": {
+            "f1": "Regional territory rights",
+            "f2": "Sub-franchise development",
+            "f3": "Training center operations",
+            "f4": "Strategic partnership management"
+          }
+        }
+      },
+      "learnMore": "Learn More"
+    },
+    "ink": {
+      "subtitle": "Specialized Service",
+      "title": "Ink Cartridge Remanufacturing",
+      "process": {
+        "title": "Remanufacturing Process:",
+        "steps": {
+          "collection": {
+            "title": "Collection & Inspection",
+            "description": "Used cartridges are collected and thoroughly inspected for remanufacturing potential."
+          },
+          "disassembly": {
+            "title": "Disassembly & Cleaning",
+            "description": "Cartridges are carefully disassembled and all components are cleaned extensively."
+          },
+          "replacement": {
+            "title": "Component Replacement",
+            "description": "Damaged internal components are replaced with high-quality alternatives."
+          },
+          "filling": {
+            "title": "Ink Filling",
+            "description": "Automatic filling systems ensure precise ink quantities and quality."
+          },
+          "testing": {
+            "title": "Quality Testing",
+            "description": "Comprehensive testing including print quality and life cycle evaluation."
+          }
+        }
+      },
+      "showcase": {
+        "title": "Professional Remanufacturing",
+        "description": "Reverse engineering approach with precision testing"
+      },
+      "metrics": {
+        "quality": {
+          "title": "100% Quality Inspection",
+          "description": "Every cartridge undergoes comprehensive testing"
+        },
+        "savings": {
+          "title": "50% Cost Savings",
+          "description": "Significant savings compared to new cartridges"
+        },
+        "environmental": {
+          "title": "Environmental Impact",
+          "description": "Reduces plastic waste and carbon footprint"
+        }
+      }
+    },
+    "equipment": {
+      "subtitle": "Innovation",
+      "title": "Equipment Manufacturing",
+      "description": "Local manufacturing of specialized recycling equipment, reducing import dependency and providing cost-effective solutions designed specifically for regional needs.",
+      "cards": {
+        "shredders": {
+          "title": "E-Waste Shredders",
+          "description": "First e-waste shredder machines manufactured in the MENA region, featuring smart compact technology for 100% safe data destruction.",
+          "tags": {
+            "t1": "First in MENA",
+            "t2": "100% Data Security",
+            "t3": "Smart Technology"
+          },
+          "keyFeatures": "Key Features:",
+          "features": {
+            "f1": "Advanced shredding mechanisms",
+            "f2": "Secure data destruction protocols",
+            "f3": "Compact design for space efficiency",
+            "f4": "Low maintenance requirements"
+          }
+        },
+        "inkMachines": {
+          "title": "Ink Filling Machines",
+          "description": "Specialized machines for refilling ink cartridges of all kinds, designed for precision, efficiency, and consistent quality output.",
+          "tags": {
+            "t1": "All Cartridge Types",
+            "t2": "Precision Filling",
+            "t3": "Quality Control"
+          },
+          "keyFeatures": "Key Features:",
+          "features": {
+            "f1": "Automatic filling systems",
+            "f2": "Precision measurement controls",
+            "f3": "Multi-cartridge compatibility",
+            "f4": "Quality assurance integration"
+          }
+        },
+        "custom": {
+          "title": "Custom Solutions",
+          "description": "Tailored equipment solutions designed to meet specific client requirements and regional market needs with comprehensive technical support.",
+          "tags": {
+            "t1": "Custom Design",
+            "t2": "Technical Support",
+            "t3": "Local Production"
+          },
+          "keyFeatures": "Key Features:",
+          "features": {
+            "f1": "Customized specifications",
+            "f2": "Local manufacturing advantages",
+            "f3": "Ongoing technical support",
+            "f4": "Cost-effective solutions"
+          }
+        }
+      },
+      "benefits": {
+        "title": "Manufacturing Benefits",
+        "costReduction": {
+          "title": "Cost Reduction",
+          "description": "Local production significantly reduces costs compared to imported equipment"
+        },
+        "fasterDelivery": {
+          "title": "Faster Delivery",
+          "description": "Reduced lead times and faster deployment of equipment solutions"
+        },
+        "localSupport": {
+          "title": "Local Support",
+          "description": "Comprehensive technical support and maintenance services"
+        },
+        "customization": {
+          "title": "Customization",
+          "description": "Equipment tailored to specific regional requirements and conditions"
+        }
+      }
+    },
+    "cta": {
+      "title": "Ready to Transform Your Business with Sustainability?",
+      "description": "Whether you need e-waste recycling services, equipment solutions, or franchise opportunities, our team is ready to help you achieve your sustainability goals while building profitable business operations.",
+      "consultation": "Get Free Consultation",
+      "learnMore": "Learn More About Us"
+    }
+  },
+  "store": {
+    "hero": {
+      "title": "Dr. WEEE Store",
+      "subtitle": "Premium Remanufactured Printer Supplies for a Sustainable Future"
+    },
+    "products": {
+      "title": "Our Products",
+      "subtitle": "Click on products to view details and add them to your cart!"
+    },
+    "search": {
+      "placeholder": "Search by product name or printer model (e.g., HP LaserJet, Canon MX920)..."
+    },
+    "loading": {
+      "title": "Loading Products...",
+      "description": "Please wait while we fetch our latest inventory."
+    },
+    "noProducts": {
+      "title": "No Products Found",
+      "description": "We couldn't find any products matching the criteria. Please check back later."
+    },
+    "error": {
+      "title": "Oops! Something went wrong.",
+      "description": "We were unable to load our products at this time. Please try refreshing the page."
+    },
+    "addToCart": "Add to Cart",
+    "viewDetails": "View Details",
+    "outOfStock": "Out of Stock",
+    "inStock": "In Stock",
+    "cart": {
+      "title": "Shopping Cart",
+      "subtitle": "Eco-friendly supplies for your business",
+      "empty": "Your cart is empty<br>Start shopping to see items here!",
+      "total": "Total:",
+      "totalItems": "Total ({{count}} item)",
+      "totalItemsPlural": "Total ({{count}} items)",
+      "checkout": "Checkout",
+      "continueShopping": "Continue Shopping",
+      "remove": "Remove",
+      "proceedToCheckout": "Proceed to Checkout",
+      "generateQuote": "Generate Quote PDF",
+      "tradeInSavings": "Trade-in savings:",
+      "earnPoints": "Earn {{points}} points",
+      "saveCO2": "Save {{amount}} kg CO₂",
+      "cartridges": "Cartridges",
+      "emptyReturns": "Empty",
+      "subtotal": "Subtotal:",
+      "discount": "Discount:",
+      "priceNotAvailable": "Price not available"
+    },
+    "mobile": {
+      "yourCart": "Your Cart",
+      "view": "View"
+    },
+    "loginRequired": {
+      "title": "Login Required",
+      "description": "To proceed with your order, please log in or create an account. This allows you to track your orders and manage your details.",
+      "loginButton": "Login / Register"
+    },
+    "delivery": {
+      "title": "Delivery Details",
+      "preferredTime": "Preferred Delivery Time",
+      "paymentMethod": "Payment Method",
+      "cashOnDelivery": "Cash on delivery",
+      "searchAddress": "Search for your address...",
+      "streetAddress": "Street Address",
+      "enterStreet": "Enter street address",
+      "city": "City",
+      "enterCity": "Enter city",
+      "state": "State/Province",
+      "enterState": "Enter state",
+      "country": "Country/Region",
+      "enterCountry": "Enter country",
+      "reviewOrder": "Review Order"
+    },
+    "confirmation": {
+      "title": "Confirm Your Order",
+      "description": "Please review the details below before submitting your order.",
+      "submitOrder": "Submit Order",
+      "editDetails": "Edit Details",
+      "orderSummary": "Order Summary",
+      "subtotal": "Subtotal",
+      "tradeInDiscount": "Trade-in Discount",
+      "total": "Total",
+      "deliveryDetails": "Delivery Details",
+      "address": "Address",
+      "time": "Time",
+      "payment": "Payment",
+      "notSpecified": "Not specified"
+    },
+    "filters": {
+      "all": "All Products",
+      "category": "Category",
+      "priceRange": "Price Range",
+      "sortBy": "Sort By"
+    },
+    "modal": {
+      "pricingDetails": "Pricing Details",
+      "originalCost": "Original Cost",
+      "recycledPrice": "Recycled Price",
+      "youSave": "You Save",
+      "weeePoints": "WEEE Points",
+      "costPerPage": "Cost Per Page",
+      "original": "Original",
+      "remanufactured": "Remanufactured",
+      "savingsPerPage": "Savings/Page",
+      "co2Saved": "CO₂ Saved",
+      "specifications": "Specifications",
+      "noSpecifications": "No specifications available",
+      "compatiblePrinters": "Compatible Printers",
+      "noCompatibleProducts": "No compatible products listed",
+      "quantity": "Quantity",
+      "tradeInProgram": "Trade-In Program",
+      "tradeInDescription": "Get 10% discount for each empty cartridge you return to us!",
+      "emptyCartridgesToTrade": "Empty Cartridges to Trade",
+      "count": "Count:",
+      "priceSummary": "Price Summary",
+      "unitPrice": "Unit Price:",
+      "quantityLabel": "Quantity:",
+      "subtotal": "Subtotal:",
+      "discount": "Discount:",
+      "total": "Total:",
+      "addToCart": "Add to Cart",
+      "defaultDescription": "High-quality remanufactured cartridge designed to deliver exceptional print quality while supporting environmental sustainability."
+    }
+  },
+  "ewaste": {
+    "hero": {
+      "title": "WEEE Rewards",
+      "subtitle": "Turn your electronic waste into rewards and environmental impact"
+    },
+    "schedulePickup": "Schedule Pickup",
+    "howItWorks": {
+      "title": "How It Works",
+      "step1": {
+        "title": "Schedule Pickup",
+        "description": "Book a convenient time for us to collect your e-waste"
+      },
+      "step2": {
+        "title": "We Collect",
+        "description": "Our team picks up your items safely and responsibly"
+      },
+      "step3": {
+        "title": "Earn Rewards",
+        "description": "Receive WEEE points based on your contribution"
+      }
+    },
+    "categories": {
+      "title": "What We Accept",
+      "computers": "Computers & Laptops",
+      "phones": "Mobile Phones",
+      "tablets": "Tablets",
+      "printers": "Printers",
+      "cartridges": "Ink Cartridges",
+      "batteries": "Batteries",
+      "cables": "Cables & Accessories",
+      "appliances": "Small Appliances"
+    },
+    "form": {
+      "title": "Request Pickup",
+      "name": "Full Name",
+      "phone": "Phone Number",
+      "email": "Email Address",
+      "address": "Pickup Address",
+      "city": "City",
+      "items": "Items to Recycle",
+      "notes": "Additional Notes",
+      "submit": "Submit Request",
+      "success": "Your pickup request has been submitted successfully!",
+      "error": "There was an error submitting your request. Please try again."
+    }
+  },
+  "impact": {
+    "hero": {
+      "title": "Our Environmental Impact",
+      "subtitle": "Measuring our contribution to a sustainable future"
+    },
+    "stats": {
+      "co2Saved": "CO₂ Saved",
+      "treesPlanted": "Trees Equivalent",
+      "itemsRecycled": "Items Recycled",
+      "kgCollected": "KG Collected"
+    },
+    "certificate": {
+      "title": "Environmental Impact Certificate",
+      "yourImpact": "Your Impact",
+      "share": "Share Your Achievement",
+      "download": "Download Certificate"
+    },
+    "equivalents": {
+      "title": "What Your Impact Means",
+      "trees": "Trees planted equivalent",
+      "driving": "Km of driving avoided",
+      "electricity": "Days of home electricity",
+      "phones": "Phone charges saved",
+      "flights": "Flight hours offset",
+      "burgers": "Beef burgers equivalent"
+    },
+    "level": {
+      "seedling": "Seedling",
+      "greenWarrior": "Green Warrior",
+      "earthProtector": "Earth Protector",
+      "forestGuardian": "Forest Guardian",
+      "ecoChampion": "Eco Champion"
+    }
+  },
+  "impactPage": {
+    "hero": {
+      "subtitle": "Our Sustainable Footprint",
+      "title": "Quantifying Our Commitment to the Planet",
+      "description": "We believe in transparent, measurable results. Explore the data that defines our environmental, economic, and social contributions."
+    },
+    "overview": {
+      "environmental": {
+        "title": "Environmental",
+        "description": "Diverting waste, recovering resources, and reducing carbon emissions.",
+        "stat": "Tons CO₂ Reduced"
+      },
+      "economic": {
+        "title": "Economic",
+        "description": "Driving a green economy through job creation and market leadership.",
+        "stat": "Market Share"
+      },
+      "social": {
+        "title": "Social",
+        "description": "Empowering communities through education and accessible technology.",
+        "stat": "People Educated"
+      }
+    },
+    "environmental": {
+      "subtitle": "Environmental Impact",
+      "title": "From Landfill to Lifeline",
+      "description": "Our core mission is to protect the planet by transforming hazardous e-waste into a valuable resource stream, directly combating pollution and conserving natural resources.",
+      "chartTitle": "E-Waste Processed Annually (Tons)",
+      "stats": {
+        "diverted": {
+          "value": "Tons",
+          "label": "Diverted from Landfills"
+        },
+        "metals": {
+          "value": "kg",
+          "label": "Precious Metals Recovered"
+        },
+        "recovery": {
+          "label": "Material Recovery Rate"
+        }
+      }
+    },
+    "economic": {
+      "subtitle": "Economic Impact",
+      "title": "Fueling a Green Economy",
+      "description": "We prove that sustainability is a powerful economic driver, creating jobs, stimulating local manufacturing, and establishing a profitable model for the circular economy.",
+      "chartTitle": "Contribution to Green Economy",
+      "jobCreation": {
+        "title": "Job Creation",
+        "description": "We have created over <strong>{{direct}} direct jobs</strong> and an estimated <strong>{{indirect}} indirect jobs</strong>, providing stable employment in the green tech sector."
+      },
+      "marketLeadership": {
+        "title": "Market Leadership",
+        "description": "As Egypt's first and largest e-waste recycler, we hold a significant market share, setting industry standards for quality and compliance."
+      },
+      "localManufacturing": {
+        "title": "Local Manufacturing",
+        "description": "Our investment in local equipment production reduces import dependency by <strong>{{percent}}%</strong>, keeping capital within the national economy."
+      }
+    },
+    "social": {
+      "subtitle": "Social Impact",
+      "title": "Empowering a Sustainable Society",
+      "description": "Our impact goes beyond recycling. We are committed to educating the public and making sustainability accessible to everyone through technology and community engagement.",
+      "education": {
+        "title": "Education & Awareness",
+        "description": "Our school programs and public campaigns have educated over 10,000 individuals on the importance of proper e-waste disposal."
+      },
+      "technology": {
+        "title": "Technology for All",
+        "description": "The DR.WEEE mobile app has been downloaded over 10,000 times, making responsible recycling easy and rewarding for citizens across Egypt."
+      },
+      "partnerships": {
+        "title": "Community Partnerships",
+        "description": "We partner with over 25 NGOs and community organizations to expand our collection network and ensure benefits reach underserved areas."
+      }
+    },
+    "futureGoals": {
+      "subtitle": "Our Vision for Tomorrow",
+      "title": "Our 2030 Sustainability Goals",
+      "goals": {
+        "divert": {
+          "title": "Divert 10,000 Tons",
+          "description": "Annually divert over 10,000 tons of e-waste from landfills."
+        },
+        "carbon": {
+          "title": "Carbon Neutral",
+          "description": "Achieve fully carbon-neutral operations through efficiency and offsets."
+        },
+        "expand": {
+          "title": "Expand to 20 Countries",
+          "description": "Establish a strong presence in 20+ countries across the MENA region and beyond."
+        }
+      }
+    }
+  },
+  "contact": {
+    "hero": {
+      "subtitle": "Connect With Us",
+      "title": "Let's Innovate for a Greener Tomorrow",
+      "description": "Your journey towards sustainability starts with a conversation. We're ready to listen and collaborate."
+    },
+    "form": {
+      "title": "Send Us a Message",
+      "subtitle": "Fill out the form and our team will get back to you within 24 business hours.",
+      "name": "Full Name",
+      "namePlaceholder": "John Doe",
+      "email": "Email Address",
+      "emailPlaceholder": "you@example.com",
+      "phone": "Phone Number",
+      "phonePlaceholder": "+20 123 456 7890",
+      "subject": "What can we help you with?",
+      "subjectPlaceholder": "Select a subject...",
+      "subjectServices": "Service Inquiry",
+      "subjectPartnership": "Partnership Opportunity",
+      "subjectFranchise": "Franchise Information",
+      "subjectOther": "Other",
+      "message": "Your Message",
+      "messagePlaceholder": "Tell us more about your inquiry...",
+      "submit": "Send Message",
+      "sending": "Sending...",
+      "success": "Thank you for your message! We will get back to you within 24 hours.",
+      "error": "Sorry, there was an error sending your message. Please try again."
+    },
+    "info": {
+      "emailTitle": "Email Us",
+      "emailDescription": "For general inquiries and partnerships.",
+      "callTitle": "Call Us",
+      "callDescription": "Sun - Thu, 9:00 AM - 6:00 PM (GMT+2)",
+      "headquartersTitle": "Our Headquarters",
+      "headquartersDescription": "Cairo, Egypt"
+    },
+    "successModal": {
+      "title": "Message Sent Successfully!",
+      "whatHappensNext": "What Happens Next?",
+      "step1": "Our team will carefully review your message.",
+      "step2": "You will receive a response within 24 business hours.",
+      "step3": "If your request requires more information, we'll reach out.",
+      "needUrgentHelp": "Need Urgent Help?",
+      "callUsAt": "Call us at",
+      "haveMoreQuestions": "Have More Questions?",
+      "checkFaq": "Check our",
+      "faqSection": "FAQ section",
+      "closeButton": "Close"
+    }
+  },
+  "login": {
+    "title": "Welcome Back",
+    "subtitle": "Sign in to your DR.WEEE account",
+    "phone": "Phone Number",
+    "phonePlaceholder": "Enter your phone number",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "signIn": "Sign In",
+    "signingIn": "Signing in...",
+    "noAccount": "Don't have an account?",
+    "register": "Register",
+    "orContinueWith": "Or continue with",
+    "otp": {
+      "title": "Enter Verification Code",
+      "subtitle": "We've sent a code to your phone",
+      "resend": "Resend Code",
+      "verify": "Verify"
+    },
+    "errors": {
+      "invalidPhone": "Please enter a valid phone number",
+      "invalidPassword": "Please enter your password",
+      "invalidCredentials": "Invalid phone number or password",
+      "accountLocked": "Account locked. Please try again later.",
+      "networkError": "Network error. Please check your connection."
+    }
+  },
+  "loginPage": {
+    "welcome": {
+      "title": "Welcome to DR.WEEE",
+      "subtitle": "Join the sustainable future"
+    },
+    "form": {
+      "mobilePhone": "Mobile Phone",
+      "phonePlaceholder": "Enter phone number",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "loginButton": "Login"
+    },
+    "toggle": {
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create one now",
+      "hasAccount": "Already have an account?",
+      "loginHere": "Login here"
+    },
+    "steps": {
+      "details": "Details",
+      "verify": "Verify",
+      "secure": "Secure",
+      "finish": "Finish"
+    },
+    "register": {
+      "title": "Create Your Account",
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "Enter your full name",
+      "sendOtp": "Send OTP Code"
+    },
+    "otp": {
+      "enterCode": "Enter 6-Digit OTP Code",
+      "sentTo": "Sent to",
+      "verifyCode": "Verify Code",
+      "resendIn": "Resend in",
+      "resendCode": "Resend Code",
+      "newOtpSent": "A new OTP has been sent."
+    },
+    "password": {
+      "mobileVerified": "Mobile verified successfully!",
+      "createPassword": "Create Password",
+      "minChars": "Minimum 6 characters",
+      "confirmPassword": "Confirm Password",
+      "confirmPlaceholder": "Confirm your password",
+      "createAccount": "Create Account"
+    },
+    "success": {
+      "title": "Welcome to DR.WEEE!",
+      "message": "Your account is ready. You are now logged in.",
+      "continue": "Continue"
+    },
+    "loading": {
+      "sending": "Sending...",
+      "verifying": "Verifying...",
+      "creatingAccount": "Creating Account...",
+      "loggingIn": "Logging In..."
+    },
+    "errors": {
+      "passwordTooShort": "Password must be at least 6 characters long.",
+      "passwordsNotMatch": "Passwords do not match."
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "viewAll": "View All",
+    "learnMore": "Learn More",
+    "readMore": "Read More",
+    "seeMore": "See More",
+    "showLess": "Show Less",
+    "required": "Required",
+    "optional": "Optional",
+    "yes": "Yes",
+    "no": "No",
+    "or": "or",
+    "and": "and"
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalidEmail": "Please enter a valid email address",
+    "invalidPhone": "Please enter a valid phone number",
+    "minLength": "Must be at least {{min}} characters",
+    "maxLength": "Must be no more than {{max}} characters",
+    "passwordMismatch": "Passwords do not match"
+  },
+  "share": {
+    "title": "Share",
+    "linkedin": "Share on LinkedIn",
+    "twitter": "Share on Twitter",
+    "facebook": "Share on Facebook",
+    "whatsapp": "Share on WhatsApp",
+    "copyLink": "Copy Link",
+    "linkCopied": "Link copied to clipboard!"
+  },
+  "weeeRewards": {
+    "hero": {
+      "title": "WEEE Rewards Hub",
+      "subtitle": "Transform Your E-Waste Into Environmental Impact & Rewards"
+    },
+    "categories": {
+      "title": "Select Your E-Waste Items",
+      "subtitle": "Click on items to add them to your collection bag and see your environmental impact!",
+      "searchPlaceholder": "Search for items (e.g., laptop, phone, TV...)",
+      "filters": {
+        "all": "All Items",
+        "computing": "Computing",
+        "mobile": "Mobile",
+        "home": "Home Appliances",
+        "entertainment": "Entertainment",
+        "accessories": "Accessories",
+        "office": "Office"
+      }
+    },
+    "items": {
+      "points": "Points",
+      "kgCo2Saved": "kg CO₂ Saved",
+      "ptsEach": "pts each",
+      "unit": "Unit",
+      "quantity": "Quantity",
+      "units": {
+        "Each": "Each",
+        "Box": "Box",
+        "Kg": "Kg"
+      }
+    },
+    "panel": {
+      "title": "Your Collection Bag",
+      "subtitle": "Items ready for eco-friendly disposal",
+      "itemsCount": "{{count}} items",
+      "itemCount": "{{count}} item",
+      "emptyState": "Start selecting items to see your environmental impact!"
+    },
+    "impact": {
+      "title": "Your Environmental Impact",
+      "weeePoints": "WEEE Points",
+      "co2Saved": "CO₂ Saved (kg)"
+    },
+    "actions": {
+      "completeRequest": "Complete Collection Request",
+      "viewBag": "View Bag",
+      "completeRequestShort": "Complete Request"
+    },
+    "mobile": {
+      "points": "Points",
+      "kgCo2": "kg CO₂",
+      "emptyBag": "Your collection bag is empty",
+      "tapToAdd": "Tap on items to add them"
+    },
+    "loading": {
+      "title": "Loading E-Waste Items...",
+      "message": "Please wait while we fetch the latest products."
+    },
+    "error": {
+      "loadTitle": "Unable to Load Products",
+      "loadMessage": "We're having trouble loading the e-waste items. Please try refreshing the page.",
+      "refreshButton": "Refresh Page"
+    },
+    "noResults": {
+      "title": "No Items Found",
+      "searchMessage": "No items found matching \"{{query}}\"",
+      "categoryMessage": "No e-waste items available in this category.",
+      "clearSearch": "Clear Search"
+    },
+    "loginModal": {
+      "title": "Login Required",
+      "description": "To proceed with your e-waste collection request, please log in to your account or create a new one. This helps us track your environmental impact and WEEE points!",
+      "loginButton": "Login / Register",
+      "cancelButton": "Cancel"
+    },
+    "locationModal": {
+      "title": "Select Collection Location",
+      "searchPlaceholder": "Search for your address or location...",
+      "searchButton": "Search",
+      "clearButton": "Clear",
+      "defaultText": "Click on the map or search for a location",
+      "fetchingAddress": "Fetching address...",
+      "confirmButton": "Confirm Location",
+      "notFound": "Location not found. Please try a different search term.",
+      "searchFailed": "Location search failed. Please try again."
+    },
+    "successModal": {
+      "title": "Request Submitted Successfully!",
+      "description": "Thank you for choosing DR.WEEE! Your e-waste collection request has been submitted.",
+      "contactMessage": "Our team will contact you to arrange the pickup at your specified location.",
+      "viewRequests": "View My Requests",
+      "location": "Location",
+      "selectedItems": "Selected Items ({{count}} total)",
+      "itemsSelected": "Items selected",
+      "moreItems": "+ {{count}} more items",
+      "pts": "pts",
+      "pointsEarned": "WEEE Points Earned",
+      "environmentalImpact": "Environmental Impact",
+      "kgCo2Saved": "kg CO₂ saved"
+    },
+    "delayedModal": {
+      "title": "Request Received!",
+      "requestId": "Request ID",
+      "status": "Status",
+      "processing": "Processing",
+      "contact": "Contact",
+      "within24h": "Within 24 hours"
+    },
+    "errors": {
+      "requestFailed": "Request Failed",
+      "processingError": "An error occurred while processing your request.",
+      "tryAgainLater": "Please try again later.",
+      "processingDelayed": "Processing Delayed",
+      "takingLonger": "Your request is taking longer than usual to process.",
+      "checkBackMinutes": "Please check back in a few minutes or try submitting again.",
+      "requestReceived": "Request Received",
+      "contactWithin24h": "Our team will contact you within 24 hours to arrange pickup.",
+      "serviceUnavailable": "Service Temporarily Unavailable",
+      "serviceDown": "Our collection service is temporarily down.",
+      "tryAgain30min": "Please try again in 30 minutes.",
+      "invalidRequest": "Invalid Request",
+      "requestDataError": "There was an error with your request data.",
+      "refreshAndTry": "Please refresh the page and try again.",
+      "networkError": "Network error. Please check your connection and try again.",
+      "locationNotFound": "Location not found. Please try a different search term.",
+      "locationSearchFailed": "Location search failed. Please try again."
+    },
+    "requestDescription": {
+      "header": "E-WASTE COLLECTION REQUEST",
+      "collectionDetails": "COLLECTION DETAILS",
+      "address": "Address",
+      "submitted": "Submitted",
+      "requestSummary": "REQUEST SUMMARY",
+      "totalItems": "Total Items",
+      "weeePoints": "WEEE Points",
+      "co2Saved": "CO₂ Saved",
+      "itemizedList": "ITEMIZED LIST"
+    }
+  },
+  "redeemPoints": {
+    "hero": {
+      "title": "Redeem Your WEEE Points",
+      "subtitle": "Turn your eco-friendly actions into valuable rewards. Choose from our selection of vouchers and gifts."
+    },
+    "balance": {
+      "availablePoints": "Available Points",
+      "availableCash": "Available Cash",
+      "points": "Points",
+      "egp": "EGP"
+    },
+    "filters": {
+      "all": "All Rewards",
+      "retail": "Retail & Shopping",
+      "food": "Food & Dining",
+      "entertainment": "Entertainment",
+      "tech": "Technology",
+      "cash": "Cash"
+    },
+    "loading": {
+      "text": "Loading vouchers..."
+    },
+    "loginRequired": {
+      "title": "Login Required",
+      "description": "Please log in to view and redeem vouchers.",
+      "loginButton": "Login"
+    },
+    "emptyState": {
+      "title": "No Vouchers Available",
+      "description": "Check back later for new rewards!"
+    },
+    "noCategory": {
+      "description": "No vouchers found in this category."
+    },
+    "error": {
+      "title": "Error Loading Vouchers",
+      "description": "Please try again later.",
+      "retryButton": "Retry"
+    },
+    "card": {
+      "points": "Points",
+      "cash": "Cash",
+      "viewDetails": "View Details"
+    },
+    "modal": {
+      "payWith": "Pay with",
+      "points": "Points",
+      "cash": "Cash",
+      "insufficient": "Insufficient",
+      "quantity": "Quantity",
+      "total": "Total",
+      "cancel": "Cancel",
+      "redeem": "Redeem",
+      "insufficientBalance": "Insufficient Balance",
+      "processing": "Processing..."
+    },
+    "success": {
+      "title": "Request Submitted!",
+      "message": "Your redemption request has been submitted successfully. You can track it in the \"My Requests\" section.",
+      "viewRequests": "View My Requests"
+    },
+    "alerts": {
+      "loginRequired": "Please log in to redeem vouchers.",
+      "submitFailed": "Failed to submit redemption request.",
+      "genericError": "An error occurred. Please try again."
+    }
+  },
+  "myRequests": {
+    "hero": {
+      "badge": "My Activity",
+      "title": "My Requests",
+      "subtitle": "Track all your e-waste collection requests and store orders in one place"
+    },
+    "loading": {
+      "text": "Loading your requests..."
+    },
+    "loginRequired": {
+      "title": "Login Required",
+      "description": "Please log in to view your requests and order history.",
+      "loginButton": "Login"
+    },
+    "stats": {
+      "requests": "Requests",
+      "request": "Request",
+      "completed": "Completed"
+    },
+    "filters": {
+      "all": "All",
+      "purchases": "Purchases",
+      "ewaste": "E-waste",
+      "redeem": "Redeem"
+    },
+    "requestTypes": {
+      "ewasteCollection": "E-waste Collection",
+      "formSubmit": "Form Submit",
+      "onlinePurchase": "Online Purchase",
+      "redeemingRequest": "Redeeming Request",
+      "general": "General Request"
+    },
+    "status": {
+      "open": "Open",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "card": {
+      "viewButton": "View"
+    },
+    "emptyState": {
+      "title": "No Requests Yet",
+      "description": "You haven't made any requests yet. Start recycling e-waste or shop for eco-friendly products!",
+      "recycleButton": "Recycle E-waste",
+      "shopButton": "Visit Store"
+    },
+    "error": {
+      "title": "Error Loading Requests",
+      "description": "Unable to load your requests. Please try again later.",
+      "retryButton": "Retry"
+    },
+    "modal": {
+      "title": "Request Details",
+      "statusLabel": "Status",
+      "typeLabel": "Request Type",
+      "dateLabel": "Date Created",
+      "detailsLabel": "Details",
+      "noDetails": "No details available"
+    }
+  },
+  "environmentalImpact": {
+    "loading": "Calculating your environmental impact...",
+    "hero": {
+      "badge": "Your Green Journey",
+      "title": "Your Environmental Impact",
+      "subtitle": "Every item you recycle makes a difference. Track your contribution to a sustainable future."
+    },
+    "loginPrompt": {
+      "title": "Track Your Environmental Impact",
+      "description": "Log in to see your personal CO2 savings from recycling e-waste with DR.WEEE.",
+      "button": "Log In to View"
+    },
+    "stats": {
+      "co2Unit": "kg CO₂",
+      "totalCarbonSaved": "Total Carbon Emissions Saved",
+      "treesEquivalent": "Trees Equivalent",
+      "drivingAvoided": "Driving Avoided",
+      "daysOfElectricity": "Days of Electricity",
+      "phoneCharges": "Phone Charges"
+    },
+    "ecoLevels": {
+      "seedling": "Seedling",
+      "greenWarrior": "Green Warrior",
+      "earthProtector": "Earth Protector",
+      "forestGuardian": "Forest Guardian",
+      "ecoChampion": "Eco Champion",
+      "keepGoing": "Keep going, {name}!",
+      "progressToNextLevel": "Progress to next level ({level} kg)",
+      "maxLevelReached": "Maximum level reached!"
+    },
+    "climatiq": {
+      "title": "Powered by Climatiq API",
+      "verifiedData": "Verified Data",
+      "description": "All emission calculations use scientifically-backed emission factors from Climatiq's verified database, trusted by leading companies worldwide for accurate carbon accounting.",
+      "dataSources": "Data sources:",
+      "emissionFactors": "Emission Factors",
+      "countries": "Countries"
+    },
+    "share": {
+      "title": "Share Your Green Achievement!",
+      "description": "Inspire others to join the e-waste recycling movement. Share your impact on social media.",
+      "copyLink": "Copy Link",
+      "hint": "Your certificate link shows a preview on LinkedIn with your impact stats!",
+      "card": {
+        "co2Saved": "CO₂ Saved",
+        "trees": "Trees",
+        "items": "Items",
+        "level": "Level"
+      }
+    },
+    "equivalents": {
+      "title": "What Your Impact Means",
+      "subtitle": "Your CO₂ savings translated into everyday terms",
+      "verified": "Verified",
+      "driving": {
+        "label": "Car Driving Avoided",
+        "description": "The distance you could have driven that would emit the same CO₂"
+      },
+      "trees": {
+        "label": "Trees Planted for 1 Year",
+        "description": "Equivalent carbon absorption of mature trees over one year"
+      },
+      "electricity": {
+        "label": "Home Electricity Saved",
+        "description": "Days of average Egyptian household electricity consumption"
+      },
+      "charges": {
+        "label": "Smartphone Charges",
+        "description": "Number of full smartphone battery charges"
+      },
+      "flights": {
+        "label": "Flight Hours Offset",
+        "description": "Hours of commercial flight emissions neutralized"
+      },
+      "burgers": {
+        "label": "Burger Carbon Footprint",
+        "description": "Equivalent to skipping this many beef burgers"
+      }
+    },
+    "cta": {
+      "title": "Keep Making an Impact!",
+      "description": "Every device you recycle brings us closer to a sustainable future. Ready to increase your environmental impact?",
+      "schedulePickup": "Schedule E-Waste Pickup",
+      "shopProducts": "Shop Eco-Friendly Products"
+    }
+  },
+  "meta": {
+    "title": "DR.WEEE - Smart Green IT Solutions | E-Waste Recycling & Sustainability",
+    "description": "Pioneering sustainable innovation through e-waste management and circular economy solutions. Transform your electronic waste into environmental impact with DR.WEEE."
+  }
+}

@@ -54,11 +54,21 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+Arabic:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/rtl.css">
+
+    <!-- i18n FOUC Prevention -->
+    <script>
+    (function() {
+        var lang = localStorage.getItem('drweee_language') || 'en';
+        document.documentElement.lang = lang;
+        if (lang === 'ar') document.documentElement.dir = 'rtl';
+    })();
+    </script>
 
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -1023,7 +1033,7 @@
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
-        <div class="loading-text">Calculating your environmental impact...</div>
+        <div class="loading-text" data-i18n="environmentalImpact.loading">Calculating your environmental impact...</div>
     </div>
 
     <!-- Main Content -->
@@ -1034,10 +1044,10 @@
                 <div class="hero-content">
                     <div class="hero-badge">
                         <i class="fas fa-leaf"></i>
-                        <span>Your Green Journey</span>
+                        <span data-i18n="environmentalImpact.hero.badge">Your Green Journey</span>
                     </div>
-                    <h1 class="hero-title">Your Environmental Impact</h1>
-                    <p class="hero-subtitle">
+                    <h1 class="hero-title" data-i18n="environmentalImpact.hero.title">Your Environmental Impact</h1>
+                    <p class="hero-subtitle" data-i18n="environmentalImpact.hero.subtitle">
                         Every item you recycle makes a difference. Track your contribution to a sustainable future.
                     </p>
                 </div>
@@ -1052,11 +1062,11 @@
                     <div class="login-prompt-icon">
                         <i class="fas fa-leaf"></i>
                     </div>
-                    <h3>Track Your Environmental Impact</h3>
-                    <p>Log in to see your personal CO2 savings from recycling e-waste with DR.WEEE.</p>
+                    <h3 data-i18n="environmentalImpact.loginPrompt.title">Track Your Environmental Impact</h3>
+                    <p data-i18n="environmentalImpact.loginPrompt.description">Log in to see your personal CO2 savings from recycling e-waste with DR.WEEE.</p>
                     <a href="login.html" class="btn btn--primary btn--lg">
                         <i class="fas fa-sign-in-alt"></i>
-                        Log In to View
+                        <span data-i18n="environmentalImpact.loginPrompt.button">Log In to View</span>
                     </a>
                 </div>
 
@@ -1086,10 +1096,10 @@
                     <div class="co2-counter-section">
                         <div class="co2-main-value">
                             <span id="co2Value">0</span>
-                            <span class="unit">kg CO₂</span>
+                            <span class="unit" data-i18n="environmentalImpact.stats.co2Unit">kg CO₂</span>
                         </div>
-                        <div class="co2-main-label">Total Carbon Emissions Saved</div>
-                      
+                        <div class="co2-main-label" data-i18n="environmentalImpact.stats.totalCarbonSaved">Total Carbon Emissions Saved</div>
+
                     </div>
 
                     <!-- Quick Stats Grid -->
@@ -1097,22 +1107,22 @@
                         <div class="impact-stat-card">
                             <span class="stat-emoji">🌳</span>
                             <span class="stat-value" id="treesValue">0</span>
-                            <span class="stat-label">Trees Equivalent</span>
+                            <span class="stat-label" data-i18n="environmentalImpact.stats.treesEquivalent">Trees Equivalent</span>
                         </div>
                         <div class="impact-stat-card">
                             <span class="stat-emoji">🚗</span>
                             <span class="stat-value" id="drivingValue">0 km</span>
-                            <span class="stat-label">Driving Avoided</span>
+                            <span class="stat-label" data-i18n="environmentalImpact.stats.drivingAvoided">Driving Avoided</span>
                         </div>
                         <div class="impact-stat-card">
                             <span class="stat-emoji">💡</span>
                             <span class="stat-value" id="electricityValue">0</span>
-                            <span class="stat-label">Days of Electricity</span>
+                            <span class="stat-label" data-i18n="environmentalImpact.stats.daysOfElectricity">Days of Electricity</span>
                         </div>
                         <div class="impact-stat-card">
                             <span class="stat-emoji">📱</span>
                             <span class="stat-value" id="chargesValue">0</span>
-                            <span class="stat-label">Phone Charges</span>
+                            <span class="stat-label" data-i18n="environmentalImpact.stats.phoneCharges">Phone Charges</span>
                         </div>
                     </div>
                 </div>
@@ -1132,12 +1142,12 @@
                         </div>
                         <div class="climatiq-text">
                             <h4>
-                                Powered by Climatiq API
-                                <span class="verified-badge"><i class="fas fa-check-circle"></i> Verified Data</span>
+                                <span data-i18n="environmentalImpact.climatiq.title">Powered by Climatiq API</span>
+                                <span class="verified-badge"><i class="fas fa-check-circle"></i> <span data-i18n="environmentalImpact.climatiq.verifiedData">Verified Data</span></span>
                             </h4>
-                            <p>All emission calculations use scientifically-backed emission factors from Climatiq's verified database, trusted by leading companies worldwide for accurate carbon accounting.</p>
+                            <p data-i18n="environmentalImpact.climatiq.description">All emission calculations use scientifically-backed emission factors from Climatiq's verified database, trusted by leading companies worldwide for accurate carbon accounting.</p>
                             <div class="climatiq-sources">
-                                <span>Data sources:</span>
+                                <span data-i18n="environmentalImpact.climatiq.dataSources">Data sources:</span>
                                 <span class="climatiq-source-badge">EPA</span>
                                 <span class="climatiq-source-badge">IPCC AR6</span>
                                 <span class="climatiq-source-badge">GHG Protocol</span>
@@ -1149,11 +1159,11 @@
                     <div class="climatiq-stats">
                         <div class="climatiq-stat">
                             <div class="climatiq-stat-value">639K+</div>
-                            <div class="climatiq-stat-label">Emission Factors</div>
+                            <div class="climatiq-stat-label" data-i18n="environmentalImpact.climatiq.emissionFactors">Emission Factors</div>
                         </div>
                         <div class="climatiq-stat">
                             <div class="climatiq-stat-value">200+</div>
-                            <div class="climatiq-stat-label">Countries</div>
+                            <div class="climatiq-stat-label" data-i18n="environmentalImpact.climatiq.countries">Countries</div>
                         </div>
                     </div>
                 </div>
@@ -1164,8 +1174,8 @@
             <div class="container">
                 <div class="share-card">
                     <div class="share-content">
-                        <h2>Share Your Green Achievement!</h2>
-                        <p>Inspire others to join the e-waste recycling movement. Share your impact on social media.</p>
+                        <h2 data-i18n="environmentalImpact.share.title">Share Your Green Achievement!</h2>
+                        <p data-i18n="environmentalImpact.share.description">Inspire others to join the e-waste recycling movement. Share your impact on social media.</p>
                         <div class="share-buttons">
                             <button class="share-btn linkedin" onclick="shareOnLinkedIn()">
                                 <i class="fab fa-linkedin-in"></i>
@@ -1185,12 +1195,12 @@
                             </button>
                             <button class="share-btn copy" onclick="copyShareLink(event)">
                                 <i class="fas fa-link"></i>
-                                Copy Link
+                                <span data-i18n="environmentalImpact.share.copyLink">Copy Link</span>
                             </button>
                         </div>
                         <p class="share-hint" style="font-size: 0.85rem; opacity: 0.8; margin-top: 1rem;">
                             <i class="fas fa-info-circle"></i>
-                            Your certificate link shows a preview on LinkedIn with your impact stats!
+                            <span data-i18n="environmentalImpact.share.hint">Your certificate link shows a preview on LinkedIn with your impact stats!</span>
                         </p>
                     </div>
                     <div class="impact-card-preview">
@@ -1200,20 +1210,20 @@
                         </div>
                         <div class="impact-card-co2">
                             <div class="value" id="cardCO2Value">0 kg</div>
-                            <div class="label">CO₂ Saved</div>
+                            <div class="label" data-i18n="environmentalImpact.share.card.co2Saved">CO₂ Saved</div>
                         </div>
                         <div class="impact-card-stats">
                             <div class="impact-card-stat">
                                 <div class="num" id="cardTrees">0</div>
-                                <div class="lbl">Trees</div>
+                                <div class="lbl" data-i18n="environmentalImpact.share.card.trees">Trees</div>
                             </div>
                             <div class="impact-card-stat">
                                 <div class="num" id="cardItems">0</div>
-                                <div class="lbl">Items</div>
+                                <div class="lbl" data-i18n="environmentalImpact.share.card.items">Items</div>
                             </div>
                             <div class="impact-card-stat">
                                 <div class="num" id="cardLevel">🌱</div>
-                                <div class="lbl">Level</div>
+                                <div class="lbl" data-i18n="environmentalImpact.share.card.level">Level</div>
                             </div>
                         </div>
                     </div>
@@ -1225,8 +1235,8 @@
         <section class="equivalents-section" id="equivalentsSection" style="display: none;">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title">What Your Impact Means</h2>
-                    <p class="section-subtitle">Your CO₂ savings translated into everyday terms</p>
+                    <h2 class="section-title" data-i18n="environmentalImpact.equivalents.title">What Your Impact Means</h2>
+                    <p class="section-subtitle" data-i18n="environmentalImpact.equivalents.subtitle">Your CO₂ savings translated into everyday terms</p>
                 </div>
 
                 <div class="equivalents-grid">
@@ -1235,10 +1245,10 @@
                         <div class="equivalent-content">
                             <div class="equivalent-value" id="eqDriving">0 km</div>
                             <div class="equivalent-label">
-                                Car Driving Avoided
-                                <span class="equivalent-verified"><i class="fas fa-check"></i> Verified</span>
+                                <span data-i18n="environmentalImpact.equivalents.driving.label">Car Driving Avoided</span>
+                                <span class="equivalent-verified"><i class="fas fa-check"></i> <span data-i18n="environmentalImpact.equivalents.verified">Verified</span></span>
                             </div>
-                            <div class="equivalent-desc">The distance you could have driven that would emit the same CO₂</div>
+                            <div class="equivalent-desc" data-i18n="environmentalImpact.equivalents.driving.description">The distance you could have driven that would emit the same CO₂</div>
                             <a href="https://www.climatiq.io/data/emission-factor/2b76b9f9-46e0-4933-93c0-21ab62f9d943"
                                target="_blank" rel="noopener noreferrer" class="equivalent-source" id="srcDriving">
                                 <i class="fas fa-external-link-alt"></i>
@@ -1253,10 +1263,10 @@
                         <div class="equivalent-content">
                             <div class="equivalent-value" id="eqTrees">0 trees</div>
                             <div class="equivalent-label">
-                                Trees Planted for 1 Year
-                                <span class="equivalent-verified"><i class="fas fa-check"></i> Verified</span>
+                                <span data-i18n="environmentalImpact.equivalents.trees.label">Trees Planted for 1 Year</span>
+                                <span class="equivalent-verified"><i class="fas fa-check"></i> <span data-i18n="environmentalImpact.equivalents.verified">Verified</span></span>
                             </div>
-                            <div class="equivalent-desc">Equivalent carbon absorption of mature trees over one year</div>
+                            <div class="equivalent-desc" data-i18n="environmentalImpact.equivalents.trees.description">Equivalent carbon absorption of mature trees over one year</div>
                             <a href="https://www.climatiq.io/data"
                                target="_blank" rel="noopener noreferrer" class="equivalent-source" id="srcTrees">
                                 <i class="fas fa-external-link-alt"></i>
@@ -1271,10 +1281,10 @@
                         <div class="equivalent-content">
                             <div class="equivalent-value" id="eqElectricity">0 days</div>
                             <div class="equivalent-label">
-                                Home Electricity Saved
-                                <span class="equivalent-verified"><i class="fas fa-check"></i> Verified</span>
+                                <span data-i18n="environmentalImpact.equivalents.electricity.label">Home Electricity Saved</span>
+                                <span class="equivalent-verified"><i class="fas fa-check"></i> <span data-i18n="environmentalImpact.equivalents.verified">Verified</span></span>
                             </div>
-                            <div class="equivalent-desc">Days of average Egyptian household electricity consumption</div>
+                            <div class="equivalent-desc" data-i18n="environmentalImpact.equivalents.electricity.description">Days of average Egyptian household electricity consumption</div>
                             <a href="https://www.climatiq.io/data/emission-factor/2c8aa104-7e2e-4bae-af32-c054e9bc4d7f"
                                target="_blank" rel="noopener noreferrer" class="equivalent-source" id="srcElectricity">
                                 <i class="fas fa-external-link-alt"></i>
@@ -1289,10 +1299,10 @@
                         <div class="equivalent-content">
                             <div class="equivalent-value" id="eqCharges">0 charges</div>
                             <div class="equivalent-label">
-                                Smartphone Charges
-                                <span class="equivalent-verified"><i class="fas fa-check"></i> Verified</span>
+                                <span data-i18n="environmentalImpact.equivalents.charges.label">Smartphone Charges</span>
+                                <span class="equivalent-verified"><i class="fas fa-check"></i> <span data-i18n="environmentalImpact.equivalents.verified">Verified</span></span>
                             </div>
-                            <div class="equivalent-desc">Number of full smartphone battery charges</div>
+                            <div class="equivalent-desc" data-i18n="environmentalImpact.equivalents.charges.description">Number of full smartphone battery charges</div>
                             <a href="https://www.climatiq.io/data/emission-factor/2c8aa104-7e2e-4bae-af32-c054e9bc4d7f"
                                target="_blank" rel="noopener noreferrer" class="equivalent-source" id="srcCharges">
                                 <i class="fas fa-external-link-alt"></i>
@@ -1307,10 +1317,10 @@
                         <div class="equivalent-content">
                             <div class="equivalent-value" id="eqFlights">0 hours</div>
                             <div class="equivalent-label">
-                                Flight Hours Offset
-                                <span class="equivalent-verified"><i class="fas fa-check"></i> Verified</span>
+                                <span data-i18n="environmentalImpact.equivalents.flights.label">Flight Hours Offset</span>
+                                <span class="equivalent-verified"><i class="fas fa-check"></i> <span data-i18n="environmentalImpact.equivalents.verified">Verified</span></span>
                             </div>
-                            <div class="equivalent-desc">Hours of commercial flight emissions neutralized</div>
+                            <div class="equivalent-desc" data-i18n="environmentalImpact.equivalents.flights.description">Hours of commercial flight emissions neutralized</div>
                             <a href="https://www.climatiq.io/data/emission-factor/8ff56acc-aeb1-4e5d-aca0-ec1d3799a2c5"
                                target="_blank" rel="noopener noreferrer" class="equivalent-source" id="srcFlights">
                                 <i class="fas fa-external-link-alt"></i>
@@ -1325,10 +1335,10 @@
                         <div class="equivalent-content">
                             <div class="equivalent-value" id="eqBurgers">0 burgers</div>
                             <div class="equivalent-label">
-                                Burger Carbon Footprint
-                                <span class="equivalent-verified"><i class="fas fa-check"></i> Verified</span>
+                                <span data-i18n="environmentalImpact.equivalents.burgers.label">Burger Carbon Footprint</span>
+                                <span class="equivalent-verified"><i class="fas fa-check"></i> <span data-i18n="environmentalImpact.equivalents.verified">Verified</span></span>
                             </div>
-                            <div class="equivalent-desc">Equivalent to skipping this many beef burgers</div>
+                            <div class="equivalent-desc" data-i18n="environmentalImpact.equivalents.burgers.description">Equivalent to skipping this many beef burgers</div>
                             <a href="https://www.climatiq.io/data/activity/consumer_goods-type_meat_products_beef"
                                target="_blank" rel="noopener noreferrer" class="equivalent-source" id="srcBurgers">
                                 <i class="fas fa-external-link-alt"></i>
@@ -1348,17 +1358,17 @@
         <section class="cta-section">
             <div class="container">
                 <div class="cta-card">
-                    <h2>Keep Making an Impact!</h2>
-                    <p>Every device you recycle brings us closer to a sustainable future. Ready to increase your
+                    <h2 data-i18n="environmentalImpact.cta.title">Keep Making an Impact!</h2>
+                    <p data-i18n="environmentalImpact.cta.description">Every device you recycle brings us closer to a sustainable future. Ready to increase your
                         environmental impact?</p>
                     <div class="cta-buttons">
                         <a href="weee-rewards.html" class="btn btn--primary btn--lg">
                             <i class="fas fa-recycle"></i>
-                            Schedule E-Waste Pickup
+                            <span data-i18n="environmentalImpact.cta.schedulePickup">Schedule E-Waste Pickup</span>
                         </a>
                         <a href="store.html" class="btn btn--secondary btn--lg">
                             <i class="fas fa-shopping-cart"></i>
-                            Shop Eco-Friendly Products
+                            <span data-i18n="environmentalImpact.cta.shopProducts">Shop Eco-Friendly Products</span>
                         </a>
                     </div>
                 </div>
@@ -1370,11 +1380,20 @@
     <div id="footer-placeholder"></div>
 
     <!-- JavaScript Files -->
+    <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
     <script src="js/analytics.js"></script>
     <script>
         // Store impact data globally for sharing
         let impactData = null;
+
+        // Helper function for i18n translations
+        function getI18n(key, replacements = {}) {
+            if (window.DrWeeeI18n && window.DrWeeeI18n.translate) {
+                return window.DrWeeeI18n.translate(key, replacements);
+            }
+            return key;
+        }
 
         // Helper function to get API base URL
         function getApiBaseUrl() {
@@ -1781,6 +1800,17 @@
             await fetchEnvironmentalImpact();
             // Pre-fetch share code in background for faster sharing
             getOrGenerateShareCode();
+        });
+
+        // Listen for language changes and re-render dynamic content
+        window.addEventListener('languageChanged', async (event) => {
+            console.log(`Language changed to: ${event.detail.language}, refreshing environmental impact page...`);
+            // If we have impact data, re-update the UI to refresh any dynamic labels
+            if (impactData) {
+                // The static elements with data-i18n are handled by the i18n system
+                // We just need to re-apply the numeric values with proper formatting
+                updateImpactUI(impactData);
+            }
         });
     </script>
 </body>

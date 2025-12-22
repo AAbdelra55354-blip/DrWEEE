@@ -53,9 +53,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/css/flag-icon.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+Arabic:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/rtl.css">
+
+    <!-- i18n FOUC Prevention -->
+    <script>
+    (function() {
+        var lang = localStorage.getItem('drweee_language') || 'en';
+        document.documentElement.lang = lang;
+        if (lang === 'ar') document.documentElement.dir = 'rtl';
+    })();
+    </script>
 
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -724,8 +734,8 @@
                 <div class="login-modal__logo">
                     <i class="fas fa-leaf"></i>
                 </div>
-                <h2 class="login-modal__title">Welcome to DR.WEEE</h2>
-                <p class="login-modal__subtitle">Join the sustainable future</p>
+                <h2 class="login-modal__title" id="modalTitle" data-i18n="loginPage.welcome.title">Welcome to DR.WEEE</h2>
+                <p class="login-modal__subtitle" data-i18n="loginPage.welcome.subtitle">Join the sustainable future</p>
             </div>
 
             <div class="login-modal__content">
@@ -734,7 +744,7 @@
                     <div class="message message--error" id="loginError" style="display: none;"></div>
                     <form class="login-form" id="actualLoginForm">
                         <div class="form-group">
-                            <label for="loginPhoneNumber">Mobile Phone</label>
+                            <label for="loginPhoneNumber" data-i18n="loginPage.form.mobilePhone">Mobile Phone</label>
                             <div class="phone-input-group">
                                 <div class="custom-select-wrapper" id="loginCountrySelectWrapper">
                                     <div class="custom-select">
@@ -761,21 +771,20 @@
                                     </div>
                                 </div>
                                 <input type="tel" id="loginPhoneNumber" class="phone-input" required
-                                    placeholder="Enter phone number" pattern="\d+">
+                                    placeholder="Enter phone number" data-i18n-placeholder="loginPage.form.phonePlaceholder" pattern="\d+">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="loginPassword">Password</label>
+                            <label for="loginPassword" data-i18n="loginPage.form.password">Password</label>
                             <input type="password" id="loginPassword" name="loginPassword" required
-                                placeholder="Enter your password">
+                                placeholder="Enter your password" data-i18n-placeholder="loginPage.form.passwordPlaceholder">
                         </div>
-                        <button type="submit" class="btn btn--primary btn--lg btn--full">
-                            <i class="fas fa-sign-in-alt"></i> Login
+                        <button type="submit" class="btn btn--primary btn--lg btn--full" id="loginSubmitBtn">
+                            <i class="fas fa-sign-in-alt"></i> <span data-i18n="loginPage.form.loginButton">Login</span>
                         </button>
                     </form>
                     <div class="toggle-form-section">
-                        <p>Don't have an account? <a href="#" id="showRegisterLink" class="toggle-link">Create one
-                                now</a></p>
+                        <p><span data-i18n="loginPage.toggle.noAccount">Don't have an account?</span> <a href="#" id="showRegisterLink" class="toggle-link" data-i18n="loginPage.toggle.createAccount">Create one now</a></p>
                     </div>
                 </div>
 
@@ -785,28 +794,28 @@
                             <div class="step active" id="step1">
                                 <i class="fas fa-user-edit"></i>
                             </div>
-                            <div class="step-label">Details</div>
+                            <div class="step-label" data-i18n="loginPage.steps.details">Details</div>
                         </div>
                         <div class="step-connector" id="connector1"></div>
                         <div class="step-item">
                             <div class="step" id="step2">
                                 <i class="fas fa-mobile-alt"></i>
                             </div>
-                            <div class="step-label">Verify</div>
+                            <div class="step-label" data-i18n="loginPage.steps.verify">Verify</div>
                         </div>
                         <div class="step-connector" id="connector2"></div>
                         <div class="step-item">
                             <div class="step" id="step3">
                                 <i class="fas fa-key"></i>
                             </div>
-                            <div class="step-label">Secure</div>
+                            <div class="step-label" data-i18n="loginPage.steps.secure">Secure</div>
                         </div>
                         <div class="step-connector" id="connector3"></div>
                         <div class="step-item">
                             <div class="step" id="step4">
                                 <i class="fas fa-check"></i>
                             </div>
-                            <div class="step-label">Finish</div>
+                            <div class="step-label" data-i18n="loginPage.steps.finish">Finish</div>
                         </div>
                     </div>
 
@@ -815,12 +824,12 @@
                         <div class="message message--error" id="phoneError" style="display: none;"></div>
                         <form class="login-form" id="phoneForm">
                             <div class="form-group">
-                                <label for="fullName">Full Name *</label>
+                                <label for="fullName"><span data-i18n="loginPage.register.fullName">Full Name</span> *</label>
                                 <input type="text" id="fullName" name="fullName" required
-                                    placeholder="Enter your full name">
+                                    placeholder="Enter your full name" data-i18n-placeholder="loginPage.register.fullNamePlaceholder">
                             </div>
                             <div class="form-group">
-                                <label for="phoneNumber">Mobile Phone *</label>
+                                <label for="phoneNumber"><span data-i18n="loginPage.form.mobilePhone">Mobile Phone</span> *</label>
                                 <div class="phone-input-group">
                                     <div class="custom-select-wrapper" id="countrySelectWrapper">
                                         <div class="custom-select">
@@ -838,11 +847,11 @@
                                         </div>
                                     </div>
                                     <input type="tel" id="phoneNumber" name="phoneNumber" class="phone-input" required
-                                        placeholder="Enter phone number" pattern="\d+">
+                                        placeholder="Enter phone number" data-i18n-placeholder="loginPage.form.phonePlaceholder" pattern="\d+">
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn--primary btn--lg btn--full">
-                                <i class="fas fa-paper-plane"></i> Send OTP Code
+                            <button type="submit" class="btn btn--primary btn--lg btn--full" id="sendOtpBtn">
+                                <i class="fas fa-paper-plane"></i> <span data-i18n="loginPage.register.sendOtp">Send OTP Code</span>
                             </button>
                         </form>
                     </div>
@@ -852,8 +861,8 @@
                         <div class="message message--error" id="otpError" style="display: none;"></div>
                         <form class="login-form" id="otpForm">
                             <div class="form-group">
-                                <label>Enter 6-Digit OTP Code</label>
-                                <p style="color: var(--text-gray); font-size: 0.875rem;">Sent to <b
+                                <label data-i18n="loginPage.otp.enterCode">Enter 6-Digit OTP Code</label>
+                                <p style="color: var(--text-gray); font-size: 0.875rem;"><span data-i18n="loginPage.otp.sentTo">Sent to</span> <b
                                         id="phoneDisplay"></b></p>
                                 <div class="otp-inputs">
                                     <input type="text" class="otp-input" maxlength="1" pattern="[0-9]"
@@ -870,32 +879,32 @@
                                         inputmode="numeric">
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn--primary btn--lg btn--full">
-                                <i class="fas fa-check-circle"></i> Verify Code
+                            <button type="submit" class="btn btn--primary btn--lg btn--full" id="verifyOtpBtn">
+                                <i class="fas fa-check-circle"></i> <span data-i18n="loginPage.otp.verifyCode">Verify Code</span>
                             </button>
                         </form>
                         <div class="resend-section">
-                            <div class="resend-timer" id="resendTimer">Resend in <span id="countdown">60</span>s</div>
-                            <button class="resend-button" id="resendBtn" disabled>Resend Code</button>
+                            <div class="resend-timer" id="resendTimer"><span data-i18n="loginPage.otp.resendIn">Resend in</span> <span id="countdown">60</span>s</div>
+                            <button class="resend-button" id="resendBtn" disabled data-i18n="loginPage.otp.resendCode">Resend Code</button>
                         </div>
                     </div>
 
                     <div id="passwordStep" class="login-step">
-                        <div class="message message--success">Mobile verified successfully!</div>
+                        <div class="message message--success" data-i18n="loginPage.password.mobileVerified">Mobile verified successfully!</div>
                         <div class="message message--error" id="passwordError" style="display: none;"></div>
                         <form class="login-form" id="passwordForm">
                             <div class="form-group">
-                                <label for="newPassword">Create Password *</label>
+                                <label for="newPassword"><span data-i18n="loginPage.password.createPassword">Create Password</span> *</label>
                                 <input type="password" id="newPassword" name="newPassword" required
-                                    placeholder="Minimum 6 characters" minlength="6">
+                                    placeholder="Minimum 6 characters" data-i18n-placeholder="loginPage.password.minChars" minlength="6">
                             </div>
                             <div class="form-group">
-                                <label for="confirmPassword">Confirm Password *</label>
+                                <label for="confirmPassword"><span data-i18n="loginPage.password.confirmPassword">Confirm Password</span> *</label>
                                 <input type="password" id="confirmPassword" name="confirmPassword" required
-                                    placeholder="Confirm your password">
+                                    placeholder="Confirm your password" data-i18n-placeholder="loginPage.password.confirmPlaceholder">
                             </div>
-                            <button type="submit" class="btn btn--primary btn--lg btn--full">
-                                <i class="fas fa-key"></i> Create Account
+                            <button type="submit" class="btn btn--primary btn--lg btn--full" id="createAccountBtn">
+                                <i class="fas fa-key"></i> <span data-i18n="loginPage.password.createAccount">Create Account</span>
                             </button>
                         </form>
                     </div>
@@ -903,18 +912,16 @@
                     <div id="successStep" class="login-step">
                         <div style="text-align: center; padding: 2rem 0;">
                             <div class="success-icon"><i class="fas fa-check"></i></div>
-                            <h3 style="color: var(--success-green);">Welcome to DR.WEEE!</h3>
-                            <p style="color: var(--text-gray); margin: 1rem 0 2rem;">Your account is ready. You are now
-                                logged in.</p>
+                            <h3 style="color: var(--success-green);" data-i18n="loginPage.success.title">Welcome to DR.WEEE!</h3>
+                            <p style="color: var(--text-gray); margin: 1rem 0 2rem;" data-i18n="loginPage.success.message">Your account is ready. You are now logged in.</p>
                             <a href="#" id="continueBtn" class="btn btn--primary btn--lg btn--full">
-                                <i class="fas fa-arrow-right"></i> Continue
+                                <i class="fas fa-arrow-right"></i> <span data-i18n="loginPage.success.continue">Continue</span>
                             </a>
                         </div>
                     </div>
 
                     <div class="toggle-form-section">
-                        <p>Already have an account? <a href="#" id="showLoginLink" class="toggle-link">Login here</a>
-                        </p>
+                        <p><span data-i18n="loginPage.toggle.hasAccount">Already have an account?</span> <a href="#" id="showLoginLink" class="toggle-link" data-i18n="loginPage.toggle.loginHere">Login here</a></p>
                     </div>
                 </div>
 
@@ -926,6 +933,14 @@
 
 
     <script>
+        // Helper function for i18n translations
+        function getI18n(key, replacements = {}) {
+            if (window.DrWeeeI18n && window.DrWeeeI18n.translate) {
+                return window.DrWeeeI18n.translate(key, replacements);
+            }
+            return key;
+        }
+
         // Helper function to get the API base URL for local development
         function getApiBaseUrl() {
             const port = window.location.port;
@@ -990,11 +1005,15 @@
                 registerView.style.display = 'none';
                 if (viewName === 'register') {
                     registerView.style.display = 'block';
-                    modalTitle.textContent = 'Create Your Account';
+                    modalTitle.textContent = getI18n('loginPage.register.title');
+                    // Remove login data-i18n and set register one
+                    modalTitle.setAttribute('data-i18n', 'loginPage.register.title');
                     showStep(1);
                 } else {
                     loginView.style.display = 'block';
-                    modalTitle.textContent = 'Welcome Back';
+                    modalTitle.textContent = getI18n('loginPage.welcome.title');
+                    // Reset to login data-i18n
+                    modalTitle.setAttribute('data-i18n', 'loginPage.welcome.title');
                 }
             }
 
@@ -1080,7 +1099,7 @@
                 const phoneErrorEl = document.getElementById('phoneError');
 
                 submitButton.disabled = true;
-                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                submitButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${getI18n('loginPage.loading.sending')}`;
                 userFullName = fullNameInput.value.trim();
                 const selectedCountryCode = registerCountryWrapper.dataset.value || '+20';
 
@@ -1106,7 +1125,7 @@
                     showMessage(phoneErrorEl, error.message);
                 } finally {
                     submitButton.disabled = false;
-                    submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> Send OTP Code';
+                    submitButton.innerHTML = `<i class="fas fa-paper-plane"></i> <span data-i18n="loginPage.register.sendOtp">${getI18n('loginPage.register.sendOtp')}</span>`;
                 }
             }
 
@@ -1133,7 +1152,7 @@
                 event.preventDefault();
                 const submitButton = otpForm.querySelector('button[type="submit"]');
                 submitButton.disabled = true;
-                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+                submitButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${getI18n('loginPage.loading.verifying')}`;
                 const enteredOtp = Array.from(otpInputs).map(input => input.value).join('');
                 try {
                     const response = await fetch(getApiBaseUrl() + '/api/verify-otp', {
@@ -1153,7 +1172,7 @@
                     otpInputs[0].focus();
                 } finally {
                     submitButton.disabled = false;
-                    submitButton.innerHTML = '<i class="fas fa-check-circle"></i> Verify Code';
+                    submitButton.innerHTML = `<i class="fas fa-check-circle"></i> <span data-i18n="loginPage.otp.verifyCode">${getI18n('loginPage.otp.verifyCode')}</span>`;
                 }
             }
 
@@ -1163,15 +1182,15 @@
                 const newPassword = document.getElementById('newPassword').value;
                 const confirmPassword = document.getElementById('confirmPassword').value;
                 if (newPassword.length < 6) {
-                    showMessage(passwordErrorMessage, 'Password must be at least 6 characters long.');
+                    showMessage(passwordErrorMessage, getI18n('loginPage.errors.passwordTooShort'));
                     return;
                 }
                 if (newPassword !== confirmPassword) {
-                    showMessage(passwordErrorMessage, 'Passwords do not match.');
+                    showMessage(passwordErrorMessage, getI18n('loginPage.errors.passwordsNotMatch'));
                     return;
                 }
                 submitButton.disabled = true;
-                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+                submitButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${getI18n('loginPage.loading.creatingAccount')}`;
                 try {
                     const response = await fetch(getApiBaseUrl() + '/api/create-contact', {
                         method: 'POST',
@@ -1197,7 +1216,7 @@
                     showMessage(passwordErrorMessage, error.message);
                 } finally {
                     submitButton.disabled = false;
-                    submitButton.innerHTML = '<i class="fas fa-key"></i> Create Account';
+                    submitButton.innerHTML = `<i class="fas fa-key"></i> <span data-i18n="loginPage.password.createAccount">${getI18n('loginPage.password.createAccount')}</span>`;
                 }
             }
 
@@ -1236,7 +1255,7 @@
                 const fullPhoneNumber = normalizePhoneNumber(rawPhoneNumber);
 
                 submitButton.disabled = true;
-                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging In...';
+                submitButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${getI18n('loginPage.loading.loggingIn')}`;
 
                 try {
                     const response = await fetch(getApiBaseUrl() + '/api/login', {
@@ -1264,7 +1283,7 @@
                     showMessage(loginErrorEl, error.message);
                 } finally {
                     submitButton.disabled = false;
-                    submitButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+                    submitButton.innerHTML = `<i class="fas fa-sign-in-alt"></i> <span data-i18n="loginPage.form.loginButton">${getI18n('loginPage.form.loginButton')}</span>`;
                 }
             });
 
@@ -1277,11 +1296,27 @@
 
             switchView('login');
         });
+
+        // Listen for language changes and update dynamic text
+        window.addEventListener('languageChanged', (event) => {
+            console.log(`Language changed to: ${event.detail.language}, refreshing login page...`);
+            // Update the modal title based on current view
+            const loginView = document.getElementById('loginView');
+            const modalTitle = document.getElementById('modalTitle');
+            if (modalTitle) {
+                if (loginView && loginView.style.display !== 'none') {
+                    modalTitle.textContent = getI18n('loginPage.welcome.title');
+                } else {
+                    modalTitle.textContent = getI18n('loginPage.register.title');
+                }
+            }
+        });
     </script>
     <!-- Footer Placeholder -->
     <div id="footer-placeholder"></div>
 
     <!-- JavaScript Files -->
+    <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
     <script src="js/analytics.js"></script>
 </body>

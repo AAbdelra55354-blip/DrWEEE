@@ -1,0 +1,1384 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "Chi Siamo",
+    "store": "Negozio",
+    "ewaste": "E-waste",
+    "services": "Servizi",
+    "impact": "Impatto",
+    "contact": "Contattaci"
+  },
+  "header": {
+    "brand": "DR.WEEE",
+    "login": "Accedi",
+    "signOut": "Esci",
+    "activeUser": "Utente Attivo",
+    "openMenu": "Apri menu",
+    "closeMenu": "Chiudi menu",
+    "language": "Lingua"
+  },
+  "user": {
+    "yourWeeeImpact": "Il Tuo Impatto WEEE",
+    "availablePoints": "Punti Disponibili",
+    "totalPoints": "Punti Totali",
+    "availableCash": "Saldo Disponibile",
+    "carbonSaved": "Carbonio Risparmiato (kg)",
+    "carbonSavedShort": "Carbonio Risparmiato",
+    "myEnvironmentalImpact": "Il Mio Impatto Ambientale",
+    "myRequests": "Le Mie Richieste",
+    "redeemPointsCash": "Riscatta Punti e Saldo"
+  },
+  "footer": {
+    "tagline": "Pionieri dell'innovazione sostenibile attraverso la gestione dei rifiuti elettronici e soluzioni di economia circolare.",
+    "services": "Servizi",
+    "ewasteRecycling": "Riciclaggio E-Waste",
+    "inkRemanufacturing": "Rigenerazione Inchiostro",
+    "equipmentManufacturing": "Produzione Attrezzature",
+    "franchiseOpportunities": "Opportunità di Franchising",
+    "sustainabilityConsulting": "Consulenza Sostenibilità",
+    "contact": "Contatti",
+    "location": "Il Cairo, Egitto",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Termini di Servizio",
+    "copyright": "© 2024 DR.WEEE. Soluzioni Sostenibili."
+  },
+  "home": {
+    "hero": {
+      "title": "Soluzioni IT Green Intelligenti",
+      "subtitle": "Pionieri dell'Innovazione Sostenibile",
+      "description": "Trasformiamo le sfide ambientali in opportunità profittevoli attraverso il riciclaggio di rifiuti elettronici all'avanguardia e soluzioni di economia circolare.",
+      "cta": {
+        "primary": "Scopri la Nostra Storia",
+        "secondary": "Collabora con Noi"
+      }
+    },
+    "stats": {
+      "companies": "Aziende Fondate",
+      "countries": "Paesi Raggiunti",
+      "tons": "Tonnellate E-waste Processate",
+      "partners": "Partner in Franchising",
+      "jobs": "Posti di Lavoro Creati"
+    },
+    "video": {
+      "subtitle": "La Nostra Missione in Movimento",
+      "title": "Il Viaggio della Valorizzazione dei Rifiuti Elettronici",
+      "description": "Scopri come Dr. WEEE sta trasformando la sfida dei rifiuti elettronici in un'opportunità di business globale, creando valore e promuovendo un'economia circolare sostenibile."
+    },
+    "about": {
+      "subtitle": "Chi Siamo",
+      "title": "Guidare la Rivoluzione dell'Economia Circolare",
+      "description": "DR.WEEE Soluzioni IT Green Intelligenti è l'azienda pioniera egiziana nel riciclaggio dei rifiuti elettronici, fondata dall'imprenditore ambientale visionario Essam Hashem. Siamo specializzati nella trasformazione dei rifiuti elettronici in risorse preziose, creando opportunità di business sostenibili."
+    },
+    "services": {
+      "subtitle": "I Nostri Servizi",
+      "title": "Soluzioni Complete di Sostenibilità",
+      "description": "Dal riciclaggio dei rifiuti elettronici alla produzione di attrezzature, forniamo soluzioni complete che trasformano le sfide ambientali in opportunità di business profittevoli.",
+      "ewaste": {
+        "title": "Riciclaggio Rifiuti Elettronici",
+        "description": "Trattamento completo dei rifiuti elettronici con sistemi avanzati di recupero materiali per l'estrazione di metalli preziosi.",
+        "feature1": "Recupero oro, rame e ferro",
+        "feature2": "Smaltimento sicuro elementi pericolosi",
+        "feature3": "Distruzione dati sicura al 100%"
+      },
+      "ink": {
+        "title": "Rigenerazione Cartucce d'Inchiostro",
+        "description": "Rigenerazione professionale di cartucce toner utilizzando principi di ingegneria inversa con ispezione qualità al 100%.",
+        "feature1": "Risparmio del 50% per i clienti",
+        "feature2": "Sistemi di riempimento automatico",
+        "feature3": "Riduzione impatto ambientale"
+      },
+      "franchise": {
+        "title": "Opportunità di Franchising",
+        "description": "Modelli di franchising scalabili per la raccolta di rifiuti elettronici e soluzioni di stampa sostenibili con supporto completo.",
+        "feature1": "Modello di business comprovato",
+        "feature2": "Programmi di formazione completi",
+        "feature3": "Opportunità di espansione globale"
+      }
+    },
+    "impact": {
+      "subtitle": "Il Nostro Impatto",
+      "title": "Creare un Cambiamento Ambientale Misurabile",
+      "description": "Attraverso soluzioni innovative e partnership strategiche, stiamo avendo un impatto significativo sulla protezione ambientale, lo sviluppo economico e il progresso sociale."
+    },
+    "ventures": {
+      "subtitle": "Il Nostro Portfolio",
+      "title": "Costruire il Futuro della Sostenibilità",
+      "description": "Un portfolio completo di aziende e partnership che guidano il cambiamento ambientale attraverso industrie e continenti.",
+      "exploreAll": "Esplora Tutte le Imprese",
+      "drweee": {
+        "title": "DR.WEEE Soluzioni IT Green Intelligenti",
+        "description": "La prima azienda egiziana di riciclaggio rifiuti elettronici, che stabilisce framework completi per il recupero materiali e la consapevolezza ambientale.",
+        "stat1": "Azienda Principale",
+        "stat2": "Sede Egitto"
+      },
+      "ecoo": {
+        "title": "Ecoo Sistemi Industriali",
+        "description": "Produzione locale di attrezzature per il riciclaggio, riducendo la dipendenza dalle importazioni e fornendo soluzioni economicamente vantaggiose.",
+        "stat1": "Manifattura",
+        "stat2": "Produzione"
+      },
+      "spearink": {
+        "title": "Spear Ink",
+        "description": "Cartucce toner rigenerate e Servizi di Stampa Gestita con espansione internazionale e franchising.",
+        "stat1": "Portata Globale",
+        "stat2": "11+ Paesi"
+      }
+    },
+    "cta": {
+      "title": "Pronti a Costruire un Futuro Sostenibile Insieme?",
+      "description": "Che tu sia interessato a partnership, opportunità di franchising o collaborazione su progetti di sostenibilità, siamo sempre aperti a discutere come possiamo creare un impatto ambientale positivo insieme.",
+      "startConversation": "Inizia una Conversazione",
+      "exploreServices": "Esplora i Servizi"
+    }
+  },
+  "about": {
+    "hero": {
+      "subtitle": "Fondatore e Presidente",
+      "name": "Essam Hashem",
+      "role": "Imprenditore Ambientale e Leader della Sostenibilità",
+      "description": "Un imprenditore egiziano visionario con una vasta esperienza nella gestione dei rifiuti elettronici, nei principi dell'economia circolare e nell'innovazione della tecnologia verde. Guida la trasformazione delle sfide ambientali in opportunità di business sostenibili attraverso più continenti.",
+      "readStory": "Leggi la Mia Storia",
+      "viewAchievements": "Vedi Risultati"
+    },
+    "story": {
+      "subtitle": "Il Mio Percorso",
+      "title": "Dalla Visione all'Impatto Globale",
+      "beginning": {
+        "title": "L'Inizio",
+        "description": "Riconoscendo la crescente crisi dei rifiuti elettronici in Egitto e nella regione MENA, ho visto un'opportunità per creare soluzioni innovative che potessero trasformare le sfide ambientali in opportunità di business."
+      },
+      "education": {
+        "title": "Formazione ed Esperienza",
+        "description": "Ho seguito una formazione specializzata presso l'Università delle Nazioni Unite in Italia, conseguendo un Diploma in Gestione dei Rifiuti Elettronici con focus su economia circolare, conformità normativa e metodi di riciclaggio sostenibile."
+      },
+      "founding": {
+        "title": "Fondazione di DR.WEEE",
+        "description": "Ho fondato la prima azienda egiziana completa di riciclaggio rifiuti elettronici, creando schemi di raccolta innovativi e sviluppando capacità produttive locali per le attrezzature di riciclaggio."
+      },
+      "expansion": {
+        "title": "Espansione Globale",
+        "description": "Ho espanso le operazioni a livello internazionale attraverso partnership strategiche e modelli di franchising, raggiungendo oltre 11 paesi in Africa, Europa e Asia mantenendo il focus sulle pratiche sostenibili."
+      }
+    },
+    "visionMission": {
+      "subtitle": "Le Nostre Fondamenta",
+      "title": "Visione, Missione e Valori",
+      "description": "I nostri principi guida orientano ogni decisione e azione mentre lavoriamo verso un futuro più sostenibile e consapevole dell'ambiente.",
+      "vision": {
+        "title": "La Nostra Visione",
+        "description": "Massimizzare l'uso delle risorse e il loro sfruttamento ottimale per ottenere profitti trovando soluzioni sostenibili più intelligenti e innovative attraverso la tecnologia dell'informazione verde. Supportare metodi appropriati per la conservazione dell'ambiente e lo sviluppo sostenibile, creando un ambiente sostenibile e opportunità di investimento eco-compatibili."
+      },
+      "mission": {
+        "title": "La Nostra Missione",
+        "description": "Trasformare le sfide in opportunità attraverso lo sviluppo e l'innovazione continui. Superiamo le sfide ambientali e aziendali fornendo soluzioni complete utilizzando la tecnologia dell'informazione verde, creando valore per tutti gli stakeholder mentre proteggiamo il nostro pianeta."
+      },
+      "values": {
+        "title": "I Nostri Valori",
+        "stewardship": "Gestione Ambientale",
+        "innovation": "Eccellenza nell'Innovazione",
+        "partnerships": "Partnership Collaborative",
+        "growth": "Crescita Sostenibile",
+        "responsibility": "Responsabilità Sociale",
+        "quality": "Garanzia di Qualità"
+      }
+    },
+    "leadership": {
+      "subtitle": "Leadership Professionale",
+      "title": "Più Aziende, Una Visione",
+      "description": "Guido un portfolio diversificato di aziende, ognuna delle quali contribuisce all'economia circolare e allo sviluppo sostenibile in diverse industrie e mercati.",
+      "drweee": {
+        "role": "Presidente",
+        "company": "DR.WEEE Soluzioni IT Green Intelligenti",
+        "description": "La prima azienda egiziana di riciclaggio rifiuti elettronici, focalizzata sul recupero completo dei materiali, la consapevolezza ambientale e schemi di raccolta innovativi incluse applicazioni mobili per utenti individuali.",
+        "tag1": "Prima in Egitto",
+        "tag2": "Innovazione App",
+        "tag3": "Recupero Materiali"
+      },
+      "ecoo": {
+        "role": "Presidente",
+        "company": "Ecoo Sistemi Industriali",
+        "description": "Sviluppa attrezzature di riciclaggio prodotte localmente, riducendo la dipendenza dalle importazioni e fornendo soluzioni macchinari economicamente vantaggiose per il mercato regionale.",
+        "tag1": "Produzione Locale",
+        "tag2": "Riduzione Importazioni",
+        "tag3": "Economico"
+      },
+      "spearink": {
+        "role": "Co-fondatore e Socio Amministratore",
+        "company": "Spear Ink",
+        "description": "Specializzata in cartucce toner rigenerate e Servizi di Stampa Gestita (MPS), con espansione internazionale incluso franchising in India ed esportazioni in oltre 11 paesi.",
+        "tag1": "Portata Globale",
+        "tag2": "11+ Paesi",
+        "tag3": "Modello Franchising"
+      },
+      "kayan": {
+        "role": "Co-fondatore e Socio Amministratore",
+        "company": "Kayan per lo Sviluppo Sostenibile",
+        "description": "Espande le iniziative di gestione rifiuti nella regione MENA, promuovendo la collaborazione transfrontaliera nello sviluppo sostenibile e nelle soluzioni ambientali.",
+        "tag1": "Espansione MENA",
+        "tag2": "Focus Regionale",
+        "tag3": "Transfrontaliero"
+      },
+      "reg": {
+        "role": "Direttore Esecutivo",
+        "company": "R.E.G Italia (Filiale Egitto)",
+        "description": "Supervisiona le soluzioni di riciclaggio rifiuti industriali, contribuendo a pratiche industriali più pulite e operazioni di recupero risorse su larga scala.",
+        "tag1": "Scala Industriale",
+        "tag2": "Partnership Italiana",
+        "tag3": "Recupero Risorse"
+      },
+      "rimac": {
+        "role": "Agente Ufficiale",
+        "company": "Rimac Macchine Svizzere",
+        "description": "Rappresenta la tecnologia svizzera avanzata di riciclaggio in Egitto, facilitando il trasferimento tecnologico e migliorando le capacità locali di gestione rifiuti.",
+        "tag1": "Tecnologia Svizzera",
+        "tag2": "Trasferimento Tecnologico",
+        "tag3": "Miglioramento Locale"
+      }
+    },
+    "expertise": {
+      "subtitle": "Competenze Chiave",
+      "title": "Conoscenze e Competenze Specializzate",
+      "description": "Competenza approfondita in molteplici ambiti di sostenibilità, tecnologia e sviluppo aziendale, che consente soluzioni complete per sfide ambientali complesse.",
+      "ewaste": {
+        "title": "Riciclaggio Rifiuti Elettronici",
+        "description": "Tecniche avanzate di smaltimento rifiuti elettronici, sistemi di recupero materiali e strategie di riduzione dell'inquinamento con focus sull'estrazione di materiali preziosi gestendo in sicurezza i componenti pericolosi."
+      },
+      "printing": {
+        "title": "Stampa Sostenibile",
+        "description": "Rigenerazione cartucce toner, riduzione rifiuti plastici e integrazione del monitoraggio dell'impronta di carbonio nelle soluzioni di stampa per la riduzione dell'impatto ambientale."
+      },
+      "greentech": {
+        "title": "Tecnologia Verde",
+        "description": "Sviluppo di tecnologia verde localizzata, produzione di macchinari di riciclaggio economici e soluzioni innovative per le sfide di sostenibilità industriale."
+      },
+      "franchise": {
+        "title": "Sviluppo Franchising",
+        "description": "Modelli di franchising scalabili per la raccolta di rifiuti elettronici e soluzioni di stampa sostenibili, che consentono l'espansione globale mantenendo gli standard di qualità e ambientali."
+      },
+      "partnerships": {
+        "title": "Partnership Internazionali",
+        "description": "Costruzione di partnership strategiche con organizzazioni internazionali, governi e leader del settore per promuovere iniziative di sostenibilità globale."
+      },
+      "education": {
+        "title": "Formazione e Consapevolezza",
+        "description": "Sviluppo di programmi educativi, campagne di sensibilizzazione e iniziative di formazione per promuovere la coscienza ambientale e le pratiche sostenibili."
+      }
+    },
+    "achievements": {
+      "subtitle": "Riconoscimenti",
+      "title": "Risultati e Traguardi Chiave",
+      "description": "Risultati significativi che dimostrano il nostro impegno per l'innovazione ambientale e lo sviluppo aziendale sostenibile.",
+      "y2024": {
+        "title": "Premio Regionale Eccellenza nella Sostenibilità",
+        "description": "Riconoscimento per il contributo eccezionale alla protezione ambientale e all'implementazione dell'economia circolare nella regione MENA."
+      },
+      "y2023": {
+        "title": "Implementazione Tecnologia AI",
+        "description": "Implementata con successo la tecnologia di smistamento basata su AI, aumentando l'efficienza di elaborazione del 40% in tutte le strutture."
+      },
+      "y2022": {
+        "title": "Traguardo Espansione Globale",
+        "description": "Raggiunti oltre 11 paesi attraverso partnership strategiche e sviluppo franchising, affermando DR.WEEE come marchio globale."
+      },
+      "y2021": {
+        "title": "Laurea Università delle Nazioni Unite",
+        "description": "Completato Diploma specializzato in Gestione Rifiuti Elettronici presso l'Università delle Nazioni Unite, Italia, con focus sui principi dell'economia circolare."
+      },
+      "y2020": {
+        "title": "Prima Produzione Trituratore E-Waste",
+        "description": "Pioniere nella produzione di macchine tritutrici per rifiuti elettronici in Egitto, prima nel suo genere nella regione MENA."
+      },
+      "y2018": {
+        "title": "Fondazione DR.WEEE",
+        "description": "Fondata la prima azienda completa di riciclaggio rifiuti elettronici in Egitto, stabilendo nuovi standard per la responsabilità ambientale."
+      }
+    },
+    "philosophy": {
+      "subtitle": "La Mia Filosofia",
+      "title": "Trasformare le Sfide in Opportunità",
+      "description": "Il mio approccio al business e alla gestione ambientale è radicato nella convinzione che ogni sfida presenta un'opportunità per l'innovazione e il cambiamento positivo.",
+      "diagramAlt": "Principi dell'Economia Circolare",
+      "innovation": {
+        "title": "Soluzioni Guidate dall'Innovazione",
+        "description": "Sfruttare tecnologia all'avanguardia e pensiero creativo per risolvere problemi ambientali complessi."
+      },
+      "collaborative": {
+        "title": "Approccio Collaborativo",
+        "description": "Costruire forti partnership con stakeholder attraverso industrie, governi e comunità."
+      },
+      "growth": {
+        "title": "Crescita Sostenibile",
+        "description": "Creare modelli di business che generano profitti contribuendo alla protezione ambientale."
+      },
+      "learning": {
+        "title": "Apprendimento Continuo",
+        "description": "Rimanere all'avanguardia della scienza della sostenibilità e dell'innovazione aziendale attraverso la formazione continua."
+      }
+    },
+    "cta": {
+      "title": "Creiamo Soluzioni Sostenibili Insieme",
+      "description": "Sono sempre interessato a connettermi con individui e organizzazioni che condividono la nostra passione per l'innovazione ambientale e lo sviluppo aziendale sostenibile.",
+      "getInTouch": "Contattaci",
+      "exploreVentures": "Esplora le Nostre Imprese"
+    }
+  },
+  "services": {
+    "hero": {
+      "subtitle": "Le Nostre Soluzioni",
+      "titleMain": "Servizi di",
+      "titleSub": "Sostenibilità Completi",
+      "description": "Dal riciclaggio avanzato dei rifiuti elettronici alla produzione innovativa di attrezzature, forniamo soluzioni complete che trasformano le sfide ambientali in opportunità di business profittevoli costruendo un futuro sostenibile.",
+      "exploreServices": "Esplora i Servizi",
+      "getQuote": "Richiedi Preventivo"
+    },
+    "ewaste": {
+      "subtitle": "Servizio Principale",
+      "title": "Riciclaggio Rifiuti Elettronici",
+      "description": "Il nostro servizio completo di riciclaggio dei rifiuti elettronici è progettato per soddisfare tutte le esigenze del mercato relative alla gestione dei RAEE attraverso processi avanzati di raccolta, smistamento, smontaggio e riciclaggio.",
+      "whatWeProcess": "Cosa Trattiamo:",
+      "items": {
+        "computers": "Computer e Laptop",
+        "mobile": "Dispositivi Mobili",
+        "televisions": "Televisori e Monitor",
+        "printers": "Stampanti e Scanner",
+        "circuits": "Schede a Circuito",
+        "batteries": "Batterie"
+      },
+      "ourProcess": "Il Nostro Processo:",
+      "steps": {
+        "collection": {
+          "title": "Raccolta",
+          "description": "Sistema di raccolta basato su app e servizi di ritiro"
+        },
+        "sorting": {
+          "title": "Smistamento",
+          "description": "Tecnologia di smistamento AI per massima efficienza"
+        },
+        "dismantling": {
+          "title": "Smontaggio",
+          "description": "Smontaggio sicuro con distruzione dati al 100%"
+        },
+        "recovery": {
+          "title": "Recupero",
+          "description": "Processi avanzati di recupero e purificazione materiali"
+        }
+      },
+      "stats": {
+        "tonsProcessed": "Tonnellate Trattate",
+        "recoveryRate": "Tasso di Recupero",
+        "dataSecurity": "Sicurezza Dati"
+      },
+      "imageCaption1": "Impianto di Trattamento all'Avanguardia",
+      "imageCaption2": "Recupero Materiali da Schede a Circuito"
+    },
+    "franchise": {
+      "subtitle": "Scopri l'Opportunità",
+      "title": "Il Nostro Successo in Franchising",
+      "description": "Guarda il video per vedere come i nostri partner in franchising stanno avendo un impatto reale nelle loro comunità costruendo un'attività profittevole e sostenibile.",
+      "cards": {
+        "collection": {
+          "title": "Raccolta E-Waste",
+          "price": "A partire da $25.000",
+          "features": {
+            "f1": "Servizi di raccolta mobile",
+            "f2": "Programmi di coinvolgimento comunitario",
+            "f3": "Implementazione sistema premi",
+            "f4": "Sviluppo partnership locali"
+          }
+        },
+        "fullService": {
+          "title": "Centro Servizi Completo",
+          "price": "A partire da $75.000",
+          "features": {
+            "f1": "Trattamento completo e-waste",
+            "f2": "Rigenerazione cartucce inchiostro",
+            "f3": "Vendita e assistenza attrezzature",
+            "f4": "Operazioni B2B e B2C"
+          }
+        },
+        "regional": {
+          "title": "Master Regionale",
+          "price": "A partire da $150.000",
+          "features": {
+            "f1": "Diritti territoriali regionali",
+            "f2": "Sviluppo sub-franchising",
+            "f3": "Operazioni centro formazione",
+            "f4": "Gestione partnership strategiche"
+          }
+        }
+      },
+      "learnMore": "Scopri di Più"
+    },
+    "ink": {
+      "subtitle": "Servizio Specializzato",
+      "title": "Rigenerazione Cartucce Inchiostro",
+      "process": {
+        "title": "Processo di Rigenerazione:",
+        "steps": {
+          "collection": {
+            "title": "Raccolta e Ispezione",
+            "description": "Le cartucce usate vengono raccolte e ispezionate accuratamente per valutare il potenziale di rigenerazione."
+          },
+          "disassembly": {
+            "title": "Smontaggio e Pulizia",
+            "description": "Le cartucce vengono smontate con cura e tutti i componenti vengono puliti accuratamente."
+          },
+          "replacement": {
+            "title": "Sostituzione Componenti",
+            "description": "I componenti interni danneggiati vengono sostituiti con alternative di alta qualità."
+          },
+          "filling": {
+            "title": "Riempimento Inchiostro",
+            "description": "Sistemi di riempimento automatici garantiscono quantità precise e qualità dell'inchiostro."
+          },
+          "testing": {
+            "title": "Test di Qualità",
+            "description": "Test completi inclusa qualità di stampa e valutazione del ciclo di vita."
+          }
+        }
+      },
+      "showcase": {
+        "title": "Rigenerazione Professionale",
+        "description": "Approccio di reverse engineering con test di precisione"
+      },
+      "metrics": {
+        "quality": {
+          "title": "Ispezione Qualità 100%",
+          "description": "Ogni cartuccia viene sottoposta a test completi"
+        },
+        "savings": {
+          "title": "Risparmio del 50%",
+          "description": "Risparmi significativi rispetto alle cartucce nuove"
+        },
+        "environmental": {
+          "title": "Impatto Ambientale",
+          "description": "Riduce i rifiuti plastici e l'impronta di carbonio"
+        }
+      }
+    },
+    "equipment": {
+      "subtitle": "Innovazione",
+      "title": "Produzione Attrezzature",
+      "description": "Produzione locale di attrezzature di riciclaggio specializzate, riducendo la dipendenza dalle importazioni e fornendo soluzioni economiche progettate specificamente per le esigenze regionali.",
+      "cards": {
+        "shredders": {
+          "title": "Trituratori E-Waste",
+          "description": "Primi trituratori per rifiuti elettronici prodotti nella regione MENA, con tecnologia smart compatta per la distruzione sicura dei dati al 100%.",
+          "tags": {
+            "t1": "Primo in MENA",
+            "t2": "Sicurezza Dati 100%",
+            "t3": "Tecnologia Smart"
+          },
+          "keyFeatures": "Caratteristiche Principali:",
+          "features": {
+            "f1": "Meccanismi di triturazione avanzati",
+            "f2": "Protocolli di distruzione dati sicuri",
+            "f3": "Design compatto per efficienza spaziale",
+            "f4": "Bassa manutenzione richiesta"
+          }
+        },
+        "inkMachines": {
+          "title": "Macchine Riempimento Inchiostro",
+          "description": "Macchine specializzate per il riempimento di cartucce di tutti i tipi, progettate per precisione, efficienza e qualità di output costante.",
+          "tags": {
+            "t1": "Tutti i Tipi di Cartucce",
+            "t2": "Riempimento Preciso",
+            "t3": "Controllo Qualità"
+          },
+          "keyFeatures": "Caratteristiche Principali:",
+          "features": {
+            "f1": "Sistemi di riempimento automatici",
+            "f2": "Controlli di misurazione precisi",
+            "f3": "Compatibilità multi-cartuccia",
+            "f4": "Integrazione garanzia qualità"
+          }
+        },
+        "custom": {
+          "title": "Soluzioni Personalizzate",
+          "description": "Soluzioni di attrezzature su misura progettate per soddisfare requisiti specifici del cliente e esigenze del mercato regionale con supporto tecnico completo.",
+          "tags": {
+            "t1": "Design Personalizzato",
+            "t2": "Supporto Tecnico",
+            "t3": "Produzione Locale"
+          },
+          "keyFeatures": "Caratteristiche Principali:",
+          "features": {
+            "f1": "Specifiche personalizzate",
+            "f2": "Vantaggi produzione locale",
+            "f3": "Supporto tecnico continuo",
+            "f4": "Soluzioni economiche"
+          }
+        }
+      },
+      "benefits": {
+        "title": "Vantaggi della Produzione",
+        "costReduction": {
+          "title": "Riduzione Costi",
+          "description": "La produzione locale riduce significativamente i costi rispetto alle attrezzature importate"
+        },
+        "fasterDelivery": {
+          "title": "Consegna Più Veloce",
+          "description": "Tempi di consegna ridotti e implementazione più rapida delle soluzioni"
+        },
+        "localSupport": {
+          "title": "Supporto Locale",
+          "description": "Supporto tecnico completo e servizi di manutenzione"
+        },
+        "customization": {
+          "title": "Personalizzazione",
+          "description": "Attrezzature su misura per requisiti e condizioni regionali specifiche"
+        }
+      }
+    },
+    "cta": {
+      "title": "Pronto a Trasformare il Tuo Business con la Sostenibilità?",
+      "description": "Che tu abbia bisogno di servizi di riciclaggio e-waste, soluzioni di attrezzature o opportunità di franchising, il nostro team è pronto ad aiutarti a raggiungere i tuoi obiettivi di sostenibilità costruendo operazioni commerciali profittevoli.",
+      "consultation": "Ottieni Consulenza Gratuita",
+      "learnMore": "Scopri di Più su di Noi"
+    }
+  },
+  "store": {
+    "hero": {
+      "title": "Negozio Dr. WEEE",
+      "subtitle": "Forniture per Stampanti Rigenerate Premium per un Futuro Sostenibile"
+    },
+    "products": {
+      "title": "I Nostri Prodotti",
+      "subtitle": "Clicca sui prodotti per vedere i dettagli e aggiungerli al carrello!"
+    },
+    "search": {
+      "placeholder": "Cerca per nome prodotto o modello stampante (es. HP LaserJet, Canon MX920)..."
+    },
+    "loading": {
+      "title": "Caricamento Prodotti...",
+      "description": "Attendere mentre carichiamo il nostro inventario più recente."
+    },
+    "noProducts": {
+      "title": "Nessun Prodotto Trovato",
+      "description": "Non abbiamo trovato prodotti corrispondenti ai criteri. Riprova più tardi."
+    },
+    "error": {
+      "title": "Ops! Qualcosa è andato storto.",
+      "description": "Non siamo riusciti a caricare i prodotti. Prova ad aggiornare la pagina."
+    },
+    "addToCart": "Aggiungi al Carrello",
+    "viewDetails": "Vedi Dettagli",
+    "outOfStock": "Esaurito",
+    "inStock": "Disponibile",
+    "cart": {
+      "title": "Carrello",
+      "subtitle": "Forniture eco-friendly per la tua azienda",
+      "empty": "Il tuo carrello è vuoto<br>Inizia a fare acquisti per vedere gli articoli qui!",
+      "total": "Totale:",
+      "totalItems": "Totale ({{count}} articolo)",
+      "totalItemsPlural": "Totale ({{count}} articoli)",
+      "checkout": "Checkout",
+      "continueShopping": "Continua lo Shopping",
+      "remove": "Rimuovi",
+      "proceedToCheckout": "Procedi al Checkout",
+      "generateQuote": "Genera Preventivo PDF",
+      "tradeInSavings": "Risparmio permuta:",
+      "earnPoints": "Guadagna {{points}} punti",
+      "saveCO2": "Risparmia {{amount}} kg CO₂",
+      "cartridges": "Cartucce",
+      "emptyReturns": "Vuote",
+      "subtotal": "Subtotale:",
+      "discount": "Sconto:",
+      "priceNotAvailable": "Prezzo non disponibile"
+    },
+    "mobile": {
+      "yourCart": "Il Tuo Carrello",
+      "view": "Vedi"
+    },
+    "loginRequired": {
+      "title": "Accesso Richiesto",
+      "description": "Per procedere con l'ordine, accedi o crea un account. Questo ti permette di tracciare i tuoi ordini e gestire i tuoi dati.",
+      "loginButton": "Accedi / Registrati"
+    },
+    "delivery": {
+      "title": "Dettagli Consegna",
+      "preferredTime": "Orario di Consegna Preferito",
+      "paymentMethod": "Metodo di Pagamento",
+      "cashOnDelivery": "Pagamento alla consegna",
+      "searchAddress": "Cerca il tuo indirizzo...",
+      "streetAddress": "Indirizzo",
+      "enterStreet": "Inserisci l'indirizzo",
+      "city": "Città",
+      "enterCity": "Inserisci la città",
+      "state": "Provincia/Regione",
+      "enterState": "Inserisci la provincia",
+      "country": "Paese/Regione",
+      "enterCountry": "Inserisci il paese",
+      "reviewOrder": "Rivedi Ordine"
+    },
+    "confirmation": {
+      "title": "Conferma il Tuo Ordine",
+      "description": "Rivedi i dettagli qui sotto prima di inviare l'ordine.",
+      "submitOrder": "Invia Ordine",
+      "editDetails": "Modifica Dettagli",
+      "orderSummary": "Riepilogo Ordine",
+      "subtotal": "Subtotale",
+      "tradeInDiscount": "Sconto Trade-in",
+      "total": "Totale",
+      "deliveryDetails": "Dettagli Consegna",
+      "address": "Indirizzo",
+      "time": "Orario",
+      "payment": "Pagamento",
+      "notSpecified": "Non specificato"
+    },
+    "filters": {
+      "all": "Tutti i Prodotti",
+      "category": "Categoria",
+      "priceRange": "Fascia di Prezzo",
+      "sortBy": "Ordina Per"
+    },
+    "modal": {
+      "pricingDetails": "Dettagli Prezzo",
+      "originalCost": "Costo Originale",
+      "recycledPrice": "Prezzo Rigenerato",
+      "youSave": "Risparmi",
+      "weeePoints": "Punti WEEE",
+      "costPerPage": "Costo per Pagina",
+      "original": "Originale",
+      "remanufactured": "Rigenerato",
+      "savingsPerPage": "Risparmio/Pagina",
+      "co2Saved": "CO₂ Risparmiato",
+      "specifications": "Specifiche",
+      "noSpecifications": "Nessuna specifica disponibile",
+      "compatiblePrinters": "Stampanti Compatibili",
+      "noCompatibleProducts": "Nessun prodotto compatibile",
+      "quantity": "Quantità",
+      "tradeInProgram": "Programma Trade-In",
+      "tradeInDescription": "Ottieni il 10% di sconto per ogni cartuccia vuota che ci restituisci!",
+      "emptyCartridgesToTrade": "Cartucce Vuote da Scambiare",
+      "count": "Quantità:",
+      "priceSummary": "Riepilogo Prezzo",
+      "unitPrice": "Prezzo Unitario:",
+      "quantityLabel": "Quantità:",
+      "subtotal": "Subtotale:",
+      "discount": "Sconto:",
+      "total": "Totale:",
+      "addToCart": "Aggiungi al Carrello",
+      "defaultDescription": "Cartuccia rigenerata di alta qualità progettata per offrire una qualità di stampa eccezionale supportando la sostenibilità ambientale."
+    }
+  },
+  "ewaste": {
+    "hero": {
+      "title": "Premi WEEE",
+      "subtitle": "Trasforma i tuoi rifiuti elettronici in premi e impatto ambientale"
+    },
+    "schedulePickup": "Prenota Ritiro",
+    "howItWorks": {
+      "title": "Come Funziona",
+      "step1": {
+        "title": "Prenota Ritiro",
+        "description": "Prenota un orario conveniente per la raccolta dei tuoi e-waste"
+      },
+      "step2": {
+        "title": "Ritiriamo",
+        "description": "Il nostro team ritira i tuoi articoli in modo sicuro e responsabile"
+      },
+      "step3": {
+        "title": "Guadagna Premi",
+        "description": "Ricevi punti WEEE in base al tuo contributo"
+      }
+    },
+    "categories": {
+      "title": "Cosa Accettiamo",
+      "computers": "Computer e Laptop",
+      "phones": "Telefoni Cellulari",
+      "tablets": "Tablet",
+      "printers": "Stampanti",
+      "cartridges": "Cartucce d'Inchiostro",
+      "batteries": "Batterie",
+      "cables": "Cavi e Accessori",
+      "appliances": "Piccoli Elettrodomestici"
+    },
+    "form": {
+      "title": "Richiedi Ritiro",
+      "name": "Nome Completo",
+      "phone": "Numero di Telefono",
+      "email": "Indirizzo Email",
+      "address": "Indirizzo di Ritiro",
+      "city": "Città",
+      "items": "Articoli da Riciclare",
+      "notes": "Note Aggiuntive",
+      "submit": "Invia Richiesta",
+      "success": "La tua richiesta di ritiro è stata inviata con successo!",
+      "error": "Si è verificato un errore nell'invio della richiesta. Riprova."
+    }
+  },
+  "impact": {
+    "hero": {
+      "title": "Il Nostro Impatto Ambientale",
+      "subtitle": "Misurare il nostro contributo a un futuro sostenibile"
+    },
+    "stats": {
+      "co2Saved": "CO₂ Risparmiata",
+      "treesPlanted": "Equivalente Alberi",
+      "itemsRecycled": "Articoli Riciclati",
+      "kgCollected": "KG Raccolti"
+    },
+    "certificate": {
+      "title": "Certificato Impatto Ambientale",
+      "yourImpact": "Il Tuo Impatto",
+      "share": "Condividi il Tuo Risultato",
+      "download": "Scarica Certificato"
+    },
+    "equivalents": {
+      "title": "Cosa Significa il Tuo Impatto",
+      "trees": "Equivalente alberi piantati",
+      "driving": "Km di guida evitati",
+      "electricity": "Giorni di elettricità domestica",
+      "phones": "Ricariche telefono risparmiate",
+      "flights": "Ore di volo compensate",
+      "burgers": "Equivalente hamburger di manzo"
+    },
+    "level": {
+      "seedling": "Germoglio",
+      "greenWarrior": "Guerriero Verde",
+      "earthProtector": "Protettore della Terra",
+      "forestGuardian": "Guardiano della Foresta",
+      "ecoChampion": "Campione Ecologico"
+    }
+  },
+  "impactPage": {
+    "hero": {
+      "subtitle": "La Nostra Impronta Sostenibile",
+      "title": "Quantificare il Nostro Impegno per il Pianeta",
+      "description": "Crediamo in risultati trasparenti e misurabili. Esplora i dati che definiscono i nostri contributi ambientali, economici e sociali."
+    },
+    "overview": {
+      "environmental": {
+        "title": "Ambientale",
+        "description": "Deviare i rifiuti, recuperare risorse e ridurre le emissioni di carbonio.",
+        "stat": "Tonnellate CO₂ Ridotte"
+      },
+      "economic": {
+        "title": "Economico",
+        "description": "Guidare un'economia verde attraverso la creazione di posti di lavoro e la leadership di mercato.",
+        "stat": "Quota di Mercato"
+      },
+      "social": {
+        "title": "Sociale",
+        "description": "Potenziare le comunità attraverso l'istruzione e la tecnologia accessibile.",
+        "stat": "Persone Educate"
+      }
+    },
+    "environmental": {
+      "subtitle": "Impatto Ambientale",
+      "title": "Dalla Discarica alla Linfa Vitale",
+      "description": "La nostra missione principale è proteggere il pianeta trasformando i rifiuti elettronici pericolosi in una preziosa risorsa, combattendo direttamente l'inquinamento e conservando le risorse naturali.",
+      "chartTitle": "Rifiuti Elettronici Trattati Annualmente (Tonnellate)",
+      "stats": {
+        "diverted": {
+          "value": "Tonnellate",
+          "label": "Deviate dalle Discariche"
+        },
+        "metals": {
+          "value": "kg",
+          "label": "Metalli Preziosi Recuperati"
+        },
+        "recovery": {
+          "label": "Tasso di Recupero Materiali"
+        }
+      }
+    },
+    "economic": {
+      "subtitle": "Impatto Economico",
+      "title": "Alimentare l'Economia Verde",
+      "description": "Dimostriamo che la sostenibilità è un potente motore economico, che crea posti di lavoro, stimola la produzione locale e stabilisce un modello redditizio per l'economia circolare.",
+      "chartTitle": "Contributo all'Economia Verde",
+      "jobCreation": {
+        "title": "Creazione di Posti di Lavoro",
+        "description": "Abbiamo creato oltre <strong>{{direct}} posti di lavoro diretti</strong> e stimati <strong>{{indirect}} posti di lavoro indiretti</strong>, fornendo occupazione stabile nel settore della tecnologia verde."
+      },
+      "marketLeadership": {
+        "title": "Leadership di Mercato",
+        "description": "Come primo e più grande riciclatore di rifiuti elettronici in Egitto, deteniamo una quota di mercato significativa, stabilendo standard di settore per qualità e conformità."
+      },
+      "localManufacturing": {
+        "title": "Produzione Locale",
+        "description": "Il nostro investimento nella produzione locale di attrezzature riduce la dipendenza dalle importazioni del <strong>{{percent}}%</strong>, mantenendo il capitale all'interno dell'economia nazionale."
+      }
+    },
+    "social": {
+      "subtitle": "Impatto Sociale",
+      "title": "Potenziare una Società Sostenibile",
+      "description": "Il nostro impatto va oltre il riciclaggio. Siamo impegnati nell'educare il pubblico e rendere la sostenibilità accessibile a tutti attraverso la tecnologia e il coinvolgimento della comunità.",
+      "education": {
+        "title": "Educazione e Consapevolezza",
+        "description": "I nostri programmi scolastici e le campagne pubbliche hanno educato oltre 10.000 persone sull'importanza del corretto smaltimento dei rifiuti elettronici."
+      },
+      "technology": {
+        "title": "Tecnologia per Tutti",
+        "description": "L'app mobile DR.WEEE è stata scaricata oltre 10.000 volte, rendendo il riciclaggio responsabile facile e gratificante per i cittadini di tutto l'Egitto."
+      },
+      "partnerships": {
+        "title": "Partnership Comunitarie",
+        "description": "Collaboriamo con oltre 25 ONG e organizzazioni comunitarie per espandere la nostra rete di raccolta e garantire che i benefici raggiungano le aree svantaggiate."
+      }
+    },
+    "futureGoals": {
+      "subtitle": "La Nostra Visione per il Domani",
+      "title": "I Nostri Obiettivi di Sostenibilità 2030",
+      "goals": {
+        "divert": {
+          "title": "Deviare 10.000 Tonnellate",
+          "description": "Deviare annualmente oltre 10.000 tonnellate di rifiuti elettronici dalle discariche."
+        },
+        "carbon": {
+          "title": "Neutralità Carbonica",
+          "description": "Raggiungere operazioni completamente carbon neutral attraverso efficienza e compensazioni."
+        },
+        "expand": {
+          "title": "Espandersi in 20 Paesi",
+          "description": "Stabilire una forte presenza in oltre 20 paesi nella regione MENA e oltre."
+        }
+      }
+    }
+  },
+  "contact": {
+    "hero": {
+      "subtitle": "Connettiti con Noi",
+      "title": "Innoviamo Insieme per un Domani più Verde",
+      "description": "Il tuo percorso verso la sostenibilità inizia con una conversazione. Che tu sia interessato alle nostre soluzioni di riciclaggio e-waste, opportunità di franchising o progetti di sostenibilità collaborativi, siamo qui per trasformare le sfide ambientali in valore reale."
+    },
+    "form": {
+      "title": "Inviaci un Messaggio",
+      "subtitle": "Compila il modulo e il nostro team ti risponderà entro 24 ore lavorative.",
+      "name": "Nome Completo",
+      "namePlaceholder": "Mario Rossi",
+      "email": "Indirizzo Email",
+      "emailPlaceholder": "mario@esempio.it",
+      "phone": "Numero di Telefono",
+      "phonePlaceholder": "+39 123 456 7890",
+      "subject": "Come possiamo aiutarti?",
+      "subjectPlaceholder": "Seleziona un argomento...",
+      "subjectServices": "Richiesta Servizi",
+      "subjectPartnership": "Opportunità di Partnership",
+      "subjectFranchise": "Informazioni Franchising",
+      "subjectOther": "Altro",
+      "message": "Il Tuo Messaggio",
+      "messagePlaceholder": "Descrivi la tua richiesta o come possiamo collaborare...",
+      "submit": "Invia Messaggio",
+      "sending": "Invio in corso..."
+    },
+    "info": {
+      "emailTitle": "Scrivici",
+      "emailDescription": "Per richieste generali e partnership.",
+      "callTitle": "Chiamaci",
+      "callDescription": "Lun-Sab, 9:00-18:00 EET",
+      "headquartersTitle": "Sede Principale",
+      "headquartersDescription": "Il Cairo, Egitto",
+      "emailLabel": "Email",
+      "phoneLabel": "Telefono",
+      "addressLabel": "Indirizzo"
+    },
+    "successModal": {
+      "title": "Messaggio Inviato con Successo!",
+      "whatHappensNext": "Cosa Succede Adesso?",
+      "step1": "Il nostro team esaminerà attentamente il tuo messaggio.",
+      "step2": "Riceverai una risposta entro 24 ore lavorative.",
+      "step3": "Se la tua richiesta richiede ulteriori informazioni, ti contatteremo.",
+      "needUrgentHelp": "Hai bisogno di aiuto urgente?",
+      "callUsAt": "Chiamaci al",
+      "haveMoreQuestions": "Hai altre domande?",
+      "checkFaq": "Consulta la nostra",
+      "faqSection": "sezione FAQ",
+      "closeButton": "Chiudi"
+    }
+  },
+  "login": {
+    "title": "Bentornato",
+    "subtitle": "Accedi al tuo account DR.WEEE",
+    "phone": "Numero di Telefono",
+    "phonePlaceholder": "Inserisci il tuo numero di telefono",
+    "password": "Password",
+    "passwordPlaceholder": "Inserisci la password",
+    "rememberMe": "Ricordami",
+    "forgotPassword": "Password dimenticata?",
+    "signIn": "Accedi",
+    "signingIn": "Accesso in corso...",
+    "noAccount": "Non hai un account?",
+    "register": "Registrati",
+    "orContinueWith": "Oppure continua con",
+    "otp": {
+      "title": "Inserisci Codice di Verifica",
+      "subtitle": "Abbiamo inviato un codice al tuo telefono",
+      "resend": "Reinvia Codice",
+      "verify": "Verifica"
+    },
+    "errors": {
+      "invalidPhone": "Inserisci un numero di telefono valido",
+      "invalidPassword": "Inserisci la password",
+      "invalidCredentials": "Numero di telefono o password non validi",
+      "accountLocked": "Account bloccato. Riprova più tardi.",
+      "networkError": "Errore di rete. Controlla la connessione."
+    }
+  },
+  "loginPage": {
+    "welcome": {
+      "title": "Benvenuto su DR.WEEE",
+      "subtitle": "Unisciti al futuro sostenibile"
+    },
+    "form": {
+      "mobilePhone": "Telefono Cellulare",
+      "phonePlaceholder": "Inserisci numero di telefono",
+      "password": "Password",
+      "passwordPlaceholder": "Inserisci la password",
+      "loginButton": "Accedi"
+    },
+    "toggle": {
+      "noAccount": "Non hai un account?",
+      "createAccount": "Creane uno ora",
+      "hasAccount": "Hai già un account?",
+      "loginHere": "Accedi qui"
+    },
+    "steps": {
+      "details": "Dettagli",
+      "verify": "Verifica",
+      "secure": "Sicurezza",
+      "finish": "Fine"
+    },
+    "register": {
+      "title": "Crea il Tuo Account",
+      "fullName": "Nome Completo",
+      "fullNamePlaceholder": "Inserisci il tuo nome completo",
+      "sendOtp": "Invia Codice OTP"
+    },
+    "otp": {
+      "enterCode": "Inserisci Codice OTP a 6 Cifre",
+      "sentTo": "Inviato a",
+      "verifyCode": "Verifica Codice",
+      "resendIn": "Reinvia tra",
+      "resendCode": "Reinvia Codice",
+      "newOtpSent": "È stato inviato un nuovo OTP."
+    },
+    "password": {
+      "mobileVerified": "Cellulare verificato con successo!",
+      "createPassword": "Crea Password",
+      "minChars": "Minimo 6 caratteri",
+      "confirmPassword": "Conferma Password",
+      "confirmPlaceholder": "Conferma la password",
+      "createAccount": "Crea Account"
+    },
+    "success": {
+      "title": "Benvenuto su DR.WEEE!",
+      "message": "Il tuo account è pronto. Sei ora connesso.",
+      "continue": "Continua"
+    },
+    "loading": {
+      "sending": "Invio in corso...",
+      "verifying": "Verifica in corso...",
+      "creatingAccount": "Creazione account...",
+      "loggingIn": "Accesso in corso..."
+    },
+    "errors": {
+      "passwordTooShort": "La password deve contenere almeno 6 caratteri.",
+      "passwordsNotMatch": "Le password non corrispondono."
+    }
+  },
+  "common": {
+    "loading": "Caricamento...",
+    "error": "Errore",
+    "success": "Successo",
+    "cancel": "Annulla",
+    "confirm": "Conferma",
+    "save": "Salva",
+    "delete": "Elimina",
+    "edit": "Modifica",
+    "close": "Chiudi",
+    "back": "Indietro",
+    "next": "Avanti",
+    "previous": "Precedente",
+    "submit": "Invia",
+    "search": "Cerca",
+    "filter": "Filtra",
+    "sort": "Ordina",
+    "viewAll": "Vedi Tutto",
+    "learnMore": "Scopri di Più",
+    "readMore": "Leggi di Più",
+    "seeMore": "Vedi di Più",
+    "showLess": "Mostra Meno",
+    "required": "Obbligatorio",
+    "optional": "Opzionale",
+    "yes": "Sì",
+    "no": "No",
+    "or": "o",
+    "and": "e"
+  },
+  "validation": {
+    "required": "Questo campo è obbligatorio",
+    "invalidEmail": "Inserisci un indirizzo email valido",
+    "invalidPhone": "Inserisci un numero di telefono valido",
+    "minLength": "Deve contenere almeno {{min}} caratteri",
+    "maxLength": "Non deve superare {{max}} caratteri",
+    "passwordMismatch": "Le password non corrispondono"
+  },
+  "share": {
+    "title": "Condividi",
+    "linkedin": "Condividi su LinkedIn",
+    "twitter": "Condividi su Twitter",
+    "facebook": "Condividi su Facebook",
+    "whatsapp": "Condividi su WhatsApp",
+    "copyLink": "Copia Link",
+    "linkCopied": "Link copiato negli appunti!"
+  },
+  "weeeRewards": {
+    "hero": {
+      "title": "Centro Premi WEEE",
+      "subtitle": "Trasforma i Tuoi Rifiuti Elettronici in Impatto Ambientale e Premi"
+    },
+    "categories": {
+      "title": "Seleziona i Tuoi Rifiuti Elettronici",
+      "subtitle": "Clicca sugli articoli per aggiungerli alla tua borsa di raccolta e vedere il tuo impatto ambientale!",
+      "searchPlaceholder": "Cerca articoli (es. laptop, telefono, TV...)",
+      "filters": {
+        "all": "Tutti gli Articoli",
+        "computing": "Informatica",
+        "mobile": "Mobile",
+        "home": "Elettrodomestici",
+        "entertainment": "Intrattenimento",
+        "accessories": "Accessori",
+        "office": "Ufficio"
+      }
+    },
+    "items": {
+      "points": "Punti",
+      "kgCo2Saved": "kg CO₂ Risparmiata",
+      "ptsEach": "punti ciascuno",
+      "unit": "Unità",
+      "quantity": "Quantità",
+      "units": {
+        "Each": "Pezzo",
+        "Box": "Scatola",
+        "Kg": "Kg"
+      }
+    },
+    "panel": {
+      "title": "La Tua Borsa di Raccolta",
+      "subtitle": "Articoli pronti per lo smaltimento ecologico",
+      "itemsCount": "{{count}} articoli",
+      "itemCount": "{{count}} articolo",
+      "emptyState": "Inizia a selezionare articoli per vedere il tuo impatto ambientale!"
+    },
+    "impact": {
+      "title": "Il Tuo Impatto Ambientale",
+      "weeePoints": "Punti WEEE",
+      "co2Saved": "CO₂ Risparmiata (kg)"
+    },
+    "actions": {
+      "completeRequest": "Completa Richiesta di Raccolta",
+      "viewBag": "Vedi Borsa",
+      "completeRequestShort": "Completa Richiesta"
+    },
+    "mobile": {
+      "points": "Punti",
+      "kgCo2": "kg CO₂",
+      "emptyBag": "La tua borsa di raccolta è vuota",
+      "tapToAdd": "Tocca gli articoli per aggiungerli"
+    },
+    "loading": {
+      "title": "Caricamento Rifiuti Elettronici...",
+      "message": "Attendi mentre recuperiamo gli ultimi prodotti."
+    },
+    "error": {
+      "loadTitle": "Impossibile Caricare i Prodotti",
+      "loadMessage": "Stiamo riscontrando problemi nel caricare gli articoli. Prova ad aggiornare la pagina.",
+      "refreshButton": "Aggiorna Pagina"
+    },
+    "noResults": {
+      "title": "Nessun Articolo Trovato",
+      "searchMessage": "Nessun articolo trovato corrispondente a \"{{query}}\"",
+      "categoryMessage": "Nessun rifiuto elettronico disponibile in questa categoria.",
+      "clearSearch": "Cancella Ricerca"
+    },
+    "loginModal": {
+      "title": "Accesso Richiesto",
+      "description": "Per procedere con la tua richiesta di raccolta rifiuti elettronici, accedi al tuo account o creane uno nuovo. Questo ci aiuta a tracciare il tuo impatto ambientale e i punti WEEE!",
+      "loginButton": "Accedi / Registrati",
+      "cancelButton": "Annulla"
+    },
+    "locationModal": {
+      "title": "Seleziona Luogo di Raccolta",
+      "searchPlaceholder": "Cerca il tuo indirizzo o posizione...",
+      "searchButton": "Cerca",
+      "clearButton": "Cancella",
+      "defaultText": "Clicca sulla mappa o cerca una posizione",
+      "fetchingAddress": "Recupero indirizzo...",
+      "confirmButton": "Conferma Posizione",
+      "notFound": "Posizione non trovata. Prova un termine di ricerca diverso.",
+      "searchFailed": "Ricerca posizione fallita. Riprova."
+    },
+    "successModal": {
+      "title": "Richiesta Inviata con Successo!",
+      "description": "Grazie per aver scelto DR.WEEE! La tua richiesta di raccolta rifiuti elettronici è stata inviata.",
+      "contactMessage": "Il nostro team ti contatterà per organizzare il ritiro nella posizione specificata.",
+      "viewRequests": "Visualizza Le Mie Richieste",
+      "location": "Posizione",
+      "selectedItems": "Articoli Selezionati ({{count}} totale)",
+      "itemsSelected": "Articoli selezionati",
+      "moreItems": "+ {{count}} altri articoli",
+      "pts": "punti",
+      "pointsEarned": "Punti WEEE Guadagnati",
+      "environmentalImpact": "Impatto Ambientale",
+      "kgCo2Saved": "kg CO₂ risparmiata"
+    },
+    "delayedModal": {
+      "title": "Richiesta Ricevuta!",
+      "requestId": "ID Richiesta",
+      "status": "Stato",
+      "processing": "In Elaborazione",
+      "contact": "Contatto",
+      "within24h": "Entro 24 ore"
+    },
+    "errors": {
+      "requestFailed": "Richiesta Fallita",
+      "processingError": "Si è verificato un errore durante l'elaborazione della tua richiesta.",
+      "tryAgainLater": "Riprova più tardi.",
+      "processingDelayed": "Elaborazione Ritardata",
+      "takingLonger": "La tua richiesta sta impiegando più tempo del solito per essere elaborata.",
+      "checkBackMinutes": "Ricontrolla tra qualche minuto o riprova.",
+      "requestReceived": "Richiesta Ricevuta",
+      "contactWithin24h": "Il nostro team ti contatterà entro 24 ore per organizzare il ritiro.",
+      "serviceUnavailable": "Servizio Temporaneamente Non Disponibile",
+      "serviceDown": "Il nostro servizio di raccolta è temporaneamente non disponibile.",
+      "tryAgain30min": "Riprova tra 30 minuti.",
+      "invalidRequest": "Richiesta Non Valida",
+      "requestDataError": "Si è verificato un errore con i dati della tua richiesta.",
+      "refreshAndTry": "Aggiorna la pagina e riprova.",
+      "networkError": "Errore di rete. Controlla la connessione e riprova.",
+      "locationNotFound": "Posizione non trovata. Prova un termine di ricerca diverso.",
+      "locationSearchFailed": "Ricerca posizione fallita. Riprova."
+    },
+    "requestDescription": {
+      "header": "RICHIESTA RACCOLTA RIFIUTI ELETTRONICI",
+      "collectionDetails": "DETTAGLI RACCOLTA",
+      "address": "Indirizzo",
+      "submitted": "Inviato",
+      "requestSummary": "RIEPILOGO RICHIESTA",
+      "totalItems": "Articoli Totali",
+      "weeePoints": "Punti WEEE",
+      "co2Saved": "CO₂ Risparmiata",
+      "itemizedList": "ELENCO DETTAGLIATO"
+    }
+  },
+  "redeemPoints": {
+    "hero": {
+      "title": "Riscatta i Tuoi Punti WEEE",
+      "subtitle": "Trasforma le tue azioni eco-friendly in premi di valore. Scegli dalla nostra selezione di voucher e regali."
+    },
+    "balance": {
+      "availablePoints": "Punti Disponibili",
+      "availableCash": "Saldo Disponibile",
+      "points": "Punti",
+      "egp": "EGP"
+    },
+    "filters": {
+      "all": "Tutti i Premi",
+      "retail": "Negozi e Shopping",
+      "food": "Cibo e Ristoranti",
+      "entertainment": "Intrattenimento",
+      "tech": "Tecnologia",
+      "cash": "Contanti"
+    },
+    "loading": {
+      "text": "Caricamento voucher..."
+    },
+    "loginRequired": {
+      "title": "Accesso Richiesto",
+      "description": "Accedi per visualizzare e riscattare i voucher.",
+      "loginButton": "Accedi"
+    },
+    "emptyState": {
+      "title": "Nessun Voucher Disponibile",
+      "description": "Torna più tardi per nuovi premi!"
+    },
+    "noCategory": {
+      "description": "Nessun voucher trovato in questa categoria."
+    },
+    "error": {
+      "title": "Errore nel Caricamento Voucher",
+      "description": "Riprova più tardi.",
+      "retryButton": "Riprova"
+    },
+    "card": {
+      "points": "Punti",
+      "cash": "Contanti",
+      "viewDetails": "Vedi Dettagli"
+    },
+    "modal": {
+      "payWith": "Paga con",
+      "points": "Punti",
+      "cash": "Contanti",
+      "insufficient": "Insufficiente",
+      "quantity": "Quantità",
+      "total": "Totale",
+      "cancel": "Annulla",
+      "redeem": "Riscatta",
+      "insufficientBalance": "Saldo Insufficiente",
+      "processing": "Elaborazione..."
+    },
+    "success": {
+      "title": "Richiesta Inviata!",
+      "message": "La tua richiesta di riscatto è stata inviata con successo. Puoi seguirla nella sezione \"Le Mie Richieste\".",
+      "viewRequests": "Vedi Le Mie Richieste"
+    },
+    "alerts": {
+      "loginRequired": "Accedi per riscattare i voucher.",
+      "submitFailed": "Impossibile inviare la richiesta di riscatto.",
+      "genericError": "Si è verificato un errore. Riprova."
+    }
+  },
+  "myRequests": {
+    "hero": {
+      "badge": "La Mia Attività",
+      "title": "Le Mie Richieste",
+      "subtitle": "Monitora tutte le tue richieste di raccolta rifiuti elettronici e ordini del negozio in un unico posto"
+    },
+    "loading": {
+      "text": "Caricamento delle tue richieste..."
+    },
+    "loginRequired": {
+      "title": "Accesso Richiesto",
+      "description": "Accedi per visualizzare le tue richieste e la cronologia degli ordini.",
+      "loginButton": "Accedi"
+    },
+    "stats": {
+      "requests": "Richieste",
+      "request": "Richiesta",
+      "completed": "Completate"
+    },
+    "filters": {
+      "all": "Tutte",
+      "purchases": "Acquisti",
+      "ewaste": "Rifiuti Elettronici",
+      "redeem": "Riscatti"
+    },
+    "requestTypes": {
+      "ewasteCollection": "Raccolta Rifiuti Elettronici",
+      "formSubmit": "Invio Modulo",
+      "onlinePurchase": "Acquisto Online",
+      "redeemingRequest": "Richiesta di Riscatto",
+      "general": "Richiesta Generale"
+    },
+    "status": {
+      "open": "Aperta",
+      "completed": "Completata",
+      "cancelled": "Annullata"
+    },
+    "card": {
+      "viewButton": "Visualizza"
+    },
+    "emptyState": {
+      "title": "Nessuna Richiesta",
+      "description": "Non hai ancora effettuato richieste. Inizia a riciclare rifiuti elettronici o acquista prodotti ecologici!",
+      "recycleButton": "Ricicla E-waste",
+      "shopButton": "Visita il Negozio"
+    },
+    "error": {
+      "title": "Errore nel Caricamento",
+      "description": "Impossibile caricare le tue richieste. Riprova più tardi.",
+      "retryButton": "Riprova"
+    },
+    "modal": {
+      "title": "Dettagli Richiesta",
+      "statusLabel": "Stato",
+      "typeLabel": "Tipo di Richiesta",
+      "dateLabel": "Data di Creazione",
+      "detailsLabel": "Dettagli",
+      "noDetails": "Nessun dettaglio disponibile"
+    }
+  },
+  "environmentalImpact": {
+    "loading": "Calcolo del tuo impatto ambientale...",
+    "hero": {
+      "badge": "Il Tuo Viaggio Verde",
+      "title": "Il Tuo Impatto Ambientale",
+      "subtitle": "Ogni articolo che ricicli fa la differenza. Monitora il tuo contributo per un futuro sostenibile."
+    },
+    "loginPrompt": {
+      "title": "Monitora il Tuo Impatto Ambientale",
+      "description": "Accedi per vedere i tuoi risparmi personali di CO2 dal riciclo di rifiuti elettronici con DR.WEEE.",
+      "button": "Accedi per Visualizzare"
+    },
+    "stats": {
+      "co2Unit": "kg CO₂",
+      "totalCarbonSaved": "Emissioni di Carbonio Totali Risparmiate",
+      "treesEquivalent": "Equivalente in Alberi",
+      "drivingAvoided": "Guida Evitata",
+      "daysOfElectricity": "Giorni di Elettricità",
+      "phoneCharges": "Ricariche Telefono"
+    },
+    "ecoLevels": {
+      "seedling": "Germoglio",
+      "greenWarrior": "Guerriero Verde",
+      "earthProtector": "Protettore della Terra",
+      "forestGuardian": "Guardiano della Foresta",
+      "ecoChampion": "Campione Ecologico",
+      "keepGoing": "Continua così, {name}!",
+      "progressToNextLevel": "Progresso al livello successivo ({level} kg)",
+      "maxLevelReached": "Livello massimo raggiunto!"
+    },
+    "climatiq": {
+      "title": "Alimentato da Climatiq API",
+      "verifiedData": "Dati Verificati",
+      "description": "Tutti i calcoli delle emissioni utilizzano fattori di emissione scientificamente validati dal database verificato di Climatiq, affidabile per aziende leader a livello mondiale per una contabilità del carbonio accurata.",
+      "dataSources": "Fonti dati:",
+      "emissionFactors": "Fattori di Emissione",
+      "countries": "Paesi"
+    },
+    "share": {
+      "title": "Condividi il Tuo Successo Verde!",
+      "description": "Ispira altri a unirsi al movimento del riciclo dei rifiuti elettronici. Condividi il tuo impatto sui social media.",
+      "copyLink": "Copia Link",
+      "hint": "Il link del tuo certificato mostra un'anteprima su LinkedIn con le tue statistiche di impatto!",
+      "card": {
+        "co2Saved": "CO₂ Risparmiato",
+        "trees": "Alberi",
+        "items": "Articoli",
+        "level": "Livello"
+      }
+    },
+    "equivalents": {
+      "title": "Cosa Significa il Tuo Impatto",
+      "subtitle": "I tuoi risparmi di CO₂ tradotti in termini quotidiani",
+      "verified": "Verificato",
+      "driving": {
+        "label": "Guida in Auto Evitata",
+        "description": "La distanza che avresti potuto percorrere emettendo la stessa quantità di CO₂"
+      },
+      "trees": {
+        "label": "Alberi Piantati per 1 Anno",
+        "description": "Assorbimento di carbonio equivalente di alberi maturi in un anno"
+      },
+      "electricity": {
+        "label": "Elettricità Domestica Risparmiata",
+        "description": "Giorni di consumo elettrico medio di una famiglia egiziana"
+      },
+      "charges": {
+        "label": "Ricariche Smartphone",
+        "description": "Numero di ricariche complete della batteria dello smartphone"
+      },
+      "flights": {
+        "label": "Ore di Volo Compensate",
+        "description": "Ore di emissioni di voli commerciali neutralizzate"
+      },
+      "burgers": {
+        "label": "Impronta di Carbonio dei Burger",
+        "description": "Equivalente a saltare questo numero di hamburger di manzo"
+      }
+    },
+    "cta": {
+      "title": "Continua a Fare la Differenza!",
+      "description": "Ogni dispositivo che ricicli ci avvicina a un futuro sostenibile. Pronto ad aumentare il tuo impatto ambientale?",
+      "schedulePickup": "Prenota Ritiro E-Waste",
+      "shopProducts": "Acquista Prodotti Ecologici"
+    }
+  },
+  "meta": {
+    "title": "DR.WEEE - Soluzioni IT Green Intelligenti | Riciclaggio E-Waste e Sostenibilità",
+    "description": "Pionieri dell'innovazione sostenibile attraverso la gestione dei rifiuti elettronici e soluzioni di economia circolare. Trasforma i tuoi rifiuti elettronici in impatto ambientale con DR.WEEE."
+  }
+}
