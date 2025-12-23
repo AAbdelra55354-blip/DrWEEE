@@ -30,6 +30,10 @@ const dataverse = {
 };
 const STORE_CACHE_DURATION_MS = 15 * 60 * 1000; // Cache for 15 minutes
 
+// Vouchers cache (keyed by territoryId)
+const vouchersCacheByTerritory = new Map();
+const VOUCHERS_CACHE_DURATION_MS = 15 * 60 * 1000; // Cache for 15 minutes
+
 // Translation cache for Azure Translator
 const translationCache = new Map();
 const TRANSLATION_CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
@@ -1183,9 +1187,23 @@ app.get('/api/my-requests', async (req, res) => {
 });
 
 
-// API endpoint to fetch vouchers and gifts from Dataverse
+// API endpoint to fetch vouchers and gifts from Dataverse (with caching)
 app.get('/api/vouchers', async (req, res) => {
     const { territoryId } = req.query;
+
+    // Use territory-specific cache key, or 'default' for backwards compatibility
+    const cacheKey = territoryId || 'default';
+    const cachedData = vouchersCacheByTerritory.get(cacheKey);
+    const isCacheValid = cachedData && (Date.now() - cachedData.lastFetch < VOUCHERS_CACHE_DURATION_MS);
+
+    if (isCacheValid) {
+        console.log(`✅ [Vouchers] Returning from cache for territory: ${cacheKey}`);
+        return res.status(200).json({
+            success: true,
+            vouchers: cachedData.data,
+            source: 'cache'
+        });
+    }
 
     try {
         // Build territory filter if provided
@@ -1199,6 +1217,8 @@ app.get('/api/vouchers', async (req, res) => {
             territoryFilter = `<condition attribute="crd33_availableonlineterritory" operator="eq" value="${sanitizedTerritoryId}" />`;
             console.log(`[Vouchers] Filtering by territory: ${territoryId}`);
         }
+
+        console.log(`🔄 [Vouchers] Fetching from Dataverse for territory: ${cacheKey}...`);
 
         // FetchXML query to get vouchers that are available online and have available quantity
         // Note: FetchXML uses logical name (singular), URL uses EntitySetName (plural)
@@ -1259,15 +1279,33 @@ app.get('/api/vouchers', async (req, res) => {
             createdOn: voucher.createdon
         }));
 
-        console.log(`✅ Found ${formattedVouchers.length} available vouchers`);
+        // Update cache
+        vouchersCacheByTerritory.set(cacheKey, {
+            data: formattedVouchers,
+            lastFetch: Date.now()
+        });
+
+        console.log(`✅ [Vouchers] Cached ${formattedVouchers.length} vouchers for territory: ${cacheKey}`);
 
         res.status(200).json({
             success: true,
-            vouchers: formattedVouchers
+            vouchers: formattedVouchers,
+            source: 'live'
         });
 
     } catch (error) {
         console.error('❌ Error fetching vouchers:', error.message);
+
+        // Return stale cache if available
+        if (cachedData) {
+            console.log(`⚠️ [Vouchers] Returning stale cache due to error for territory: ${cacheKey}`);
+            return res.status(200).json({
+                success: true,
+                vouchers: cachedData.data,
+                source: 'stale-cache'
+            });
+        }
+
         res.status(500).json({
             message: 'Failed to fetch vouchers. Please try again later.',
             error: 'internal_error'

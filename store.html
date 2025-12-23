@@ -3679,15 +3679,15 @@
             let searchByCompatibility = false;
             let currentCurrency = { symbol: 'EGP', isoCode: 'EGP', precision: 2 }; // Default currency
 
-            // Format price with current currency
+            // Format price with current currency (no decimals)
             function formatPrice(amount) {
                 if (amount === null || amount === undefined || isNaN(amount)) {
                     return getI18n('store.priceNotAvailable') || 'Price not available';
                 }
-                const precision = currentCurrency.precision || 2;
-                const formattedAmount = parseFloat(amount).toLocaleString(undefined, {
-                    minimumFractionDigits: precision,
-                    maximumFractionDigits: precision
+                // Round to nearest integer - no decimals for cleaner display
+                const formattedAmount = Math.round(parseFloat(amount)).toLocaleString(undefined, {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
                 });
                 return `${currentCurrency.symbol} ${formattedAmount}`;
             }

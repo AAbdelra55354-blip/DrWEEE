@@ -146,8 +146,11 @@
         return CONFIG.defaultLanguage;
     }
 
-    // Load territories from API
-    async function loadTerritories() {
+    // Load territories from API with timeout and retry
+    async function loadTerritories(retryCount = 0) {
+        const MAX_RETRIES = 2;
+        const TIMEOUT_MS = 8000; // 8 second timeout
+
         // Check sessionStorage cache first
         const cached = sessionStorage.getItem(CONFIG.territoriesCacheKey);
         if (cached) {
@@ -157,6 +160,7 @@
                     console.log('[i18n] Using cached territories');
                     territories = data;
                     territoriesLoaded = true;
+                    renderCountryOptions(); // Ensure UI is updated
                     return data;
                 }
             } catch (e) {
@@ -164,10 +168,22 @@
             }
         }
 
-        // Fetch from API
+        // Show loading state
+        showCountryLoadingState('loading');
+
+        // Fetch from API with timeout
         try {
-            console.log('[i18n] Fetching territories from API...');
-            const response = await fetch(getApiBaseUrl() + '/api/territories');
+            console.log(`[i18n] Fetching territories from API... (attempt ${retryCount + 1}/${MAX_RETRIES + 1})`);
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
+            const response = await fetch(getApiBaseUrl() + '/api/territories', {
+                signal: controller.signal
+            });
+
+            clearTimeout(timeoutId);
+
             if (!response.ok) {
                 throw new Error(`Failed to fetch territories: ${response.status}`);
             }
@@ -182,13 +198,69 @@
             }));
 
             console.log(`[i18n] Loaded ${territories.length} territories`);
+
+            // Update UI
+            renderCountryOptions();
+
             return territories;
         } catch (error) {
-            console.error('[i18n] Error loading territories:', error);
-            // Return empty array on error
+            console.error('[i18n] Error loading territories:', error.message);
+
+            // Retry on network errors or timeouts
+            if (retryCount < MAX_RETRIES && (error.name === 'AbortError' || error.name === 'TypeError')) {
+                console.log(`[i18n] Retrying territories fetch...`);
+                // Wait a bit before retry
+                await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+                return loadTerritories(retryCount + 1);
+            }
+
+            // Show error state after all retries exhausted
             territories = [];
             territoriesLoaded = true;
+            showCountryLoadingState('error');
             return [];
+        }
+    }
+
+    // Show loading/error state in country selector
+    function showCountryLoadingState(state) {
+        const desktopContainer = document.querySelector('.switcher-section__options:not(.switcher-section__options--lang)');
+        const mobileContainer = document.querySelector('.mobile-country-pills');
+
+        const loadingHtml = `<div class="country-loading">Loading...</div>`;
+        const errorHtml = `
+            <div class="country-loading country-error" style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                <span style="color: #e74c3c;">Failed to load countries</span>
+                <button class="country-retry-btn" onclick="window.DrWeeeI18n.retryLoadTerritories()"
+                    style="padding: 0.4rem 0.8rem; background: var(--primary-green, #00897b); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.75rem;">
+                    <i class="fas fa-redo"></i> Retry
+                </button>
+            </div>
+        `;
+
+        const html = state === 'error' ? errorHtml : loadingHtml;
+
+        if (desktopContainer) {
+            desktopContainer.innerHTML = html;
+        }
+        if (mobileContainer) {
+            mobileContainer.innerHTML = html;
+        }
+    }
+
+    // Retry loading territories (called from retry button)
+    async function retryLoadTerritories() {
+        console.log('[i18n] Manually retrying territories load...');
+        showCountryLoadingState('loading');
+        await loadTerritories(0);
+
+        // If territories loaded successfully, also update country state
+        if (territories.length > 0 && !currentCountry) {
+            currentCountry = await detectCountry();
+            if (currentCountry) {
+                currentCountryId = currentCountry.id;
+                updateCountrySwitcher();
+            }
         }
     }
 
@@ -649,13 +721,21 @@
 
     // Render country options dynamically in the switcher
     function renderCountryOptions() {
+        const desktopContainer = document.querySelector('.switcher-section__options:not(.switcher-section__options--lang)');
+        const mobileContainer = document.querySelector('.mobile-country-pills');
+
+        // If no territories loaded yet, show appropriate state
         if (!territories || territories.length === 0) {
             console.warn('[i18n] No territories to render');
+            // If territoriesLoaded is true but array is empty, it means loading failed
+            if (territoriesLoaded) {
+                showCountryLoadingState('error');
+            }
+            // Otherwise, loading is still in progress - keep showing "Loading..."
             return;
         }
 
         // Render desktop country options
-        const desktopContainer = document.querySelector('.switcher-section__options:not(.switcher-section__options--lang)');
         if (desktopContainer) {
             desktopContainer.innerHTML = territories.map(territory => `
                 <button class="country-option${currentCountry && currentCountry.id === territory.id ? ' active' : ''}" data-country="${territory.id}">
@@ -666,7 +746,6 @@
         }
 
         // Render mobile country pills
-        const mobileContainer = document.querySelector('.mobile-country-pills');
         if (mobileContainer) {
             mobileContainer.innerHTML = territories.map(territory => `
                 <button class="mobile-country-pill${currentCountry && currentCountry.id === territory.id ? ' active' : ''}" data-country="${territory.id}" aria-label="${territory.name}">
@@ -1031,6 +1110,7 @@
         translateDynamic,
         translateBatch,
         loadTerritories,
+        retryLoadTerritories,
         getCurrentLanguage: () => currentLanguage,
         getCurrentCountry: () => currentCountry,
         getTerritories: () => territories,
