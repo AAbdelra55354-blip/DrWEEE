@@ -146,6 +146,12 @@
         return CONFIG.defaultLanguage;
     }
 
+    // Check if header elements exist in DOM
+    function headerElementsExist() {
+        return document.querySelector('.switcher-section__options:not(.switcher-section__options--lang)') !== null ||
+               document.querySelector('.mobile-country-pills') !== null;
+    }
+
     // Load territories from API with timeout and retry
     async function loadTerritories(retryCount = 0) {
         const MAX_RETRIES = 2;
@@ -160,7 +166,10 @@
                     console.log('[i18n] Using cached territories');
                     territories = data;
                     territoriesLoaded = true;
-                    renderCountryOptions(); // Ensure UI is updated
+                    // Only render if header elements exist
+                    if (headerElementsExist()) {
+                        renderCountryOptions();
+                    }
                     return data;
                 }
             } catch (e) {
@@ -168,8 +177,10 @@
             }
         }
 
-        // Show loading state
-        showCountryLoadingState('loading');
+        // Show loading state only if header elements exist
+        if (headerElementsExist()) {
+            showCountryLoadingState('loading');
+        }
 
         // Fetch from API with timeout
         try {
@@ -199,8 +210,10 @@
 
             console.log(`[i18n] Loaded ${territories.length} territories`);
 
-            // Update UI
-            renderCountryOptions();
+            // Update UI only if header elements exist
+            if (headerElementsExist()) {
+                renderCountryOptions();
+            }
 
             return territories;
         } catch (error) {
@@ -217,7 +230,10 @@
             // Show error state after all retries exhausted
             territories = [];
             territoriesLoaded = true;
-            showCountryLoadingState('error');
+            // Only show error state if header elements exist
+            if (headerElementsExist()) {
+                showCountryLoadingState('error');
+            }
             return [];
         }
     }
@@ -1021,7 +1037,29 @@
     }
 
     // Re-apply translations (call after dynamic content loads)
-    function refresh() {
+    async function refresh() {
+        console.log('[i18n] Refresh called - territories:', territories.length, 'currentCountry:', currentCountry?.name);
+
+        // If territories haven't loaded yet, try to load them
+        if (!territories || territories.length === 0) {
+            console.log('[i18n] Refresh: No territories loaded, attempting to load...');
+            await loadTerritories(0);
+
+            // If still no territories, we had an error - the error state will be shown
+            if (!territories || territories.length === 0) {
+                console.warn('[i18n] Refresh: Failed to load territories');
+            }
+        }
+
+        // If we have territories but no current country set, detect it
+        if (territories.length > 0 && !currentCountry) {
+            console.log('[i18n] Refresh: Setting current country...');
+            currentCountry = await detectCountry();
+            if (currentCountry) {
+                currentCountryId = currentCountry.id;
+            }
+        }
+
         applyTranslations();
         updateLanguageSwitcher();
         renderCountryOptions(); // Re-render country options for dynamically loaded header
@@ -1035,6 +1073,8 @@
         // Re-apply RTL styles to header elements (for dynamically loaded header)
         const isRtl = CONFIG.rtlLanguages.includes(currentLanguage);
         applyHeaderRtlStyles(isRtl);
+
+        console.log('[i18n] Refresh complete - language:', currentLanguage, 'country:', currentCountry?.name);
     }
 
     // Clear translation cache (useful for development)
