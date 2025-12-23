@@ -1038,7 +1038,14 @@
 
     // Re-apply translations (call after dynamic content loads)
     async function refresh() {
-        console.log('[i18n] Refresh called - territories:', territories.length, 'currentCountry:', currentCountry?.name);
+        console.log('[i18n] Refresh called - territories:', territories.length, 'currentCountry:', currentCountry?.name, 'isInitialized:', isInitialized);
+
+        // If not initialized yet, do full initialization instead
+        if (!isInitialized) {
+            console.log('[i18n] Refresh: Not initialized, calling init()...');
+            await init();
+            return;
+        }
 
         // If territories haven't loaded yet, try to load them
         if (!territories || territories.length === 0) {
@@ -1058,6 +1065,20 @@
             if (currentCountry) {
                 currentCountryId = currentCountry.id;
             }
+        }
+
+        // Ensure current language is set from localStorage (in case init ran before user preference was known)
+        const savedLanguage = localStorage.getItem(CONFIG.storageKey);
+        if (savedLanguage && CONFIG.supportedLanguages.includes(savedLanguage) && savedLanguage !== currentLanguage) {
+            console.log('[i18n] Refresh: Updating language from localStorage:', savedLanguage);
+            currentLanguage = savedLanguage;
+            applyDirection(currentLanguage);
+        }
+
+        // Ensure translations are loaded for current language
+        if (Object.keys(translations).length === 0) {
+            console.log('[i18n] Refresh: No translations loaded, loading...');
+            translations = await loadTranslations(currentLanguage);
         }
 
         applyTranslations();
