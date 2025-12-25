@@ -175,8 +175,8 @@ function corsOptionsProduction() {
 
             // In production, strictly enforce CORS whitelist
             if (process.env.NODE_ENV === 'production') {
-                // Allow if matches whitelist OR if it's a Railway domain OR drweee.com
-                if (isAllowed || origin.includes('railway.app') || origin.includes('drweee.com')) {
+                // Allow if matches whitelist OR if it's a Railway domain OR drweee.com OR Dynamics 365 (for POS)
+                if (isAllowed || origin.includes('railway.app') || origin.includes('drweee.com') || origin.includes('dynamics.com')) {
                     callback(null, true);
                 } else {
                     console.log('⚠️ CORS blocked origin:', origin);
@@ -189,7 +189,7 @@ function corsOptionsProduction() {
         },
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-POS-API-Key'],
         maxAge: 86400 // 24 hours
     };
 }
