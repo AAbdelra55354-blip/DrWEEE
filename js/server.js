@@ -3433,6 +3433,157 @@ app.get('/api/territories', async (req, res) => {
 // =====================================================================
 
 
+// =====================================================================
+// POS SMS PROXY API
+// Secure endpoint for StorePOS web resource to send SMS notifications
+// =====================================================================
+
+// Rate limiting for POS SMS endpoint
+const posSmsRateLimits = new Map(); // key: IP, value: { count, windowStart }
+const POS_SMS_RATE_LIMIT = 30; // Max requests per window
+const POS_SMS_RATE_WINDOW_MS = 60 * 1000; // 1 minute window
+
+// Allowed SMS message templates (must start with one of these)
+const ALLOWED_SMS_TEMPLATES = [
+    'Thank you for recycling with',
+    'شكراً لتدويرك مع',
+    'Merci pour votre recyclage avec'
+];
+
+// Clean old rate limit entries periodically
+setInterval(() => {
+    const now = Date.now();
+    for (const [ip, data] of posSmsRateLimits.entries()) {
+        if (now - data.windowStart > POS_SMS_RATE_WINDOW_MS * 2) {
+            posSmsRateLimits.delete(ip);
+        }
+    }
+}, 5 * 60 * 1000); // Clean every 5 minutes
+
+app.post('/api/pos/send-sms', async (req, res) => {
+    try {
+        // 1. Verify API key
+        const apiKey = req.headers['x-pos-api-key'];
+        if (!apiKey || apiKey !== process.env.POS_SMS_API_KEY) {
+            console.warn('[POS SMS] Invalid or missing API key');
+            return res.status(401).json({
+                success: false,
+                error: 'Unauthorized'
+            });
+        }
+
+        // 2. Verify origin (only allow from Dynamics 365)
+        const origin = req.headers.origin || req.headers.referer || '';
+        const allowedOrigins = [
+            'dynamics.com',
+            'crm3.dynamics.com',
+            'crm.dynamics.com'
+        ];
+        const isAllowedOrigin = allowedOrigins.some(allowed => origin.includes(allowed));
+
+        // In development, also allow localhost
+        const isDevelopment = process.env.NODE_ENV !== 'production';
+        const isLocalhost = origin.includes('localhost') || origin.includes('127.0.0.1');
+
+        if (!isAllowedOrigin && !(isDevelopment && isLocalhost)) {
+            console.warn(`[POS SMS] Rejected origin: ${origin}`);
+            return res.status(403).json({
+                success: false,
+                error: 'Forbidden origin'
+            });
+        }
+
+        // 3. Rate limiting
+        const clientIP = req.ip || req.connection.remoteAddress || 'unknown';
+        const now = Date.now();
+        let rateData = posSmsRateLimits.get(clientIP);
+
+        if (!rateData || now - rateData.windowStart > POS_SMS_RATE_WINDOW_MS) {
+            rateData = { count: 0, windowStart: now };
+        }
+
+        rateData.count++;
+        posSmsRateLimits.set(clientIP, rateData);
+
+        if (rateData.count > POS_SMS_RATE_LIMIT) {
+            console.warn(`[POS SMS] Rate limit exceeded for IP: ${clientIP}`);
+            return res.status(429).json({
+                success: false,
+                error: 'Rate limit exceeded. Try again later.'
+            });
+        }
+
+        // 4. Validate request body
+        const { phoneNumber, message } = req.body;
+
+        if (!phoneNumber || typeof phoneNumber !== 'string') {
+            return res.status(400).json({
+                success: false,
+                error: 'Phone number is required'
+            });
+        }
+
+        if (!message || typeof message !== 'string') {
+            return res.status(400).json({
+                success: false,
+                error: 'Message is required'
+            });
+        }
+
+        // 5. Validate message template (prevent arbitrary message sending)
+        const isValidTemplate = ALLOWED_SMS_TEMPLATES.some(template =>
+            message.trim().startsWith(template)
+        );
+
+        if (!isValidTemplate) {
+            console.warn('[POS SMS] Invalid message template attempted');
+            return res.status(400).json({
+                success: false,
+                error: 'Invalid message format'
+            });
+        }
+
+        // 6. Validate message length
+        if (message.length > 500) {
+            return res.status(400).json({
+                success: false,
+                error: 'Message too long (max 500 characters)'
+            });
+        }
+
+        // 7. Normalize phone number
+        const normalizedPhone = normalizePhoneNumber(phoneNumber);
+        if (!normalizedPhone || normalizedPhone.length < 10) {
+            return res.status(400).json({
+                success: false,
+                error: 'Invalid phone number format'
+            });
+        }
+
+        // 8. Send SMS using existing function
+        secureLog.phone('[POS SMS] Sending SMS to', normalizedPhone);
+        await sendSMS(normalizedPhone, message);
+
+        console.log('[POS SMS] SMS sent successfully');
+        res.json({
+            success: true,
+            message: 'SMS sent successfully'
+        });
+
+    } catch (error) {
+        secureLog.error('[POS SMS] Failed to send SMS', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to send SMS'
+        });
+    }
+});
+
+// =====================================================================
+// END POS SMS PROXY API
+// =====================================================================
+
+
 // Apply cache control middleware
 app.use(cacheControlMiddleware());
 
