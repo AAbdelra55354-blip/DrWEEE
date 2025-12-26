@@ -3446,6 +3446,7 @@ const POS_SMS_RATE_WINDOW_MS = 60 * 1000; // 1 minute window
 // Allowed SMS message templates (must start with one of these)
 const ALLOWED_SMS_TEMPLATES = [
     'Thank you for recycling with',
+    'Thank you for redeeming',  // For voucher/gift redemption
     'شكراً لتدويرك مع',
     'Merci pour votre recyclage avec'
 ];
