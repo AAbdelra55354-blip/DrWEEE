@@ -3879,9 +3879,13 @@ app.get('/api/pos/bosta/cities', verifyPosApiKey, async (req, res) => {
         console.log('[Bosta] Cities response type:', typeof response, Array.isArray(response) ? 'is array' : 'not array');
 
         // Handle different response structures from Bosta API
+        // Bosta returns: { success: true, message: "Done successfully.", data: { list: [...] } }
         let cities;
         if (Array.isArray(response)) {
             cities = response;
+        } else if (response && response.data && response.data.list && Array.isArray(response.data.list)) {
+            // Bosta's actual format: { success, message, data: { list: [...] } }
+            cities = response.data.list;
         } else if (response && response.list && Array.isArray(response.list)) {
             cities = response.list;
         } else if (response && response.data && Array.isArray(response.data)) {
