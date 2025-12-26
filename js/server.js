@@ -3584,6 +3584,206 @@ app.post('/api/pos/send-sms', async (req, res) => {
 // =====================================================================
 
 
+// =====================================================================
+// POS OTP API
+// OTP verification for new customer registration from StorePOS
+// =====================================================================
+
+// In-memory OTP storage for POS (keyed by phone number)
+const posOtpStore = new Map(); // key: phone, value: { otp, expires, verified }
+const POS_OTP_EXPIRY_MS = 5 * 60 * 1000; // 5 minutes
+
+// Clean expired OTPs periodically
+setInterval(() => {
+    const now = Date.now();
+    for (const [phone, data] of posOtpStore.entries()) {
+        if (now > data.expires + 60000) { // Clean 1 minute after expiry
+            posOtpStore.delete(phone);
+        }
+    }
+}, 60 * 1000); // Clean every minute
+
+// Request OTP for POS customer registration
+app.post('/api/pos/request-otp', async (req, res) => {
+    try {
+        // 1. Verify API key
+        const apiKey = req.headers['x-pos-api-key'];
+        if (!apiKey || apiKey !== process.env.POS_SMS_API_KEY) {
+            return res.status(401).json({ success: false, error: 'Unauthorized' });
+        }
+
+        // 2. Verify origin
+        const origin = req.headers.origin || req.headers.referer || '';
+        const isDynamics = origin.includes('dynamics.com');
+        const isDev = process.env.NODE_ENV !== 'production' && (origin.includes('localhost') || origin.includes('127.0.0.1'));
+
+        if (!isDynamics && !isDev) {
+            return res.status(403).json({ success: false, error: 'Forbidden origin' });
+        }
+
+        // 3. Validate phone number
+        const { phoneNumber } = req.body;
+        if (!phoneNumber || typeof phoneNumber !== 'string') {
+            return res.status(400).json({ success: false, error: 'Phone number is required' });
+        }
+
+        const normalizedPhone = normalizePhoneNumber(phoneNumber);
+        if (!normalizedPhone || normalizedPhone.length < 10) {
+            return res.status(400).json({ success: false, error: 'Invalid phone number format' });
+        }
+
+        // 4. Rate limit check (max 3 OTPs per phone per 15 minutes)
+        const existingOtp = posOtpStore.get(normalizedPhone);
+        if (existingOtp && existingOtp.requestCount >= 3 && Date.now() < existingOtp.rateLimitExpires) {
+            return res.status(429).json({
+                success: false,
+                error: 'Too many OTP requests. Please try again later.'
+            });
+        }
+
+        // 5. Check if phone already exists in Dataverse
+        const sanitizedPhone = sanitizeFetchXmlValue(normalizedPhone);
+        const checkUserFetchXml = `<fetch top="1">
+            <entity name="contact">
+                <attribute name="contactid" />
+                <filter type="and">
+                    <condition attribute="mobilephone" operator="eq" value="${sanitizedPhone}" />
+                </filter>
+            </entity>
+        </fetch>`;
+
+        const existingUsers = await queryDataverse('contacts', checkUserFetchXml);
+        if (existingUsers.length > 0) {
+            return res.status(409).json({
+                success: false,
+                error: 'This phone number is already registered.'
+            });
+        }
+
+        // 6. Generate and send OTP
+        const otp = generateOTP();
+        const smsMessage = `Your DR.WEEE verification code is: ${otp}. This code will expire in 5 minutes.`;
+
+        try {
+            await sendSMS(normalizedPhone, smsMessage);
+        } catch (smsError) {
+            console.error('[POS OTP] SMS sending failed:', smsError.message);
+            return res.status(500).json({
+                success: false,
+                error: 'Failed to send verification code. Please try again.'
+            });
+        }
+
+        // 7. Store OTP
+        const requestCount = (existingOtp?.requestCount || 0) + 1;
+        posOtpStore.set(normalizedPhone, {
+            otp: otp,
+            expires: Date.now() + POS_OTP_EXPIRY_MS,
+            verified: false,
+            requestCount: requestCount,
+            rateLimitExpires: Date.now() + (15 * 60 * 1000) // 15 minute window
+        });
+
+        secureLog.phone('[POS OTP] OTP sent to', normalizedPhone);
+        res.json({ success: true, message: 'Verification code sent successfully.' });
+
+    } catch (error) {
+        secureLog.error('[POS OTP] Error requesting OTP', error);
+        res.status(500).json({ success: false, error: 'Failed to send verification code' });
+    }
+});
+
+// Verify OTP for POS customer registration
+app.post('/api/pos/verify-otp', (req, res) => {
+    try {
+        // 1. Verify API key
+        const apiKey = req.headers['x-pos-api-key'];
+        if (!apiKey || apiKey !== process.env.POS_SMS_API_KEY) {
+            return res.status(401).json({ success: false, error: 'Unauthorized' });
+        }
+
+        // 2. Verify origin
+        const origin = req.headers.origin || req.headers.referer || '';
+        const isDynamics = origin.includes('dynamics.com');
+        const isDev = process.env.NODE_ENV !== 'production' && (origin.includes('localhost') || origin.includes('127.0.0.1'));
+
+        if (!isDynamics && !isDev) {
+            return res.status(403).json({ success: false, error: 'Forbidden origin' });
+        }
+
+        // 3. Validate input
+        const { phoneNumber, otp } = req.body;
+        if (!phoneNumber || !otp) {
+            return res.status(400).json({ success: false, error: 'Phone number and OTP are required' });
+        }
+
+        const normalizedPhone = normalizePhoneNumber(phoneNumber);
+        const storedData = posOtpStore.get(normalizedPhone);
+
+        // 4. Check if OTP exists
+        if (!storedData) {
+            return res.status(400).json({ success: false, error: 'No verification code found. Please request a new one.' });
+        }
+
+        // 5. Check if OTP expired
+        if (Date.now() > storedData.expires) {
+            posOtpStore.delete(normalizedPhone);
+            return res.status(400).json({ success: false, error: 'Verification code has expired. Please request a new one.' });
+        }
+
+        // 6. Verify OTP (timing-safe comparison)
+        if (verifyOTP(storedData.otp, otp)) {
+            storedData.verified = true;
+            posOtpStore.set(normalizedPhone, storedData);
+            secureLog.phone('[POS OTP] OTP verified for', normalizedPhone);
+            res.json({ success: true, message: 'Phone number verified successfully.' });
+        } else {
+            res.status(400).json({ success: false, error: 'Invalid verification code.' });
+        }
+
+    } catch (error) {
+        secureLog.error('[POS OTP] Error verifying OTP', error);
+        res.status(500).json({ success: false, error: 'Verification failed' });
+    }
+});
+
+// Check if phone is verified (for POS to confirm before creating contact)
+app.post('/api/pos/check-verification', (req, res) => {
+    try {
+        // 1. Verify API key
+        const apiKey = req.headers['x-pos-api-key'];
+        if (!apiKey || apiKey !== process.env.POS_SMS_API_KEY) {
+            return res.status(401).json({ success: false, error: 'Unauthorized' });
+        }
+
+        const { phoneNumber } = req.body;
+        if (!phoneNumber) {
+            return res.status(400).json({ success: false, error: 'Phone number is required' });
+        }
+
+        const normalizedPhone = normalizePhoneNumber(phoneNumber);
+        const storedData = posOtpStore.get(normalizedPhone);
+
+        if (!storedData || !storedData.verified || Date.now() > storedData.expires + (10 * 60 * 1000)) {
+            return res.json({ success: true, verified: false });
+        }
+
+        // Clear the verification after it's been used
+        posOtpStore.delete(normalizedPhone);
+
+        res.json({ success: true, verified: true });
+
+    } catch (error) {
+        secureLog.error('[POS OTP] Error checking verification', error);
+        res.status(500).json({ success: false, error: 'Check failed' });
+    }
+});
+
+// =====================================================================
+// END POS OTP API
+// =====================================================================
+
+
 // Apply cache control middleware
 app.use(cacheControlMiddleware());
 
