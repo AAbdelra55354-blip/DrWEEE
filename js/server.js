@@ -3916,21 +3916,40 @@ app.get('/api/pos/bosta/districts/:cityId', verifyPosApiKey, async (req, res) =>
 
         // Check cache
         const cached = bostaCache.districts.get(cityId);
-        if (cached && (now - cached.lastFetch) < bostaCache.DISTRICTS_TTL) {
+        if (cached && Array.isArray(cached.data) && (now - cached.lastFetch) < bostaCache.DISTRICTS_TTL) {
             return res.json({ success: true, districts: cached.data });
         }
 
         // Fetch from Bosta API
         console.log(`[Bosta] Fetching districts for city ${cityId}...`);
         const response = await bostaRequest('GET', `/cities/${cityId}/districts`);
+        console.log('[Bosta] Districts response type:', typeof response, Array.isArray(response) ? 'is array' : 'not array');
+
+        // Handle different response structures from Bosta API
+        // Bosta returns: { success: true, message: "Done successfully.", data: { list: [...] } }
+        let districts;
+        if (Array.isArray(response)) {
+            districts = response;
+        } else if (response && response.data && response.data.list && Array.isArray(response.data.list)) {
+            // Bosta's actual format: { success, message, data: { list: [...] } }
+            districts = response.data.list;
+        } else if (response && response.list && Array.isArray(response.list)) {
+            districts = response.list;
+        } else if (response && response.data && Array.isArray(response.data)) {
+            districts = response.data;
+        } else {
+            console.error('[Bosta] Unexpected districts response structure:', JSON.stringify(response).substring(0, 500));
+            return res.status(500).json({ success: false, error: 'Unexpected API response structure' });
+        }
 
         // Cache the result
         bostaCache.districts.set(cityId, {
-            data: response,
+            data: districts,
             lastFetch: now
         });
 
-        res.json({ success: true, districts: response });
+        console.log('[Bosta] Loaded', districts.length, 'districts for city', cityId);
+        res.json({ success: true, districts: districts });
 
     } catch (error) {
         console.error('[Bosta] Error fetching districts:', error.response?.data || error.message);
