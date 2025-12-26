@@ -3961,21 +3961,30 @@ app.get('/api/pos/bosta/districts/:cityId', verifyPosApiKey, async (req, res) =>
 app.post('/api/pos/bosta/create-delivery', verifyPosApiKey, async (req, res) => {
     try {
         const {
-            orderId,           // Our order ID (will be used as businessReference)
-            type,              // 10 = SEND (deliver to customer), 25 = CRP (pickup from customer)
-            pickupLocationId,  // Bosta business location ID
-            receiver,          // { firstName, lastName, phone }
-            address,           // { districtId, firstLine, buildingNumber, floor, apartment, secondLine }
-            notes,             // Delivery notes
-            cod,               // Cash on delivery amount (optional)
-            items              // Array of items being shipped
+            orderId,              // Our order ID (will be used as businessReference)
+            businessReference,    // Alternative name for orderId
+            type,                 // 10 = SEND (deliver to customer), 25 = CRP (pickup from customer)
+            businessLocationId,   // Bosta business location ID (where they pick up from)
+            pickupLocationId,     // Alternative name for businessLocationId
+            receiver,             // { firstName, lastName, phone }
+            dropOffAddress,       // { districtId, firstLine, buildingNumber, floor, apartment, secondLine }
+            address,              // Alternative name for dropOffAddress
+            notes,                // Delivery notes
+            cod,                  // Cash on delivery amount (optional)
+            specs,                // Package specs (optional)
+            items                 // Array of items being shipped (optional)
         } = req.body;
 
+        // Support both field names
+        const locationId = businessLocationId || pickupLocationId;
+        const deliveryAddress = dropOffAddress || address;
+        const orderReference = orderId || businessReference;
+
         // Validate required fields
-        if (!orderId || !type || !pickupLocationId || !receiver || !address) {
+        if (!orderReference || !type || !locationId || !receiver || !deliveryAddress) {
             return res.status(400).json({
                 success: false,
-                error: 'Missing required fields: orderId, type, pickupLocationId, receiver, address'
+                error: 'Missing required fields: orderId, type, businessLocationId, receiver, dropOffAddress'
             });
         }
 
@@ -3986,17 +3995,17 @@ app.post('/api/pos/bosta/create-delivery', verifyPosApiKey, async (req, res) => 
             });
         }
 
-        if (!address.districtId || !address.firstLine) {
+        if (!deliveryAddress.districtId || !deliveryAddress.firstLine) {
             return res.status(400).json({
                 success: false,
                 error: 'Address must have districtId and firstLine (min 5 characters)'
             });
         }
 
-        // Build Bosta delivery payload
+        // Build Bosta delivery payload according to API spec
         const deliveryPayload = {
             type: type, // 10 = SEND, 25 = CRP
-            specs: {
+            specs: specs || {
                 packageType: 'Parcel',
                 size: 'MEDIUM',
                 packageDetails: {
@@ -4007,29 +4016,29 @@ app.post('/api/pos/bosta/create-delivery', verifyPosApiKey, async (req, res) => 
             receiver: {
                 firstName: receiver.firstName,
                 lastName: receiver.lastName,
-                phone: receiver.phone.replace(/[^0-9]/g, '') // Clean phone number
+                phone: receiver.phone.replace(/[^0-9+]/g, '') // Clean phone number but keep +
             },
             dropOffAddress: {
-                districtId: address.districtId,
-                firstLine: address.firstLine,
-                buildingNumber: address.buildingNumber || '',
-                floor: address.floor || '',
-                apartment: address.apartment || '',
-                secondLine: address.secondLine || ''
+                districtId: deliveryAddress.districtId,
+                firstLine: deliveryAddress.firstLine,
+                buildingNumber: deliveryAddress.buildingNumber || '',
+                floor: deliveryAddress.floor || '',
+                apartment: deliveryAddress.apartment || '',
+                secondLine: deliveryAddress.secondLine || ''
             },
-            businessReference: orderId, // Our order ID for webhook correlation
-            pickupAddress: {
-                locationId: pickupLocationId
-            },
+            businessReference: orderReference, // Our order ID for webhook correlation
+            businessLocationId: locationId, // Where Bosta picks up from
             notes: notes || ''
         };
 
         // Add COD if specified
-        if (cod && cod > 0) {
-            deliveryPayload.cod = cod;
+        if (cod && parseFloat(cod) > 0) {
+            deliveryPayload.cod = parseFloat(cod);
         }
 
-        console.log(`[Bosta] Creating delivery for order ${orderId}, type ${type}...`);
+        console.log(`[Bosta] Creating delivery for order ${orderReference}, type ${type}...`);
+        console.log(`[Bosta] Payload:`, JSON.stringify(deliveryPayload, null, 2));
+
         const response = await bostaRequest('POST', '/deliveries', deliveryPayload);
 
         console.log(`[Bosta] Delivery created: ${response.trackingNumber}`);
