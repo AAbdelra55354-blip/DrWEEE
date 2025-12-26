@@ -3869,19 +3869,34 @@ app.get('/api/pos/bosta/cities', verifyPosApiKey, async (req, res) => {
         const now = Date.now();
 
         // Return cached cities if still valid
-        if (bostaCache.cities && (now - bostaCache.citiesLastFetch) < bostaCache.CITIES_TTL) {
+        if (bostaCache.cities && Array.isArray(bostaCache.cities) && (now - bostaCache.citiesLastFetch) < bostaCache.CITIES_TTL) {
             return res.json({ success: true, cities: bostaCache.cities });
         }
 
         // Fetch from Bosta API
         console.log('[Bosta] Fetching cities from API...');
         const response = await bostaRequest('GET', `/cities?countryId=${bostaApi.egyptCountryId}`);
+        console.log('[Bosta] Cities response type:', typeof response, Array.isArray(response) ? 'is array' : 'not array');
+
+        // Handle different response structures from Bosta API
+        let cities;
+        if (Array.isArray(response)) {
+            cities = response;
+        } else if (response && response.list && Array.isArray(response.list)) {
+            cities = response.list;
+        } else if (response && response.data && Array.isArray(response.data)) {
+            cities = response.data;
+        } else {
+            console.error('[Bosta] Unexpected cities response structure:', JSON.stringify(response).substring(0, 500));
+            return res.status(500).json({ success: false, error: 'Unexpected API response structure' });
+        }
 
         // Cache the result
-        bostaCache.cities = response;
+        bostaCache.cities = cities;
         bostaCache.citiesLastFetch = now;
 
-        res.json({ success: true, cities: response });
+        console.log('[Bosta] Loaded', cities.length, 'cities');
+        res.json({ success: true, cities: cities });
 
     } catch (error) {
         console.error('[Bosta] Error fetching cities:', error.response?.data || error.message);
