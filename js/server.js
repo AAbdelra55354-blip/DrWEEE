@@ -3785,6 +3785,478 @@ app.post('/api/pos/check-verification', (req, res) => {
 // =====================================================================
 
 
+// =====================================================================
+// BOSTA COURIER INTEGRATION API
+// =====================================================================
+
+// Bosta API configuration
+const bostaApi = {
+    baseUrl: 'https://app.bosta.co/api/v2',
+    egyptCountryId: '60e4482c7cb7d4bc4849c4d5'
+};
+
+// Cache for Bosta cities/districts (rarely changes)
+const bostaCache = {
+    cities: null,
+    citiesLastFetch: 0,
+    districts: new Map(), // keyed by cityId
+    CITIES_TTL: 24 * 60 * 60 * 1000, // 24 hours
+    DISTRICTS_TTL: 24 * 60 * 60 * 1000 // 24 hours
+};
+
+// Bosta delivery state codes mapping
+const BOSTA_STATES = {
+    10: 'Pickup Requested',
+    20: 'Route Assigned',
+    21: 'Picked Up from Business',
+    22: 'In Transit to Customer',
+    30: 'Received at Warehouse',
+    41: 'Out for Delivery',
+    45: 'Delivered',
+    46: 'Returned to Business',
+    47: 'Exception',
+    48: 'Terminated',
+    49: 'Canceled'
+};
+
+// Middleware to verify POS API key for Bosta endpoints
+function verifyPosApiKey(req, res, next) {
+    const apiKey = req.headers['x-pos-api-key'];
+    if (!apiKey || apiKey !== process.env.POS_SMS_API_KEY) {
+        return res.status(401).json({ success: false, error: 'Unauthorized' });
+    }
+
+    // Also verify origin
+    const origin = req.headers.origin || req.headers.referer || '';
+    const isDynamics = origin.includes('dynamics.com');
+    const isDev = process.env.NODE_ENV !== 'production' && (origin.includes('localhost') || origin.includes('127.0.0.1'));
+
+    if (!isDynamics && !isDev) {
+        return res.status(403).json({ success: false, error: 'Forbidden origin' });
+    }
+
+    next();
+}
+
+// Helper to make Bosta API requests
+async function bostaRequest(method, endpoint, data = null) {
+    const apiKey = process.env.BOSTA_API_KEY;
+    if (!apiKey) {
+        throw new Error('BOSTA_API_KEY not configured');
+    }
+
+    const config = {
+        method,
+        url: `${bostaApi.baseUrl}${endpoint}`,
+        headers: {
+            'Authorization': apiKey,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    };
+
+    if (data) {
+        config.data = data;
+    }
+
+    const response = await axios(config);
+    return response.data;
+}
+
+// GET /api/pos/bosta/cities - Get cached list of Egyptian cities
+app.get('/api/pos/bosta/cities', verifyPosApiKey, async (req, res) => {
+    try {
+        const now = Date.now();
+
+        // Return cached cities if still valid
+        if (bostaCache.cities && (now - bostaCache.citiesLastFetch) < bostaCache.CITIES_TTL) {
+            return res.json({ success: true, cities: bostaCache.cities });
+        }
+
+        // Fetch from Bosta API
+        console.log('[Bosta] Fetching cities from API...');
+        const response = await bostaRequest('GET', `/cities?countryId=${bostaApi.egyptCountryId}`);
+
+        // Cache the result
+        bostaCache.cities = response;
+        bostaCache.citiesLastFetch = now;
+
+        res.json({ success: true, cities: response });
+
+    } catch (error) {
+        console.error('[Bosta] Error fetching cities:', error.response?.data || error.message);
+        res.status(500).json({ success: false, error: 'Failed to fetch cities' });
+    }
+});
+
+// GET /api/pos/bosta/districts/:cityId - Get districts for a city
+app.get('/api/pos/bosta/districts/:cityId', verifyPosApiKey, async (req, res) => {
+    try {
+        const { cityId } = req.params;
+        const now = Date.now();
+
+        // Check cache
+        const cached = bostaCache.districts.get(cityId);
+        if (cached && (now - cached.lastFetch) < bostaCache.DISTRICTS_TTL) {
+            return res.json({ success: true, districts: cached.data });
+        }
+
+        // Fetch from Bosta API
+        console.log(`[Bosta] Fetching districts for city ${cityId}...`);
+        const response = await bostaRequest('GET', `/cities/${cityId}/districts`);
+
+        // Cache the result
+        bostaCache.districts.set(cityId, {
+            data: response,
+            lastFetch: now
+        });
+
+        res.json({ success: true, districts: response });
+
+    } catch (error) {
+        console.error('[Bosta] Error fetching districts:', error.response?.data || error.message);
+        res.status(500).json({ success: false, error: 'Failed to fetch districts' });
+    }
+});
+
+// POST /api/pos/bosta/create-delivery - Create a Bosta shipment
+app.post('/api/pos/bosta/create-delivery', verifyPosApiKey, async (req, res) => {
+    try {
+        const {
+            orderId,           // Our order ID (will be used as businessReference)
+            type,              // 10 = SEND (deliver to customer), 25 = CRP (pickup from customer)
+            pickupLocationId,  // Bosta business location ID
+            receiver,          // { firstName, lastName, phone }
+            address,           // { districtId, firstLine, buildingNumber, floor, apartment, secondLine }
+            notes,             // Delivery notes
+            cod,               // Cash on delivery amount (optional)
+            items              // Array of items being shipped
+        } = req.body;
+
+        // Validate required fields
+        if (!orderId || !type || !pickupLocationId || !receiver || !address) {
+            return res.status(400).json({
+                success: false,
+                error: 'Missing required fields: orderId, type, pickupLocationId, receiver, address'
+            });
+        }
+
+        if (!receiver.firstName || !receiver.lastName || !receiver.phone) {
+            return res.status(400).json({
+                success: false,
+                error: 'Receiver must have firstName, lastName, and phone'
+            });
+        }
+
+        if (!address.districtId || !address.firstLine) {
+            return res.status(400).json({
+                success: false,
+                error: 'Address must have districtId and firstLine (min 5 characters)'
+            });
+        }
+
+        // Build Bosta delivery payload
+        const deliveryPayload = {
+            type: type, // 10 = SEND, 25 = CRP
+            specs: {
+                packageType: 'Parcel',
+                size: 'MEDIUM',
+                packageDetails: {
+                    itemsCount: items?.length || 1,
+                    description: items?.map(i => i.name).join(', ') || 'DrWEEE Order'
+                }
+            },
+            receiver: {
+                firstName: receiver.firstName,
+                lastName: receiver.lastName,
+                phone: receiver.phone.replace(/[^0-9]/g, '') // Clean phone number
+            },
+            dropOffAddress: {
+                districtId: address.districtId,
+                firstLine: address.firstLine,
+                buildingNumber: address.buildingNumber || '',
+                floor: address.floor || '',
+                apartment: address.apartment || '',
+                secondLine: address.secondLine || ''
+            },
+            businessReference: orderId, // Our order ID for webhook correlation
+            pickupAddress: {
+                locationId: pickupLocationId
+            },
+            notes: notes || ''
+        };
+
+        // Add COD if specified
+        if (cod && cod > 0) {
+            deliveryPayload.cod = cod;
+        }
+
+        console.log(`[Bosta] Creating delivery for order ${orderId}, type ${type}...`);
+        const response = await bostaRequest('POST', '/deliveries', deliveryPayload);
+
+        console.log(`[Bosta] Delivery created: ${response.trackingNumber}`);
+
+        // Update the online request in Dataverse with tracking info
+        try {
+            const token = await getDataverseToken();
+            const { DATAVERSE_URL } = process.env;
+
+            await axios.patch(
+                `${DATAVERSE_URL}/api/data/v9.2/crd33_onlinerequestses(${orderId})`,
+                {
+                    crd33_bosta_trackingnumber: String(response.trackingNumber),
+                    crd33_bosta_deliveryid: response._id,
+                    crd33_bosta_state: 10, // Pickup Requested
+                    crd33_bosta_statelabel: 'Pickup Requested',
+                    crd33_bosta_attempts: 0
+                },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                        'OData-MaxVersion': '4.0',
+                        'OData-Version': '4.0'
+                    }
+                }
+            );
+            console.log(`[Bosta] Updated Dataverse record for order ${orderId}`);
+        } catch (dvError) {
+            console.error('[Bosta] Warning: Could not update Dataverse:', dvError.response?.data || dvError.message);
+            // Don't fail the request - delivery was created successfully
+        }
+
+        res.json({
+            success: true,
+            trackingNumber: response.trackingNumber,
+            deliveryId: response._id,
+            awbUrl: response.awb || null
+        });
+
+    } catch (error) {
+        console.error('[Bosta] Error creating delivery:', error.response?.data || error.message);
+        const errorMessage = error.response?.data?.message || error.message || 'Failed to create delivery';
+        res.status(500).json({ success: false, error: errorMessage });
+    }
+});
+
+// GET /api/pos/bosta/track/:trackingNumber - Get delivery tracking info
+app.get('/api/pos/bosta/track/:trackingNumber', verifyPosApiKey, async (req, res) => {
+    try {
+        const { trackingNumber } = req.params;
+
+        console.log(`[Bosta] Tracking delivery ${trackingNumber}...`);
+        const response = await bostaRequest('GET', `/deliveries/tracking/${trackingNumber}`);
+
+        // Add human-readable state label
+        const stateLabel = BOSTA_STATES[response.state?.value] || 'Unknown';
+
+        res.json({
+            success: true,
+            tracking: {
+                trackingNumber: response.trackingNumber,
+                state: response.state?.value,
+                stateLabel: stateLabel,
+                attempts: response.deliveryAttempts || 0,
+                history: response.history || [],
+                receiver: response.receiver,
+                exceptionReason: response.state?.exceptionReason || null
+            }
+        });
+
+    } catch (error) {
+        console.error('[Bosta] Error tracking delivery:', error.response?.data || error.message);
+        res.status(500).json({ success: false, error: 'Failed to track delivery' });
+    }
+});
+
+// DELETE /api/pos/bosta/cancel/:deliveryId - Cancel a delivery
+app.delete('/api/pos/bosta/cancel/:deliveryId', verifyPosApiKey, async (req, res) => {
+    try {
+        const { deliveryId } = req.params;
+
+        console.log(`[Bosta] Canceling delivery ${deliveryId}...`);
+        await bostaRequest('DELETE', `/deliveries/${deliveryId}`);
+
+        res.json({ success: true, message: 'Delivery canceled successfully' });
+
+    } catch (error) {
+        console.error('[Bosta] Error canceling delivery:', error.response?.data || error.message);
+        const errorMessage = error.response?.data?.message || 'Failed to cancel delivery';
+        res.status(500).json({ success: false, error: errorMessage });
+    }
+});
+
+// GET /api/pos/bosta/awb/:trackingNumber - Get AWB (Air Waybill) PDF URL
+app.get('/api/pos/bosta/awb/:trackingNumber', verifyPosApiKey, async (req, res) => {
+    try {
+        const { trackingNumber } = req.params;
+
+        console.log(`[Bosta] Getting AWB for ${trackingNumber}...`);
+        const response = await bostaRequest('GET', `/deliveries/tracking/${trackingNumber}`);
+
+        if (response.awb) {
+            res.json({ success: true, awbUrl: response.awb });
+        } else {
+            res.status(404).json({ success: false, error: 'AWB not available yet' });
+        }
+
+    } catch (error) {
+        console.error('[Bosta] Error getting AWB:', error.response?.data || error.message);
+        res.status(500).json({ success: false, error: 'Failed to get AWB' });
+    }
+});
+
+// POST /api/webhooks/bosta - Receive Bosta status updates
+// Note: This endpoint should be whitelisted for Bosta IPs: 34.89.199.241, 35.246.223.19
+app.post('/api/webhooks/bosta', async (req, res) => {
+    try {
+        const payload = req.body;
+
+        console.log('[Bosta Webhook] Received:', JSON.stringify(payload));
+
+        const {
+            _id: deliveryId,
+            trackingNumber,
+            state,
+            businessReference,  // Our order ID
+            exceptionReason,
+            numberOfAttempts
+        } = payload;
+
+        if (!businessReference) {
+            console.log('[Bosta Webhook] No businessReference, ignoring');
+            return res.json({ success: true });
+        }
+
+        const stateLabel = BOSTA_STATES[state] || 'Unknown';
+        console.log(`[Bosta Webhook] Order ${businessReference}: State ${state} (${stateLabel})`);
+
+        // Update the online request in Dataverse
+        try {
+            const token = await getDataverseToken();
+            const { DATAVERSE_URL } = process.env;
+
+            const updateData = {
+                crd33_bosta_state: state,
+                crd33_bosta_statelabel: stateLabel,
+                crd33_bosta_attempts: numberOfAttempts || 0
+            };
+
+            // Add exception reason if present
+            if (exceptionReason) {
+                updateData.crd33_bosta_exception = exceptionReason;
+            }
+
+            await axios.patch(
+                `${DATAVERSE_URL}/api/data/v9.2/crd33_onlinerequestses(${businessReference})`,
+                updateData,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                        'OData-MaxVersion': '4.0',
+                        'OData-Version': '4.0'
+                    }
+                }
+            );
+
+            console.log(`[Bosta Webhook] Updated Dataverse for order ${businessReference}`);
+
+            // Handle specific state transitions
+            if (state === 45) { // Delivered
+                console.log(`[Bosta Webhook] Order ${businessReference} delivered successfully`);
+                // Could trigger SMS notification or status update here
+            } else if (state === 47) { // Exception
+                console.log(`[Bosta Webhook] Order ${businessReference} has exception: ${exceptionReason}`);
+                // Could trigger alert notification here
+            } else if (state === 48 || state === 49) { // Terminated or Canceled
+                console.log(`[Bosta Webhook] Order ${businessReference} was ${stateLabel.toLowerCase()}`);
+            }
+
+        } catch (dvError) {
+            console.error('[Bosta Webhook] Error updating Dataverse:', dvError.response?.data || dvError.message);
+            // Still return success to Bosta - we'll retry internally if needed
+        }
+
+        res.json({ success: true });
+
+    } catch (error) {
+        console.error('[Bosta Webhook] Error processing webhook:', error.message);
+        // Return 200 to prevent Bosta from retrying
+        res.json({ success: false, error: error.message });
+    }
+});
+
+// POST /api/pos/bosta/update-address - Update delivery address on an online request
+app.post('/api/pos/bosta/update-address', verifyPosApiKey, async (req, res) => {
+    try {
+        const {
+            orderId,
+            firstName,
+            lastName,
+            phone,
+            city,
+            cityId,
+            district,
+            districtId,
+            address,
+            building,
+            floor,
+            apartment,
+            landmark,
+            notes
+        } = req.body;
+
+        if (!orderId) {
+            return res.status(400).json({ success: false, error: 'Order ID is required' });
+        }
+
+        // Update the online request in Dataverse with address info
+        const token = await getDataverseToken();
+        const { DATAVERSE_URL } = process.env;
+
+        const updateData = {};
+        if (firstName) updateData.crd33_delivery_firstname = firstName;
+        if (lastName) updateData.crd33_delivery_lastname = lastName;
+        if (phone) updateData.crd33_delivery_phone = phone;
+        if (city) updateData.crd33_delivery_city = city;
+        if (cityId) updateData.crd33_delivery_cityid = cityId;
+        if (district) updateData.crd33_delivery_district = district;
+        if (districtId) updateData.crd33_delivery_districtid = districtId;
+        if (address) updateData.crd33_delivery_address = address;
+        if (building) updateData.crd33_delivery_building = building;
+        if (floor) updateData.crd33_delivery_floor = floor;
+        if (apartment) updateData.crd33_delivery_apartment = apartment;
+        if (landmark) updateData.crd33_delivery_landmark = landmark;
+        if (notes) updateData.crd33_delivery_notes = notes;
+
+        await axios.patch(
+            `${DATAVERSE_URL}/api/data/v9.2/crd33_onlinerequestses(${orderId})`,
+            updateData,
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                    'OData-MaxVersion': '4.0',
+                    'OData-Version': '4.0'
+                }
+            }
+        );
+
+        console.log(`[Bosta] Updated delivery address for order ${orderId}`);
+        res.json({ success: true });
+
+    } catch (error) {
+        console.error('[Bosta] Error updating address:', error.response?.data || error.message);
+        res.status(500).json({ success: false, error: 'Failed to update address' });
+    }
+});
+
+// =====================================================================
+// END BOSTA COURIER INTEGRATION API
+// =====================================================================
+
+
 // Apply cache control middleware
 app.use(cacheControlMiddleware());
 
