@@ -4487,6 +4487,33 @@ app.post('/api/pos/bosta/search', verifyPosApiKey, async (req, res) => {
 
         let delivery = null;
 
+        // Bosta state code to label mapping
+        const bostaStateLabels = {
+            10: 'Pickup Requested',
+            20: 'Route Assigned',
+            21: 'Picked Up',
+            22: 'In Transit',
+            24: 'Received at Warehouse',
+            30: 'Out for Delivery',
+            45: 'Delivered',
+            46: 'Returned',
+            100: 'Canceled'
+        };
+
+        // Helper to extract delivery data with proper state handling
+        const extractDelivery = (d) => {
+            const stateValue = d.state?.value ?? d.state;
+            const stateLabel = d.state?.label || d.stateLabel || bostaStateLabels[stateValue] || '';
+            return {
+                trackingNumber: d.trackingNumber,
+                deliveryId: d._id,
+                state: stateValue,
+                stateLabel: stateLabel,
+                receiver: d.receiver,
+                dropOffAddress: d.dropOffAddress
+            };
+        };
+
         // Method 1: Try GET /deliveries/business/{trackingNumber} - business-specific endpoint
         try {
             console.log('[Bosta] Trying GET /deliveries/business/{trackingNumber}...');
@@ -4495,14 +4522,7 @@ app.post('/api/pos/bosta/search', verifyPosApiKey, async (req, res) => {
 
             if (bizResponse.data || bizResponse.trackingNumber || bizResponse._id) {
                 const d = bizResponse.data || bizResponse;
-                delivery = {
-                    trackingNumber: d.trackingNumber,
-                    deliveryId: d._id,
-                    state: d.state?.value ?? d.state,
-                    stateLabel: d.state?.label || d.stateLabel || '',
-                    receiver: d.receiver,
-                    dropOffAddress: d.dropOffAddress
-                };
+                delivery = extractDelivery(d);
             }
         } catch (bizErr) {
             console.log('[Bosta] Business endpoint failed:', bizErr.response?.status, bizErr.response?.data || bizErr.message);
@@ -4517,14 +4537,7 @@ app.post('/api/pos/bosta/search', verifyPosApiKey, async (req, res) => {
 
                 if (directResponse.data || directResponse.trackingNumber || directResponse._id) {
                     const d = directResponse.data || directResponse;
-                    delivery = {
-                        trackingNumber: d.trackingNumber,
-                        deliveryId: d._id,
-                        state: d.state?.value ?? d.state,
-                        stateLabel: d.state?.label || d.stateLabel || '',
-                        receiver: d.receiver,
-                        dropOffAddress: d.dropOffAddress
-                    };
+                    delivery = extractDelivery(d);
                 }
             } catch (directErr) {
                 console.log('[Bosta] Direct fetch failed:', directErr.response?.status, directErr.response?.data || directErr.message);
@@ -4544,15 +4557,7 @@ app.post('/api/pos/bosta/search', verifyPosApiKey, async (req, res) => {
                                    (Array.isArray(searchResponse.data) ? searchResponse.data : []);
 
                 if (deliveries.length > 0) {
-                    const d = deliveries[0];
-                    delivery = {
-                        trackingNumber: d.trackingNumber,
-                        deliveryId: d._id,
-                        state: d.state?.value ?? d.state,
-                        stateLabel: d.state?.label || d.stateLabel || '',
-                        receiver: d.receiver,
-                        dropOffAddress: d.dropOffAddress
-                    };
+                    delivery = extractDelivery(deliveries[0]);
                 }
             } catch (searchErr) {
                 console.log('[Bosta] Search endpoint failed:', searchErr.response?.status, searchErr.message);
