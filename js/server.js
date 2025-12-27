@@ -4317,7 +4317,7 @@ app.get('/api/pos/bosta/track/:trackingNumber', verifyPosApiKey, async (req, res
     }
 });
 
-// DELETE /api/pos/bosta/cancel/:deliveryId - Cancel a delivery
+// DELETE /api/pos/bosta/cancel/:deliveryId - Cancel a delivery (old method - kept for backwards compatibility)
 app.delete('/api/pos/bosta/cancel/:deliveryId', verifyPosApiKey, async (req, res) => {
     try {
         const { deliveryId } = req.params;
@@ -4331,6 +4331,32 @@ app.delete('/api/pos/bosta/cancel/:deliveryId', verifyPosApiKey, async (req, res
         console.error('[Bosta] Error canceling delivery:', error.response?.data || error.message);
         const errorMessage = error.response?.data?.message || 'Failed to cancel delivery';
         res.status(500).json({ success: false, error: errorMessage });
+    }
+});
+
+// DELETE /api/pos/bosta/terminate/:trackingNumber - Terminate/delete a delivery using tracking number
+app.delete('/api/pos/bosta/terminate/:trackingNumber', verifyPosApiKey, async (req, res) => {
+    try {
+        const { trackingNumber } = req.params;
+
+        console.log(`[Bosta] Terminating delivery with tracking ${trackingNumber}...`);
+
+        // Use the correct Bosta endpoint: DELETE /deliveries/business/{trackingNumber}/terminate
+        await bostaRequest('DELETE', `/deliveries/business/${trackingNumber}/terminate`);
+
+        res.json({ success: true, message: 'Delivery terminated successfully' });
+
+    } catch (error) {
+        console.error('[Bosta] Error terminating delivery:', error.response?.data || error.message);
+        const errorMessage = error.response?.data?.message || 'Failed to terminate delivery';
+        const statusCode = error.response?.status || 500;
+
+        // If 404, the order may already be deleted
+        if (statusCode === 404) {
+            res.status(404).json({ success: false, error: 'Delivery not found - may already be deleted' });
+        } else {
+            res.status(statusCode).json({ success: false, error: errorMessage });
+        }
     }
 });
 
