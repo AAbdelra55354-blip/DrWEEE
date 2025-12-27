@@ -4276,9 +4276,22 @@ app.get('/api/pos/bosta/track/:trackingNumber', verifyPosApiKey, async (req, res
         try {
             const bizResponse = await bostaRequest('GET', `/deliveries/business/${trackingNumber}`);
             const d = bizResponse.data || bizResponse;
-            console.log(`[Bosta] Business API - shipmentFees:`, d.shipmentFees);
 
-            // Bosta returns shipmentFees in the delivery object (total including VAT)
+            // Log all cost-related fields from Bosta response
+            console.log(`[Bosta] Business API cost fields:`, {
+                shipmentFees: d.shipmentFees,
+                cod: d.cod,
+                collectAmount: d.collectAmount,
+                totalFees: d.totalFees,
+                deliveryFees: d.deliveryFees,
+                serviceFees: d.serviceFees,
+                codFees: d.codFees,
+                insuranceFees: d.insuranceFees,
+                extraFees: d.extraFees
+            });
+
+            // Use shipmentFees as the delivery cost (this is what Bosta charges for delivery)
+            // Note: shipmentFees already includes VAT
             if (d.shipmentFees) {
                 const total = parseFloat(d.shipmentFees);
                 // VAT in Egypt is 14%
