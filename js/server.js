@@ -4485,49 +4485,85 @@ app.post('/api/pos/bosta/search', verifyPosApiKey, async (req, res) => {
 
         console.log(`[Bosta] Searching for delivery with tracking ${trackingNumber}...`);
 
-        // Use Bosta's search endpoint
-        const response = await bostaRequest('POST', '/deliveries/search', {
-            trackingNumbers: trackingNumber
-        });
+        let delivery = null;
 
-        console.log('[Bosta] Search response:', JSON.stringify(response, null, 2).substring(0, 1000));
+        // Method 1: Try GET /deliveries/track/{trackingNumber} - public tracking endpoint
+        try {
+            console.log('[Bosta] Trying GET /deliveries/track/{trackingNumber}...');
+            const trackResponse = await bostaRequest('GET', `/deliveries/track/${trackingNumber}`);
+            console.log('[Bosta] Track response:', JSON.stringify(trackResponse, null, 2).substring(0, 500));
 
-        // Extract delivery from response
-        const deliveries = response.data?.list || response.list || response.data || [];
+            if (trackResponse.data || trackResponse.trackingNumber || trackResponse._id) {
+                const d = trackResponse.data || trackResponse;
+                delivery = {
+                    trackingNumber: d.trackingNumber,
+                    deliveryId: d._id,
+                    state: d.state?.value ?? d.state,
+                    stateLabel: d.state?.label || d.stateLabel || '',
+                    receiver: d.receiver,
+                    dropOffAddress: d.dropOffAddress
+                };
+            }
+        } catch (trackErr) {
+            console.log('[Bosta] Track endpoint failed:', trackErr.response?.status, trackErr.message);
+        }
 
-        if (Array.isArray(deliveries) && deliveries.length > 0) {
-            const delivery = deliveries[0];
-            res.json({
-                success: true,
-                delivery: {
-                    trackingNumber: delivery.trackingNumber,
-                    deliveryId: delivery._id,
-                    state: delivery.state?.value || delivery.state,
-                    stateLabel: delivery.state?.label || delivery.stateLabel,
-                    receiver: delivery.receiver,
-                    dropOffAddress: delivery.dropOffAddress,
-                    cod: delivery.cod,
-                    notes: delivery.notes
+        // Method 2: Try GET /deliveries/{trackingNumber} - direct fetch by tracking
+        if (!delivery) {
+            try {
+                console.log('[Bosta] Trying GET /deliveries/{trackingNumber}...');
+                const directResponse = await bostaRequest('GET', `/deliveries/${trackingNumber}`);
+                console.log('[Bosta] Direct response:', JSON.stringify(directResponse, null, 2).substring(0, 500));
+
+                if (directResponse.data || directResponse.trackingNumber || directResponse._id) {
+                    const d = directResponse.data || directResponse;
+                    delivery = {
+                        trackingNumber: d.trackingNumber,
+                        deliveryId: d._id,
+                        state: d.state?.value ?? d.state,
+                        stateLabel: d.state?.label || d.stateLabel || '',
+                        receiver: d.receiver,
+                        dropOffAddress: d.dropOffAddress
+                    };
                 }
-            });
-        } else if (response.data && !Array.isArray(response.data)) {
-            // Single delivery object returned
-            const delivery = response.data;
-            res.json({
-                success: true,
-                delivery: {
-                    trackingNumber: delivery.trackingNumber,
-                    deliveryId: delivery._id,
-                    state: delivery.state?.value || delivery.state,
-                    stateLabel: delivery.state?.label || delivery.stateLabel,
-                    receiver: delivery.receiver,
-                    dropOffAddress: delivery.dropOffAddress,
-                    cod: delivery.cod,
-                    notes: delivery.notes
+            } catch (directErr) {
+                console.log('[Bosta] Direct fetch failed:', directErr.response?.status, directErr.message);
+            }
+        }
+
+        // Method 3: Try POST /deliveries/search with trackingNumbers array
+        if (!delivery) {
+            try {
+                console.log('[Bosta] Trying POST /deliveries/search...');
+                const searchResponse = await bostaRequest('POST', '/deliveries/search', {
+                    trackingNumbers: [trackingNumber]
+                });
+                console.log('[Bosta] Search response:', JSON.stringify(searchResponse, null, 2).substring(0, 500));
+
+                const deliveries = searchResponse.data?.list || searchResponse.list ||
+                                   (Array.isArray(searchResponse.data) ? searchResponse.data : []);
+
+                if (deliveries.length > 0) {
+                    const d = deliveries[0];
+                    delivery = {
+                        trackingNumber: d.trackingNumber,
+                        deliveryId: d._id,
+                        state: d.state?.value ?? d.state,
+                        stateLabel: d.state?.label || d.stateLabel || '',
+                        receiver: d.receiver,
+                        dropOffAddress: d.dropOffAddress
+                    };
                 }
-            });
+            } catch (searchErr) {
+                console.log('[Bosta] Search endpoint failed:', searchErr.response?.status, searchErr.message);
+            }
+        }
+
+        if (delivery) {
+            console.log('[Bosta] Found delivery:', delivery);
+            res.json({ success: true, delivery });
         } else {
-            res.status(404).json({ success: false, error: 'Delivery not found' });
+            res.status(404).json({ success: false, error: 'Delivery not found. Please check the tracking number.' });
         }
 
     } catch (error) {
