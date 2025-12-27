@@ -4780,8 +4780,7 @@ app.post('/api/pos/bosta/update-address', verifyPosApiKey, async (req, res) => {
             floor,
             apartment,
             landmark,
-            notes,
-            allowOpenPackage
+            notes
         } = req.body;
 
         if (!orderId) {
@@ -4806,8 +4805,6 @@ app.post('/api/pos/bosta/update-address', verifyPosApiKey, async (req, res) => {
         if (apartment) updateData.crd33_delivery_apartment = apartment;
         if (landmark) updateData.crd33_delivery_landmark = landmark;
         if (notes) updateData.crd33_delivery_notes = notes;
-        // Save allowOpenPackage as boolean
-        if (allowOpenPackage !== undefined) updateData.crd33_delivery_allowopenpackage = allowOpenPackage;
 
         await axios.patch(
             `${DATAVERSE_URL}/api/data/v9.2/crd33_onlinerequestses(${orderId})`,
