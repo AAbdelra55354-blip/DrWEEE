@@ -4110,7 +4110,7 @@ app.post('/api/pos/bosta/create-delivery', verifyPosApiKey, async (req, res) => 
 app.get('/api/pos/bosta/locations', verifyPosApiKey, async (req, res) => {
     try {
         console.log('[Bosta] Fetching business pickup locations...');
-        const response = await bostaRequest('GET', '/users/pickup-locations');
+        const response = await bostaRequest('GET', '/pickup-locations');  // Correct endpoint per Bosta SDK
 
         console.log('[Bosta] Locations response:', JSON.stringify(response, null, 2));
 
@@ -4158,25 +4158,55 @@ app.get('/api/pos/bosta/location/:locationId', verifyPosApiKey, async (req, res)
         const { locationId } = req.params;
         console.log(`[Bosta] Fetching location ${locationId}...`);
 
-        // Try to get from locations list
-        const response = await bostaRequest('GET', '/users/pickup-locations');
+        // Try different Bosta API endpoints for locations
+        let response;
+        let locations = [];
 
-        let locations;
-        if (Array.isArray(response)) {
-            locations = response;
-        } else if (response.data && Array.isArray(response.data)) {
-            locations = response.data;
-        } else if (response.data && response.data.list) {
-            locations = response.data.list;
-        } else if (response.pickupLocations) {
-            locations = response.pickupLocations;
-        } else {
-            locations = [];
+        // Try multiple possible endpoints (correct one is /pickup-locations per Bosta Ruby SDK)
+        const endpoints = [
+            '/pickup-locations',  // Correct endpoint per Bosta SDK
+            '/users/pickup-locations',
+            '/business/pickup-locations'
+        ];
+
+        for (const endpoint of endpoints) {
+            try {
+                console.log(`[Bosta] Trying endpoint: ${endpoint}`);
+                response = await bostaRequest('GET', endpoint);
+                console.log(`[Bosta] Response from ${endpoint}:`, JSON.stringify(response, null, 2));
+
+                // Parse locations from response
+                if (Array.isArray(response)) {
+                    locations = response;
+                } else if (response.data && Array.isArray(response.data)) {
+                    locations = response.data;
+                } else if (response.data && response.data.list) {
+                    locations = response.data.list;
+                } else if (response.pickupLocations) {
+                    locations = response.pickupLocations;
+                } else if (response.list) {
+                    locations = response.list;
+                }
+
+                if (locations.length > 0) {
+                    console.log(`[Bosta] Found ${locations.length} locations from ${endpoint}`);
+                    break;
+                }
+            } catch (endpointError) {
+                console.log(`[Bosta] Endpoint ${endpoint} failed:`, endpointError.message);
+                continue;
+            }
+        }
+
+        if (locations.length === 0) {
+            console.log('[Bosta] No locations found from any endpoint');
+            return res.status(404).json({ success: false, error: 'No pickup locations found' });
         }
 
         const location = locations.find(loc => (loc._id || loc.id) === locationId);
 
         if (!location) {
+            console.log(`[Bosta] Location ${locationId} not found in`, locations.map(l => l._id || l.id));
             return res.status(404).json({ success: false, error: 'Location not found' });
         }
 
@@ -4200,7 +4230,7 @@ app.get('/api/pos/bosta/location/:locationId', verifyPosApiKey, async (req, res)
 
     } catch (error) {
         console.error('[Bosta] Error fetching location:', error.response?.data || error.message);
-        res.status(500).json({ success: false, error: 'Failed to fetch location' });
+        res.status(500).json({ success: false, error: 'Failed to fetch location: ' + (error.response?.data?.message || error.message) });
     }
 });
 
