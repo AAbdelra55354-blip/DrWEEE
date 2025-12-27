@@ -4106,6 +4106,104 @@ app.post('/api/pos/bosta/create-delivery', verifyPosApiKey, async (req, res) => 
     }
 });
 
+// GET /api/pos/bosta/locations - Get business pickup locations
+app.get('/api/pos/bosta/locations', verifyPosApiKey, async (req, res) => {
+    try {
+        console.log('[Bosta] Fetching business pickup locations...');
+        const response = await bostaRequest('GET', '/users/pickup-locations');
+
+        console.log('[Bosta] Locations response:', JSON.stringify(response, null, 2));
+
+        // Handle different response structures
+        let locations;
+        if (Array.isArray(response)) {
+            locations = response;
+        } else if (response.data && Array.isArray(response.data)) {
+            locations = response.data;
+        } else if (response.data && response.data.list && Array.isArray(response.data.list)) {
+            locations = response.data.list;
+        } else if (response.pickupLocations && Array.isArray(response.pickupLocations)) {
+            locations = response.pickupLocations;
+        } else {
+            locations = [];
+        }
+
+        res.json({
+            success: true,
+            locations: locations.map(loc => ({
+                id: loc._id || loc.id,
+                name: loc.locationName || loc.name,
+                district: loc.district?.districtName || loc.districtName,
+                districtAr: loc.district?.districtOtherName || loc.districtOtherName,
+                city: loc.district?.city?.cityName || loc.cityName,
+                cityAr: loc.district?.city?.cityOtherName || loc.cityOtherName,
+                firstLine: loc.firstLine || loc.address,
+                buildingNumber: loc.buildingNumber,
+                floor: loc.floor,
+                apartment: loc.apartment,
+                secondLine: loc.secondLine || loc.landmark,
+                isDefault: loc.isDefault || false
+            }))
+        });
+
+    } catch (error) {
+        console.error('[Bosta] Error fetching locations:', error.response?.data || error.message);
+        res.status(500).json({ success: false, error: 'Failed to fetch pickup locations' });
+    }
+});
+
+// GET /api/pos/bosta/location/:locationId - Get a specific pickup location
+app.get('/api/pos/bosta/location/:locationId', verifyPosApiKey, async (req, res) => {
+    try {
+        const { locationId } = req.params;
+        console.log(`[Bosta] Fetching location ${locationId}...`);
+
+        // Try to get from locations list
+        const response = await bostaRequest('GET', '/users/pickup-locations');
+
+        let locations;
+        if (Array.isArray(response)) {
+            locations = response;
+        } else if (response.data && Array.isArray(response.data)) {
+            locations = response.data;
+        } else if (response.data && response.data.list) {
+            locations = response.data.list;
+        } else if (response.pickupLocations) {
+            locations = response.pickupLocations;
+        } else {
+            locations = [];
+        }
+
+        const location = locations.find(loc => (loc._id || loc.id) === locationId);
+
+        if (!location) {
+            return res.status(404).json({ success: false, error: 'Location not found' });
+        }
+
+        res.json({
+            success: true,
+            location: {
+                id: location._id || location.id,
+                name: location.locationName || location.name,
+                district: location.district?.districtName || location.districtName,
+                districtAr: location.district?.districtOtherName || location.districtOtherName,
+                city: location.district?.city?.cityName || location.cityName,
+                cityAr: location.district?.city?.cityOtherName || location.cityOtherName,
+                firstLine: location.firstLine || location.address,
+                buildingNumber: location.buildingNumber,
+                floor: location.floor,
+                apartment: location.apartment,
+                secondLine: location.secondLine || location.landmark,
+                isDefault: location.isDefault || false
+            }
+        });
+
+    } catch (error) {
+        console.error('[Bosta] Error fetching location:', error.response?.data || error.message);
+        res.status(500).json({ success: false, error: 'Failed to fetch location' });
+    }
+});
+
 // GET /api/pos/bosta/track/:trackingNumber - Get delivery tracking info
 app.get('/api/pos/bosta/track/:trackingNumber', verifyPosApiKey, async (req, res) => {
     try {
@@ -4114,25 +4212,46 @@ app.get('/api/pos/bosta/track/:trackingNumber', verifyPosApiKey, async (req, res
         console.log(`[Bosta] Tracking delivery ${trackingNumber}...`);
         const response = await bostaRequest('GET', `/deliveries/tracking/${trackingNumber}`);
 
+        console.log(`[Bosta] Tracking response:`, JSON.stringify(response, null, 2));
+
+        // Handle different response structures
+        let trackingData = response;
+        if (response.data) {
+            trackingData = response.data;
+        }
+
         // Add human-readable state label
-        const stateLabel = BOSTA_STATES[response.state?.value] || 'Unknown';
+        const stateValue = trackingData.state?.value || trackingData.state;
+        const stateLabel = BOSTA_STATES[stateValue] || 'Unknown';
 
         res.json({
             success: true,
             tracking: {
-                trackingNumber: response.trackingNumber,
-                state: response.state?.value,
+                trackingNumber: trackingData.trackingNumber || trackingNumber,
+                deliveryId: trackingData._id,
+                state: stateValue,
                 stateLabel: stateLabel,
-                attempts: response.deliveryAttempts || 0,
-                history: response.history || [],
-                receiver: response.receiver,
-                exceptionReason: response.state?.exceptionReason || null
+                attempts: trackingData.deliveryAttempts || trackingData.numberOfAttempts || 0,
+                history: trackingData.history || [],
+                receiver: trackingData.receiver,
+                exceptionReason: trackingData.state?.exceptionReason || trackingData.exceptionReason || null,
+                // Include cost if available
+                deliveryCost: trackingData.deliveryCost || trackingData.cost || trackingData.shippingFee || null,
+                cod: trackingData.cod || null
             }
         });
 
     } catch (error) {
         console.error('[Bosta] Error tracking delivery:', error.response?.data || error.message);
-        res.status(500).json({ success: false, error: 'Failed to track delivery' });
+        const statusCode = error.response?.status || 500;
+        const errorMsg = error.response?.data?.message || error.response?.data?.error || error.message || 'Failed to track delivery';
+
+        // If 404, the order was probably deleted on Bosta
+        if (statusCode === 404) {
+            return res.status(404).json({ success: false, error: 'Order not found on Bosta - it may have been deleted' });
+        }
+
+        res.status(statusCode).json({ success: false, error: errorMsg });
     }
 });
 
@@ -4159,17 +4278,39 @@ app.get('/api/pos/bosta/awb/:trackingNumber', verifyPosApiKey, async (req, res) 
         const { trackingNumber } = req.params;
 
         console.log(`[Bosta] Getting AWB for ${trackingNumber}...`);
-        const response = await bostaRequest('GET', `/deliveries/tracking/${trackingNumber}`);
 
-        if (response.awb) {
-            res.json({ success: true, awbUrl: response.awb });
+        // Try to get AWB directly from the AWB endpoint first
+        try {
+            const awbResponse = await bostaRequest('GET', `/deliveries/awb?trackingNumbers=${trackingNumber}`);
+            console.log(`[Bosta] AWB response:`, JSON.stringify(awbResponse, null, 2));
+
+            if (awbResponse.data?.url || awbResponse.url) {
+                return res.json({ success: true, awbUrl: awbResponse.data?.url || awbResponse.url });
+            }
+        } catch (awbError) {
+            console.log('[Bosta] Direct AWB endpoint failed, trying tracking endpoint...');
+        }
+
+        // Fallback: get from tracking endpoint
+        const response = await bostaRequest('GET', `/deliveries/tracking/${trackingNumber}`);
+        const trackingData = response.data || response;
+
+        if (trackingData.awb) {
+            res.json({ success: true, awbUrl: trackingData.awb });
         } else {
             res.status(404).json({ success: false, error: 'AWB not available yet' });
         }
 
     } catch (error) {
         console.error('[Bosta] Error getting AWB:', error.response?.data || error.message);
-        res.status(500).json({ success: false, error: 'Failed to get AWB' });
+        const statusCode = error.response?.status || 500;
+        const errorMsg = error.response?.data?.message || error.response?.data?.error || 'Failed to get AWB';
+
+        if (statusCode === 404) {
+            return res.status(404).json({ success: false, error: 'Order not found on Bosta - it may have been deleted' });
+        }
+
+        res.status(statusCode).json({ success: false, error: errorMsg });
     }
 });
 
