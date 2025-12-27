@@ -4665,8 +4665,10 @@ app.post('/api/pos/bosta/update-address', verifyPosApiKey, async (req, res) => {
             phone,
             city,
             cityId,
+            cityAr,
             district,
             districtId,
+            districtAr,
             address,
             building,
             floor,
@@ -4689,8 +4691,10 @@ app.post('/api/pos/bosta/update-address', verifyPosApiKey, async (req, res) => {
         if (phone) updateData.crd33_delivery_phone = phone;
         if (city) updateData.crd33_delivery_city = city;
         if (cityId) updateData.crd33_delivery_cityid = cityId;
+        if (cityAr !== undefined) updateData.crd33_delivery_cityar = cityAr;
         if (district) updateData.crd33_delivery_district = district;
         if (districtId) updateData.crd33_delivery_districtid = districtId;
+        if (districtAr !== undefined) updateData.crd33_delivery_districtar = districtAr;
         if (address) updateData.crd33_delivery_address = address;
         if (building) updateData.crd33_delivery_building = building;
         if (floor) updateData.crd33_delivery_floor = floor;
