@@ -4386,7 +4386,7 @@ app.get('/api/pos/bosta/awb/:trackingNumber', verifyPosApiKey, async (req, res) 
             const awbResponse = await bostaRequest('POST', '/deliveries/mass-awb', {
                 trackingNumbers: trackingNumber,
                 requestedAwbType: 'A4',
-                lang: 'en'
+                lang: 'ar'
             });
             console.log(`[Bosta] AWB mass-awb response type:`, typeof awbResponse);
             const result = processAwbResponse(awbResponse);
