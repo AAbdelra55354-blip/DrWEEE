@@ -4041,7 +4041,27 @@ app.post('/api/pos/bosta/create-delivery', verifyPosApiKey, async (req, res) => 
 
         const response = await bostaRequest('POST', '/deliveries', deliveryPayload);
 
-        console.log(`[Bosta] Delivery created: ${response.trackingNumber}`);
+        console.log(`[Bosta] Delivery API response:`, JSON.stringify(response, null, 2));
+
+        // Extract tracking number and delivery ID from response
+        // Bosta may return data in different structures
+        let trackingNumber, deliveryId;
+        if (response.data) {
+            // Response wrapped in data object
+            trackingNumber = response.data.trackingNumber;
+            deliveryId = response.data._id;
+        } else {
+            // Direct response
+            trackingNumber = response.trackingNumber;
+            deliveryId = response._id;
+        }
+
+        console.log(`[Bosta] Delivery created - Tracking: ${trackingNumber}, ID: ${deliveryId}`);
+
+        if (!trackingNumber) {
+            console.error('[Bosta] No tracking number in response:', response);
+            throw new Error('Bosta API did not return a tracking number');
+        }
 
         // Update the online request in Dataverse with tracking info
         try {
@@ -4049,10 +4069,10 @@ app.post('/api/pos/bosta/create-delivery', verifyPosApiKey, async (req, res) => 
             const { DATAVERSE_URL } = process.env;
 
             await axios.patch(
-                `${DATAVERSE_URL}/api/data/v9.2/crd33_onlinerequestses(${orderId})`,
+                `${DATAVERSE_URL}/api/data/v9.2/crd33_onlinerequestses(${orderReference})`,
                 {
-                    crd33_bosta_trackingnumber: String(response.trackingNumber),
-                    crd33_bosta_deliveryid: response._id,
+                    crd33_bosta_trackingnumber: String(trackingNumber),
+                    crd33_bosta_deliveryid: deliveryId,
                     crd33_bosta_state: 10, // Pickup Requested
                     crd33_bosta_statelabel: 'Pickup Requested',
                     crd33_bosta_attempts: 0
@@ -4066,7 +4086,7 @@ app.post('/api/pos/bosta/create-delivery', verifyPosApiKey, async (req, res) => 
                     }
                 }
             );
-            console.log(`[Bosta] Updated Dataverse record for order ${orderId}`);
+            console.log(`[Bosta] Updated Dataverse record for order ${orderReference}`);
         } catch (dvError) {
             console.error('[Bosta] Warning: Could not update Dataverse:', dvError.response?.data || dvError.message);
             // Don't fail the request - delivery was created successfully
@@ -4074,9 +4094,9 @@ app.post('/api/pos/bosta/create-delivery', verifyPosApiKey, async (req, res) => 
 
         res.json({
             success: true,
-            trackingNumber: response.trackingNumber,
-            deliveryId: response._id,
-            awbUrl: response.awb || null
+            trackingNumber: trackingNumber,
+            deliveryId: deliveryId,
+            awbUrl: response.awb || response.data?.awb || null
         });
 
     } catch (error) {
