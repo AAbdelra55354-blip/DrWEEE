@@ -4255,7 +4255,8 @@ app.get('/api/pos/bosta/track/:trackingNumber', verifyPosApiKey, async (req, res
         const { trackingNumber } = req.params;
 
         console.log(`[Bosta] Tracking delivery ${trackingNumber}...`);
-        const response = await bostaRequest('GET', `/deliveries/tracking/${trackingNumber}`);
+        // Correct endpoint per Bosta SDK: /deliveries/{trackingNumber}/tracking
+        const response = await bostaRequest('GET', `/deliveries/${trackingNumber}/tracking`);
 
         console.log(`[Bosta] Tracking response:`, JSON.stringify(response, null, 2));
 
@@ -4367,7 +4368,7 @@ app.get('/api/pos/bosta/awb/:trackingNumber', verifyPosApiKey, async (req, res) 
 
         // Fallback: get AWB URL from tracking endpoint
         try {
-            const response = await bostaRequest('GET', `/deliveries/tracking/${trackingNumber}`);
+            const response = await bostaRequest('GET', `/deliveries/${trackingNumber}/tracking`);
             const trackingData = response.data || response;
 
             if (trackingData.awb) {
