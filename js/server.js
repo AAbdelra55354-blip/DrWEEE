@@ -4487,14 +4487,14 @@ app.post('/api/pos/bosta/search', verifyPosApiKey, async (req, res) => {
 
         let delivery = null;
 
-        // Method 1: Try GET /deliveries/track/{trackingNumber} - public tracking endpoint
+        // Method 1: Try GET /deliveries/business/{trackingNumber} - business-specific endpoint
         try {
-            console.log('[Bosta] Trying GET /deliveries/track/{trackingNumber}...');
-            const trackResponse = await bostaRequest('GET', `/deliveries/track/${trackingNumber}`);
-            console.log('[Bosta] Track response:', JSON.stringify(trackResponse, null, 2).substring(0, 500));
+            console.log('[Bosta] Trying GET /deliveries/business/{trackingNumber}...');
+            const bizResponse = await bostaRequest('GET', `/deliveries/business/${trackingNumber}`);
+            console.log('[Bosta] Business response:', JSON.stringify(bizResponse, null, 2).substring(0, 1000));
 
-            if (trackResponse.data || trackResponse.trackingNumber || trackResponse._id) {
-                const d = trackResponse.data || trackResponse;
+            if (bizResponse.data || bizResponse.trackingNumber || bizResponse._id) {
+                const d = bizResponse.data || bizResponse;
                 delivery = {
                     trackingNumber: d.trackingNumber,
                     deliveryId: d._id,
@@ -4504,8 +4504,8 @@ app.post('/api/pos/bosta/search', verifyPosApiKey, async (req, res) => {
                     dropOffAddress: d.dropOffAddress
                 };
             }
-        } catch (trackErr) {
-            console.log('[Bosta] Track endpoint failed:', trackErr.response?.status, trackErr.message);
+        } catch (bizErr) {
+            console.log('[Bosta] Business endpoint failed:', bizErr.response?.status, bizErr.response?.data || bizErr.message);
         }
 
         // Method 2: Try GET /deliveries/{trackingNumber} - direct fetch by tracking
@@ -4513,7 +4513,7 @@ app.post('/api/pos/bosta/search', verifyPosApiKey, async (req, res) => {
             try {
                 console.log('[Bosta] Trying GET /deliveries/{trackingNumber}...');
                 const directResponse = await bostaRequest('GET', `/deliveries/${trackingNumber}`);
-                console.log('[Bosta] Direct response:', JSON.stringify(directResponse, null, 2).substring(0, 500));
+                console.log('[Bosta] Direct response:', JSON.stringify(directResponse, null, 2).substring(0, 1000));
 
                 if (directResponse.data || directResponse.trackingNumber || directResponse._id) {
                     const d = directResponse.data || directResponse;
@@ -4527,7 +4527,7 @@ app.post('/api/pos/bosta/search', verifyPosApiKey, async (req, res) => {
                     };
                 }
             } catch (directErr) {
-                console.log('[Bosta] Direct fetch failed:', directErr.response?.status, directErr.message);
+                console.log('[Bosta] Direct fetch failed:', directErr.response?.status, directErr.response?.data || directErr.message);
             }
         }
 
