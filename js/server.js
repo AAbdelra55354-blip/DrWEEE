@@ -3986,7 +3986,8 @@ app.post('/api/pos/bosta/create-delivery', verifyPosApiKey, async (req, res) => 
             notes,                // Delivery notes
             cod,                  // Cash on delivery amount (optional)
             specs,                // Package specs (optional)
-            items                 // Array of items being shipped (optional)
+            items,                // Array of items being shipped (optional)
+            allowToOpenPackage    // Allow customer to open package before accepting (optional)
         } = req.body;
 
         // Support both field names
@@ -4048,6 +4049,11 @@ app.post('/api/pos/bosta/create-delivery', verifyPosApiKey, async (req, res) => 
         // Add COD if specified
         if (cod && parseFloat(cod) > 0) {
             deliveryPayload.cod = parseFloat(cod);
+        }
+
+        // Add allowToOpenPackage if enabled
+        if (allowToOpenPackage) {
+            deliveryPayload.allowToOpenPackage = true;
         }
 
         console.log(`[Bosta] Creating delivery for order ${orderReference}, type ${type}...`);
@@ -4774,7 +4780,8 @@ app.post('/api/pos/bosta/update-address', verifyPosApiKey, async (req, res) => {
             floor,
             apartment,
             landmark,
-            notes
+            notes,
+            allowOpenPackage
         } = req.body;
 
         if (!orderId) {
@@ -4799,6 +4806,8 @@ app.post('/api/pos/bosta/update-address', verifyPosApiKey, async (req, res) => {
         if (apartment) updateData.crd33_delivery_apartment = apartment;
         if (landmark) updateData.crd33_delivery_landmark = landmark;
         if (notes) updateData.crd33_delivery_notes = notes;
+        // Save allowOpenPackage as boolean
+        if (allowOpenPackage !== undefined) updateData.crd33_delivery_allowopenpackage = allowOpenPackage;
 
         await axios.patch(
             `${DATAVERSE_URL}/api/data/v9.2/crd33_onlinerequestses(${orderId})`,
