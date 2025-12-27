@@ -4276,27 +4276,23 @@ app.get('/api/pos/bosta/track/:trackingNumber', verifyPosApiKey, async (req, res
         try {
             const bizResponse = await bostaRequest('GET', `/deliveries/business/${trackingNumber}`);
             const d = bizResponse.data || bizResponse;
-            console.log(`[Bosta] Full business API response:`, JSON.stringify(d, null, 2));
+            console.log(`[Bosta] Business API - shipmentFees:`, d.shipmentFees);
 
-            // Extract cost data from business API - check various field names Bosta might use
-            // Common fields: deliveryCost, shippingFees, deliveryFees, pricing, pricingInfo, cost
-            const costData = d.pricingInfo || d.pricing || d.deliveryCost || {};
-            const fees = costData.deliveryFees || costData.shippingFees || costData.totalCost || costData.amount ||
-                        d.deliveryFees || d.shippingFees || d.deliveryCost?.amount || d.cost || null;
-            const vat = costData.vat || costData.vatAmount || d.vat || d.vatAmount || null;
-            const total = costData.totalWithVat || costData.total || costData.grandTotal ||
-                         d.totalWithVat || d.total || d.grandTotal || (fees && vat ? fees + vat : fees);
+            // Bosta returns shipmentFees in the delivery object (total including VAT)
+            if (d.shipmentFees) {
+                const total = parseFloat(d.shipmentFees);
+                // VAT in Egypt is 14%
+                const vatRate = 0.14;
+                const feesBeforeVat = total / (1 + vatRate);
+                const vat = total - feesBeforeVat;
 
-            console.log(`[Bosta] Extracted cost data - fees: ${fees}, vat: ${vat}, total: ${total}`);
-
-            if (fees || total) {
                 deliveryCost = {
-                    deliveryFees: fees || total,
-                    vat: vat,
-                    total: total || fees,
-                    currency: costData.currency || d.currency || 'EGP'
+                    deliveryFees: parseFloat(feesBeforeVat.toFixed(2)),
+                    vat: parseFloat(vat.toFixed(2)),
+                    total: parseFloat(total.toFixed(2)),
+                    currency: 'EGP'
                 };
-                console.log(`[Bosta] Final deliveryCost object:`, deliveryCost);
+                console.log(`[Bosta] Extracted deliveryCost:`, deliveryCost);
             }
         } catch (bizErr) {
             console.log('[Bosta] Business API failed for cost:', bizErr.response?.data || bizErr.message);
@@ -4534,14 +4530,26 @@ app.post('/api/pos/bosta/search', verifyPosApiKey, async (req, res) => {
 
         // Helper to extract delivery data with proper state handling and cost
         const extractDelivery = (d) => {
-            const stateValue = d.state?.value ?? d.state;
-            const stateLabel = d.state?.label || d.stateLabel || bostaStateLabels[stateValue] || '';
+            const stateCode = d.state?.code ?? d.state;
+            const stateValue = typeof stateCode === 'number' ? stateCode : parseInt(stateCode, 10) || null;
+            const stateLabel = d.state?.value || d.stateLabel || bostaStateLabels[stateValue] || '';
 
-            // Extract cost data - Bosta may return in different formats
-            const costData = d.pricingInfo || d.pricing || {};
-            const deliveryCost = costData.deliveryFees || costData.totalCost || d.deliveryFees || d.totalCost || null;
-            const vatAmount = costData.vat || d.vat || null;
-            const totalWithVat = costData.totalWithVat || d.totalWithVat || (deliveryCost && vatAmount ? deliveryCost + vatAmount : deliveryCost);
+            // Extract shipmentFees from Bosta response (total including VAT)
+            let cost = null;
+            if (d.shipmentFees) {
+                const total = parseFloat(d.shipmentFees);
+                // VAT in Egypt is 14%
+                const vatRate = 0.14;
+                const feesBeforeVat = total / (1 + vatRate);
+                const vat = total - feesBeforeVat;
+
+                cost = {
+                    deliveryFees: parseFloat(feesBeforeVat.toFixed(2)),
+                    vat: parseFloat(vat.toFixed(2)),
+                    total: parseFloat(total.toFixed(2)),
+                    currency: 'EGP'
+                };
+            }
 
             return {
                 trackingNumber: d.trackingNumber,
@@ -4550,13 +4558,7 @@ app.post('/api/pos/bosta/search', verifyPosApiKey, async (req, res) => {
                 stateLabel: stateLabel,
                 receiver: d.receiver,
                 dropOffAddress: d.dropOffAddress,
-                // Include cost info if available
-                cost: deliveryCost ? {
-                    deliveryFees: deliveryCost,
-                    vat: vatAmount,
-                    total: totalWithVat,
-                    currency: costData.currency || 'EGP'
-                } : null
+                cost: cost
             };
         };
 
