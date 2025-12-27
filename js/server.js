@@ -4338,60 +4338,76 @@ app.delete('/api/pos/bosta/cancel/:deliveryId', verifyPosApiKey, async (req, res
 app.get('/api/pos/bosta/awb/:trackingNumber', verifyPosApiKey, async (req, res) => {
     try {
         const { trackingNumber } = req.params;
+        const { deliveryId } = req.query; // Optional delivery ID
 
-        console.log(`[Bosta] Getting AWB for ${trackingNumber}...`);
+        console.log(`[Bosta] Getting AWB for tracking ${trackingNumber}, deliveryId: ${deliveryId}...`);
 
-        // Bosta AWB endpoint returns base64 PDF for <= 50 orders
-        // Use POST method with JSON body as per Bosta docs
+        // Helper to process AWB response
+        const processAwbResponse = (awbResponse) => {
+            // If response is base64 PDF string directly
+            if (typeof awbResponse === 'string' && awbResponse.length > 100) {
+                return {
+                    success: true,
+                    awbUrl: `data:application/pdf;base64,${awbResponse}`,
+                    isBase64: true
+                };
+            }
+            // If response has data as base64 string
+            if (awbResponse.data && typeof awbResponse.data === 'string' && awbResponse.data.length > 100) {
+                return {
+                    success: true,
+                    awbUrl: `data:application/pdf;base64,${awbResponse.data}`,
+                    isBase64: true
+                };
+            }
+            // If response has URL
+            if (awbResponse.data?.url || awbResponse.url) {
+                return { success: true, awbUrl: awbResponse.data?.url || awbResponse.url };
+            }
+            return null;
+        };
+
+        // Try Method 1: GET /deliveries/awb/{deliveryId} (per SDK)
+        if (deliveryId) {
+            try {
+                console.log(`[Bosta] Trying GET /deliveries/awb/${deliveryId}...`);
+                const awbResponse = await bostaRequest('GET', `/deliveries/awb/${deliveryId}`);
+                console.log(`[Bosta] AWB response type:`, typeof awbResponse);
+                const result = processAwbResponse(awbResponse);
+                if (result) return res.json(result);
+            } catch (err) {
+                console.log('[Bosta] GET /deliveries/awb/{id} failed:', err.response?.status, err.response?.data?.message || err.message);
+            }
+        }
+
+        // Try Method 2: POST /deliveries/awb with trackingNumbers (per docs)
         try {
+            console.log(`[Bosta] Trying POST /deliveries/awb with trackingNumbers...`);
             const awbResponse = await bostaRequest('POST', '/deliveries/awb', {
                 trackingNumbers: trackingNumber,
                 requestedAwbType: 'A4',
                 lang: 'en'
             });
-
-            console.log(`[Bosta] AWB response type:`, typeof awbResponse);
-
-            // If response is base64 PDF string
-            if (typeof awbResponse === 'string' && awbResponse.length > 100) {
-                // Return as data URL for PDF
-                return res.json({
-                    success: true,
-                    awbUrl: `data:application/pdf;base64,${awbResponse}`,
-                    isBase64: true
-                });
-            }
-
-            // If response has URL
-            if (awbResponse.data?.url || awbResponse.url) {
-                return res.json({ success: true, awbUrl: awbResponse.data?.url || awbResponse.url });
-            }
-
-            // If response has base64 in data field
-            if (awbResponse.data && typeof awbResponse.data === 'string') {
-                return res.json({
-                    success: true,
-                    awbUrl: `data:application/pdf;base64,${awbResponse.data}`,
-                    isBase64: true
-                });
-            }
-
-            console.log('[Bosta] AWB response structure:', JSON.stringify(awbResponse, null, 2).substring(0, 500));
-
+            console.log(`[Bosta] AWB POST response type:`, typeof awbResponse);
+            const result = processAwbResponse(awbResponse);
+            if (result) return res.json(result);
+            console.log('[Bosta] AWB POST response structure:', JSON.stringify(awbResponse, null, 2).substring(0, 500));
         } catch (awbError) {
-            console.log('[Bosta] AWB endpoint failed:', awbError.response?.data || awbError.message);
+            console.log('[Bosta] POST /deliveries/awb failed:', awbError.response?.status, awbError.response?.data?.message || awbError.message);
         }
 
-        // Fallback: try tracking.bosta.co (doesn't provide AWB but confirms order exists)
+        // Try Method 3: GET /deliveries/{trackingNumber}/awb
         try {
-            await axios.get(`https://tracking.bosta.co/shipments/track/${trackingNumber}`);
-            // If order exists but AWB not available, that's expected for new orders
-            console.log('[Bosta] Order exists but AWB not yet available');
-        } catch (trackError) {
-            console.log('[Bosta] Order not found on tracking API either');
+            console.log(`[Bosta] Trying GET /deliveries/${trackingNumber}/awb...`);
+            const awbResponse = await bostaRequest('GET', `/deliveries/${trackingNumber}/awb`);
+            console.log(`[Bosta] AWB alt response type:`, typeof awbResponse);
+            const result = processAwbResponse(awbResponse);
+            if (result) return res.json(result);
+        } catch (altError) {
+            console.log('[Bosta] GET /deliveries/{tracking}/awb failed:', altError.response?.status, altError.response?.data?.message || altError.message);
         }
 
-        res.status(404).json({ success: false, error: 'AWB not available yet' });
+        res.status(404).json({ success: false, error: 'AWB not available - please try from Bosta portal' });
 
     } catch (error) {
         console.error('[Bosta] Error getting AWB:', error.response?.data || error.message);
