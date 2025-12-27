@@ -4264,12 +4264,36 @@ app.get('/api/pos/bosta/location/:locationId', verifyPosApiKey, async (req, res)
 });
 
 // GET /api/pos/bosta/track/:trackingNumber - Get delivery tracking info
-// Uses tracking.bosta.co public API (different from app.bosta.co)
+// Uses tracking.bosta.co public API + business API for cost data
 app.get('/api/pos/bosta/track/:trackingNumber', verifyPosApiKey, async (req, res) => {
     try {
         const { trackingNumber } = req.params;
 
         console.log(`[Bosta] Tracking delivery ${trackingNumber}...`);
+
+        // First, try to get cost data from the business API
+        let deliveryCost = null;
+        try {
+            const bizResponse = await bostaRequest('GET', `/deliveries/business/${trackingNumber}`);
+            const d = bizResponse.data || bizResponse;
+            console.log(`[Bosta] Business API response for cost:`, JSON.stringify(d, null, 2).substring(0, 1000));
+
+            // Extract cost data from business API
+            const costData = d.pricingInfo || d.pricing || {};
+            const fees = costData.deliveryFees || costData.totalCost || d.deliveryFees || d.totalCost || null;
+            const vat = costData.vat || d.vat || null;
+
+            if (fees) {
+                deliveryCost = {
+                    deliveryFees: fees,
+                    vat: vat,
+                    total: costData.totalWithVat || d.totalWithVat || (fees && vat ? fees + vat : fees),
+                    currency: costData.currency || 'EGP'
+                };
+            }
+        } catch (bizErr) {
+            console.log('[Bosta] Business API failed for cost, using public tracking only:', bizErr.message);
+        }
 
         // Use the public tracking API at tracking.bosta.co (no auth required)
         const response = await axios.get(`https://tracking.bosta.co/shipments/track/${trackingNumber}`);
@@ -4299,7 +4323,8 @@ app.get('/api/pos/bosta/track/:trackingNumber', verifyPosApiKey, async (req, res
                 })),
                 trackingUrl: trackingData.TrackingURL,
                 supportPhone: trackingData.SupportPhoneNumbers?.[0] || null,
-                isEditable: trackingData.isEditableShipment
+                isEditable: trackingData.isEditableShipment,
+                deliveryCost: deliveryCost
             }
         });
 
@@ -4500,17 +4525,31 @@ app.post('/api/pos/bosta/search', verifyPosApiKey, async (req, res) => {
             100: 'Canceled'
         };
 
-        // Helper to extract delivery data with proper state handling
+        // Helper to extract delivery data with proper state handling and cost
         const extractDelivery = (d) => {
             const stateValue = d.state?.value ?? d.state;
             const stateLabel = d.state?.label || d.stateLabel || bostaStateLabels[stateValue] || '';
+
+            // Extract cost data - Bosta may return in different formats
+            const costData = d.pricingInfo || d.pricing || {};
+            const deliveryCost = costData.deliveryFees || costData.totalCost || d.deliveryFees || d.totalCost || null;
+            const vatAmount = costData.vat || d.vat || null;
+            const totalWithVat = costData.totalWithVat || d.totalWithVat || (deliveryCost && vatAmount ? deliveryCost + vatAmount : deliveryCost);
+
             return {
                 trackingNumber: d.trackingNumber,
                 deliveryId: d._id,
                 state: stateValue,
                 stateLabel: stateLabel,
                 receiver: d.receiver,
-                dropOffAddress: d.dropOffAddress
+                dropOffAddress: d.dropOffAddress,
+                // Include cost info if available
+                cost: deliveryCost ? {
+                    deliveryFees: deliveryCost,
+                    vat: vatAmount,
+                    total: totalWithVat,
+                    currency: costData.currency || 'EGP'
+                } : null
             };
         };
 
