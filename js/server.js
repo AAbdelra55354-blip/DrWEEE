@@ -4276,23 +4276,30 @@ app.get('/api/pos/bosta/track/:trackingNumber', verifyPosApiKey, async (req, res
         try {
             const bizResponse = await bostaRequest('GET', `/deliveries/business/${trackingNumber}`);
             const d = bizResponse.data || bizResponse;
-            console.log(`[Bosta] Business API response for cost:`, JSON.stringify(d, null, 2).substring(0, 1000));
+            console.log(`[Bosta] Full business API response:`, JSON.stringify(d, null, 2));
 
-            // Extract cost data from business API
-            const costData = d.pricingInfo || d.pricing || {};
-            const fees = costData.deliveryFees || costData.totalCost || d.deliveryFees || d.totalCost || null;
-            const vat = costData.vat || d.vat || null;
+            // Extract cost data from business API - check various field names Bosta might use
+            // Common fields: deliveryCost, shippingFees, deliveryFees, pricing, pricingInfo, cost
+            const costData = d.pricingInfo || d.pricing || d.deliveryCost || {};
+            const fees = costData.deliveryFees || costData.shippingFees || costData.totalCost || costData.amount ||
+                        d.deliveryFees || d.shippingFees || d.deliveryCost?.amount || d.cost || null;
+            const vat = costData.vat || costData.vatAmount || d.vat || d.vatAmount || null;
+            const total = costData.totalWithVat || costData.total || costData.grandTotal ||
+                         d.totalWithVat || d.total || d.grandTotal || (fees && vat ? fees + vat : fees);
 
-            if (fees) {
+            console.log(`[Bosta] Extracted cost data - fees: ${fees}, vat: ${vat}, total: ${total}`);
+
+            if (fees || total) {
                 deliveryCost = {
-                    deliveryFees: fees,
+                    deliveryFees: fees || total,
                     vat: vat,
-                    total: costData.totalWithVat || d.totalWithVat || (fees && vat ? fees + vat : fees),
-                    currency: costData.currency || 'EGP'
+                    total: total || fees,
+                    currency: costData.currency || d.currency || 'EGP'
                 };
+                console.log(`[Bosta] Final deliveryCost object:`, deliveryCost);
             }
         } catch (bizErr) {
-            console.log('[Bosta] Business API failed for cost, using public tracking only:', bizErr.message);
+            console.log('[Bosta] Business API failed for cost:', bizErr.response?.data || bizErr.message);
         }
 
         // Use the public tracking API at tracking.bosta.co (no auth required)
