@@ -4210,20 +4210,35 @@ app.get('/api/pos/bosta/location/:locationId', verifyPosApiKey, async (req, res)
             return res.status(404).json({ success: false, error: 'Location not found' });
         }
 
+        // Helper to extract string from possibly nested object
+        const getString = (val) => {
+            if (!val) return null;
+            if (typeof val === 'string') return val;
+            if (typeof val === 'object') {
+                return val.name || val.firstLine || val.districtName || val.cityName || val.value || JSON.stringify(val);
+            }
+            return String(val);
+        };
+
+        // Extract address from location (Bosta returns nested structure)
+        const address = location.address || location.pickupAddress || {};
+        const district = location.district || address.district || {};
+        const city = district.city || location.city || {};
+
         res.json({
             success: true,
             location: {
                 id: location._id || location.id,
-                name: location.locationName || location.name,
-                district: location.district?.districtName || location.districtName,
-                districtAr: location.district?.districtOtherName || location.districtOtherName,
-                city: location.district?.city?.cityName || location.cityName,
-                cityAr: location.district?.city?.cityOtherName || location.cityOtherName,
-                firstLine: location.firstLine || location.address,
-                buildingNumber: location.buildingNumber,
-                floor: location.floor,
-                apartment: location.apartment,
-                secondLine: location.secondLine || location.landmark,
+                name: getString(location.locationName) || getString(location.name),
+                district: getString(district.districtName) || getString(district.name) || getString(location.districtName),
+                districtAr: getString(district.districtOtherName) || getString(district.nameAr),
+                city: getString(city.cityName) || getString(city.name) || getString(location.cityName),
+                cityAr: getString(city.cityOtherName) || getString(city.nameAr),
+                firstLine: getString(location.firstLine) || getString(address.firstLine),
+                buildingNumber: getString(location.buildingNumber) || getString(address.buildingNumber),
+                floor: getString(location.floor) || getString(address.floor),
+                apartment: getString(location.apartment) || getString(address.apartment),
+                secondLine: getString(location.secondLine) || getString(address.secondLine) || getString(location.landmark),
                 isDefault: location.isDefault || false
             }
         });
@@ -4302,43 +4317,72 @@ app.delete('/api/pos/bosta/cancel/:deliveryId', verifyPosApiKey, async (req, res
     }
 });
 
-// GET /api/pos/bosta/awb/:trackingNumber - Get AWB (Air Waybill) PDF URL
+// GET /api/pos/bosta/awb/:trackingNumber - Get AWB (Air Waybill) PDF
 app.get('/api/pos/bosta/awb/:trackingNumber', verifyPosApiKey, async (req, res) => {
     try {
         const { trackingNumber } = req.params;
 
         console.log(`[Bosta] Getting AWB for ${trackingNumber}...`);
 
-        // Try to get AWB directly from the AWB endpoint first
+        // Bosta AWB endpoint returns base64 PDF for <= 50 orders
+        // Use POST method with JSON body as per Bosta docs
         try {
-            const awbResponse = await bostaRequest('GET', `/deliveries/awb?trackingNumbers=${trackingNumber}`);
-            console.log(`[Bosta] AWB response:`, JSON.stringify(awbResponse, null, 2));
+            const awbResponse = await bostaRequest('POST', '/deliveries/awb', {
+                trackingNumbers: trackingNumber,
+                requestedAwbType: 'A4',
+                lang: 'en'
+            });
 
+            console.log(`[Bosta] AWB response type:`, typeof awbResponse);
+
+            // If response is base64 PDF string
+            if (typeof awbResponse === 'string' && awbResponse.length > 100) {
+                // Return as data URL for PDF
+                return res.json({
+                    success: true,
+                    awbUrl: `data:application/pdf;base64,${awbResponse}`,
+                    isBase64: true
+                });
+            }
+
+            // If response has URL
             if (awbResponse.data?.url || awbResponse.url) {
                 return res.json({ success: true, awbUrl: awbResponse.data?.url || awbResponse.url });
             }
+
+            // If response has base64 in data field
+            if (awbResponse.data && typeof awbResponse.data === 'string') {
+                return res.json({
+                    success: true,
+                    awbUrl: `data:application/pdf;base64,${awbResponse.data}`,
+                    isBase64: true
+                });
+            }
+
+            console.log('[Bosta] AWB response structure:', JSON.stringify(awbResponse, null, 2).substring(0, 500));
+
         } catch (awbError) {
-            console.log('[Bosta] Direct AWB endpoint failed, trying tracking endpoint...');
+            console.log('[Bosta] AWB endpoint failed:', awbError.response?.data || awbError.message);
         }
 
-        // Fallback: get from tracking endpoint
-        const response = await bostaRequest('GET', `/deliveries/tracking/${trackingNumber}`);
-        const trackingData = response.data || response;
+        // Fallback: get AWB URL from tracking endpoint
+        try {
+            const response = await bostaRequest('GET', `/deliveries/tracking/${trackingNumber}`);
+            const trackingData = response.data || response;
 
-        if (trackingData.awb) {
-            res.json({ success: true, awbUrl: trackingData.awb });
-        } else {
-            res.status(404).json({ success: false, error: 'AWB not available yet' });
+            if (trackingData.awb) {
+                return res.json({ success: true, awbUrl: trackingData.awb });
+            }
+        } catch (trackError) {
+            console.log('[Bosta] Tracking endpoint also failed for AWB');
         }
+
+        res.status(404).json({ success: false, error: 'AWB not available yet' });
 
     } catch (error) {
         console.error('[Bosta] Error getting AWB:', error.response?.data || error.message);
         const statusCode = error.response?.status || 500;
         const errorMsg = error.response?.data?.message || error.response?.data?.error || 'Failed to get AWB';
-
-        if (statusCode === 404) {
-            return res.status(404).json({ success: false, error: 'Order not found on Bosta - it may have been deleted' });
-        }
 
         res.status(statusCode).json({ success: false, error: errorMsg });
     }
