@@ -4380,20 +4380,20 @@ app.get('/api/pos/bosta/awb/:trackingNumber', verifyPosApiKey, async (req, res) 
             }
         }
 
-        // Try Method 2: POST /deliveries/awb with trackingNumbers (per docs)
+        // Try Method 2: POST /deliveries/mass-awb with trackingNumbers (correct endpoint per Bosta docs)
         try {
-            console.log(`[Bosta] Trying POST /deliveries/awb with trackingNumbers...`);
-            const awbResponse = await bostaRequest('POST', '/deliveries/awb', {
+            console.log(`[Bosta] Trying POST /deliveries/mass-awb with trackingNumbers...`);
+            const awbResponse = await bostaRequest('POST', '/deliveries/mass-awb', {
                 trackingNumbers: trackingNumber,
                 requestedAwbType: 'A4',
                 lang: 'en'
             });
-            console.log(`[Bosta] AWB POST response type:`, typeof awbResponse);
+            console.log(`[Bosta] AWB mass-awb response type:`, typeof awbResponse);
             const result = processAwbResponse(awbResponse);
             if (result) return res.json(result);
-            console.log('[Bosta] AWB POST response structure:', JSON.stringify(awbResponse, null, 2).substring(0, 500));
+            console.log('[Bosta] AWB mass-awb response structure:', JSON.stringify(awbResponse, null, 2).substring(0, 500));
         } catch (awbError) {
-            console.log('[Bosta] POST /deliveries/awb failed:', awbError.response?.status, awbError.response?.data?.message || awbError.message);
+            console.log('[Bosta] POST /deliveries/mass-awb failed:', awbError.response?.status, awbError.response?.data?.message || awbError.message);
         }
 
         // Try Method 3: GET /deliveries/{trackingNumber}/awb
