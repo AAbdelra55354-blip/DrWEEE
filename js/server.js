@@ -3806,6 +3806,7 @@ const bostaCache = {
 
 // Bosta delivery state codes mapping
 const BOSTA_STATES = {
+    // Numeric codes (from webhooks)
     10: 'Pickup Requested',
     20: 'Route Assigned',
     21: 'Picked Up from Business',
@@ -3816,7 +3817,20 @@ const BOSTA_STATES = {
     46: 'Returned to Business',
     47: 'Exception',
     48: 'Terminated',
-    49: 'Canceled'
+    49: 'Canceled',
+    // String codes (from tracking.bosta.co API)
+    'TICKET_CREATED': 'Order Created - Awaiting Pickup',
+    'PACKAGE_RECEIVED': 'Package Received',
+    'NOT_YET_SHIPPED': 'Not Yet Shipped',
+    'IN_TRANSIT': 'In Transit',
+    'OUT_FOR_DELIVERY': 'Out for Delivery',
+    'DELIVERED': 'Delivered',
+    'WAITING_FOR_CUSTOMER_ACTION': 'Waiting for Customer',
+    'DELIVERY_FAILED': 'Delivery Failed',
+    'RETURNED_TO_BUSINESS': 'Returned to Business',
+    'EXCEPTION': 'Exception',
+    'TERMINATED': 'Terminated',
+    'CANCELED': 'Canceled'
 };
 
 // Middleware to verify POS API key for Bosta endpoints
