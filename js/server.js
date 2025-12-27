@@ -4418,6 +4418,72 @@ app.get('/api/pos/bosta/awb/:trackingNumber', verifyPosApiKey, async (req, res) 
     }
 });
 
+// GET /api/pos/bosta/pricing - Get delivery pricing/rates
+app.get('/api/pos/bosta/pricing', verifyPosApiKey, async (req, res) => {
+    try {
+        console.log('[Bosta] Fetching pricing calculator...');
+
+        // Try to get pricing from Bosta API
+        try {
+            const response = await bostaRequest('GET', '/pricing/shipment/calculator');
+            console.log('[Bosta] Pricing response:', JSON.stringify(response, null, 2).substring(0, 500));
+
+            res.json({
+                success: true,
+                pricing: response.data || response
+            });
+        } catch (apiError) {
+            console.log('[Bosta] Pricing API error:', apiError.response?.status, apiError.response?.data?.message || apiError.message);
+
+            // If Bosta doesn't expose pricing API, return a message
+            res.status(404).json({
+                success: false,
+                error: 'Pricing API not available. Contact Bosta for rate information.',
+                message: 'Bosta pricing is typically based on pickup/dropoff zones. Check your Bosta dashboard for current rates.'
+            });
+        }
+    } catch (error) {
+        console.error('[Bosta] Error getting pricing:', error.message);
+        res.status(500).json({ success: false, error: 'Failed to get pricing' });
+    }
+});
+
+// PUT /api/pos/bosta/update/:deliveryId - Update delivery details (before pickup)
+app.put('/api/pos/bosta/update/:deliveryId', verifyPosApiKey, async (req, res) => {
+    try {
+        const { deliveryId } = req.params;
+        const updateData = req.body;
+
+        console.log(`[Bosta] Updating delivery ${deliveryId}...`, updateData);
+
+        // Bosta allows updating: dropOffAddress, receiver, cod, notes before pickup
+        const response = await bostaRequest('PUT', `/deliveries/${deliveryId}`, updateData);
+
+        console.log('[Bosta] Update response:', JSON.stringify(response, null, 2));
+
+        res.json({
+            success: true,
+            message: 'Delivery updated successfully',
+            delivery: response.data || response
+        });
+
+    } catch (error) {
+        console.error('[Bosta] Error updating delivery:', error.response?.data || error.message);
+        const errorMessage = error.response?.data?.message || 'Failed to update delivery';
+        const statusCode = error.response?.status || 500;
+
+        // Check if it's because the delivery has already been picked up
+        if (errorMessage.includes('picked up') || errorMessage.includes('cannot be updated')) {
+            res.status(400).json({
+                success: false,
+                error: 'Cannot update delivery - it has already been picked up or is in transit'
+            });
+        } else {
+            res.status(statusCode).json({ success: false, error: errorMessage });
+        }
+    }
+});
+
 // POST /api/webhooks/bosta - Receive Bosta status updates
 // Note: This endpoint should be whitelisted for Bosta IPs: 34.89.199.241, 35.246.223.19
 app.post('/api/webhooks/bosta', async (req, res) => {
