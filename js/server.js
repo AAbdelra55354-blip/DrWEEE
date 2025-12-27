@@ -4474,6 +4474,70 @@ app.get('/api/pos/bosta/pricing', verifyPosApiKey, async (req, res) => {
     }
 });
 
+// POST /api/pos/bosta/search - Search for a delivery by tracking number
+app.post('/api/pos/bosta/search', verifyPosApiKey, async (req, res) => {
+    try {
+        const { trackingNumber } = req.body;
+
+        if (!trackingNumber) {
+            return res.status(400).json({ success: false, error: 'Tracking number is required' });
+        }
+
+        console.log(`[Bosta] Searching for delivery with tracking ${trackingNumber}...`);
+
+        // Use Bosta's search endpoint
+        const response = await bostaRequest('POST', '/deliveries/search', {
+            trackingNumbers: trackingNumber
+        });
+
+        console.log('[Bosta] Search response:', JSON.stringify(response, null, 2).substring(0, 1000));
+
+        // Extract delivery from response
+        const deliveries = response.data?.list || response.list || response.data || [];
+
+        if (Array.isArray(deliveries) && deliveries.length > 0) {
+            const delivery = deliveries[0];
+            res.json({
+                success: true,
+                delivery: {
+                    trackingNumber: delivery.trackingNumber,
+                    deliveryId: delivery._id,
+                    state: delivery.state?.value || delivery.state,
+                    stateLabel: delivery.state?.label || delivery.stateLabel,
+                    receiver: delivery.receiver,
+                    dropOffAddress: delivery.dropOffAddress,
+                    cod: delivery.cod,
+                    notes: delivery.notes
+                }
+            });
+        } else if (response.data && !Array.isArray(response.data)) {
+            // Single delivery object returned
+            const delivery = response.data;
+            res.json({
+                success: true,
+                delivery: {
+                    trackingNumber: delivery.trackingNumber,
+                    deliveryId: delivery._id,
+                    state: delivery.state?.value || delivery.state,
+                    stateLabel: delivery.state?.label || delivery.stateLabel,
+                    receiver: delivery.receiver,
+                    dropOffAddress: delivery.dropOffAddress,
+                    cod: delivery.cod,
+                    notes: delivery.notes
+                }
+            });
+        } else {
+            res.status(404).json({ success: false, error: 'Delivery not found' });
+        }
+
+    } catch (error) {
+        console.error('[Bosta] Error searching delivery:', error.response?.data || error.message);
+        const statusCode = error.response?.status || 500;
+        const errorMessage = error.response?.data?.message || 'Failed to search delivery';
+        res.status(statusCode).json({ success: false, error: errorMessage });
+    }
+});
+
 // PUT /api/pos/bosta/update/:deliveryId - Update delivery details (before pickup)
 app.put('/api/pos/bosta/update/:deliveryId', verifyPosApiKey, async (req, res) => {
     try {
