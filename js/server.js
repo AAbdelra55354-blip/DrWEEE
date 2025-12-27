@@ -4250,40 +4250,42 @@ app.get('/api/pos/bosta/location/:locationId', verifyPosApiKey, async (req, res)
 });
 
 // GET /api/pos/bosta/track/:trackingNumber - Get delivery tracking info
+// Uses tracking.bosta.co public API (different from app.bosta.co)
 app.get('/api/pos/bosta/track/:trackingNumber', verifyPosApiKey, async (req, res) => {
     try {
         const { trackingNumber } = req.params;
 
         console.log(`[Bosta] Tracking delivery ${trackingNumber}...`);
-        // Correct endpoint per Bosta SDK: /deliveries/{trackingNumber}/tracking
-        const response = await bostaRequest('GET', `/deliveries/${trackingNumber}/tracking`);
 
-        console.log(`[Bosta] Tracking response:`, JSON.stringify(response, null, 2));
+        // Use the public tracking API at tracking.bosta.co (no auth required)
+        const response = await axios.get(`https://tracking.bosta.co/shipments/track/${trackingNumber}`);
+        const trackingData = response.data;
 
-        // Handle different response structures
-        let trackingData = response;
-        if (response.data) {
-            trackingData = response.data;
-        }
+        console.log(`[Bosta] Tracking response:`, JSON.stringify(trackingData, null, 2));
 
-        // Add human-readable state label
-        const stateValue = trackingData.state?.value || trackingData.state;
-        const stateLabel = BOSTA_STATES[stateValue] || 'Unknown';
+        // Parse the tracking.bosta.co response format
+        const currentStatus = trackingData.CurrentStatus || {};
+        const stateValue = currentStatus.state || 'Unknown';
+        const stateLabel = BOSTA_STATES[stateValue] || stateValue.replace(/_/g, ' ');
 
         res.json({
             success: true,
             tracking: {
-                trackingNumber: trackingData.trackingNumber || trackingNumber,
-                deliveryId: trackingData._id,
+                trackingNumber: trackingData.TrackingNumber || trackingNumber,
+                deliveryId: null, // Not provided by tracking API
                 state: stateValue,
                 stateLabel: stateLabel,
-                attempts: trackingData.deliveryAttempts || trackingData.numberOfAttempts || 0,
-                history: trackingData.history || [],
-                receiver: trackingData.receiver,
-                exceptionReason: trackingData.state?.exceptionReason || trackingData.exceptionReason || null,
-                // Include cost if available
-                deliveryCost: trackingData.deliveryCost || trackingData.cost || trackingData.shippingFee || null,
-                cod: trackingData.cod || null
+                promisedDate: trackingData.PromisedDate,
+                createDate: trackingData.CreateDate,
+                history: (trackingData.TransitEvents || []).map(event => ({
+                    state: event.state,
+                    timestamp: event.timestamp,
+                    hub: event.hub,
+                    reason: event.reason
+                })),
+                trackingUrl: trackingData.TrackingURL,
+                supportPhone: trackingData.SupportPhoneNumbers?.[0] || null,
+                isEditable: trackingData.isEditableShipment
             }
         });
 
@@ -4366,16 +4368,13 @@ app.get('/api/pos/bosta/awb/:trackingNumber', verifyPosApiKey, async (req, res) 
             console.log('[Bosta] AWB endpoint failed:', awbError.response?.data || awbError.message);
         }
 
-        // Fallback: get AWB URL from tracking endpoint
+        // Fallback: try tracking.bosta.co (doesn't provide AWB but confirms order exists)
         try {
-            const response = await bostaRequest('GET', `/deliveries/${trackingNumber}/tracking`);
-            const trackingData = response.data || response;
-
-            if (trackingData.awb) {
-                return res.json({ success: true, awbUrl: trackingData.awb });
-            }
+            await axios.get(`https://tracking.bosta.co/shipments/track/${trackingNumber}`);
+            // If order exists but AWB not available, that's expected for new orders
+            console.log('[Bosta] Order exists but AWB not yet available');
         } catch (trackError) {
-            console.log('[Bosta] Tracking endpoint also failed for AWB');
+            console.log('[Bosta] Order not found on tracking API either');
         }
 
         res.status(404).json({ success: false, error: 'AWB not available yet' });
