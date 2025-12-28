@@ -4302,9 +4302,18 @@ app.get('/api/pos/bosta/track/:trackingNumber', verifyPosApiKey, async (req, res
             // shipmentFees = base shipping fee (includes VAT)
             // extraFees may include Open Package fee, etc.
             const shipmentFees = d.shipmentFees ? parseFloat(d.shipmentFees) : 0;
-            const extraFees = d.extraFees ? parseFloat(d.extraFees) : 0;
+            let extraFees = d.extraFees ? parseFloat(d.extraFees) : 0;
             const codFees = d.codFees ? parseFloat(d.codFees) : 0;
             const insuranceFees = d.insuranceFees ? parseFloat(d.insuranceFees) : 0;
+            const allowToOpenPackage = d.allowToOpenPackage || false;
+
+            // Bosta API may not return extraFees even when allowToOpenPackage is true
+            // In that case, add the open package fee (12.70 EGP including VAT)
+            const OPEN_PACKAGE_FEE = 12.70;
+            if (allowToOpenPackage && extraFees === 0) {
+                console.log(`[Bosta] allowToOpenPackage is true but extraFees is 0, adding open package fee`);
+                extraFees = OPEN_PACKAGE_FEE;
+            }
 
             // Total is sum of all fees (all include VAT already)
             const total = shipmentFees + extraFees + codFees + insuranceFees;
@@ -4317,7 +4326,7 @@ app.get('/api/pos/bosta/track/:trackingNumber', verifyPosApiKey, async (req, res
                     insuranceFees: insuranceFees,
                     total: parseFloat(total.toFixed(2)),
                     currency: 'EGP',
-                    allowToOpenPackage: d.allowToOpenPackage || false
+                    allowToOpenPackage: allowToOpenPackage
                 };
                 console.log(`[Bosta] Extracted deliveryCost:`, deliveryCost);
             }
