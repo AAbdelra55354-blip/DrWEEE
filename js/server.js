@@ -4293,7 +4293,9 @@ app.get('/api/pos/bosta/track/:trackingNumber', verifyPosApiKey, async (req, res
                 serviceFees: d.serviceFees,
                 codFees: d.codFees,
                 insuranceFees: d.insuranceFees,
-                extraFees: d.extraFees
+                extraFees: d.extraFees,
+                allowToOpenPackage: d.allowToOpenPackage,
+                openPackage: d.openPackage
             });
 
             // Return the exact cost breakdown from Bosta API
