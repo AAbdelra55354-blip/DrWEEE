@@ -4296,20 +4296,26 @@ app.get('/api/pos/bosta/track/:trackingNumber', verifyPosApiKey, async (req, res
                 extraFees: d.extraFees
             });
 
-            // Use shipmentFees as the delivery cost (this is what Bosta charges for delivery)
-            // Note: shipmentFees already includes VAT
-            if (d.shipmentFees) {
-                const total = parseFloat(d.shipmentFees);
-                // VAT in Egypt is 14%
-                const vatRate = 0.14;
-                const feesBeforeVat = total / (1 + vatRate);
-                const vat = total - feesBeforeVat;
+            // Return the exact cost breakdown from Bosta API
+            // shipmentFees = base shipping fee (includes VAT)
+            // extraFees may include Open Package fee, etc.
+            const shipmentFees = d.shipmentFees ? parseFloat(d.shipmentFees) : 0;
+            const extraFees = d.extraFees ? parseFloat(d.extraFees) : 0;
+            const codFees = d.codFees ? parseFloat(d.codFees) : 0;
+            const insuranceFees = d.insuranceFees ? parseFloat(d.insuranceFees) : 0;
 
+            // Total is sum of all fees (all include VAT already)
+            const total = shipmentFees + extraFees + codFees + insuranceFees;
+
+            if (total > 0) {
                 deliveryCost = {
-                    deliveryFees: parseFloat(feesBeforeVat.toFixed(2)),
-                    vat: parseFloat(vat.toFixed(2)),
+                    shipmentFees: shipmentFees,
+                    extraFees: extraFees,
+                    codFees: codFees,
+                    insuranceFees: insuranceFees,
                     total: parseFloat(total.toFixed(2)),
-                    currency: 'EGP'
+                    currency: 'EGP',
+                    allowToOpenPackage: d.allowToOpenPackage || false
                 };
                 console.log(`[Bosta] Extracted deliveryCost:`, deliveryCost);
             }
