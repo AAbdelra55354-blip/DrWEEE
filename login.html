@@ -1208,9 +1208,13 @@
                         throw new Error(errorData.message || 'Failed to create contact.');
                     }
                     const data = await response.json();
-                    // Track sign up event
-                    if (window.DrWeeeAnalytics) {
-                        window.DrWeeeAnalytics.trackSignUp('phone_otp', data.user?.GUID);
+                    // Track sign up event (use try-catch to prevent analytics from blocking signup)
+                    try {
+                        if (window.DrWeeeAnalytics && window.DrWeeeAnalytics.trackSignup) {
+                            window.DrWeeeAnalytics.trackSignup('phone_otp', data.user?.GUID);
+                        }
+                    } catch (e) {
+                        console.warn('Analytics tracking failed:', e);
                     }
                     showStep(4);
                 } catch (error) {
