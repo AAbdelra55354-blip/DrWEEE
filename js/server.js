@@ -506,6 +506,10 @@ if (process.env.NODE_ENV === 'production' && (!process.env.SESSION_SECRET || pro
     process.exit(1);
 }
 
+// Session configuration - environment-aware
+const isProduction = process.env.NODE_ENV === 'production';
+console.log(`📝 Environment: ${isProduction ? 'production' : 'development'}`);
+
 app.use(session({
     store: sessionStore,
     secret: process.env.SESSION_SECRET || 'drweee-dev-secret-key-not-for-production',
@@ -513,30 +517,21 @@ app.use(session({
     saveUninitialized: true,  // Create session even if nothing stored
     name: 'drweee.sid',
     cookie: {
-        secure: false,  // Must be false for HTTP localhost
+        secure: isProduction,  // true for HTTPS in production, false for HTTP in dev
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
-        sameSite: 'lax',  // Works for same-origin requests
-        path: '/'  // Ensure cookie is sent for all paths
+        sameSite: isProduction ? 'none' : 'lax',  // 'none' for cross-site in production with secure:true
+        path: '/',
+        // In production, set domain to allow cookie across subdomains if needed
+        ...(isProduction && process.env.COOKIE_DOMAIN ? { domain: process.env.COOKIE_DOMAIN } : {})
     }
 }));
 
-// Debug middleware to track session cookie
-app.use((req, res, next) => {
-    const originalEnd = res.end;
-    res.end = function(...args) {
-        const setCookie = res.getHeader('Set-Cookie');
-        if (req.path.includes('/api/') && setCookie) {
-            console.log(`[Session Debug] ${req.method} ${req.path} - Set-Cookie:`, setCookie);
-        }
-        return originalEnd.apply(this, args);
-    };
-    next();
-});
+console.log(`🍪 Session cookie: secure=${isProduction}, sameSite=${isProduction ? 'none' : 'lax'}`);
 
 // --- 5. API ENDPOINTS ---
 
-// Session test endpoint - for debugging session issues
+// Session test endpoint - for debugging session issues (can be removed in production)
 app.get('/api/session-test', (req, res) => {
     // Initialize or increment a counter
     if (!req.session.testCounter) {
@@ -544,16 +539,10 @@ app.get('/api/session-test', (req, res) => {
     }
     req.session.testCounter++;
 
-    console.log('[session-test] Session ID:', req.sessionID);
-    console.log('[session-test] Counter:', req.session.testCounter);
-    console.log('[session-test] Cookie header in request:', req.headers.cookie);
-
     req.session.save((err) => {
         if (err) {
-            console.error('[session-test] Save error:', err);
             return res.status(500).json({ error: 'Session save failed' });
         }
-        console.log('[session-test] Set-Cookie:', res.getHeader('Set-Cookie'));
         res.json({
             sessionId: req.sessionID,
             counter: req.session.testCounter,
@@ -630,19 +619,12 @@ app.post('/api/request-otp', otpLimiter, async (req, res) => {
             expires: Date.now() + 5 * 60 * 1000 // 5 minutes
         };
 
-        // Debug logging
-        console.log('[request-otp] Session ID:', req.sessionID);
-        console.log('[request-otp] Stored phone:', normalizedPhone);
-
         req.session.save((err) => {
             if (err) {
                 console.error('Session save error for OTP:', err);
                 return res.status(500).json({ message: 'Server error while saving session.' });
             }
-            console.log('[request-otp] Session saved successfully');
-            console.log('[request-otp] Set-Cookie header:', res.getHeader('Set-Cookie'));
             secureLog.phone('[INFO] OTP sent to', normalizedPhone);
-            // Send a clean success response.
             res.status(200).json({ success: true, message: 'OTP sent successfully.' });
         });
 
@@ -657,18 +639,8 @@ app.post('/api/verify-otp', authLimiter, (req, res) => {
     const storedOtpData = req.session.otpData;
     const normalizedPhone = normalizePhoneNumber(phoneNumber);
 
-    // Debug logging for session issues
-    console.log('[verify-otp] Cookies received:', req.headers.cookie);
-    console.log('[verify-otp] Session ID:', req.sessionID);
-    console.log('[verify-otp] Has otpData:', !!storedOtpData);
-    console.log('[verify-otp] Incoming phone:', normalizedPhone);
-    if (storedOtpData) {
-        console.log('[verify-otp] Stored phone:', storedOtpData.phoneNumber);
-        console.log('[verify-otp] Phones match:', storedOtpData.phoneNumber === normalizedPhone);
-    }
-
     if (!storedOtpData || storedOtpData.phoneNumber !== normalizedPhone) {
-        console.log('[verify-otp] FAILED: No otpData or phone mismatch');
+        console.log('[verify-otp] Session validation failed - no otpData or phone mismatch');
         return res.status(400).json({ message: 'Invalid request. Please start over.' });
     }
     if (Date.now() > storedOtpData.expires) {
@@ -694,7 +666,15 @@ app.post('/api/create-contact', authLimiter, async (req, res) => {
     const storedOtpData = req.session.otpData;
     const normalizedPhone = normalizePhoneNumber(phoneNumber);
 
+    // Debug logging for session issues
+    console.log('[create-contact] Session ID:', req.sessionID);
+    console.log('[create-contact] Cookies received:', req.headers.cookie ? 'yes' : 'no');
+    console.log('[create-contact] Has otpData:', !!storedOtpData);
+    console.log('[create-contact] OTP verified:', storedOtpData?.verified);
+
     if (!storedOtpData || !storedOtpData.verified || storedOtpData.phoneNumber !== normalizedPhone) {
+        console.log('[create-contact] FAILED: Session validation failed');
+        console.log('[create-contact] Reason:', !storedOtpData ? 'no otpData' : !storedOtpData.verified ? 'not verified' : 'phone mismatch');
         return res.status(403).json({ message: 'Phone number not verified. Please complete the OTP step first.' });
     }
     if (!password) {
