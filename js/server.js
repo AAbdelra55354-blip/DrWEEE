@@ -507,8 +507,7 @@ if (process.env.NODE_ENV === 'production' && (!process.env.SESSION_SECRET || pro
 }
 
 // Session configuration - environment-aware
-const isProduction = process.env.NODE_ENV === 'production';
-console.log(`📝 Environment: ${isProduction ? 'production' : 'development'}`);
+const isProd = isProduction(); // Use the existing isProduction function
 
 app.use(session({
     store: sessionStore,
@@ -517,17 +516,17 @@ app.use(session({
     saveUninitialized: true,  // Create session even if nothing stored
     name: 'drweee.sid',
     cookie: {
-        secure: isProduction,  // true for HTTPS in production, false for HTTP in dev
+        secure: isProd,  // true for HTTPS in production, false for HTTP in dev
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
-        sameSite: isProduction ? 'none' : 'lax',  // 'none' for cross-site in production with secure:true
+        sameSite: isProd ? 'none' : 'lax',  // 'none' for cross-site in production with secure:true
         path: '/',
         // In production, set domain to allow cookie across subdomains if needed
-        ...(isProduction && process.env.COOKIE_DOMAIN ? { domain: process.env.COOKIE_DOMAIN } : {})
+        ...(isProd && process.env.COOKIE_DOMAIN ? { domain: process.env.COOKIE_DOMAIN } : {})
     }
 }));
 
-console.log(`🍪 Session cookie: secure=${isProduction}, sameSite=${isProduction ? 'none' : 'lax'}`);
+console.log(`🍪 Session cookie: secure=${isProd}, sameSite=${isProd ? 'none' : 'lax'}`);
 
 // --- 5. API ENDPOINTS ---
 
