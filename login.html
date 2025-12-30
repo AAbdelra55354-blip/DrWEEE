@@ -1107,12 +1107,19 @@
                 userPhoneNumberWithCode = normalizePhoneNumber(rawPhoneNumber);
 
                 try {
+                    console.log('[OTP Debug] Sending request to:', getApiBaseUrl() + '/api/request-otp');
+                    console.log('[OTP Debug] Cookies before request:', document.cookie);
+
                     const response = await fetch(getApiBaseUrl() + '/api/request-otp', {
                         method: 'POST',
                         credentials: 'include',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ phoneNumber: userPhoneNumberWithCode })
                     });
+
+                    console.log('[OTP Debug] Response status:', response.status);
+                    console.log('[OTP Debug] Cookies after request:', document.cookie);
+
                     if (!response.ok) {
                         const errorData = await response.json();
                         throw new Error(errorData.message || 'Failed to send OTP.');

@@ -385,6 +385,16 @@ html[dir="rtl"] .phone-number-input {
     border-radius: var(--radius-md) 0 0 var(--radius-md);
 }
 
+/* OTP inputs should always be LTR (numbers read left-to-right) */
+html[dir="rtl"] .otp-inputs {
+    direction: ltr;
+}
+
+html[dir="rtl"] .otp-input {
+    direction: ltr;
+    text-align: center;
+}
+
 /* ===== ABOUT PAGE ===== */
 /* Story Timeline RTL */
 html[dir="rtl"] .timeline-item {

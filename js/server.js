@@ -509,20 +509,58 @@ if (process.env.NODE_ENV === 'production' && (!process.env.SESSION_SECRET || pro
 app.use(session({
     store: sessionStore,
     secret: process.env.SESSION_SECRET || 'drweee-dev-secret-key-not-for-production',
-    resave: false,
-    saveUninitialized: false,
-    name: 'drweee.sid', // Custom session name
+    resave: true,  // Force session save on every request
+    saveUninitialized: true,  // Create session even if nothing stored
+    name: 'drweee.sid',
     cookie: {
-        secure: process.env.NODE_ENV === 'production',
+        secure: false,  // Must be false for HTTP localhost
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
-        // For local development with Live Server on different port, use 'none' with secure:false
-        // For production, use 'lax' with secure:true
-        sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'none'
+        sameSite: 'lax',  // Works for same-origin requests
+        path: '/'  // Ensure cookie is sent for all paths
     }
 }));
 
+// Debug middleware to track session cookie
+app.use((req, res, next) => {
+    const originalEnd = res.end;
+    res.end = function(...args) {
+        const setCookie = res.getHeader('Set-Cookie');
+        if (req.path.includes('/api/') && setCookie) {
+            console.log(`[Session Debug] ${req.method} ${req.path} - Set-Cookie:`, setCookie);
+        }
+        return originalEnd.apply(this, args);
+    };
+    next();
+});
+
 // --- 5. API ENDPOINTS ---
+
+// Session test endpoint - for debugging session issues
+app.get('/api/session-test', (req, res) => {
+    // Initialize or increment a counter
+    if (!req.session.testCounter) {
+        req.session.testCounter = 0;
+    }
+    req.session.testCounter++;
+
+    console.log('[session-test] Session ID:', req.sessionID);
+    console.log('[session-test] Counter:', req.session.testCounter);
+    console.log('[session-test] Cookie header in request:', req.headers.cookie);
+
+    req.session.save((err) => {
+        if (err) {
+            console.error('[session-test] Save error:', err);
+            return res.status(500).json({ error: 'Session save failed' });
+        }
+        console.log('[session-test] Set-Cookie:', res.getHeader('Set-Cookie'));
+        res.json({
+            sessionId: req.sessionID,
+            counter: req.session.testCounter,
+            message: 'Refresh this page - counter should increment if session works'
+        });
+    });
+});
 
 // Health check endpoint for Railway monitoring
 app.get('/api/health', (req, res) => {
@@ -592,11 +630,17 @@ app.post('/api/request-otp', otpLimiter, async (req, res) => {
             expires: Date.now() + 5 * 60 * 1000 // 5 minutes
         };
 
+        // Debug logging
+        console.log('[request-otp] Session ID:', req.sessionID);
+        console.log('[request-otp] Stored phone:', normalizedPhone);
+
         req.session.save((err) => {
             if (err) {
                 console.error('Session save error for OTP:', err);
                 return res.status(500).json({ message: 'Server error while saving session.' });
             }
+            console.log('[request-otp] Session saved successfully');
+            console.log('[request-otp] Set-Cookie header:', res.getHeader('Set-Cookie'));
             secureLog.phone('[INFO] OTP sent to', normalizedPhone);
             // Send a clean success response.
             res.status(200).json({ success: true, message: 'OTP sent successfully.' });
@@ -613,7 +657,18 @@ app.post('/api/verify-otp', authLimiter, (req, res) => {
     const storedOtpData = req.session.otpData;
     const normalizedPhone = normalizePhoneNumber(phoneNumber);
 
+    // Debug logging for session issues
+    console.log('[verify-otp] Cookies received:', req.headers.cookie);
+    console.log('[verify-otp] Session ID:', req.sessionID);
+    console.log('[verify-otp] Has otpData:', !!storedOtpData);
+    console.log('[verify-otp] Incoming phone:', normalizedPhone);
+    if (storedOtpData) {
+        console.log('[verify-otp] Stored phone:', storedOtpData.phoneNumber);
+        console.log('[verify-otp] Phones match:', storedOtpData.phoneNumber === normalizedPhone);
+    }
+
     if (!storedOtpData || storedOtpData.phoneNumber !== normalizedPhone) {
+        console.log('[verify-otp] FAILED: No otpData or phone mismatch');
         return res.status(400).json({ message: 'Invalid request. Please start over.' });
     }
     if (Date.now() > storedOtpData.expires) {
