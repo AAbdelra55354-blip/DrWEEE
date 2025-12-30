@@ -1350,21 +1350,23 @@ app.get('/api/vouchers', async (req, res) => {
 
 // API endpoint to submit a redemption request
 app.post('/api/redeem', async (req, res) => {
-    // Authentication check
+    // Authentication check - support both session and client-provided GUID
     const isSessionAuth = req.session.user && req.session.user.GUID;
-    const isLocalDev = process.env.NODE_ENV !== 'production';
 
     let userGUID = null;
     let userFullName = 'Guest User';
     let userPhoneNumber = 'N/A';
 
     if (isSessionAuth) {
+        // Session-based auth (preferred)
         userGUID = req.session.user.GUID;
         userFullName = req.session.user.fullName || 'DR.WEEE User';
         userPhoneNumber = req.session.user.phoneNumber || 'N/A';
-    } else if (isLocalDev && req.body.userGUID) {
+    } else if (req.body.userGUID) {
+        // Fallback: Accept userGUID from request body (for localStorage-based auth)
+        // The GUID is validated against Dataverse when creating the redemption request
         userGUID = req.body.userGUID;
-        userFullName = req.body.userFullName || 'Local Dev User';
+        userFullName = req.body.userFullName || 'DR.WEEE User';
         userPhoneNumber = req.body.userPhoneNumber || 'N/A';
         console.log('🎁 Using client-provided user info for redemption:', userFullName);
     }
