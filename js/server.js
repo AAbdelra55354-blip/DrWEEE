@@ -4886,6 +4886,227 @@ app.post('/api/pos/bosta/update-address', verifyPosApiKey, async (req, res) => {
 // =====================================================================
 
 
+// =====================================================================
+// MICROSOFT GRAPH API - AZURE AD USER MANAGEMENT
+// =====================================================================
+
+// Cache for Microsoft Graph token (separate from Dataverse token)
+const graphApi = {
+    accessToken: null,
+    tokenExpiry: 0
+};
+
+// Get Microsoft Graph API token
+async function getGraphToken() {
+    // Return cached token if it's still valid
+    if (graphApi.accessToken && Date.now() < graphApi.tokenExpiry) {
+        return graphApi.accessToken;
+    }
+
+    console.log('🔄 Authenticating with Microsoft Graph API...');
+    const { AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET } = process.env;
+
+    if (!AZURE_TENANT_ID || !AZURE_CLIENT_ID || !AZURE_CLIENT_SECRET) {
+        console.error('❌ Missing required Azure environment variables for Graph API');
+        throw new Error('Missing required Azure configuration. Check environment variables.');
+    }
+
+    const tokenEndpoint = `https://login.microsoftonline.com/${AZURE_TENANT_ID}/oauth2/v2.0/token`;
+    const params = new URLSearchParams();
+    params.append('client_id', AZURE_CLIENT_ID);
+    params.append('scope', 'https://graph.microsoft.com/.default');
+    params.append('client_secret', AZURE_CLIENT_SECRET);
+    params.append('grant_type', 'client_credentials');
+
+    try {
+        const response = await axios.post(tokenEndpoint, params, {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+
+        graphApi.accessToken = response.data.access_token;
+        // Set expiry to 5 minutes before the actual token expiration for safety
+        graphApi.tokenExpiry = Date.now() + (response.data.expires_in - 300) * 1000;
+
+        console.log('✅ Microsoft Graph API authentication successful.');
+        return graphApi.accessToken;
+    } catch (error) {
+        console.error('❌ Microsoft Graph API authentication failed:', error.response?.data);
+        throw new Error('Could not authenticate with Microsoft Graph API.');
+    }
+}
+
+// Create Azure AD User endpoint
+app.post('/api/admin/create-azure-user', apiLimiter, async (req, res) => {
+    console.log('[Graph API] Create Azure AD user request received');
+
+    try {
+        const {
+            firstName,
+            lastName,
+            displayName,
+            userPrincipalName,
+            email,
+            password,
+            forcePasswordChange,
+            jobTitle,
+            department
+        } = req.body;
+
+        // Validate required fields
+        if (!firstName || !lastName || !userPrincipalName || !password) {
+            return res.status(400).json({
+                success: false,
+                error: 'Missing required fields: firstName, lastName, userPrincipalName, and password are required'
+            });
+        }
+
+        // Validate password complexity
+        const hasUpper = /[A-Z]/.test(password);
+        const hasLower = /[a-z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+        const hasSpecial = /[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/.test(password);
+
+        if (password.length < 8 || !(hasUpper && hasLower && hasNumber && hasSpecial)) {
+            return res.status(400).json({
+                success: false,
+                error: 'Password must be at least 8 characters with uppercase, lowercase, number, and special character'
+            });
+        }
+
+        // Get Graph API token
+        const token = await getGraphToken();
+
+        // Prepare user payload for Microsoft Graph API
+        const userPayload = {
+            accountEnabled: true,
+            displayName: displayName || `${firstName} ${lastName}`,
+            givenName: firstName,
+            surname: lastName,
+            mailNickname: userPrincipalName.split('@')[0],
+            userPrincipalName: userPrincipalName,
+            passwordProfile: {
+                forceChangePasswordNextSignIn: forcePasswordChange !== false,
+                password: password
+            }
+        };
+
+        // Add optional fields if provided
+        if (email) userPayload.mail = email;
+        if (jobTitle) userPayload.jobTitle = jobTitle;
+        if (department) userPayload.department = department;
+
+        console.log('[Graph API] Creating user:', userPrincipalName);
+
+        // Create user via Microsoft Graph API
+        const response = await axios.post(
+            'https://graph.microsoft.com/v1.0/users',
+            userPayload,
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        console.log('[Graph API] User created successfully:', response.data.id);
+
+        res.json({
+            success: true,
+            user: {
+                id: response.data.id,
+                displayName: response.data.displayName,
+                userPrincipalName: response.data.userPrincipalName,
+                mail: response.data.mail
+            }
+        });
+
+    } catch (error) {
+        console.error('[Graph API] Error creating user:', error.response?.data || error.message);
+
+        // Extract meaningful error message from Graph API response
+        let errorMessage = 'Failed to create Azure AD user';
+        if (error.response?.data?.error) {
+            const graphError = error.response.data.error;
+            errorMessage = graphError.message || errorMessage;
+
+            // Handle specific error codes
+            if (graphError.code === 'Request_BadRequest') {
+                if (errorMessage.includes('userPrincipalName already exists')) {
+                    errorMessage = 'A user with this login name already exists';
+                } else if (errorMessage.includes('password')) {
+                    errorMessage = 'Password does not meet complexity requirements';
+                }
+            } else if (graphError.code === 'Authorization_RequestDenied') {
+                errorMessage = 'Insufficient permissions to create users. Please contact administrator.';
+            }
+        }
+
+        res.status(error.response?.status || 500).json({
+            success: false,
+            error: errorMessage
+        });
+    }
+});
+
+// Check if Azure AD user exists
+app.get('/api/admin/check-azure-user/:upn', apiLimiter, async (req, res) => {
+    console.log('[Graph API] Check Azure AD user request received');
+
+    try {
+        const { upn } = req.params;
+
+        if (!upn) {
+            return res.status(400).json({
+                success: false,
+                error: 'User principal name is required'
+            });
+        }
+
+        const token = await getGraphToken();
+
+        try {
+            const response = await axios.get(
+                `https://graph.microsoft.com/v1.0/users/${encodeURIComponent(upn)}?$select=id,displayName,userPrincipalName,mail,accountEnabled`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+
+            res.json({
+                success: true,
+                exists: true,
+                user: response.data
+            });
+
+        } catch (userError) {
+            if (userError.response?.status === 404) {
+                res.json({
+                    success: true,
+                    exists: false
+                });
+            } else {
+                throw userError;
+            }
+        }
+
+    } catch (error) {
+        console.error('[Graph API] Error checking user:', error.response?.data || error.message);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to check Azure AD user'
+        });
+    }
+});
+
+// =====================================================================
+// END MICROSOFT GRAPH API
+// =====================================================================
+
+
 // Apply cache control middleware
 app.use(cacheControlMiddleware());
 
