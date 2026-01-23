@@ -3495,7 +3495,8 @@ const ALLOWED_SMS_TEMPLATES = [
     'Thank you for recycling with',
     'Thank you for redeeming',  // For voucher/gift redemption
     'شكراً لتدويرك مع',
-    'Merci pour votre recyclage avec'
+    'Merci pour votre recyclage avec',
+    'مرحباً'  // Welcome SMS for new users
 ];
 
 // Clean old rate limit entries periodically
