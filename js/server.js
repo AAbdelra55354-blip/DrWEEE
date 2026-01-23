@@ -1528,9 +1528,8 @@ app.post('/api/fetch-products', async (req, res) => {
     try {
         console.log(`🔄 Fetching e-waste products from Dataverse for territory: ${cacheKey}...`);
 
-        // If territoryId is provided, get the "E-waste" price list for this territory
-        // Price list types: E-waste = 269530000, Sell Products = 269530001
-        // Only get price lists where crd33_availableforwebsite = true
+        // If territoryId is provided, get the E-waste price list directly from territory
+        // Territory now has direct lookup field: crd33_ewastepricelist
         let priceListIds = [];
         if (territoryId) {
             // Validate and sanitize territory ID
@@ -1539,36 +1538,39 @@ app.post('/api/fetch-products', async (req, res) => {
             }
             const sanitizedTerritoryId = sanitizeFetchXmlValue(territoryId);
 
-            const priceListTerritoryQuery = `<fetch version="1.0" mapping="logical">
-                <entity name="crd33_pricelistterritory">
-                    <attribute name="crd33_pricelistterritoryid"/>
+            // Fetch territory with its e-waste price list (direct lookup)
+            const territoryQuery = `<fetch version="1.0" mapping="logical">
+                <entity name="territory">
+                    <attribute name="territoryid"/>
+                    <attribute name="name"/>
                     <filter type="and">
-                        <condition attribute="crd33_territory" operator="eq" value="${sanitizedTerritoryId}"/>
-                        <condition attribute="statecode" operator="eq" value="0"/>
+                        <condition attribute="territoryid" operator="eq" value="${sanitizedTerritoryId}"/>
                     </filter>
-                    <link-entity name="pricelevel" from="pricelevelid" to="crd33_pricelist" alias="pricelist" link-type="inner">
+                    <link-entity name="pricelevel" from="pricelevelid" to="crd33_ewastepricelist" alias="pricelist" link-type="outer">
                         <attribute name="pricelevelid" alias="priceListId"/>
                         <filter type="and">
                             <condition attribute="statecode" operator="eq" value="0"/>
                             <condition attribute="crd33_availableforwebsite" operator="eq" value="1"/>
-                            <condition attribute="crd33_pricelisttype" operator="eq" value="269530000"/>
                         </filter>
                     </link-entity>
                 </entity>
             </fetch>`;
 
-            const priceListTerritories = await queryDataverse('crd33_pricelistterritories', priceListTerritoryQuery);
-            secureLog.debug(`Found ${priceListTerritories?.length || 0} price list territories`);
+            const territories = await queryDataverse('territories', territoryQuery);
+            secureLog.debug(`Territory query returned ${territories?.length || 0} results`);
 
-            // Try both possible alias formats
-            priceListIds = (priceListTerritories || []).map(plt => {
-                // Dataverse may return as 'pricelist.priceListId' or just 'priceListId'
-                return plt['pricelist.priceListId'] || plt.priceListId || plt['pricelist_priceListId'];
-            }).filter(Boolean);
+            // Extract price list ID from territory
+            if (territories && territories.length > 0) {
+                const territory = territories[0];
+                const priceListId = territory['pricelist.priceListId'] || territory.priceListId || territory['pricelist_priceListId'];
+                if (priceListId) {
+                    priceListIds = [priceListId];
+                }
+            }
             secureLog.debug(`Found ${priceListIds.length} price lists for territory`);
 
             if (priceListIds.length === 0) {
-                console.log('⚠️ No price lists found for territory, returning empty products');
+                console.log('⚠️ No e-waste price list configured for territory, returning empty products');
                 const emptyProducts = { computing: [], mobile: [], home: [], entertainment: [], accessories: [], office: [] };
                 ewasteProductCacheByTerritory.set(cacheKey, { data: emptyProducts, lastFetch: Date.now() });
                 return res.status(200).json({
@@ -1743,35 +1745,31 @@ app.post('/api/store', async (req, res) => {
         let territoryPriceListIds = [];
         let territoryCurrency = null;
 
-        // Step 1: If territoryId provided, get the "Sell Products" price list for this territory
-        // Price list types: E-waste = 269530000, Sell Products = 269530001
-        // Only get price lists where crd33_availableforwebsite = true
+        // Step 1: If territoryId provided, get the Products price list directly from territory
+        // Territory now has direct lookup field: crd33_productspricelist
         if (territoryId) {
             // Validate and sanitize territory ID
             if (!isValidGUID(territoryId)) {
                 return res.status(400).json({ success: false, message: 'Invalid territory ID format.' });
             }
             const sanitizedTerritoryId = sanitizeFetchXmlValue(territoryId);
-            console.log(`[Store] Fetching "Sell Products" price list for territory: ${territoryId}`);
+            console.log(`[Store] Fetching products price list for territory: ${territoryId}`);
 
-            // Query crd33_pricelistterritories to get the Sell Products price list for this territory
-            const priceListTerritoryQuery = `<fetch version="1.0" mapping="logical">
-                <entity name="crd33_pricelistterritory">
-                    <attribute name="crd33_pricelistterritoryid"/>
+            // Query territory directly with its products price list (direct lookup)
+            const territoryQuery = `<fetch version="1.0" mapping="logical">
+                <entity name="territory">
+                    <attribute name="territoryid"/>
+                    <attribute name="name"/>
                     <filter type="and">
-                        <condition attribute="crd33_territory" operator="eq" value="${sanitizedTerritoryId}"/>
-                        <condition attribute="statecode" operator="eq" value="0"/>
+                        <condition attribute="territoryid" operator="eq" value="${sanitizedTerritoryId}"/>
                     </filter>
-                    <link-entity name="pricelevel" from="pricelevelid" to="crd33_pricelist" alias="pricelist" link-type="inner">
+                    <link-entity name="pricelevel" from="pricelevelid" to="crd33_productspricelist" alias="pricelist" link-type="outer">
                         <attribute name="pricelevelid" alias="priceListId"/>
                         <attribute name="name" alias="priceListName"/>
                         <attribute name="transactioncurrencyid" alias="currencyId"/>
-                        <attribute name="crd33_pricelisttype" alias="priceListType"/>
-                        <attribute name="crd33_availableforwebsite" alias="availableForWebsite"/>
                         <filter type="and">
                             <condition attribute="statecode" operator="eq" value="0"/>
                             <condition attribute="crd33_availableforwebsite" operator="eq" value="1"/>
-                            <condition attribute="crd33_pricelisttype" operator="eq" value="269530001"/>
                         </filter>
                         <link-entity name="transactioncurrency" from="transactioncurrencyid" to="transactioncurrencyid" alias="currency" link-type="outer">
                             <attribute name="currencyname" alias="currencyName"/>
@@ -1784,36 +1782,49 @@ app.post('/api/store', async (req, res) => {
                 </entity>
             </fetch>`;
 
-            const priceListTerritories = await queryDataverse('crd33_pricelistterritories', priceListTerritoryQuery);
+            const territories = await queryDataverse('territories', territoryQuery);
 
-            if (priceListTerritories.length === 0) {
-                console.log(`[Store] No price lists found for territory: ${territoryId}`);
+            if (!territories || territories.length === 0) {
+                console.log(`[Store] Territory not found: ${territoryId}`);
                 return res.status(200).json({
                     success: true,
                     products: [],
                     currency: null,
-                    message: 'No price lists configured for this territory',
+                    message: 'Territory not found',
                     source: 'live'
                 });
             }
 
-            // Extract price list IDs and currency info
-            territoryPriceListIds = priceListTerritories.map(plt => plt.priceListId);
+            const territory = territories[0];
+            const priceListId = territory['pricelist.priceListId'] || territory.priceListId || territory['pricelist_priceListId'];
 
-            // Get currency from the first price list (should be the same for all in a territory)
-            const firstPriceList = priceListTerritories[0];
-            if (firstPriceList.currencySymbol) {
+            if (!priceListId) {
+                console.log(`[Store] No products price list configured for territory: ${territoryId}`);
+                return res.status(200).json({
+                    success: true,
+                    products: [],
+                    currency: null,
+                    message: 'No products price list configured for this territory',
+                    source: 'live'
+                });
+            }
+
+            territoryPriceListIds = [priceListId];
+
+            // Extract currency info from the price list
+            const currencySymbol = territory['currency.currencySymbol'] || territory.currencySymbol || territory['currency_currencySymbol'];
+            if (currencySymbol) {
                 territoryCurrency = {
-                    id: firstPriceList.currencyId,
-                    name: firstPriceList.currencyName,
-                    symbol: firstPriceList.currencySymbol,
-                    isoCode: firstPriceList.currencyIsoCode,
-                    precision: firstPriceList.currencyPrecision || 2,
-                    exchangeRate: firstPriceList.currencyExchangeRate
+                    id: territory['pricelist.currencyId'] || territory.currencyId || territory['pricelist_currencyId'],
+                    name: territory['currency.currencyName'] || territory.currencyName || territory['currency_currencyName'],
+                    symbol: currencySymbol,
+                    isoCode: territory['currency.currencyIsoCode'] || territory.currencyIsoCode || territory['currency_currencyIsoCode'],
+                    precision: territory['currency.currencyPrecision'] || territory.currencyPrecision || territory['currency_currencyPrecision'] || 2,
+                    exchangeRate: territory['currency.currencyExchangeRate'] || territory.currencyExchangeRate || territory['currency_currencyExchangeRate']
                 };
             }
 
-            console.log(`[Store] Found ${territoryPriceListIds.length} price lists for territory. Currency: ${territoryCurrency?.symbol || 'N/A'}`);
+            console.log(`[Store] Found products price list for territory. Currency: ${territoryCurrency?.symbol || 'N/A'}`);
         }
 
         // Step 2: Get the primary list of products with filters
