@@ -5022,6 +5022,20 @@ app.post('/api/admin/create-azure-user', apiLimiter, async (req, res) => {
 
         console.log('[Graph API] User created successfully:', response.data.id);
 
+        // Add user to Power Platform security group (required for environment access)
+        const POWERPLATFORM_SECURITY_GROUP_ID = process.env.POWERPLATFORM_SECURITY_GROUP_ID || 'a19e66ea-2e19-48f7-a92b-964d0f99c4a3';
+        try {
+            await axios.post(
+                `https://graph.microsoft.com/v1.0/groups/${POWERPLATFORM_SECURITY_GROUP_ID}/members/$ref`,
+                { '@odata.id': `https://graph.microsoft.com/v1.0/directoryObjects/${response.data.id}` },
+                { headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } }
+            );
+            console.log('[Graph API] User added to Power Platform security group');
+        } catch (groupError) {
+            // Don't fail if group add fails - user might already be a member or group might not exist
+            console.warn('[Graph API] Could not add user to security group:', groupError.response?.data?.error?.message || groupError.message);
+        }
+
         res.json({
             success: true,
             user: {
