@@ -5158,6 +5158,61 @@ async function getBapToken() {
     }
 }
 
+// Register the app as a BAP management application (one-time setup)
+// This must be called once to grant BAP API permissions to the app
+// Reference: https://learn.microsoft.com/en-us/power-platform/admin/powerplatform-api-create-service-principal
+app.post('/api/admin/register-bap-app', apiLimiter, async (req, res) => {
+    console.log('[BAP API] Register app as management application request received');
+
+    try {
+        const { AZURE_CLIENT_ID } = process.env;
+
+        if (!AZURE_CLIENT_ID) {
+            return res.status(400).json({
+                success: false,
+                error: 'Azure Client ID not configured on server'
+            });
+        }
+
+        const token = await getBapToken();
+
+        console.log(`[BAP API] Registering app ${AZURE_CLIENT_ID} as management application`);
+
+        // Register the app as a management application
+        // PUT https://api.bap.microsoft.com/providers/Microsoft.BusinessAppPlatform/adminApplications/{CLIENT_ID}?api-version=2020-10-01
+        const registerResponse = await axios.put(
+            `https://api.bap.microsoft.com/providers/Microsoft.BusinessAppPlatform/adminApplications/${AZURE_CLIENT_ID}?api-version=2020-10-01`,
+            {},
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        console.log('[BAP API] App registration successful:', registerResponse.status);
+
+        res.json({
+            success: true,
+            message: 'App registered as BAP management application successfully'
+        });
+
+    } catch (error) {
+        console.error('[BAP API] Error registering app:', error.response?.data || error.message);
+
+        let errorMessage = 'Failed to register app as BAP management application';
+        if (error.response?.data?.error) {
+            errorMessage = error.response.data.error.message || errorMessage;
+        }
+
+        res.status(error.response?.status || 500).json({
+            success: false,
+            error: errorMessage
+        });
+    }
+});
+
 // Sync user to Power Platform using BAP Admin API Force Sync
 // This endpoint triggers the Power Platform to sync an Azure AD user to Dataverse
 app.post('/api/admin/sync-user-to-powerplatform', apiLimiter, async (req, res) => {
