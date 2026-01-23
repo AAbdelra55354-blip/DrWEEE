@@ -5164,7 +5164,7 @@ app.post('/api/admin/sync-user-to-powerplatform', apiLimiter, async (req, res) =
     console.log('[BAP API] Sync user to Power Platform request received');
 
     try {
-        const { azureUserId } = req.body;
+        const { azureUserId, environmentId } = req.body;
 
         if (!azureUserId) {
             return res.status(400).json({
@@ -5173,15 +5173,10 @@ app.post('/api/admin/sync-user-to-powerplatform', apiLimiter, async (req, res) =
             });
         }
 
-        // Get the Power Platform environment ID from env vars
-        // Format should be the environment GUID (e.g., from org1cbcc5c9.crm3.dynamics.com -> get from admin center)
-        const environmentId = process.env.POWERPLATFORM_ENVIRONMENT_ID;
-
         if (!environmentId) {
-            console.warn('[BAP API] POWERPLATFORM_ENVIRONMENT_ID not configured, skipping BAP sync');
-            return res.json({
+            return res.status(400).json({
                 success: false,
-                error: 'Power Platform environment ID not configured on server'
+                error: 'Environment ID is required'
             });
         }
 
