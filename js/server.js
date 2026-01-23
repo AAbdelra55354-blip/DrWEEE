@@ -5293,6 +5293,42 @@ app.get('/api/admin/search-azure-users', apiLimiter, async (req, res) => {
     }
 });
 
+// Update Azure AD user's mobile phone
+app.patch('/api/admin/update-azure-user-phone', apiLimiter, async (req, res) => {
+    const { userPrincipalName, mobilePhone } = req.body;
+
+    if (!userPrincipalName) {
+        return res.status(400).json({ success: false, error: 'userPrincipalName is required' });
+    }
+
+    try {
+        const token = await getGraphToken();
+
+        console.log(`[Graph API] Updating mobile phone for user: ${userPrincipalName}`);
+
+        await axios.patch(
+            `https://graph.microsoft.com/v1.0/users/${encodeURIComponent(userPrincipalName)}`,
+            { mobilePhone: mobilePhone || null },
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        console.log('[Graph API] Mobile phone updated successfully');
+        res.json({ success: true });
+
+    } catch (error) {
+        console.error('[Graph API] Update mobile phone failed:', error.response?.data || error.message);
+        res.status(error.response?.status || 500).json({
+            success: false,
+            error: error.response?.data?.error?.message || error.message
+        });
+    }
+});
+
 // =====================================================================
 // END MICROSOFT GRAPH API & BAP API
 // =====================================================================
