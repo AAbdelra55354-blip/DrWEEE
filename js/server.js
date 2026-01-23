@@ -5113,6 +5113,120 @@ app.get('/api/admin/check-azure-user/:upn', apiLimiter, async (req, res) => {
     }
 });
 
+// BAP (Business Application Platform) API token cache
+const bapApi = {
+    accessToken: null,
+    tokenExpiry: 0
+};
+
+// Get BAP API token for Power Platform Admin operations
+async function getBapToken() {
+    // Return cached token if it's still valid
+    if (bapApi.accessToken && Date.now() < bapApi.tokenExpiry) {
+        return bapApi.accessToken;
+    }
+
+    console.log('[BAP API] Authenticating with Power Platform Admin API...');
+    const { AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET } = process.env;
+
+    if (!AZURE_TENANT_ID || !AZURE_CLIENT_ID || !AZURE_CLIENT_SECRET) {
+        console.error('[BAP API] Missing required Azure environment variables');
+        throw new Error('Missing required Azure configuration for BAP API.');
+    }
+
+    const tokenEndpoint = `https://login.microsoftonline.com/${AZURE_TENANT_ID}/oauth2/v2.0/token`;
+    const params = new URLSearchParams();
+    params.append('client_id', AZURE_CLIENT_ID);
+    params.append('scope', 'https://api.bap.microsoft.com/.default');
+    params.append('client_secret', AZURE_CLIENT_SECRET);
+    params.append('grant_type', 'client_credentials');
+
+    try {
+        const response = await axios.post(tokenEndpoint, params, {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+
+        bapApi.accessToken = response.data.access_token;
+        // Set expiry to 5 minutes before the actual token expiration for safety
+        bapApi.tokenExpiry = Date.now() + (response.data.expires_in - 300) * 1000;
+
+        console.log('[BAP API] Power Platform Admin API authentication successful.');
+        return bapApi.accessToken;
+    } catch (error) {
+        console.error('[BAP API] Authentication failed:', error.response?.data || error.message);
+        throw new Error('Could not authenticate with Power Platform Admin API.');
+    }
+}
+
+// Sync user to Power Platform using BAP Admin API Force Sync
+// This endpoint triggers the Power Platform to sync an Azure AD user to Dataverse
+app.post('/api/admin/sync-user-to-powerplatform', apiLimiter, async (req, res) => {
+    console.log('[BAP API] Sync user to Power Platform request received');
+
+    try {
+        const { azureUserId } = req.body;
+
+        if (!azureUserId) {
+            return res.status(400).json({
+                success: false,
+                error: 'Azure User ID is required'
+            });
+        }
+
+        // Get the Power Platform environment ID from env vars
+        // Format should be the environment GUID (e.g., from org1cbcc5c9.crm3.dynamics.com -> get from admin center)
+        const environmentId = process.env.POWERPLATFORM_ENVIRONMENT_ID;
+
+        if (!environmentId) {
+            console.warn('[BAP API] POWERPLATFORM_ENVIRONMENT_ID not configured, skipping BAP sync');
+            return res.json({
+                success: false,
+                error: 'Power Platform environment ID not configured on server'
+            });
+        }
+
+        const token = await getBapToken();
+
+        console.log(`[BAP API] Syncing user ${azureUserId} to environment ${environmentId}`);
+
+        // Call the Force Sync User endpoint
+        // Reference: https://learn.microsoft.com/en-us/connectors/powerplatformforadmins/
+        const syncResponse = await axios.post(
+            `https://api.bap.microsoft.com/providers/Microsoft.BusinessAppPlatform/scopes/admin/environments/${environmentId}/addUser?api-version=2020-10-01`,
+            {
+                ObjectId: azureUserId
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        console.log('[BAP API] User sync successful:', syncResponse.status);
+
+        res.json({
+            success: true,
+            message: 'User synced to Power Platform successfully'
+        });
+
+    } catch (error) {
+        console.error('[BAP API] Error syncing user:', error.response?.data || error.message);
+
+        // Don't fail the whole user creation - this is optional enhancement
+        let errorMessage = 'Failed to sync user to Power Platform';
+        if (error.response?.data?.error) {
+            errorMessage = error.response.data.error.message || errorMessage;
+        }
+
+        res.json({
+            success: false,
+            error: errorMessage
+        });
+    }
+});
+
 // =====================================================================
 // END MICROSOFT GRAPH API
 // =====================================================================
