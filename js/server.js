@@ -5243,6 +5243,56 @@ app.post('/api/admin/sync-user-to-powerplatform', apiLimiter, async (req, res) =
     }
 });
 
+// Search Azure AD users (for adding existing users to Power Platform)
+app.get('/api/admin/search-azure-users', apiLimiter, async (req, res) => {
+    const { query } = req.query;
+
+    if (!query || query.length < 2) {
+        return res.status(400).json({ success: false, error: 'Search query must be at least 2 characters' });
+    }
+
+    try {
+        const token = await getGraphToken();
+
+        // Search by displayName, userPrincipalName, or mail
+        const searchFilter = `startswith(displayName,'${query}') or startswith(userPrincipalName,'${query}') or startswith(mail,'${query}')`;
+
+        console.log(`[Graph API] Searching Azure AD users with query: ${query}`);
+
+        const response = await axios.get(
+            `https://graph.microsoft.com/v1.0/users?$filter=${encodeURIComponent(searchFilter)}&$select=id,displayName,userPrincipalName,mail,jobTitle,department&$top=20`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        const users = response.data.value || [];
+        console.log(`[Graph API] Found ${users.length} Azure AD users`);
+
+        res.json({
+            success: true,
+            users: users.map(u => ({
+                id: u.id,
+                displayName: u.displayName,
+                userPrincipalName: u.userPrincipalName,
+                mail: u.mail,
+                jobTitle: u.jobTitle,
+                department: u.department
+            }))
+        });
+
+    } catch (error) {
+        console.error('[Graph API] Search users failed:', error.response?.data || error.message);
+        res.status(error.response?.status || 500).json({
+            success: false,
+            error: error.response?.data?.error?.message || error.message
+        });
+    }
+});
+
 // =====================================================================
 // END MICROSOFT GRAPH API & BAP API
 // =====================================================================
