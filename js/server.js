@@ -5154,6 +5154,52 @@ async function getBapToken() {
     return bapApi.accessToken;
 }
 
+// Get Power Platform environment ID by Dataverse URL
+// The BAP API uses a different environment ID than Dataverse organizationid
+app.post('/api/admin/get-environment-id', apiLimiter, async (req, res) => {
+    const { dataverseUrl } = req.body;
+
+    if (!dataverseUrl) {
+        return res.status(400).json({ success: false, error: 'dataverseUrl is required' });
+    }
+
+    try {
+        const token = await getBapToken();
+
+        // List all environments and find the one matching the Dataverse URL
+        const response = await axios.get(
+            'https://api.bap.microsoft.com/providers/Microsoft.BusinessAppPlatform/scopes/admin/environments?api-version=2020-10-01',
+            { headers: { 'Authorization': `Bearer ${token}` } }
+        );
+
+        const environments = response.data.value || [];
+
+        // Extract org name from URL (e.g., "org1cbcc5c9" from "https://org1cbcc5c9.crm3.dynamics.com")
+        const urlMatch = dataverseUrl.match(/https?:\/\/([^.]+)\./i);
+        const orgName = urlMatch ? urlMatch[1].toLowerCase() : null;
+
+        console.log(`[BAP API] Looking for environment with org: ${orgName}`);
+
+        // Find environment by matching the Dataverse URL
+        const env = environments.find(e => {
+            const envUrl = e.properties?.linkedEnvironmentMetadata?.instanceUrl || '';
+            return envUrl.toLowerCase().includes(orgName);
+        });
+
+        if (env) {
+            console.log(`[BAP API] Found environment: ${env.name} (${env.properties?.displayName})`);
+            res.json({ success: true, environmentId: env.name });
+        } else {
+            console.warn('[BAP API] Environment not found for URL:', dataverseUrl);
+            res.json({ success: false, error: 'Environment not found' });
+        }
+
+    } catch (error) {
+        console.error('[BAP API] Get environment failed:', error.response?.data || error.message);
+        res.json({ success: false, error: error.response?.data?.error?.message || error.message });
+    }
+});
+
 // Sync user to Power Platform (Force add user to environment)
 app.post('/api/admin/sync-user-to-powerplatform', apiLimiter, async (req, res) => {
     const { azureUserId, environmentId } = req.body;
