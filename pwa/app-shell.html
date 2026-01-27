@@ -488,8 +488,40 @@
                 || window.navigator.standalone === true;
         }
 
-        // If launched from installed PWA, redirect immediately
-        if (isPWALaunch || isStandalone()) {
+        // If launched from installed PWA, show launcher and redirect
+        if (isStandalone()) {
+            let targetUrl = DYNAMICS_URL;
+            if (moduleParam) {
+                targetUrl += '#' + moduleParam;
+            }
+
+            // Show launcher splash screen
+            document.addEventListener('DOMContentLoaded', () => {
+                const lang = localStorage.getItem('drweee_lang') || 'ar';
+                const isRtl = lang === 'ar';
+                document.body.innerHTML = `
+                    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:linear-gradient(135deg,#00897b,#26a69a);color:white;font-family:-apple-system,sans-serif;text-align:center;padding:20px;direction:${isRtl ? 'rtl' : 'ltr'};">
+                        <div style="font-size:80px;margin-bottom:20px;animation:float 3s ease-in-out infinite;">♻</div>
+                        <div style="font-size:32px;font-weight:700;margin-bottom:8px;">Dr.<span style="color:#b2dfdb">WEEE</span></div>
+                        <div style="font-size:14px;opacity:0.9;margin-bottom:30px;">${isRtl ? 'نظام إدارة النفايات الإلكترونية' : 'E-Waste Management System'}</div>
+                        <div style="width:36px;height:36px;border:3px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:16px;"></div>
+                        <div style="font-size:14px;opacity:0.8;">${isRtl ? 'جاري التحميل...' : 'Loading...'}</div>
+                        <style>
+                            @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+                            @keyframes spin{to{transform:rotate(360deg)}}
+                        </style>
+                    </div>
+                `;
+
+                // Auto-redirect after brief splash
+                setTimeout(() => {
+                    window.location.href = targetUrl;
+                }, 800);
+            });
+
+            // Stop here - don't load the rest of the page
+        } else if (isPWALaunch && !isStandalone()) {
+            // Opened via URL params but not in standalone mode - just redirect
             let targetUrl = DYNAMICS_URL;
             if (moduleParam) {
                 targetUrl += '#' + moduleParam;
