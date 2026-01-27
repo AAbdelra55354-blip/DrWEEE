@@ -439,20 +439,31 @@
                 </div>
             </div>
 
-            <!-- Desktop/Android Instructions (shown when no prompt available) -->
-            <div id="desktopInstructions" class="install-instructions">
+            <!-- Chrome/Edge Instructions (shown when no prompt available) -->
+            <div id="chromeInstructions" class="install-instructions">
+                <p style="margin-bottom: 16px; font-weight: 500; color: #00897b;">
+                    <span data-lang="ar">لتثبيت التطبيق:</span>
+                    <span data-lang="en" style="display:none">To install the app:</span>
+                </p>
                 <div class="install-step">
                     <span class="step-num">1</span>
                     <span>
-                        <span data-lang="ar">اضغط على قائمة المتصفح (⋮) في الأعلى</span>
-                        <span data-lang="en" style="display:none">Click the browser menu (⋮) at the top</span>
+                        <span data-lang="ar">ابحث عن أيقونة التثبيت <span style="background:#333;color:white;padding:2px 6px;border-radius:4px;font-size:12px;">⊕</span> في شريط العنوان</span>
+                        <span data-lang="en" style="display:none">Look for the install icon <span style="background:#333;color:white;padding:2px 6px;border-radius:4px;font-size:12px;">⊕</span> in the address bar</span>
                     </span>
                 </div>
                 <div class="install-step">
                     <span class="step-num">2</span>
                     <span>
-                        <span data-lang="ar">اختر "تثبيت التطبيق" أو "Install app"</span>
-                        <span data-lang="en" style="display:none">Select "Install app" or "Add to Home Screen"</span>
+                        <span data-lang="ar">أو اضغط على قائمة المتصفح <span style="background:#333;color:white;padding:2px 8px;border-radius:4px;">⋮</span></span>
+                        <span data-lang="en" style="display:none">Or click browser menu <span style="background:#333;color:white;padding:2px 8px;border-radius:4px;">⋮</span></span>
+                    </span>
+                </div>
+                <div class="install-step">
+                    <span class="step-num">3</span>
+                    <span>
+                        <span data-lang="ar">ثم اختر "تثبيت DrWEEE..."</span>
+                        <span data-lang="en" style="display:none">Then select "Install DrWEEE..."</span>
                     </span>
                 </div>
             </div>
@@ -502,7 +513,7 @@
         // DOM elements
         const installBtn = document.getElementById('installBtn');
         const iosInstructions = document.getElementById('iosInstructions');
-        const desktopInstructions = document.getElementById('desktopInstructions');
+        const chromeInstructions = document.getElementById('chromeInstructions');
         const divider = document.getElementById('divider');
         const continueBtn = document.getElementById('continueBtn');
 
@@ -572,9 +583,9 @@
                 installBtn.style.display = 'none';
                 divider.style.display = 'none';
             } else {
-                // Desktop/Android without prompt - show instructions
-                log('No prompt - showing manual instructions');
-                desktopInstructions.classList.add('visible');
+                // Desktop/Android without prompt - show inline instructions
+                log('No prompt - showing Chrome instructions');
+                document.getElementById('chromeInstructions').classList.add('visible');
                 installBtn.style.display = 'none';
                 divider.style.display = 'none';
             }
@@ -599,21 +610,35 @@
                 return;
             }
 
-            // iOS: Always show instructions (no beforeinstallprompt support)
+            // Show appropriate instructions based on platform
             if (isIOS()) {
                 log('iOS device detected');
                 iosInstructions.classList.add('visible');
-                installBtn.querySelector('[data-lang="ar"]').textContent = 'اتبع الخطوات أدناه';
-                installBtn.querySelector('[data-lang="en"]').textContent = 'Follow steps below';
+                installBtn.querySelector('[data-lang="ar"]').textContent = 'اتبع الخطوات أدناه ↓';
+                installBtn.querySelector('[data-lang="en"]').textContent = 'Follow steps below ↓';
+                installBtn.style.display = 'none';
+                divider.style.display = 'none';
+            } else if (!window.deferredInstallPrompt && (browser === 'chrome' || browser === 'edge')) {
+                // Chrome/Edge but no prompt yet - show instructions immediately
+                log('Chrome/Edge without prompt - showing instructions');
+                chromeInstructions.classList.add('visible');
+                // Keep button visible - it might get the prompt later
+                installBtn.querySelector('[data-lang="ar"]').textContent = 'ابحث عن ⊕ في شريط العنوان';
+                installBtn.querySelector('[data-lang="en"]').textContent = 'Look for ⊕ in address bar';
             }
 
             // Setup install button
             installBtn.addEventListener('click', handleInstallClick);
 
-            // Listen for the prompt becoming available (if SW registers late)
+            // Listen for the prompt becoming available
             window.addEventListener('pwainstallready', () => {
                 log('Install prompt became ready!');
                 installBtn.classList.add('prompt-ready');
+                // Reset button text
+                installBtn.querySelector('[data-lang="ar"]').textContent = 'تثبيت التطبيق';
+                installBtn.querySelector('[data-lang="en"]').textContent = 'Install App';
+                // Hide instructions since we have native prompt
+                chromeInstructions.classList.remove('visible');
             });
 
             // Check if prompt is already available
