@@ -5334,6 +5334,53 @@ app.patch('/api/admin/update-azure-user-phone', apiLimiter, async (req, res) => 
 // =====================================================================
 
 
+// =====================================================================
+// PWA ROUTES (must be before static middleware and cache control)
+// =====================================================================
+
+// Serve PWA app shell for /app and /app/*
+app.get('/app', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'pwa', 'app-shell.html'));
+});
+
+app.get('/app/*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'pwa', 'app-shell.html'));
+});
+
+// PWA manifest with correct MIME type
+app.get('/pwa/manifest.json', (req, res) => {
+    res.type('application/manifest+json');
+    res.sendFile(path.join(__dirname, '..', 'pwa', 'manifest.json'));
+});
+
+// Service worker with correct scope header
+app.get('/pwa/sw.js', (req, res) => {
+    res.type('application/javascript');
+    res.setHeader('Service-Worker-Allowed', '/app');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.sendFile(path.join(__dirname, '..', 'pwa', 'sw.js'));
+});
+
+// Static PWA assets with caching
+app.use('/pwa', express.static(path.join(__dirname, '..', 'pwa'), {
+    maxAge: '7d',
+    etag: true,
+    setHeaders: (res, filepath) => {
+        // Don't cache HTML files
+        if (filepath.endsWith('.html')) {
+            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        }
+        // Don't cache service worker
+        if (filepath.endsWith('sw.js')) {
+            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        }
+    }
+}));
+
+// =====================================================================
+// END PWA ROUTES
+// =====================================================================
+
 // Apply cache control middleware
 app.use(cacheControlMiddleware());
 
@@ -5350,12 +5397,6 @@ app.use(express.static(path.join(__dirname, '..'), {
         }
     }
 }));
-
-// --- IMMEDIATE REDIRECT ROUTE ---
-app.get('/app', (req, res) => {
-    // 301 Moved Permanently - Fastest option as browsers cache this redirection
-    res.redirect(301, 'https://org1cbcc5c9.crm3.dynamics.com/WebResources/crd33_home');
-});
 // --- 6. FALLBACK ROUTE & SERVER START ---
 
 // Fallback route for SPA (must be before error handler)

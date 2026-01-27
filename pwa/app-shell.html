@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#00897b">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+
+    <title>DrWEEE</title>
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Preconnect to Dynamics 365 for faster iframe load -->
+    <link rel="preconnect" href="https://org1cbcc5c9.crm3.dynamics.com">
+    <link rel="dns-prefetch" href="https://org1cbcc5c9.crm3.dynamics.com">
+
+    <!-- Apple-specific meta tags -->
+    <meta name="apple-mobile-web-app-title" content="DrWEEE">
+    <link rel="apple-touch-icon" href="/pwa/assets/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/pwa/assets/icons/icon-192x192.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/svg+xml" href="/images/favicon/favicon.svg">
+
+    <!-- Cached styles -->
+    <link rel="stylesheet" href="/pwa/assets/app-shell.css">
+</head>
+<body>
+    <!-- Offline Banner (hidden by default) -->
+    <div id="offlineBanner" class="offline-banner hidden">
+        <span class="offline-icon">&#128225;</span>
+        <span class="offline-text">
+            <span data-lang="ar">انت غير متصل بالانترنت</span>
+            <span data-lang="en" style="display:none">You're offline</span>
+        </span>
+    </div>
+
+    <!-- App Shell Container -->
+    <div class="pwa-shell">
+        <!-- Loading Splash (shown while Dynamics loads) -->
+        <div id="loadingSplash" class="loading-splash">
+            <div class="splash-content">
+                <div class="splash-logo">
+                    <svg class="logo-icon" viewBox="0 0 100 100" width="80" height="80">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="#4db6ac" stroke-width="3"/>
+                        <path d="M50 20 L50 50 L70 70" fill="none" stroke="#00897b" stroke-width="4" stroke-linecap="round"/>
+                        <path d="M30 60 Q50 80 70 60" fill="none" stroke="#26a69a" stroke-width="3" stroke-linecap="round"/>
+                        <circle cx="50" cy="50" r="8" fill="#00897b"/>
+                    </svg>
+                    <div class="logo-text">
+                        Dr.<span class="logo-accent">WEEE</span>
+                    </div>
+                </div>
+                <div class="splash-loader">
+                    <div class="loader-ring"></div>
+                </div>
+                <p class="splash-text">
+                    <span data-lang="ar">جاري التحميل...</span>
+                    <span data-lang="en" style="display:none">Loading...</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Dynamics 365 Content Frame -->
+        <iframe id="dynamicsFrame"
+                class="dynamics-frame"
+                src="about:blank"
+                allow="geolocation; camera; microphone; clipboard-read; clipboard-write; fullscreen"
+                sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-downloads allow-top-navigation"
+                title="DrWEEE Application"
+                loading="eager">
+        </iframe>
+
+        <!-- Auth Required Overlay (hidden by default) -->
+        <div id="authOverlay" class="auth-overlay hidden">
+            <div class="auth-content">
+                <div class="auth-icon">&#128274;</div>
+                <h2 class="auth-title">
+                    <span data-lang="ar">مطلوب تسجيل الدخول</span>
+                    <span data-lang="en" style="display:none">Authentication Required</span>
+                </h2>
+                <p class="auth-text">
+                    <span data-lang="ar">يرجى تسجيل الدخول للوصول إلى التطبيق</span>
+                    <span data-lang="en" style="display:none">Please sign in to access the application</span>
+                </p>
+                <a href="https://org1cbcc5c9.crm3.dynamics.com" class="auth-btn" id="authBtn">
+                    <span data-lang="ar">تسجيل الدخول</span>
+                    <span data-lang="en" style="display:none">Sign In</span>
+                </a>
+                <button class="retry-btn" id="retryBtn">
+                    <span data-lang="ar">اعادة المحاولة</span>
+                    <span data-lang="en" style="display:none">Retry</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Connection Error Overlay (hidden by default) -->
+        <div id="errorOverlay" class="error-overlay hidden">
+            <div class="error-content">
+                <div class="error-icon">&#9888;</div>
+                <h2 class="error-title">
+                    <span data-lang="ar">خطأ في الاتصال</span>
+                    <span data-lang="en" style="display:none">Connection Error</span>
+                </h2>
+                <p class="error-text">
+                    <span data-lang="ar">تعذر الاتصال بالخادم. تحقق من اتصالك بالإنترنت.</span>
+                    <span data-lang="en" style="display:none">Could not connect to the server. Check your internet connection.</span>
+                </p>
+                <button class="retry-btn" id="errorRetryBtn">
+                    <span data-lang="ar">اعادة المحاولة</span>
+                    <span data-lang="en" style="display:none">Retry</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Install Prompt UI (hidden by default) -->
+    <div id="installPrompt" class="install-prompt hidden">
+        <div class="install-content">
+            <button class="install-close" id="installClose" aria-label="Close">&times;</button>
+            <div class="install-header">
+                <div class="install-icon">
+                    <svg viewBox="0 0 100 100" width="48" height="48">
+                        <circle cx="50" cy="50" r="45" fill="#00897b"/>
+                        <path d="M50 25 L50 55 M35 45 L50 60 L65 45" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="30" y1="70" x2="70" y2="70" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="install-text-content">
+                    <h3 class="install-title">
+                        <span data-lang="ar">تثبيت تطبيق DrWEEE</span>
+                        <span data-lang="en" style="display:none">Install DrWEEE App</span>
+                    </h3>
+                    <p class="install-text">
+                        <span data-lang="ar">ثبّت التطبيق للوصول السريع والميزات المحسنة</span>
+                        <span data-lang="en" style="display:none">Install for faster access and enhanced features</span>
+                    </p>
+                </div>
+            </div>
+            <div class="install-actions">
+                <button class="install-btn-secondary" id="installLater">
+                    <span data-lang="ar">لاحقاً</span>
+                    <span data-lang="en" style="display:none">Later</span>
+                </button>
+                <button class="install-btn" id="installBtn">
+                    <span data-lang="ar">تثبيت الآن</span>
+                    <span data-lang="en" style="display:none">Install Now</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- iOS Install Instructions (hidden by default) -->
+    <div id="iosInstallPrompt" class="ios-install-prompt hidden">
+        <div class="ios-install-content">
+            <button class="install-close" id="iosInstallClose" aria-label="Close">&times;</button>
+            <div class="ios-install-header">
+                <svg viewBox="0 0 100 100" width="48" height="48">
+                    <circle cx="50" cy="50" r="45" fill="#00897b"/>
+                    <path d="M50 25 L50 55 M35 45 L50 60 L65 45" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="30" y1="70" x2="70" y2="70" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                </svg>
+                <h3 class="ios-install-title">
+                    <span data-lang="ar">تثبيت تطبيق DrWEEE</span>
+                    <span data-lang="en" style="display:none">Install DrWEEE App</span>
+                </h3>
+            </div>
+            <div class="ios-install-steps">
+                <div class="ios-step">
+                    <span class="ios-step-number">1</span>
+                    <span class="ios-step-text">
+                        <span data-lang="ar">اضغط على زر المشاركة</span>
+                        <span data-lang="en" style="display:none">Tap the Share button</span>
+                    </span>
+                    <span class="ios-share-icon">&#9757;</span>
+                </div>
+                <div class="ios-step">
+                    <span class="ios-step-number">2</span>
+                    <span class="ios-step-text">
+                        <span data-lang="ar">اختر "إضافة إلى الشاشة الرئيسية"</span>
+                        <span data-lang="en" style="display:none">Select "Add to Home Screen"</span>
+                    </span>
+                </div>
+                <div class="ios-step">
+                    <span class="ios-step-number">3</span>
+                    <span class="ios-step-text">
+                        <span data-lang="ar">اضغط "إضافة"</span>
+                        <span data-lang="en" style="display:none">Tap "Add"</span>
+                    </span>
+                </div>
+            </div>
+            <button class="ios-got-it-btn" id="iosGotIt">
+                <span data-lang="ar">فهمت</span>
+                <span data-lang="en" style="display:none">Got it</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Update Available Banner (hidden by default) -->
+    <div id="updateBanner" class="update-banner hidden">
+        <span class="update-text">
+            <span data-lang="ar">تحديث جديد متوفر</span>
+            <span data-lang="en" style="display:none">New update available</span>
+        </span>
+        <button class="update-btn" id="updateBtn">
+            <span data-lang="ar">تحديث</span>
+            <span data-lang="en" style="display:none">Update</span>
+        </button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/pwa/js/offline-manager.js"></script>
+    <script src="/pwa/js/pwa-bridge.js"></script>
+    <script src="/pwa/js/install-prompt.js"></script>
+    <script src="/pwa/js/deep-link-router.js"></script>
+
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                try {
+                    const registration = await navigator.serviceWorker.register('/pwa/sw.js', {
+                        scope: '/app'
+                    });
+                    console.log('[PWA] Service worker registered:', registration.scope);
+
+                    // Check for updates
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // New version available
+                                document.getElementById('updateBanner')?.classList.remove('hidden');
+                            }
+                        });
+                    });
+                } catch (error) {
+                    console.error('[PWA] Service worker registration failed:', error);
+                }
+            });
+
+            // Handle update button click
+            document.getElementById('updateBtn')?.addEventListener('click', () => {
+                window.location.reload();
+            });
+        }
+    </script>
+</body>
+</html>
