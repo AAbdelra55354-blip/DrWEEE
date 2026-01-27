@@ -13,6 +13,7 @@ const cors = require('cors');
 const axios = require('axios');
 const crypto = require('crypto');
 const fs = require('fs');
+const webpush = require('web-push');
 // Add after existing imports
 const cequensApi = {
     baseUrl: 'https://apis.cequens.com',
@@ -37,6 +38,83 @@ const VOUCHERS_CACHE_DURATION_MS = 15 * 60 * 1000; // Cache for 15 minutes
 // Translation cache for Azure Translator
 const translationCache = new Map();
 const TRANSLATION_CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
+
+// --- WEB PUSH NOTIFICATIONS ---
+// VAPID keys for Web Push (generate once and store in .env)
+// To generate: npx web-push generate-vapid-keys
+const VAPID_PUBLIC_KEY = process.env.VAPID_PUBLIC_KEY || '';
+const VAPID_PRIVATE_KEY = process.env.VAPID_PRIVATE_KEY || '';
+const VAPID_SUBJECT = process.env.VAPID_SUBJECT || 'mailto:support@drweee.com';
+
+// Configure web-push if VAPID keys are available
+if (VAPID_PUBLIC_KEY && VAPID_PRIVATE_KEY) {
+    webpush.setVapidDetails(VAPID_SUBJECT, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY);
+    console.log('🔔 Web Push notifications configured');
+} else {
+    console.log('⚠️ Web Push: VAPID keys not configured - push notifications disabled');
+}
+
+// Push subscription storage (file-based for simplicity, can be upgraded to DB)
+const PUSH_SUBSCRIPTIONS_FILE = path.join(__dirname, '../data/push-subscriptions.json');
+
+// Ensure data directory exists
+const dataDir = path.join(__dirname, '../data');
+if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+}
+
+// Load existing subscriptions
+let pushSubscriptions = new Map(); // Map<userId, subscription>
+try {
+    if (fs.existsSync(PUSH_SUBSCRIPTIONS_FILE)) {
+        const data = JSON.parse(fs.readFileSync(PUSH_SUBSCRIPTIONS_FILE, 'utf8'));
+        pushSubscriptions = new Map(Object.entries(data));
+        console.log(`📱 Loaded ${pushSubscriptions.size} push subscriptions`);
+    }
+} catch (e) {
+    console.error('Failed to load push subscriptions:', e.message);
+}
+
+// Save subscriptions to file
+function savePushSubscriptions() {
+    try {
+        const data = Object.fromEntries(pushSubscriptions);
+        fs.writeFileSync(PUSH_SUBSCRIPTIONS_FILE, JSON.stringify(data, null, 2));
+    } catch (e) {
+        console.error('Failed to save push subscriptions:', e.message);
+    }
+}
+
+// Send push notification to a specific user
+async function sendPushNotification(userId, payload) {
+    if (!VAPID_PUBLIC_KEY || !VAPID_PRIVATE_KEY) {
+        console.log('Push notifications not configured - skipping');
+        return { success: false, reason: 'not_configured' };
+    }
+
+    const subscription = pushSubscriptions.get(userId);
+    if (!subscription) {
+        console.log(`No push subscription for user ${userId.slice(0, 8)}...`);
+        return { success: false, reason: 'no_subscription' };
+    }
+
+    try {
+        await webpush.sendNotification(subscription, JSON.stringify(payload));
+        console.log(`🔔 Push sent to user ${userId.slice(0, 8)}...`);
+        return { success: true };
+    } catch (error) {
+        console.error(`Push failed for user ${userId.slice(0, 8)}:`, error.message);
+
+        // Remove invalid subscriptions (410 Gone or 404 Not Found)
+        if (error.statusCode === 410 || error.statusCode === 404) {
+            pushSubscriptions.delete(userId);
+            savePushSubscriptions();
+            console.log(`Removed expired subscription for user ${userId.slice(0, 8)}`);
+        }
+
+        return { success: false, reason: error.message };
+    }
+}
 
 // --- SECURE LOGGING UTILITIES ---
 // Production-safe logging that masks sensitive data
@@ -5403,6 +5481,146 @@ if (pwaEnabled) {
 
 // =====================================================================
 // END PWA ROUTES
+// =====================================================================
+
+// =====================================================================
+// PUSH NOTIFICATION API ROUTES
+// =====================================================================
+
+// Get VAPID public key (needed by clients to subscribe)
+app.get('/api/push/vapid-public-key', (req, res) => {
+    if (!VAPID_PUBLIC_KEY) {
+        return res.status(503).json({ error: 'Push notifications not configured' });
+    }
+    res.json({ publicKey: VAPID_PUBLIC_KEY });
+});
+
+// Subscribe to push notifications
+app.post('/api/push/subscribe', express.json(), (req, res) => {
+    const { userId, subscription } = req.body;
+
+    if (!userId || !subscription) {
+        return res.status(400).json({ error: 'userId and subscription required' });
+    }
+
+    if (!subscription.endpoint || !subscription.keys) {
+        return res.status(400).json({ error: 'Invalid subscription object' });
+    }
+
+    // Store subscription
+    pushSubscriptions.set(userId, subscription);
+    savePushSubscriptions();
+
+    console.log(`🔔 Push subscription saved for user ${userId.slice(0, 8)}...`);
+    res.json({ success: true, message: 'Subscription saved' });
+});
+
+// Unsubscribe from push notifications
+app.post('/api/push/unsubscribe', express.json(), (req, res) => {
+    const { userId } = req.body;
+
+    if (!userId) {
+        return res.status(400).json({ error: 'userId required' });
+    }
+
+    const existed = pushSubscriptions.has(userId);
+    pushSubscriptions.delete(userId);
+    savePushSubscriptions();
+
+    console.log(`🔕 Push subscription removed for user ${userId.slice(0, 8)}...`);
+    res.json({ success: true, existed });
+});
+
+// Send task notification (called from Dynamics 365 web resources)
+app.post('/api/push/task-notification', express.json(), async (req, res) => {
+    const { targetUserId, type, taskSubject, taskId, senderName } = req.body;
+
+    if (!targetUserId || !type || !taskSubject) {
+        return res.status(400).json({ error: 'targetUserId, type, and taskSubject required' });
+    }
+
+    // Build notification payload
+    const titles = {
+        'new_task': { en: 'New Task Assigned', ar: 'تم إسناد مهمة جديدة' },
+        'task_completed': { en: 'Task Completed', ar: 'تم إكمال المهمة' },
+        'task_updated': { en: 'Task Updated', ar: 'تم تحديث المهمة' },
+        'task_due': { en: 'Task Due Soon', ar: 'المهمة مستحقة قريباً' }
+    };
+
+    const title = titles[type] || { en: 'Task Notification', ar: 'إشعار مهمة' };
+
+    const payload = {
+        title: title,
+        body: taskSubject,
+        data: {
+            type: type,
+            taskId: taskId || null,
+            senderName: senderName || null,
+            url: '/WebResources/crd33_home#tasks'
+        },
+        icon: 'https://www.drweee.com/pwa/assets/icons/icon-192x192.png',
+        badge: 'https://www.drweee.com/pwa/assets/icons/icon-96x96.png'
+    };
+
+    const result = await sendPushNotification(targetUserId, payload);
+    res.json(result);
+});
+
+// Batch send notifications (for multiple users)
+app.post('/api/push/batch-notification', express.json(), async (req, res) => {
+    const { userIds, type, taskSubject, taskId, senderName } = req.body;
+
+    if (!userIds || !Array.isArray(userIds) || !type || !taskSubject) {
+        return res.status(400).json({ error: 'userIds array, type, and taskSubject required' });
+    }
+
+    const titles = {
+        'new_task': { en: 'New Task Assigned', ar: 'تم إسناد مهمة جديدة' },
+        'task_completed': { en: 'Task Completed', ar: 'تم إكمال المهمة' },
+        'task_updated': { en: 'Task Updated', ar: 'تم تحديث المهمة' },
+        'task_due': { en: 'Task Due Soon', ar: 'المهمة مستحقة قريباً' }
+    };
+
+    const title = titles[type] || { en: 'Task Notification', ar: 'إشعار مهمة' };
+
+    const payload = {
+        title: title,
+        body: taskSubject,
+        data: {
+            type: type,
+            taskId: taskId || null,
+            senderName: senderName || null,
+            url: '/WebResources/crd33_home#tasks'
+        },
+        icon: 'https://www.drweee.com/pwa/assets/icons/icon-192x192.png',
+        badge: 'https://www.drweee.com/pwa/assets/icons/icon-96x96.png'
+    };
+
+    const results = await Promise.all(
+        userIds.map(userId => sendPushNotification(userId, payload))
+    );
+
+    const successful = results.filter(r => r.success).length;
+    res.json({
+        success: true,
+        sent: successful,
+        failed: results.length - successful,
+        results
+    });
+});
+
+// Check subscription status
+app.get('/api/push/status/:userId', (req, res) => {
+    const { userId } = req.params;
+    const hasSubscription = pushSubscriptions.has(userId);
+    res.json({
+        subscribed: hasSubscription,
+        pushEnabled: !!(VAPID_PUBLIC_KEY && VAPID_PRIVATE_KEY)
+    });
+});
+
+// =====================================================================
+// END PUSH NOTIFICATION ROUTES
 // =====================================================================
 
 // Apply cache control middleware
