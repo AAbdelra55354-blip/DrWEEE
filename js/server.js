@@ -5350,13 +5350,13 @@ try {
 if (pwaEnabled) {
     console.log('📱 PWA enabled - serving from /pwa directory');
 
-    // Serve PWA app shell for /app and /app/:path*
+    // Serve PWA app shell for /app and all sub-paths
+    // Express 5 path-to-regexp v8 syntax: use {*name} for wildcards
     app.get('/app', (req, res) => {
         res.sendFile(path.join(pwaDir, 'app-shell.html'));
     });
 
-    // Express 5 uses path-to-regexp v8+ which requires named parameters
-    app.get('/app/:path*', (req, res) => {
+    app.get('/app/{*splat}', (req, res) => {
         res.sendFile(path.join(pwaDir, 'app-shell.html'));
     });
 
