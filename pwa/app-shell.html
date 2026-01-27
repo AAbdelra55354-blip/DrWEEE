@@ -645,10 +645,16 @@
             });
         }
 
-        // Register service worker
+        // Register service worker with root scope for PWA install support
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/pwa/sw.js')
-                .then(reg => log(`SW registered: ${reg.scope}`))
+            navigator.serviceWorker.register('/pwa/sw.js', { scope: '/' })
+                .then(reg => {
+                    log(`SW registered: ${reg.scope}`);
+                    // Check if there's an update available
+                    reg.addEventListener('updatefound', () => {
+                        log('SW update found');
+                    });
+                })
                 .catch(err => log(`SW failed: ${err.message}`));
         }
 

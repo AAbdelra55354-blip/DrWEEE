@@ -5366,10 +5366,10 @@ if (pwaEnabled) {
         res.sendFile(path.join(pwaDir, 'manifest.json'));
     });
 
-    // Service worker with correct scope header
+    // Service worker - allow root scope for PWA to work on Chrome/Edge
     app.get('/pwa/sw.js', (req, res) => {
         res.type('application/javascript');
-        res.setHeader('Service-Worker-Allowed', '/app');
+        res.setHeader('Service-Worker-Allowed', '/');
         res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
         res.sendFile(path.join(pwaDir, 'sw.js'));
     });
