@@ -5756,6 +5756,140 @@ app.get('/api/sse/status', (req, res) => {
 // END PUSH NOTIFICATION ROUTES
 // =====================================================================
 
+// =====================================================================
+// AZURE OPENAI CHAT ENDPOINT
+// =====================================================================
+
+// Azure OpenAI Configuration (set these in .env)
+const AZURE_OPENAI_ENDPOINT = process.env.AZURE_OPENAI_ENDPOINT;
+const AZURE_OPENAI_KEY = process.env.AZURE_OPENAI_KEY;
+const AZURE_OPENAI_DEPLOYMENT = process.env.AZURE_OPENAI_DEPLOYMENT || 'gpt-4o-mini';
+const AZURE_OPENAI_API_VERSION = '2024-12-01-preview';
+
+// Chat endpoint with streaming support
+app.post('/api/chat', apiLimiter, async (req, res) => {
+    try {
+        const { message, language = 'ar', conversationHistory = [] } = req.body;
+
+        if (!message || typeof message !== 'string') {
+            return res.status(400).json({ error: 'Message is required' });
+        }
+
+        if (!AZURE_OPENAI_ENDPOINT || !AZURE_OPENAI_KEY) {
+            return res.status(503).json({
+                error: 'AI service not configured',
+                message: 'Azure OpenAI credentials not set'
+            });
+        }
+
+        // Build messages array with system prompt
+        const systemPrompt = language === 'ar'
+            ? `أنت مساعد ذكي لشركة DrWEEE المتخصصة في إعادة تدوير النفايات الإلكترونية وإعادة تصنيع الخراطيش.
+               أجب بشكل مفيد ومختصر باللغة العربية.
+               إذا كان السؤال خارج نطاق عمليات DrWEEE، أخبر المستخدم بذلك بلطف.`
+            : `You are an AI assistant for DrWEEE, a company specializing in e-waste recycling and cartridge remanufacturing.
+               Answer helpfully and concisely in English.
+               If the question is outside DrWEEE operations scope, politely inform the user.`;
+
+        const messages = [
+            { role: 'system', content: systemPrompt },
+            ...conversationHistory.slice(-10).map(m => ({
+                role: m.role,
+                content: m.content
+            })),
+            { role: 'user', content: message }
+        ];
+
+        // Set SSE headers for streaming
+        res.setHeader('Content-Type', 'text/event-stream');
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Connection', 'keep-alive');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('X-Accel-Buffering', 'no');
+        res.flushHeaders();
+
+        // Call Azure OpenAI with streaming
+        const azureUrl = `${AZURE_OPENAI_ENDPOINT}/openai/deployments/${AZURE_OPENAI_DEPLOYMENT}/chat/completions?api-version=${AZURE_OPENAI_API_VERSION}`;
+
+        const response = await axios({
+            method: 'post',
+            url: azureUrl,
+            headers: {
+                'Content-Type': 'application/json',
+                'api-key': AZURE_OPENAI_KEY
+            },
+            data: {
+                messages: messages,
+                stream: true,
+                max_tokens: 1000,
+                temperature: 0.7
+            },
+            responseType: 'stream'
+        });
+
+        // Process streaming response
+        let buffer = '';
+
+        response.data.on('data', (chunk) => {
+            buffer += chunk.toString();
+            const lines = buffer.split('\n');
+            buffer = lines.pop() || '';
+
+            for (const line of lines) {
+                if (line.startsWith('data: ')) {
+                    const data = line.slice(6).trim();
+
+                    if (data === '[DONE]') {
+                        res.write('data: [DONE]\n\n');
+                        return;
+                    }
+
+                    try {
+                        const parsed = JSON.parse(data);
+                        const content = parsed.choices?.[0]?.delta?.content;
+
+                        if (content) {
+                            res.write(`data: ${JSON.stringify({ type: 'chunk', content })}\n\n`);
+                        }
+                    } catch (e) {
+                        // Skip malformed JSON
+                    }
+                }
+            }
+        });
+
+        response.data.on('end', () => {
+            res.write('data: [DONE]\n\n');
+            res.end();
+        });
+
+        response.data.on('error', (err) => {
+            console.error('[Chat] Stream error:', err);
+            res.write(`data: ${JSON.stringify({ type: 'error', message: 'Stream error' })}\n\n`);
+            res.end();
+        });
+
+    } catch (error) {
+        console.error('[Chat] Error:', error.response?.data || error.message);
+
+        // If headers not sent yet, send JSON error
+        if (!res.headersSent) {
+            return res.status(500).json({
+                error: 'Chat request failed',
+                message: error.response?.data?.error?.message || error.message
+            });
+        }
+
+        // If streaming, send error event
+        res.write(`data: ${JSON.stringify({ type: 'error', message: 'Request failed' })}\n\n`);
+        res.end();
+    }
+});
+
+// =====================================================================
+// END AZURE OPENAI CHAT
+// =====================================================================
+
 // Apply cache control middleware
 app.use(cacheControlMiddleware());
 
