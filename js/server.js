@@ -5338,44 +5338,53 @@ app.patch('/api/admin/update-azure-user-phone', apiLimiter, async (req, res) => 
 // PWA ROUTES (must be before static middleware and cache control)
 // =====================================================================
 
-// Serve PWA app shell for /app and /app/*
-app.get('/app', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'pwa', 'app-shell.html'));
-});
+const pwaDir = path.join(__dirname, '..', 'pwa');
+const pwaEnabled = require('fs').existsSync(pwaDir);
 
-app.get('/app/*', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'pwa', 'app-shell.html'));
-});
+if (pwaEnabled) {
+    console.log('📱 PWA enabled - serving from /pwa directory');
 
-// PWA manifest with correct MIME type
-app.get('/pwa/manifest.json', (req, res) => {
-    res.type('application/manifest+json');
-    res.sendFile(path.join(__dirname, '..', 'pwa', 'manifest.json'));
-});
+    // Serve PWA app shell for /app and /app/*
+    app.get('/app', (req, res) => {
+        res.sendFile(path.join(pwaDir, 'app-shell.html'));
+    });
 
-// Service worker with correct scope header
-app.get('/pwa/sw.js', (req, res) => {
-    res.type('application/javascript');
-    res.setHeader('Service-Worker-Allowed', '/app');
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.sendFile(path.join(__dirname, '..', 'pwa', 'sw.js'));
-});
+    app.get('/app/*', (req, res) => {
+        res.sendFile(path.join(pwaDir, 'app-shell.html'));
+    });
 
-// Static PWA assets with caching
-app.use('/pwa', express.static(path.join(__dirname, '..', 'pwa'), {
-    maxAge: '7d',
-    etag: true,
-    setHeaders: (res, filepath) => {
-        // Don't cache HTML files
-        if (filepath.endsWith('.html')) {
-            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    // PWA manifest with correct MIME type
+    app.get('/pwa/manifest.json', (req, res) => {
+        res.type('application/manifest+json');
+        res.sendFile(path.join(pwaDir, 'manifest.json'));
+    });
+
+    // Service worker with correct scope header
+    app.get('/pwa/sw.js', (req, res) => {
+        res.type('application/javascript');
+        res.setHeader('Service-Worker-Allowed', '/app');
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.sendFile(path.join(pwaDir, 'sw.js'));
+    });
+
+    // Static PWA assets with caching
+    app.use('/pwa', express.static(pwaDir, {
+        maxAge: '7d',
+        etag: true,
+        setHeaders: (res, filepath) => {
+            if (filepath.endsWith('.html') || filepath.endsWith('sw.js')) {
+                res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+            }
         }
-        // Don't cache service worker
-        if (filepath.endsWith('sw.js')) {
-            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-        }
-    }
-}));
+    }));
+} else {
+    console.log('📱 PWA directory not found - using redirect for /app');
+
+    // Fallback: redirect to Dynamics 365 directly
+    app.get('/app', (req, res) => {
+        res.redirect(301, 'https://org1cbcc5c9.crm3.dynamics.com/WebResources/crd33_home');
+    });
+}
 
 // =====================================================================
 // END PWA ROUTES
