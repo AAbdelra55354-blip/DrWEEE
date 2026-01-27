@@ -5339,7 +5339,7 @@ app.patch('/api/admin/update-azure-user-phone', apiLimiter, async (req, res) => 
 // =====================================================================
 
 const pwaDir = path.join(__dirname, '..', 'pwa');
-const pwaEnabled = require('fs').existsSync(pwaDir);
+const pwaEnabled = fs.existsSync(pwaDir);
 
 if (pwaEnabled) {
     console.log('📱 PWA enabled - serving from /pwa directory');
