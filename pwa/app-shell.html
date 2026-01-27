@@ -27,6 +27,24 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-96x96.png">
     <link rel="icon" type="image/svg+xml" href="/images/favicon/favicon.svg">
 
+    <script>
+        // CRITICAL: Capture beforeinstallprompt IMMEDIATELY before any other code runs
+        // This event can fire very early, before DOMContentLoaded
+        window.deferredInstallPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('[PWA] beforeinstallprompt captured early!');
+            e.preventDefault();
+            window.deferredInstallPrompt = e;
+            // If button already exists, update it
+            const btn = document.getElementById('installBtn');
+            if (btn) {
+                btn.style.display = 'block';
+                btn.disabled = false;
+                btn.dataset.ready = 'true';
+            }
+        });
+    </script>
+
     <style>
         * {
             box-sizing: border-box;
@@ -140,11 +158,8 @@
             box-shadow: 0 8px 24px rgba(0, 137, 123, 0.4);
         }
 
-        .btn-primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
+        .btn-primary:active {
+            transform: translateY(0);
         }
 
         .btn-secondary {
@@ -198,6 +213,10 @@
             color: #333;
         }
 
+        .ios-step:last-child {
+            margin-bottom: 0;
+        }
+
         .ios-step-num {
             width: 24px;
             height: 24px;
@@ -212,7 +231,24 @@
             flex-shrink: 0;
         }
 
+        .share-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: #007aff;
+            color: white;
+            border-radius: 4px;
+            font-size: 14px;
+            line-height: 20px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
         /* Already installed state */
+        .installed-state .hide-when-installed {
+            display: none !important;
+        }
+
         .installed-badge {
             display: none;
             background: #4caf50;
@@ -223,20 +259,7 @@
             margin-bottom: 16px;
         }
 
-        .installed-badge.visible {
-            display: inline-block;
-        }
-
-        /* Hide elements based on state */
-        .hide-when-installed {
-            display: block;
-        }
-
-        body.is-installed .hide-when-installed {
-            display: none;
-        }
-
-        body.is-installed .installed-badge {
+        .installed-state .installed-badge {
             display: inline-block;
         }
 
@@ -265,10 +288,18 @@
             text-align: left;
         }
 
+        [dir="ltr"] .ios-instructions {
+            text-align: left;
+        }
+
         /* Loading state for button */
         .btn-loading {
             position: relative;
-            color: transparent !important;
+            pointer-events: none;
+        }
+
+        .btn-loading span {
+            visibility: hidden;
         }
 
         .btn-loading::after {
@@ -287,6 +318,27 @@
 
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+
+        /* Debug info - hidden by default */
+        .debug-info {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            color: #0f0;
+            font-family: monospace;
+            font-size: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            display: none;
+            max-height: 100px;
+            overflow: auto;
+        }
+
+        .debug-info.visible {
+            display: block;
         }
     </style>
 </head>
@@ -310,8 +362,8 @@
 
         <div class="card">
             <span class="installed-badge" id="installedBadge">
-                <span data-lang="ar">التطبيق مثبت</span>
-                <span data-lang="en" style="display:none">App Installed</span>
+                <span data-lang="ar">التطبيق مثبت ✓</span>
+                <span data-lang="en" style="display:none">App Installed ✓</span>
             </span>
 
             <h2 class="card-title">
@@ -343,46 +395,84 @@
             <div id="iosInstructions" class="ios-instructions">
                 <div class="ios-step">
                     <span class="ios-step-num">1</span>
-                    <span data-lang="ar">اضغط على زر المشاركة (أسفل الشاشة)</span>
-                    <span data-lang="en" style="display:none">Tap the Share button (bottom of screen)</span>
+                    <span>
+                        <span data-lang="ar">اضغط على زر المشاركة <span class="share-icon">↑</span> في الأسفل</span>
+                        <span data-lang="en" style="display:none">Tap the Share button <span class="share-icon">↑</span> at the bottom</span>
+                    </span>
                 </div>
                 <div class="ios-step">
                     <span class="ios-step-num">2</span>
-                    <span data-lang="ar">اختر "إضافة إلى الشاشة الرئيسية"</span>
-                    <span data-lang="en" style="display:none">Select "Add to Home Screen"</span>
+                    <span>
+                        <span data-lang="ar">اختر "إضافة إلى الشاشة الرئيسية"</span>
+                        <span data-lang="en" style="display:none">Select "Add to Home Screen"</span>
+                    </span>
                 </div>
                 <div class="ios-step">
                     <span class="ios-step-num">3</span>
-                    <span data-lang="ar">اضغط "إضافة"</span>
-                    <span data-lang="en" style="display:none">Tap "Add"</span>
+                    <span>
+                        <span data-lang="ar">اضغط "إضافة" في الأعلى</span>
+                        <span data-lang="en" style="display:none">Tap "Add" at the top</span>
+                    </span>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Debug info (triple-tap logo to show) -->
+    <div id="debugInfo" class="debug-info"></div>
+
     <script>
         // Configuration
         const DYNAMICS_URL = 'https://org1cbcc5c9.crm3.dynamics.com/WebResources/crd33_home';
 
-        // State
-        let deferredPrompt = null;
-        let installButton = null;
+        // Check if launched from installed PWA (has ?source=pwa or ?module=xxx)
+        const urlParams = new URLSearchParams(window.location.search);
+        const isPWALaunch = urlParams.has('source') || urlParams.has('module');
+        const moduleParam = urlParams.get('module');
+
+        // If launched from PWA, redirect immediately to Dynamics
+        if (isPWALaunch || isInstalledCheck()) {
+            let targetUrl = DYNAMICS_URL;
+            if (moduleParam) {
+                targetUrl += '#' + moduleParam;
+            }
+            window.location.replace(targetUrl);
+        }
+
+        // Quick installed check (before DOM ready)
+        function isInstalledCheck() {
+            return window.matchMedia('(display-mode: standalone)').matches
+                || window.navigator.standalone === true;
+        }
+
+        // DOM elements
+        const installBtn = document.getElementById('installBtn');
+        const iosInstructions = document.getElementById('iosInstructions');
+        const divider = document.getElementById('divider');
+        const continueBtn = document.getElementById('continueBtn');
+        const debugInfo = document.getElementById('debugInfo');
+
+        // Debug logging
+        const logs = [];
+        function log(msg) {
+            const time = new Date().toLocaleTimeString();
+            logs.push(`[${time}] ${msg}`);
+            console.log('[PWA]', msg);
+            debugInfo.textContent = logs.slice(-10).join('\n');
+        }
 
         // Check if running as installed PWA
         function isInstalled() {
-            return window.matchMedia('(display-mode: standalone)').matches
-                || window.navigator.standalone === true
-                || document.referrer.includes('android-app://');
+            const dominated = window.matchMedia('(display-mode: standalone)').matches;
+            const iosStandalone = window.navigator.standalone === true;
+            const androidApp = document.referrer.includes('android-app://');
+            log(`isInstalled check: standalone=${dominated}, iOS=${iosStandalone}, android=${androidApp}`);
+            return dominated || iosStandalone || androidApp;
         }
 
         // Check if iOS
         function isIOS() {
             return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        }
-
-        // Check if Safari on iOS
-        function isIOSSafari() {
-            return isIOS() && /Safari/.test(navigator.userAgent) && !/CriOS|FxiOS/.test(navigator.userAgent);
         }
 
         // Apply language
@@ -394,61 +484,81 @@
             });
         }
 
-        // Update install button state
-        function updateInstallButton() {
-            if (!installButton) return;
-
-            if (deferredPrompt) {
-                // Chrome/Edge/Samsung - native prompt available
-                installButton.style.display = 'block';
-                installButton.disabled = false;
-            } else if (isIOS()) {
-                // iOS - show manual instructions
-                installButton.style.display = 'block';
-                installButton.disabled = false;
-            } else {
-                // Other browsers - still show button, will show instructions
-                installButton.style.display = 'block';
-                installButton.disabled = false;
-            }
-        }
-
         // Handle install button click
         async function handleInstallClick() {
-            if (deferredPrompt) {
-                // Use native install prompt
-                console.log('Triggering native install prompt...');
-                installButton.classList.add('btn-loading');
+            log('Install button clicked');
+
+            // Check if we have the deferred prompt (captured early in head)
+            const prompt = window.deferredInstallPrompt;
+
+            if (prompt) {
+                log('Using captured install prompt');
+                installBtn.classList.add('btn-loading');
 
                 try {
-                    deferredPrompt.prompt();
-                    const result = await deferredPrompt.userChoice;
-                    console.log('Install result:', result.outcome);
+                    // Show the install prompt
+                    prompt.prompt();
+
+                    // Wait for user choice
+                    const result = await prompt.userChoice;
+                    log(`User choice: ${result.outcome}`);
 
                     if (result.outcome === 'accepted') {
-                        console.log('User accepted install');
+                        log('Install accepted!');
+                        // The appinstalled event will handle redirect
                     } else {
-                        console.log('User dismissed install');
+                        log('Install dismissed');
+                        installBtn.classList.remove('btn-loading');
                     }
 
-                    deferredPrompt = null;
+                    // Clear the prompt - can only be used once
+                    window.deferredInstallPrompt = null;
                 } catch (err) {
-                    console.error('Install prompt error:', err);
-                } finally {
-                    installButton.classList.remove('btn-loading');
+                    log(`Install error: ${err.message}`);
+                    installBtn.classList.remove('btn-loading');
                 }
             } else if (isIOS()) {
-                // Show iOS instructions
-                document.getElementById('iosInstructions').classList.add('visible');
-                installButton.style.display = 'none';
-                document.getElementById('divider').style.display = 'none';
+                // iOS doesn't support beforeinstallprompt, show instructions
+                log('iOS detected, showing instructions');
+                iosInstructions.classList.add('visible');
+                installBtn.style.display = 'none';
+                divider.style.display = 'none';
             } else {
-                // For browsers without beforeinstallprompt (Firefox, etc.)
-                // Show manual instructions
+                // Browser doesn't support install prompt
+                // This could be Firefox, or Chrome without meeting PWA criteria
+                log('No install prompt available, checking why...');
+
+                // Try to give helpful guidance
                 const lang = document.documentElement.lang;
-                const message = lang === 'ar'
-                    ? 'لتثبيت التطبيق: اضغط على قائمة المتصفح (⋮) ثم اختر "تثبيت التطبيق" أو "إضافة إلى الشاشة الرئيسية"'
-                    : 'To install: Click the browser menu (⋮) and select "Install app" or "Add to Home Screen"';
+
+                // Check if already installed
+                if (isInstalled()) {
+                    log('App appears to be installed');
+                    window.location.href = DYNAMICS_URL;
+                    return;
+                }
+
+                // Show browser-specific instructions
+                const isFirefox = navigator.userAgent.includes('Firefox');
+                const isChrome = navigator.userAgent.includes('Chrome');
+                const isEdge = navigator.userAgent.includes('Edg');
+                const isSamsung = navigator.userAgent.includes('SamsungBrowser');
+
+                let message;
+                if (isFirefox) {
+                    message = lang === 'ar'
+                        ? 'Firefox لا يدعم تثبيت التطبيقات. يرجى استخدام Chrome أو Edge أو Samsung Internet'
+                        : 'Firefox doesn\'t support app installation. Please use Chrome, Edge, or Samsung Internet';
+                } else if (isChrome || isEdge || isSamsung) {
+                    message = lang === 'ar'
+                        ? 'اضغط على قائمة المتصفح (⋮) ثم اختر "تثبيت التطبيق"'
+                        : 'Click the browser menu (⋮) and select "Install app"';
+                } else {
+                    message = lang === 'ar'
+                        ? 'متصفحك قد لا يدعم تثبيت التطبيقات. جرب Chrome أو Edge'
+                        : 'Your browser may not support app installation. Try Chrome or Edge';
+                }
+
                 alert(message);
             }
         }
@@ -458,50 +568,52 @@
             const lang = localStorage.getItem('drweee_lang') || 'ar';
             applyLanguage(lang);
 
-            installButton = document.getElementById('installBtn');
+            log(`Init: lang=${lang}, iOS=${isIOS()}, installed=${isInstalled()}`);
+            log(`UA: ${navigator.userAgent.substring(0, 50)}...`);
+            log(`Deferred prompt available: ${!!window.deferredInstallPrompt}`);
 
-            // If already installed, mark body and auto-redirect
+            // If already installed, redirect to app
             if (isInstalled()) {
-                document.body.classList.add('is-installed');
-                document.getElementById('continueBtn').innerHTML = lang === 'ar'
+                log('Already installed, redirecting...');
+                document.body.classList.add('installed-state');
+                continueBtn.innerHTML = lang === 'ar'
                     ? '<span>فتح التطبيق</span>'
                     : '<span>Open App</span>';
-                // Auto redirect after brief delay
-                setTimeout(() => {
-                    window.location.href = DYNAMICS_URL;
-                }, 1500);
-                return;
-            }
-
-            // Capture beforeinstallprompt event (Chrome, Edge, Samsung Browser)
-            window.addEventListener('beforeinstallprompt', (e) => {
-                console.log('beforeinstallprompt event fired');
-                e.preventDefault();
-                deferredPrompt = e;
-                updateInstallButton();
-            });
-
-            // Install button click handler
-            if (installButton) {
-                installButton.addEventListener('click', handleInstallClick);
-            }
-
-            // Track successful install
-            window.addEventListener('appinstalled', () => {
-                console.log('App installed successfully!');
-                deferredPrompt = null;
-                // Redirect to app
+                // Auto redirect
                 setTimeout(() => {
                     window.location.href = DYNAMICS_URL;
                 }, 1000);
+                return;
+            }
+
+            // iOS: Show instructions by default (no install prompt support)
+            if (isIOS()) {
+                log('iOS device - showing manual instructions');
+                iosInstructions.classList.add('visible');
+                // Change button text for iOS
+                const arText = installBtn.querySelector('[data-lang="ar"]');
+                const enText = installBtn.querySelector('[data-lang="en"]');
+                if (arText) arText.textContent = 'كيفية التثبيت ↑';
+                if (enText) enText.textContent = 'How to Install ↑';
+            }
+
+            // Install button click handler
+            installBtn.addEventListener('click', handleInstallClick);
+
+            // Listen for successful installation
+            window.addEventListener('appinstalled', () => {
+                log('App installed successfully!');
+                window.deferredInstallPrompt = null;
+                // Redirect to app after brief delay
+                setTimeout(() => {
+                    window.location.href = DYNAMICS_URL;
+                }, 500);
             });
 
-            // Initial button state
-            updateInstallButton();
-
-            // iOS specific - show instructions by default
-            if (isIOS()) {
-                document.getElementById('iosInstructions').classList.add('visible');
+            // If prompt was already captured, button is ready
+            if (window.deferredInstallPrompt) {
+                log('Install prompt ready from early capture');
+                installBtn.dataset.ready = 'true';
             }
 
             // Offline detection
@@ -509,6 +621,7 @@
                 const banner = document.getElementById('offlineBanner');
                 if (!navigator.onLine) {
                     banner.classList.add('visible');
+                    log('Went offline');
                 } else {
                     banner.classList.remove('visible');
                 }
@@ -517,16 +630,29 @@
             window.addEventListener('online', updateOnlineStatus);
             window.addEventListener('offline', updateOnlineStatus);
             updateOnlineStatus();
+
+            // Debug: triple-tap logo to show debug info
+            let tapCount = 0;
+            let tapTimer;
+            document.querySelector('.logo').addEventListener('click', () => {
+                tapCount++;
+                clearTimeout(tapTimer);
+                tapTimer = setTimeout(() => tapCount = 0, 500);
+                if (tapCount >= 3) {
+                    debugInfo.classList.toggle('visible');
+                    tapCount = 0;
+                }
+            });
         }
 
-        // Service Worker Registration
+        // Register service worker
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/pwa/sw.js', { scope: '/app' })
-                .then(reg => console.log('SW registered:', reg.scope))
-                .catch(err => console.error('SW failed:', err));
+            navigator.serviceWorker.register('/pwa/sw.js')
+                .then(reg => log(`SW registered: ${reg.scope}`))
+                .catch(err => log(`SW failed: ${err.message}`));
         }
 
-        // Start
+        // Start when DOM is ready
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', init);
         } else {

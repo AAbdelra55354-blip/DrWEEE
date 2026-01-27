@@ -2,11 +2,11 @@
   "name": "DrWEEE Business Suite",
   "short_name": "DrWEEE",
   "description": "E-Waste management, POS, HR, Finance and more - Your complete business suite",
-  "start_url": "https://org1cbcc5c9.crm3.dynamics.com/WebResources/crd33_home",
+  "start_url": "/app?source=pwa",
   "scope": "/",
-  "id": "drweee-app",
+  "id": "/app",
   "display": "standalone",
-  "orientation": "portrait-primary",
+  "orientation": "any",
   "background_color": "#00897b",
   "theme_color": "#00897b",
   "dir": "auto",
@@ -72,31 +72,28 @@
     {
       "name": "Point of Sale",
       "short_name": "POS",
-      "url": "https://org1cbcc5c9.crm3.dynamics.com/WebResources/crd33_home#pos",
-      "description": "Open the POS system"
+      "url": "/app?module=pos",
+      "icons": [{ "src": "/pwa/assets/icons/icon-96x96.png", "sizes": "96x96" }]
     },
     {
       "name": "E-Waste Manager",
       "short_name": "E-Waste",
-      "url": "https://org1cbcc5c9.crm3.dynamics.com/WebResources/crd33_home#ewaste",
-      "description": "Manage e-waste collections"
+      "url": "/app?module=ewaste",
+      "icons": [{ "src": "/pwa/assets/icons/icon-96x96.png", "sizes": "96x96" }]
     },
     {
       "name": "Finance",
       "short_name": "Finance",
-      "url": "https://org1cbcc5c9.crm3.dynamics.com/WebResources/crd33_home#finance",
-      "description": "Financial management"
+      "url": "/app?module=finance",
+      "icons": [{ "src": "/pwa/assets/icons/icon-96x96.png", "sizes": "96x96" }]
     },
     {
       "name": "CRM",
       "short_name": "CRM",
-      "url": "https://org1cbcc5c9.crm3.dynamics.com/WebResources/crd33_home#crm",
-      "description": "Customer relationship management"
+      "url": "/app?module=crm",
+      "icons": [{ "src": "/pwa/assets/icons/icon-96x96.png", "sizes": "96x96" }]
     }
   ],
   "related_applications": [],
-  "prefer_related_applications": false,
-  "launch_handler": {
-    "client_mode": "focus-existing"
-  }
+  "prefer_related_applications": false
 }

@@ -1,9 +1,9 @@
 /**
  * DrWEEE PWA Service Worker
- * Simple service worker for install landing page
+ * Handles caching for the install landing page
  */
 
-const CACHE_NAME = 'drweee-pwa-v1';
+const CACHE_NAME = 'drweee-pwa-v2';
 
 // Assets to cache for offline install page
 const ASSETS_TO_CACHE = [
@@ -17,28 +17,40 @@ const ASSETS_TO_CACHE = [
 
 // Install - cache essential assets
 self.addEventListener('install', (event) => {
-    console.log('[SW] Installing...');
+    console.log('[SW] Installing v2...');
     event.waitUntil(
         caches.open(CACHE_NAME)
-            .then(cache => cache.addAll(ASSETS_TO_CACHE))
-            .then(() => self.skipWaiting())
+            .then(cache => {
+                console.log('[SW] Caching assets');
+                return cache.addAll(ASSETS_TO_CACHE);
+            })
+            .then(() => {
+                console.log('[SW] Skip waiting');
+                return self.skipWaiting();
+            })
     );
 });
 
-// Activate - clean old caches
+// Activate - clean old caches and claim clients
 self.addEventListener('activate', (event) => {
     console.log('[SW] Activating...');
     event.waitUntil(
         caches.keys()
             .then(keys => Promise.all(
                 keys.filter(key => key !== CACHE_NAME)
-                    .map(key => caches.delete(key))
+                    .map(key => {
+                        console.log('[SW] Deleting old cache:', key);
+                        return caches.delete(key);
+                    })
             ))
-            .then(() => self.clients.claim())
+            .then(() => {
+                console.log('[SW] Claiming clients');
+                return self.clients.claim();
+            })
     );
 });
 
-// Fetch - serve from cache, fallback to network
+// Fetch - network first with cache fallback for our assets
 self.addEventListener('fetch', (event) => {
     const url = new URL(event.request.url);
 
@@ -47,19 +59,33 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // For /app navigation, serve the install page
-    if (event.request.mode === 'navigate' && url.pathname.startsWith('/app')) {
+    // For /app navigation, serve the app-shell
+    if (event.request.mode === 'navigate') {
+        if (url.pathname === '/app' || url.pathname.startsWith('/app/')) {
+            event.respondWith(
+                fetch(event.request)
+                    .catch(() => caches.match('/pwa/app-shell.html'))
+            );
+            return;
+        }
+    }
+
+    // For PWA assets, try network first then cache
+    if (url.pathname.startsWith('/pwa/')) {
         event.respondWith(
-            caches.match('/pwa/app-shell.html')
-                .then(response => response || fetch(event.request))
-                .catch(() => caches.match('/pwa/offline.html'))
+            fetch(event.request)
+                .then(response => {
+                    // Clone and cache successful responses
+                    if (response.ok) {
+                        const responseClone = response.clone();
+                        caches.open(CACHE_NAME).then(cache => {
+                            cache.put(event.request, responseClone);
+                        });
+                    }
+                    return response;
+                })
+                .catch(() => caches.match(event.request))
         );
         return;
     }
-
-    // For other assets, try cache first
-    event.respondWith(
-        caches.match(event.request)
-            .then(response => response || fetch(event.request))
-    );
 });
