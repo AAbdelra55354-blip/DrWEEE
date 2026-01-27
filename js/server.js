@@ -103,13 +103,18 @@ async function sendPushNotification(userId, payload) {
         console.log(`🔔 Push sent to user ${userId.slice(0, 8)}...`);
         return { success: true };
     } catch (error) {
-        console.error(`Push failed for user ${userId.slice(0, 8)}:`, error.message);
+        console.error(`Push failed for user ${userId.slice(0, 8)}:`, error.message, error.statusCode ? `(${error.statusCode})` : '');
 
-        // Remove invalid subscriptions (410 Gone or 404 Not Found)
-        if (error.statusCode === 410 || error.statusCode === 404) {
+        // Remove invalid subscriptions
+        // 410 Gone - subscription expired
+        // 404 Not Found - subscription invalid
+        // 401 Unauthorized - subscription invalid
+        // Any 4xx error means the subscription is no longer valid
+        if (error.statusCode >= 400 && error.statusCode < 500) {
             pushSubscriptions.delete(userId);
             savePushSubscriptions();
-            console.log(`Removed expired subscription for user ${userId.slice(0, 8)}`);
+            console.log(`Removed invalid subscription for user ${userId.slice(0, 8)} (status: ${error.statusCode})`);
+            return { success: false, reason: 'subscription_expired' };
         }
 
         return { success: false, reason: error.message };
