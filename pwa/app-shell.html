@@ -67,11 +67,12 @@
         </div>
 
         <!-- Dynamics 365 Content Frame -->
+        <!-- Note: Removed allow-top-navigation to prevent Dynamics from redirecting the parent -->
         <iframe id="dynamicsFrame"
                 class="dynamics-frame"
                 src="about:blank"
                 allow="geolocation; camera; microphone; clipboard-read; clipboard-write; fullscreen"
-                sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-downloads allow-top-navigation"
+                sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-downloads"
                 title="DrWEEE Application"
                 loading="eager">
         </iframe>
