@@ -5366,6 +5366,14 @@ if (pwaEnabled) {
         res.sendFile(path.join(pwaDir, 'manifest.json'));
     });
 
+    // Dynamics 365 PWA manifest - with CORS for cross-origin access
+    app.get('/pwa/d365-manifest.json', (req, res) => {
+        res.type('application/manifest+json');
+        res.setHeader('Access-Control-Allow-Origin', 'https://org1cbcc5c9.crm3.dynamics.com');
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        res.sendFile(path.join(pwaDir, 'd365-manifest.json'));
+    });
+
     // Service worker - allow root scope for PWA to work on Chrome/Edge
     app.get('/pwa/sw.js', (req, res) => {
         res.type('application/javascript');
