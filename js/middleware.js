@@ -193,7 +193,7 @@ function corsOptionsProduction() {
         },
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-POS-API-Key'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-POS-API-Key', 'Cache-Control'],
         maxAge: 86400 // 24 hours
     };
 }
