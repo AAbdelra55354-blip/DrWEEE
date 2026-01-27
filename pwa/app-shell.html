@@ -60,9 +60,9 @@
             margin-bottom: 32px;
         }
 
-        .logo svg {
-            width: 100px;
-            height: 100px;
+        .logo-icon {
+            font-size: 80px;
+            display: block;
             animation: float 3s ease-in-out infinite;
         }
 
@@ -138,6 +138,13 @@
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(0, 137, 123, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
         .btn-secondary {
@@ -257,6 +264,30 @@
         [dir="ltr"] .ios-step {
             text-align: left;
         }
+
+        /* Loading state for button */
+        .btn-loading {
+            position: relative;
+            color: transparent !important;
+        }
+
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid white;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -268,12 +299,7 @@
 
     <div class="container">
         <div class="logo">
-            <svg viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
-                <circle cx="50" cy="50" r="35" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
-                <path d="M35 50 L45 60 L65 40" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="50" cy="50" r="8" fill="white"/>
-            </svg>
+            <span class="logo-icon">♻</span>
             <div class="logo-text">Dr.<span class="logo-accent">WEEE</span></div>
         </div>
 
@@ -283,7 +309,7 @@
         </p>
 
         <div class="card">
-            <span class="installed-badge">
+            <span class="installed-badge" id="installedBadge">
                 <span data-lang="ar">التطبيق مثبت</span>
                 <span data-lang="en" style="display:none">App Installed</span>
             </span>
@@ -293,7 +319,7 @@
                 <span data-lang="en" style="display:none">Welcome to DrWEEE</span>
             </h2>
 
-            <p class="card-text hide-when-installed">
+            <p class="card-text hide-when-installed" id="installText">
                 <span data-lang="ar">ثبّت التطبيق على جهازك للحصول على تجربة أفضل ووصول أسرع</span>
                 <span data-lang="en" style="display:none">Install the app on your device for a better experience and faster access</span>
             </p>
@@ -303,7 +329,7 @@
                 <span data-lang="en" style="display:none">Install App</span>
             </button>
 
-            <div class="divider hide-when-installed">
+            <div class="divider hide-when-installed" id="divider">
                 <span data-lang="ar">أو</span>
                 <span data-lang="en" style="display:none">or</span>
             </div>
@@ -337,10 +363,10 @@
     <script>
         // Configuration
         const DYNAMICS_URL = 'https://org1cbcc5c9.crm3.dynamics.com/WebResources/crd33_home';
-        const STORAGE_KEY = 'drweee_install_prompted';
 
         // State
         let deferredPrompt = null;
+        let installButton = null;
 
         // Check if running as installed PWA
         function isInstalled() {
@@ -354,6 +380,11 @@
             return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         }
 
+        // Check if Safari on iOS
+        function isIOSSafari() {
+            return isIOS() && /Safari/.test(navigator.userAgent) && !/CriOS|FxiOS/.test(navigator.userAgent);
+        }
+
         // Apply language
         function applyLanguage(lang) {
             document.documentElement.lang = lang;
@@ -363,61 +394,115 @@
             });
         }
 
+        // Update install button state
+        function updateInstallButton() {
+            if (!installButton) return;
+
+            if (deferredPrompt) {
+                // Chrome/Edge/Samsung - native prompt available
+                installButton.style.display = 'block';
+                installButton.disabled = false;
+            } else if (isIOS()) {
+                // iOS - show manual instructions
+                installButton.style.display = 'block';
+                installButton.disabled = false;
+            } else {
+                // Other browsers - still show button, will show instructions
+                installButton.style.display = 'block';
+                installButton.disabled = false;
+            }
+        }
+
+        // Handle install button click
+        async function handleInstallClick() {
+            if (deferredPrompt) {
+                // Use native install prompt
+                console.log('Triggering native install prompt...');
+                installButton.classList.add('btn-loading');
+
+                try {
+                    deferredPrompt.prompt();
+                    const result = await deferredPrompt.userChoice;
+                    console.log('Install result:', result.outcome);
+
+                    if (result.outcome === 'accepted') {
+                        console.log('User accepted install');
+                    } else {
+                        console.log('User dismissed install');
+                    }
+
+                    deferredPrompt = null;
+                } catch (err) {
+                    console.error('Install prompt error:', err);
+                } finally {
+                    installButton.classList.remove('btn-loading');
+                }
+            } else if (isIOS()) {
+                // Show iOS instructions
+                document.getElementById('iosInstructions').classList.add('visible');
+                installButton.style.display = 'none';
+                document.getElementById('divider').style.display = 'none';
+            } else {
+                // For browsers without beforeinstallprompt (Firefox, etc.)
+                // Show manual instructions
+                const lang = document.documentElement.lang;
+                const message = lang === 'ar'
+                    ? 'لتثبيت التطبيق: اضغط على قائمة المتصفح (⋮) ثم اختر "تثبيت التطبيق" أو "إضافة إلى الشاشة الرئيسية"'
+                    : 'To install: Click the browser menu (⋮) and select "Install app" or "Add to Home Screen"';
+                alert(message);
+            }
+        }
+
         // Initialize
         function init() {
             const lang = localStorage.getItem('drweee_lang') || 'ar';
             applyLanguage(lang);
 
+            installButton = document.getElementById('installBtn');
+
             // If already installed, mark body and auto-redirect
             if (isInstalled()) {
                 document.body.classList.add('is-installed');
-                // Auto redirect after 1 second
+                document.getElementById('continueBtn').innerHTML = lang === 'ar'
+                    ? '<span>فتح التطبيق</span>'
+                    : '<span>Open App</span>';
+                // Auto redirect after brief delay
                 setTimeout(() => {
                     window.location.href = DYNAMICS_URL;
-                }, 1000);
+                }, 1500);
                 return;
             }
 
-            // iOS specific handling
-            if (isIOS()) {
-                document.getElementById('installBtn').style.display = 'none';
-                document.getElementById('iosInstructions').classList.add('visible');
-            }
-
-            // Handle install prompt
+            // Capture beforeinstallprompt event (Chrome, Edge, Samsung Browser)
             window.addEventListener('beforeinstallprompt', (e) => {
+                console.log('beforeinstallprompt event fired');
                 e.preventDefault();
                 deferredPrompt = e;
-                document.getElementById('installBtn').style.display = 'block';
+                updateInstallButton();
             });
 
-            // Install button click
-            document.getElementById('installBtn').addEventListener('click', async () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    const result = await deferredPrompt.userChoice;
-                    console.log('Install result:', result.outcome);
-                    deferredPrompt = null;
-
-                    if (result.outcome === 'accepted') {
-                        // Redirect after install
-                        setTimeout(() => {
-                            window.location.href = DYNAMICS_URL;
-                        }, 1000);
-                    }
-                } else if (isIOS()) {
-                    // Show iOS instructions
-                    document.getElementById('iosInstructions').classList.add('visible');
-                }
-            });
+            // Install button click handler
+            if (installButton) {
+                installButton.addEventListener('click', handleInstallClick);
+            }
 
             // Track successful install
             window.addEventListener('appinstalled', () => {
-                console.log('App installed!');
-                localStorage.setItem(STORAGE_KEY, 'installed');
+                console.log('App installed successfully!');
+                deferredPrompt = null;
                 // Redirect to app
-                window.location.href = DYNAMICS_URL;
+                setTimeout(() => {
+                    window.location.href = DYNAMICS_URL;
+                }, 1000);
             });
+
+            // Initial button state
+            updateInstallButton();
+
+            // iOS specific - show instructions by default
+            if (isIOS()) {
+                document.getElementById('iosInstructions').classList.add('visible');
+            }
 
             // Offline detection
             function updateOnlineStatus() {
