@@ -5351,7 +5351,11 @@ app.use(express.static(path.join(__dirname, '..'), {
     }
 }));
 
-
+// --- IMMEDIATE REDIRECT ROUTE ---
+app.get('/app', (req, res) => {
+    // 301 Moved Permanently - Fastest option as browsers cache this redirection
+    res.redirect(301, 'https://org1cbcc5c9.crm3.dynamics.com/WebResources/crd33_home');
+});
 // --- 6. FALLBACK ROUTE & SERVER START ---
 
 // Fallback route for SPA (must be before error handler)
