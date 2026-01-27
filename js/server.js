@@ -65,6 +65,33 @@ if (!fs.existsSync(dataDir)) {
 
 // Load existing subscriptions
 let pushSubscriptions = new Map(); // Map<userId, subscription>
+
+// SSE (Server-Sent Events) connections for real-time in-app notifications
+// Map<userId, Set<response objects>>
+const sseConnections = new Map();
+
+// Send SSE event to a specific user (all their connected clients)
+function sendSSEToUser(userId, eventType, data) {
+    const userConnections = sseConnections.get(userId);
+    if (!userConnections || userConnections.size === 0) {
+        return { sent: 0, userId };
+    }
+
+    const message = `event: ${eventType}\ndata: ${JSON.stringify(data)}\n\n`;
+    let sent = 0;
+
+    userConnections.forEach(res => {
+        try {
+            res.write(message);
+            sent++;
+        } catch (e) {
+            // Connection might be dead, will be cleaned up on error
+        }
+    });
+
+    console.log(`📡 SSE sent to ${userId.slice(0, 8)}... (${sent} clients)`);
+    return { sent, userId };
+}
 try {
     if (fs.existsSync(PUSH_SUBSCRIPTIONS_FILE)) {
         const data = JSON.parse(fs.readFileSync(PUSH_SUBSCRIPTIONS_FILE, 'utf8'));
@@ -5567,8 +5594,23 @@ app.post('/api/push/task-notification', express.json(), async (req, res) => {
         badge: 'https://www.drweee.com/pwa/assets/icons/icon-96x96.png'
     };
 
-    const result = await sendPushNotification(targetUserId, payload);
-    res.json(result);
+    // Send browser push notification
+    const pushResult = await sendPushNotification(targetUserId, payload);
+
+    // Also send via SSE for real-time in-app notification
+    const sseResult = sendSSEToUser(targetUserId, 'task-notification', {
+        type,
+        title,
+        body: taskSubject,
+        taskId: taskId || null,
+        senderName: senderName || null,
+        timestamp: Date.now()
+    });
+
+    res.json({
+        ...pushResult,
+        sse: { sent: sseResult.sent }
+    });
 });
 
 // Batch send notifications (for multiple users)
@@ -5601,16 +5643,33 @@ app.post('/api/push/batch-notification', express.json(), async (req, res) => {
         badge: 'https://www.drweee.com/pwa/assets/icons/icon-96x96.png'
     };
 
-    const results = await Promise.all(
+    // Send browser push notifications
+    const pushResults = await Promise.all(
         userIds.map(userId => sendPushNotification(userId, payload))
     );
 
-    const successful = results.filter(r => r.success).length;
+    // Also send via SSE for real-time in-app notification
+    const sseData = {
+        type,
+        title,
+        body: taskSubject,
+        taskId: taskId || null,
+        senderName: senderName || null,
+        timestamp: Date.now()
+    };
+    let sseSent = 0;
+    userIds.forEach(userId => {
+        const result = sendSSEToUser(userId, 'task-notification', sseData);
+        sseSent += result.sent;
+    });
+
+    const successful = pushResults.filter(r => r.success).length;
     res.json({
         success: true,
         sent: successful,
-        failed: results.length - successful,
-        results
+        failed: pushResults.length - successful,
+        sseSent,
+        results: pushResults
     });
 });
 
@@ -5622,6 +5681,71 @@ app.get('/api/push/status/:userId', (req, res) => {
         subscribed: hasSubscription,
         pushEnabled: !!(VAPID_PUBLIC_KEY && VAPID_PRIVATE_KEY)
     });
+});
+
+// =====================================================================
+// SSE (Server-Sent Events) for Real-Time In-App Notifications
+// =====================================================================
+
+// SSE connection endpoint - clients connect here to receive real-time events
+app.get('/api/sse/connect/:userId', (req, res) => {
+    const { userId } = req.params;
+
+    if (!userId) {
+        return res.status(400).json({ error: 'userId required' });
+    }
+
+    // Set SSE headers
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('X-Accel-Buffering', 'no'); // Disable nginx buffering
+
+    // Send initial connection confirmation
+    res.write(`event: connected\ndata: ${JSON.stringify({ userId, timestamp: Date.now() })}\n\n`);
+
+    // Add this connection to the user's set
+    if (!sseConnections.has(userId)) {
+        sseConnections.set(userId, new Set());
+    }
+    sseConnections.get(userId).add(res);
+
+    console.log(`📡 SSE connected: ${userId.slice(0, 8)}... (${sseConnections.get(userId).size} clients)`);
+
+    // Send heartbeat every 30 seconds to keep connection alive
+    const heartbeat = setInterval(() => {
+        try {
+            res.write(`event: heartbeat\ndata: ${JSON.stringify({ timestamp: Date.now() })}\n\n`);
+        } catch (e) {
+            clearInterval(heartbeat);
+        }
+    }, 30000);
+
+    // Clean up on disconnect
+    req.on('close', () => {
+        clearInterval(heartbeat);
+        const userConns = sseConnections.get(userId);
+        if (userConns) {
+            userConns.delete(res);
+            if (userConns.size === 0) {
+                sseConnections.delete(userId);
+            }
+        }
+        console.log(`📡 SSE disconnected: ${userId.slice(0, 8)}... (${sseConnections.get(userId)?.size || 0} clients remaining)`);
+    });
+});
+
+// Get SSE connection count (for debugging)
+app.get('/api/sse/status', (req, res) => {
+    const stats = {
+        totalUsers: sseConnections.size,
+        connections: []
+    };
+    sseConnections.forEach((conns, userId) => {
+        stats.connections.push({ userId: userId.slice(0, 8) + '...', clients: conns.size });
+    });
+    res.json(stats);
 });
 
 // =====================================================================
