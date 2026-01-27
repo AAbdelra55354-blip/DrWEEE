@@ -14,7 +14,7 @@
     <!-- PWA Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
 
-    <!-- Preconnect to Dynamics 365 for faster iframe load -->
+    <!-- Preconnect to Dynamics 365 -->
     <link rel="preconnect" href="https://org1cbcc5c9.crm3.dynamics.com">
     <link rel="dns-prefetch" href="https://org1cbcc5c9.crm3.dynamics.com">
 
@@ -27,228 +27,425 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-96x96.png">
     <link rel="icon" type="image/svg+xml" href="/images/favicon/favicon.svg">
 
-    <!-- Cached styles -->
-    <link rel="stylesheet" href="/pwa/assets/app-shell.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #00897b 0%, #26a69a 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .logo {
+            margin-bottom: 32px;
+        }
+
+        .logo svg {
+            width: 100px;
+            height: 100px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo-text {
+            font-size: 36px;
+            font-weight: 700;
+            margin-top: 16px;
+            letter-spacing: -1px;
+        }
+
+        .logo-accent {
+            color: #b2dfdb;
+        }
+
+        .tagline {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 48px;
+            line-height: 1.5;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px 24px;
+            color: #333;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #00897b;
+        }
+
+        .card-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .btn:last-child {
+            margin-bottom: 0;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00897b 0%, #26a69a 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 137, 123, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #00897b;
+        }
+
+        .btn-secondary:hover {
+            background: #e8e8e8;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: #999;
+            font-size: 12px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .divider span {
+            padding: 0 12px;
+        }
+
+        /* iOS Install Instructions */
+        .ios-instructions {
+            display: none;
+            text-align: right;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .ios-instructions.visible {
+            display: block;
+        }
+
+        .ios-step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .ios-step-num {
+            width: 24px;
+            height: 24px;
+            background: #00897b;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        /* Already installed state */
+        .installed-badge {
+            display: none;
+            background: #4caf50;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .installed-badge.visible {
+            display: inline-block;
+        }
+
+        /* Hide elements based on state */
+        .hide-when-installed {
+            display: block;
+        }
+
+        body.is-installed .hide-when-installed {
+            display: none;
+        }
+
+        body.is-installed .installed-badge {
+            display: inline-block;
+        }
+
+        /* Offline state */
+        .offline-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #ff5722;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .offline-banner.visible {
+            transform: translateY(0);
+        }
+
+        /* RTL adjustments */
+        [dir="ltr"] .ios-step {
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
-    <!-- Offline Banner (hidden by default) -->
-    <div id="offlineBanner" class="offline-banner hidden">
-        <span class="offline-icon">&#128225;</span>
-        <span class="offline-text">
-            <span data-lang="ar">انت غير متصل بالانترنت</span>
-            <span data-lang="en" style="display:none">You're offline</span>
-        </span>
+    <!-- Offline Banner -->
+    <div id="offlineBanner" class="offline-banner">
+        <span data-lang="ar">انت غير متصل بالانترنت</span>
+        <span data-lang="en" style="display:none">You're offline</span>
     </div>
 
-    <!-- App Shell Container -->
-    <div class="pwa-shell">
-        <!-- Loading Splash (shown while Dynamics loads) -->
-        <div id="loadingSplash" class="loading-splash">
-            <div class="splash-content">
-                <div class="splash-logo">
-                    <svg class="logo-icon" viewBox="0 0 100 100" width="80" height="80">
-                        <circle cx="50" cy="50" r="45" fill="none" stroke="#4db6ac" stroke-width="3"/>
-                        <path d="M50 20 L50 50 L70 70" fill="none" stroke="#00897b" stroke-width="4" stroke-linecap="round"/>
-                        <path d="M30 60 Q50 80 70 60" fill="none" stroke="#26a69a" stroke-width="3" stroke-linecap="round"/>
-                        <circle cx="50" cy="50" r="8" fill="#00897b"/>
-                    </svg>
-                    <div class="logo-text">
-                        Dr.<span class="logo-accent">WEEE</span>
-                    </div>
-                </div>
-                <div class="splash-loader">
-                    <div class="loader-ring"></div>
-                </div>
-                <p class="splash-text">
-                    <span data-lang="ar">جاري التحميل...</span>
-                    <span data-lang="en" style="display:none">Loading...</span>
-                </p>
-            </div>
+    <div class="container">
+        <div class="logo">
+            <svg viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+                <circle cx="50" cy="50" r="35" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+                <path d="M35 50 L45 60 L65 40" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="50" cy="50" r="8" fill="white"/>
+            </svg>
+            <div class="logo-text">Dr.<span class="logo-accent">WEEE</span></div>
         </div>
 
-        <!-- Dynamics 365 Content Frame -->
-        <!-- Note: Removed allow-top-navigation to prevent Dynamics from redirecting the parent -->
-        <iframe id="dynamicsFrame"
-                class="dynamics-frame"
-                src="about:blank"
-                allow="geolocation; camera; microphone; clipboard-read; clipboard-write; fullscreen"
-                sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-downloads"
-                title="DrWEEE Application"
-                loading="eager">
-        </iframe>
+        <p class="tagline">
+            <span data-lang="ar">نظام إدارة النفايات الإلكترونية المتكامل</span>
+            <span data-lang="en" style="display:none">Integrated E-Waste Management System</span>
+        </p>
 
-        <!-- Auth Required Overlay (hidden by default) -->
-        <div id="authOverlay" class="auth-overlay hidden">
-            <div class="auth-content">
-                <div class="auth-icon">&#128274;</div>
-                <h2 class="auth-title">
-                    <span data-lang="ar">مطلوب تسجيل الدخول</span>
-                    <span data-lang="en" style="display:none">Authentication Required</span>
-                </h2>
-                <p class="auth-text">
-                    <span data-lang="ar">يرجى تسجيل الدخول للوصول إلى التطبيق</span>
-                    <span data-lang="en" style="display:none">Please sign in to access the application</span>
-                </p>
-                <a href="https://org1cbcc5c9.crm3.dynamics.com" class="auth-btn" id="authBtn">
-                    <span data-lang="ar">تسجيل الدخول</span>
-                    <span data-lang="en" style="display:none">Sign In</span>
-                </a>
-                <button class="retry-btn" id="retryBtn">
-                    <span data-lang="ar">اعادة المحاولة</span>
-                    <span data-lang="en" style="display:none">Retry</span>
-                </button>
-            </div>
-        </div>
+        <div class="card">
+            <span class="installed-badge">
+                <span data-lang="ar">التطبيق مثبت</span>
+                <span data-lang="en" style="display:none">App Installed</span>
+            </span>
 
-        <!-- Connection Error Overlay (hidden by default) -->
-        <div id="errorOverlay" class="error-overlay hidden">
-            <div class="error-content">
-                <div class="error-icon">&#9888;</div>
-                <h2 class="error-title">
-                    <span data-lang="ar">خطأ في الاتصال</span>
-                    <span data-lang="en" style="display:none">Connection Error</span>
-                </h2>
-                <p class="error-text">
-                    <span data-lang="ar">تعذر الاتصال بالخادم. تحقق من اتصالك بالإنترنت.</span>
-                    <span data-lang="en" style="display:none">Could not connect to the server. Check your internet connection.</span>
-                </p>
-                <button class="retry-btn" id="errorRetryBtn">
-                    <span data-lang="ar">اعادة المحاولة</span>
-                    <span data-lang="en" style="display:none">Retry</span>
-                </button>
-            </div>
-        </div>
-    </div>
+            <h2 class="card-title">
+                <span data-lang="ar">مرحباً بك في DrWEEE</span>
+                <span data-lang="en" style="display:none">Welcome to DrWEEE</span>
+            </h2>
 
-    <!-- Install Prompt UI (hidden by default) -->
-    <div id="installPrompt" class="install-prompt hidden">
-        <div class="install-content">
-            <button class="install-close" id="installClose" aria-label="Close">&times;</button>
-            <div class="install-header">
-                <div class="install-icon">
-                    <svg viewBox="0 0 100 100" width="48" height="48">
-                        <circle cx="50" cy="50" r="45" fill="#00897b"/>
-                        <path d="M50 25 L50 55 M35 45 L50 60 L65 45" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                        <line x1="30" y1="70" x2="70" y2="70" stroke="white" stroke-width="4" stroke-linecap="round"/>
-                    </svg>
-                </div>
-                <div class="install-text-content">
-                    <h3 class="install-title">
-                        <span data-lang="ar">تثبيت تطبيق DrWEEE</span>
-                        <span data-lang="en" style="display:none">Install DrWEEE App</span>
-                    </h3>
-                    <p class="install-text">
-                        <span data-lang="ar">ثبّت التطبيق للوصول السريع والميزات المحسنة</span>
-                        <span data-lang="en" style="display:none">Install for faster access and enhanced features</span>
-                    </p>
-                </div>
-            </div>
-            <div class="install-actions">
-                <button class="install-btn-secondary" id="installLater">
-                    <span data-lang="ar">لاحقاً</span>
-                    <span data-lang="en" style="display:none">Later</span>
-                </button>
-                <button class="install-btn" id="installBtn">
-                    <span data-lang="ar">تثبيت الآن</span>
-                    <span data-lang="en" style="display:none">Install Now</span>
-                </button>
-            </div>
-        </div>
-    </div>
+            <p class="card-text hide-when-installed">
+                <span data-lang="ar">ثبّت التطبيق على جهازك للحصول على تجربة أفضل ووصول أسرع</span>
+                <span data-lang="en" style="display:none">Install the app on your device for a better experience and faster access</span>
+            </p>
 
-    <!-- iOS Install Instructions (hidden by default) -->
-    <div id="iosInstallPrompt" class="ios-install-prompt hidden">
-        <div class="ios-install-content">
-            <button class="install-close" id="iosInstallClose" aria-label="Close">&times;</button>
-            <div class="ios-install-header">
-                <svg viewBox="0 0 100 100" width="48" height="48">
-                    <circle cx="50" cy="50" r="45" fill="#00897b"/>
-                    <path d="M50 25 L50 55 M35 45 L50 60 L65 45" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                    <line x1="30" y1="70" x2="70" y2="70" stroke="white" stroke-width="4" stroke-linecap="round"/>
-                </svg>
-                <h3 class="ios-install-title">
-                    <span data-lang="ar">تثبيت تطبيق DrWEEE</span>
-                    <span data-lang="en" style="display:none">Install DrWEEE App</span>
-                </h3>
-            </div>
-            <div class="ios-install-steps">
-                <div class="ios-step">
-                    <span class="ios-step-number">1</span>
-                    <span class="ios-step-text">
-                        <span data-lang="ar">اضغط على زر المشاركة</span>
-                        <span data-lang="en" style="display:none">Tap the Share button</span>
-                    </span>
-                    <span class="ios-share-icon">&#9757;</span>
-                </div>
-                <div class="ios-step">
-                    <span class="ios-step-number">2</span>
-                    <span class="ios-step-text">
-                        <span data-lang="ar">اختر "إضافة إلى الشاشة الرئيسية"</span>
-                        <span data-lang="en" style="display:none">Select "Add to Home Screen"</span>
-                    </span>
-                </div>
-                <div class="ios-step">
-                    <span class="ios-step-number">3</span>
-                    <span class="ios-step-text">
-                        <span data-lang="ar">اضغط "إضافة"</span>
-                        <span data-lang="en" style="display:none">Tap "Add"</span>
-                    </span>
-                </div>
-            </div>
-            <button class="ios-got-it-btn" id="iosGotIt">
-                <span data-lang="ar">فهمت</span>
-                <span data-lang="en" style="display:none">Got it</span>
+            <button id="installBtn" class="btn btn-primary hide-when-installed">
+                <span data-lang="ar">تثبيت التطبيق</span>
+                <span data-lang="en" style="display:none">Install App</span>
             </button>
+
+            <div class="divider hide-when-installed">
+                <span data-lang="ar">أو</span>
+                <span data-lang="en" style="display:none">or</span>
+            </div>
+
+            <a href="https://org1cbcc5c9.crm3.dynamics.com/WebResources/crd33_home" id="continueBtn" class="btn btn-secondary">
+                <span data-lang="ar">متابعة بدون تثبيت</span>
+                <span data-lang="en" style="display:none">Continue without installing</span>
+            </a>
+
+            <!-- iOS Instructions (shown for iOS devices) -->
+            <div id="iosInstructions" class="ios-instructions">
+                <div class="ios-step">
+                    <span class="ios-step-num">1</span>
+                    <span data-lang="ar">اضغط على زر المشاركة (أسفل الشاشة)</span>
+                    <span data-lang="en" style="display:none">Tap the Share button (bottom of screen)</span>
+                </div>
+                <div class="ios-step">
+                    <span class="ios-step-num">2</span>
+                    <span data-lang="ar">اختر "إضافة إلى الشاشة الرئيسية"</span>
+                    <span data-lang="en" style="display:none">Select "Add to Home Screen"</span>
+                </div>
+                <div class="ios-step">
+                    <span class="ios-step-num">3</span>
+                    <span data-lang="ar">اضغط "إضافة"</span>
+                    <span data-lang="en" style="display:none">Tap "Add"</span>
+                </div>
+            </div>
         </div>
     </div>
-
-    <!-- Update Available Banner (hidden by default) -->
-    <div id="updateBanner" class="update-banner hidden">
-        <span class="update-text">
-            <span data-lang="ar">تحديث جديد متوفر</span>
-            <span data-lang="en" style="display:none">New update available</span>
-        </span>
-        <button class="update-btn" id="updateBtn">
-            <span data-lang="ar">تحديث</span>
-            <span data-lang="en" style="display:none">Update</span>
-        </button>
-    </div>
-
-    <!-- Scripts -->
-    <script src="/pwa/js/offline-manager.js"></script>
-    <script src="/pwa/js/pwa-bridge.js"></script>
-    <script src="/pwa/js/install-prompt.js"></script>
-    <script src="/pwa/js/deep-link-router.js"></script>
 
     <script>
-        // Service Worker Registration
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', async () => {
-                try {
-                    const registration = await navigator.serviceWorker.register('/pwa/sw.js', {
-                        scope: '/app'
-                    });
-                    console.log('[PWA] Service worker registered:', registration.scope);
+        // Configuration
+        const DYNAMICS_URL = 'https://org1cbcc5c9.crm3.dynamics.com/WebResources/crd33_home';
+        const STORAGE_KEY = 'drweee_install_prompted';
 
-                    // Check for updates
-                    registration.addEventListener('updatefound', () => {
-                        const newWorker = registration.installing;
-                        newWorker.addEventListener('statechange', () => {
-                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                // New version available
-                                document.getElementById('updateBanner')?.classList.remove('hidden');
-                            }
-                        });
-                    });
-                } catch (error) {
-                    console.error('[PWA] Service worker registration failed:', error);
+        // State
+        let deferredPrompt = null;
+
+        // Check if running as installed PWA
+        function isInstalled() {
+            return window.matchMedia('(display-mode: standalone)').matches
+                || window.navigator.standalone === true
+                || document.referrer.includes('android-app://');
+        }
+
+        // Check if iOS
+        function isIOS() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        }
+
+        // Apply language
+        function applyLanguage(lang) {
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                el.style.display = el.dataset.lang === lang ? '' : 'none';
+            });
+        }
+
+        // Initialize
+        function init() {
+            const lang = localStorage.getItem('drweee_lang') || 'ar';
+            applyLanguage(lang);
+
+            // If already installed, mark body and auto-redirect
+            if (isInstalled()) {
+                document.body.classList.add('is-installed');
+                // Auto redirect after 1 second
+                setTimeout(() => {
+                    window.location.href = DYNAMICS_URL;
+                }, 1000);
+                return;
+            }
+
+            // iOS specific handling
+            if (isIOS()) {
+                document.getElementById('installBtn').style.display = 'none';
+                document.getElementById('iosInstructions').classList.add('visible');
+            }
+
+            // Handle install prompt
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                document.getElementById('installBtn').style.display = 'block';
+            });
+
+            // Install button click
+            document.getElementById('installBtn').addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const result = await deferredPrompt.userChoice;
+                    console.log('Install result:', result.outcome);
+                    deferredPrompt = null;
+
+                    if (result.outcome === 'accepted') {
+                        // Redirect after install
+                        setTimeout(() => {
+                            window.location.href = DYNAMICS_URL;
+                        }, 1000);
+                    }
+                } else if (isIOS()) {
+                    // Show iOS instructions
+                    document.getElementById('iosInstructions').classList.add('visible');
                 }
             });
 
-            // Handle update button click
-            document.getElementById('updateBtn')?.addEventListener('click', () => {
-                window.location.reload();
+            // Track successful install
+            window.addEventListener('appinstalled', () => {
+                console.log('App installed!');
+                localStorage.setItem(STORAGE_KEY, 'installed');
+                // Redirect to app
+                window.location.href = DYNAMICS_URL;
             });
+
+            // Offline detection
+            function updateOnlineStatus() {
+                const banner = document.getElementById('offlineBanner');
+                if (!navigator.onLine) {
+                    banner.classList.add('visible');
+                } else {
+                    banner.classList.remove('visible');
+                }
+            }
+
+            window.addEventListener('online', updateOnlineStatus);
+            window.addEventListener('offline', updateOnlineStatus);
+            updateOnlineStatus();
+        }
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/pwa/sw.js', { scope: '/app' })
+                .then(reg => console.log('SW registered:', reg.scope))
+                .catch(err => console.error('SW failed:', err));
+        }
+
+        // Start
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
         }
     </script>
 </body>
