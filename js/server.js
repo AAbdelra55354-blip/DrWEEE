@@ -5335,21 +5335,28 @@ app.patch('/api/admin/update-azure-user-phone', apiLimiter, async (req, res) => 
 
 
 // =====================================================================
-// PWA ROUTES (must be before static middleware and cache control)
+// PWA ROUTES
 // =====================================================================
 
+// Check if PWA directory exists
 const pwaDir = path.join(__dirname, '..', 'pwa');
-const pwaEnabled = fs.existsSync(pwaDir);
+let pwaEnabled = false;
+try {
+    pwaEnabled = fs.existsSync(pwaDir) && fs.existsSync(path.join(pwaDir, 'app-shell.html'));
+} catch (e) {
+    console.log('📱 PWA check failed:', e.message);
+}
 
 if (pwaEnabled) {
     console.log('📱 PWA enabled - serving from /pwa directory');
 
-    // Serve PWA app shell for /app and /app/*
+    // Serve PWA app shell for /app and /app/:path*
     app.get('/app', (req, res) => {
         res.sendFile(path.join(pwaDir, 'app-shell.html'));
     });
 
-    app.get('/app/*', (req, res) => {
+    // Express 5 uses path-to-regexp v8+ which requires named parameters
+    app.get('/app/:path*', (req, res) => {
         res.sendFile(path.join(pwaDir, 'app-shell.html'));
     });
 
