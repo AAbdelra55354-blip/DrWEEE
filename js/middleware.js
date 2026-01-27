@@ -11,6 +11,10 @@ function compressionMiddleware() {
             if (req.headers['x-no-compression']) {
                 return false;
             }
+            // Don't compress SSE streams - they need real-time delivery
+            if (req.path.startsWith('/api/sse/')) {
+                return false;
+            }
             return compression.filter(req, res);
         },
         level: 6, // Balance between speed and compression ratio
