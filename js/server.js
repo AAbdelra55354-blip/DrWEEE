@@ -5071,7 +5071,8 @@ app.post('/api/admin/create-azure-user', apiLimiter, async (req, res) => {
             password,
             forcePasswordChange,
             jobTitle,
-            department
+            department,
+            mobilePhone
         } = req.body;
 
         // Validate required fields
@@ -5116,6 +5117,7 @@ app.post('/api/admin/create-azure-user', apiLimiter, async (req, res) => {
         if (email) userPayload.mail = email;
         if (jobTitle) userPayload.jobTitle = jobTitle;
         if (department) userPayload.department = department;
+        if (mobilePhone) userPayload.mobilePhone = mobilePhone;
 
         console.log('[Graph API] Creating user:', userPrincipalName);
 
