@@ -1978,10 +1978,9 @@
         function getTranslatedUnit(unitValue) {
             const key = `weeeRewards.items.units.${unitValue}`;
             const translatedUnit = getI18n(key);
-            // If translation returns the key itself (not found), use original value
-            // Check both full key and partial key (last segment)
-            if (translatedUnit === key || translatedUnit === unitValue || translatedUnit.includes('weeeRewards.items.units')) {
-                return unitValue;
+            // If translation returns null/undefined or the key itself, use original value
+            if (!translatedUnit || translatedUnit === key || translatedUnit === unitValue || translatedUnit.includes('weeeRewards.items.units')) {
+                return unitValue || '';
             }
             return translatedUnit;
         }
