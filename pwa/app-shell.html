@@ -15,8 +15,8 @@
     <link rel="manifest" href="/pwa/manifest.json">
 
     <!-- Preconnect to Dynamics 365 -->
-    <link rel="preconnect" href="https://org1cbcc5c9.crm3.dynamics.com">
-    <link rel="dns-prefetch" href="https://org1cbcc5c9.crm3.dynamics.com">
+    <link rel="preconnect" href="{{DATAVERSE_URL}}">
+    <link rel="dns-prefetch" href="{{DATAVERSE_URL}}">
 
     <!-- Apple-specific meta tags -->
     <meta name="apple-mobile-web-app-title" content="DrWEEE">
@@ -409,7 +409,7 @@
                 <span data-lang="en" style="display:none">or</span>
             </div>
 
-            <a href="https://org1cbcc5c9.crm3.dynamics.com/WebResources/crd33_home" id="continueBtn" class="btn btn-secondary">
+            <a href="{{DATAVERSE_URL}}/WebResources/crd33_home" id="continueBtn" class="btn btn-secondary">
                 <span data-lang="ar">متابعة بدون تثبيت</span>
                 <span data-lang="en" style="display:none">Continue without installing</span>
             </a>
@@ -475,7 +475,7 @@
 
     <script>
         // Configuration
-        const DYNAMICS_URL = 'https://org1cbcc5c9.crm3.dynamics.com/WebResources/crd33_home';
+        const DYNAMICS_URL = '{{DATAVERSE_URL}}/WebResources/crd33_home';
 
         // Check URL params for PWA launch
         const urlParams = new URLSearchParams(window.location.search);

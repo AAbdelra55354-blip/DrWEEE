@@ -5,34 +5,35 @@ const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 // --- ENVIRONMENT CONFIGURATION ---
-// Maps NODE_ENV to the correct Dataverse and Power Automate URLs.
-// Azure AD credentials and all other services are shared across environments.
-const ENV_CONFIG = {
-    development: {
-        dataverseUrl: 'https://org1cbcc5c9.crm3.dynamics.com',
-        powerAutomateUrl: process.env.POWER_AUTOMATE_GET_URL || '',
-        baseUrl: `http://localhost:${process.env.PORT || 3000}`,
-        isDeployed: false
-    },
-    test: {
-        dataverseUrl: 'https://org1cbcc5c9.crm3.dynamics.com',
-        powerAutomateUrl: process.env.POWER_AUTOMATE_GET_URL || '',
-        baseUrl: 'https://www.drweee.com',
-        isDeployed: true
-    },
-    production: {
-        dataverseUrl: 'https://org8502e0ae.crm3.dynamics.com',
-        powerAutomateUrl: process.env.POWER_AUTOMATE_GET_URL || '',
-        baseUrl: 'https://www.drweee.com',
-        isDeployed: true
-    }
-};
-
+// NODE_ENV switches between production and test env vars.
+// Production vars: DATAVERSE_URL, POWER_AUTOMATE_GET_URL
+// Test vars: DATAVERSE_URL_TEST, POWER_AUTOMATE_GET_URL_TEST
+// development uses test vars with local base URL.
 const currentEnv = process.env.NODE_ENV || 'development';
-const envConfig = ENV_CONFIG[currentEnv] || ENV_CONFIG.development;
+
+const envConfig = (() => {
+    const isDeployed = currentEnv === 'production' || currentEnv === 'test';
+    if (currentEnv === 'production') {
+        return {
+            dataverseUrl: process.env.DATAVERSE_URL || '',
+            powerAutomateUrl: process.env.POWER_AUTOMATE_GET_URL || '',
+            baseUrl: process.env.BASE_URL || 'https://www.drweee.com',
+            isDeployed
+        };
+    }
+    // test and development both use test env vars
+    return {
+        dataverseUrl: process.env.DATAVERSE_URL_TEST || '',
+        powerAutomateUrl: process.env.POWER_AUTOMATE_GET_URL_TEST || '',
+        baseUrl: isDeployed
+            ? (process.env.BASE_URL || 'https://www.drweee.com')
+            : `http://localhost:${process.env.PORT || 3000}`,
+        isDeployed
+    };
+})();
 
 console.log(`🌍 Environment: ${currentEnv}`);
-console.log(`📊 Dataverse: ${envConfig.dataverseUrl}`);
+console.log(`📊 Dataverse: ${envConfig.dataverseUrl || '⚠️ NOT SET'}`);
 console.log(`🔗 Power Automate: ${envConfig.powerAutomateUrl ? 'configured' : '⚠️ NOT SET'}`);
 
 const express = require('express');
@@ -282,13 +283,15 @@ const sessionStore = new MemoryStore({
 // Validate required environment variables
 const requiredEnvVars = [
     'CEQUENS_API_KEY', 'CEQUENS_USERNAME', 'CEQUENS_SENDER_NAME',
-    'AZURE_TENANT_ID', 'AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET'
+    'AZURE_TENANT_ID', 'AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET',
+    'DATAVERSE_URL', 'POWER_AUTOMATE_GET_URL',
+    'DATAVERSE_URL_TEST', 'POWER_AUTOMATE_GET_URL_TEST'
 ];
 const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);
 
 if (missingEnvVars.length > 0) {
     console.error('❌ Missing required environment variables:', missingEnvVars.join(', '));
-    console.error('Please check your .env file and ensure all Cequens credentials are set.');
+    console.error('Please check your .env file and ensure all credentials are set.');
 }
 // Fallback database connection if needed for other purposes (not sessions)
 // const dbPool = mysql.createPool({
@@ -5501,15 +5504,22 @@ try {
 if (pwaEnabled) {
     console.log('📱 PWA enabled - serving from /pwa directory');
 
-    // Serve PWA app shell for /app and all sub-paths
-    // Express 5 path-to-regexp v8 syntax: use {*name} for wildcards
-    app.get('/app', (req, res) => {
-        res.sendFile(path.join(pwaDir, 'app-shell.html'));
-    });
+    // Serve PWA app shell dynamically - injects correct Dataverse URL based on NODE_ENV
+    const appShellPath = path.join(pwaDir, 'app-shell.html');
+    function serveAppShell(req, res) {
+        fs.readFile(appShellPath, 'utf8', (err, html) => {
+            if (err) {
+                console.error('Failed to read app-shell.html:', err.message);
+                return res.status(500).send('Internal Server Error');
+            }
+            const rendered = html.replace(/\{\{DATAVERSE_URL\}\}/g, envConfig.dataverseUrl);
+            res.type('html').send(rendered);
+        });
+    }
 
-    app.get('/app/{*splat}', (req, res) => {
-        res.sendFile(path.join(pwaDir, 'app-shell.html'));
-    });
+    // Express 5 path-to-regexp v8 syntax: use {*name} for wildcards
+    app.get('/app', serveAppShell);
+    app.get('/app/{*splat}', serveAppShell);
 
     // PWA manifest with correct MIME type
     app.get('/pwa/manifest.json', (req, res) => {
