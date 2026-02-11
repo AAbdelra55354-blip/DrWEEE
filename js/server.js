@@ -3,6 +3,38 @@
 // --- 1. IMPORTS ---
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+
+// --- ENVIRONMENT CONFIGURATION ---
+// Maps NODE_ENV to the correct Dataverse and Power Automate URLs.
+// Azure AD credentials and all other services are shared across environments.
+const ENV_CONFIG = {
+    development: {
+        dataverseUrl: 'https://org1cbcc5c9.crm3.dynamics.com',
+        powerAutomateUrl: process.env.POWER_AUTOMATE_GET_URL || '',
+        baseUrl: `http://localhost:${process.env.PORT || 3000}`,
+        isDeployed: false
+    },
+    test: {
+        dataverseUrl: 'https://org1cbcc5c9.crm3.dynamics.com',
+        powerAutomateUrl: process.env.POWER_AUTOMATE_GET_URL || '',
+        baseUrl: 'https://www.drweee.com',
+        isDeployed: true
+    },
+    production: {
+        dataverseUrl: 'https://org8502e0ae.crm3.dynamics.com',
+        powerAutomateUrl: process.env.POWER_AUTOMATE_GET_URL || '',
+        baseUrl: 'https://www.drweee.com',
+        isDeployed: true
+    }
+};
+
+const currentEnv = process.env.NODE_ENV || 'development';
+const envConfig = ENV_CONFIG[currentEnv] || ENV_CONFIG.development;
+
+console.log(`🌍 Environment: ${currentEnv}`);
+console.log(`📊 Dataverse: ${envConfig.dataverseUrl}`);
+console.log(`🔗 Power Automate: ${envConfig.powerAutomateUrl ? 'configured' : '⚠️ NOT SET'}`);
+
 const express = require('express');
 const session = require('express-session');
 const MemoryStore = require('memorystore')(session);
@@ -150,7 +182,8 @@ async function sendPushNotification(userId, payload) {
 
 // --- SECURE LOGGING UTILITIES ---
 // Production-safe logging that masks sensitive data
-const isProduction = () => process.env.NODE_ENV === 'production';
+// Returns true for any deployed environment (test or production on Railway)
+const isProduction = () => envConfig.isDeployed;
 
 // Mask phone number: +201234567890 -> +20****7890
 function maskPhone(phone) {
@@ -249,7 +282,7 @@ const sessionStore = new MemoryStore({
 // Validate required environment variables
 const requiredEnvVars = [
     'CEQUENS_API_KEY', 'CEQUENS_USERNAME', 'CEQUENS_SENDER_NAME',
-    'DATAVERSE_URL', 'AZURE_TENANT_ID', 'AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET'
+    'AZURE_TENANT_ID', 'AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET'
 ];
 const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);
 
@@ -356,7 +389,7 @@ async function getDataverseToken() {
     const AZURE_TENANT_ID = (process.env.AZURE_TENANT_ID || '').trim();
     const AZURE_CLIENT_ID = (process.env.AZURE_CLIENT_ID || '').trim();
     const AZURE_CLIENT_SECRET = (process.env.AZURE_CLIENT_SECRET || '').trim();
-    const DATAVERSE_URL = (process.env.DATAVERSE_URL || '').trim().replace(/\/+$/, '');
+    const DATAVERSE_URL = envConfig.dataverseUrl.replace(/\/+$/, '');
 
     // Debug: Check if required environment variables are set
     if (!DATAVERSE_URL || !AZURE_TENANT_ID || !AZURE_CLIENT_ID || !AZURE_CLIENT_SECRET) {
@@ -399,7 +432,7 @@ async function getDataverseToken() {
 async function queryDataverse(entityPluralName, fetchXml) {
     console.log(`[DEBUG] Executing FetchXML for ${entityPluralName}...`);
     const token = await getDataverseToken();
-    const baseUrl = (process.env.DATAVERSE_URL || '').trim().replace(/\/+$/, '');
+    const baseUrl = envConfig.dataverseUrl.replace(/\/+$/, '');
 
     const encodedFetchXml = encodeURIComponent(fetchXml);
     const url = `${baseUrl}/api/data/v9.2/${entityPluralName}?fetchXml=${encodedFetchXml}`;
@@ -592,7 +625,7 @@ const {
 } = require('./middleware');
 
 // Apply security headers (must be first)
-if (process.env.NODE_ENV === 'production') {
+if (isProduction()) {
     app.use(securityMiddleware());
     console.log('✅ Security headers enabled');
 }
@@ -602,7 +635,7 @@ app.use(compressionMiddleware());
 console.log('✅ Response compression enabled');
 
 // CORS with production-ready configuration
-app.use(cors(process.env.NODE_ENV === 'production' ? corsOptionsProduction() : {
+app.use(cors(isProduction() ? corsOptionsProduction() : {
     origin: ['http://127.0.0.1:5500', 'http://localhost:5500', 'http://127.0.0.1:5501', 'http://localhost:5501', 'http://localhost:3000'],
     credentials: true
 }));
@@ -619,7 +652,7 @@ const { apiLimiter, authLimiter, otpLimiter, ogLimiter } = rateLimitMiddleware()
 
 
 // Require strong session secret in production
-if (process.env.NODE_ENV === 'production' && (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length < 32)) {
+if (isProduction() && (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length < 32)) {
     console.error('FATAL: SESSION_SECRET must be set to a strong random value (at least 32 characters) in production!');
     console.error('Generate one with: node -e "console.log(require(\'crypto\').randomBytes(64).toString(\'hex\'))"');
     process.exit(1);
@@ -675,7 +708,7 @@ app.get('/api/health', (req, res) => {
         uptime: process.uptime(),
         status: 'OK',
         timestamp: Date.now(),
-        environment: process.env.NODE_ENV || 'development',
+        environment: currentEnv,
         memoryUsage: {
             heapUsed: Math.round(process.memoryUsage().heapUsed / 1024 / 1024) + 'MB',
             heapTotal: Math.round(process.memoryUsage().heapTotal / 1024 / 1024) + 'MB'
@@ -799,7 +832,7 @@ app.post('/api/create-contact', authLimiter, async (req, res) => {
         return res.status(400).json({ message: 'Password is required.' });
     }
 
-    const powerAutomateUrl = process.env.POWER_AUTOMATE_GET_URL;
+    const powerAutomateUrl = envConfig.powerAutomateUrl;
     if (!powerAutomateUrl) {
         console.error("POWER_AUTOMATE_URL is not set in the .env file.");
         return res.status(500).json({ message: 'Server configuration error.' });
@@ -984,7 +1017,7 @@ app.post('/api/collection-request', apiLimiter, async (req, res) => {
 
     // Check authentication - session or valid GUID for local dev
     const isSessionAuth = req.session.user && req.session.user.phoneNumber;
-    const isLocalDev = process.env.NODE_ENV !== 'production';
+    const isLocalDev = !isProduction();
 
     if (isSessionAuth) {
         // Validate that the GUID matches the logged-in user's GUID
@@ -997,7 +1030,7 @@ app.post('/api/collection-request', apiLimiter, async (req, res) => {
     }
     // In local dev without session, allow request if GUID is provided (trusting client-side localStorage)
 
-    const powerAutomateUrl = process.env.POWER_AUTOMATE_GET_URL;
+    const powerAutomateUrl = envConfig.powerAutomateUrl;
     if (!powerAutomateUrl) {
         console.error("POWER_AUTOMATE_GET_URL is not set.");
         return res.status(500).json({ message: 'Server configuration error.' });
@@ -1111,7 +1144,7 @@ app.post('/api/submit-order', async (req, res) => {
     // 1. Authentication & Authorization Check
     // Check session auth first, then allow GUID-based auth for local development
     const isSessionAuth = req.session.user && req.session.user.GUID;
-    const isLocalDev = process.env.NODE_ENV !== 'production';
+    const isLocalDev = !isProduction();
 
     // Get user info from session or request body (for local dev with localStorage auth)
     let userGUID = null;
@@ -1140,7 +1173,7 @@ app.post('/api/submit-order', async (req, res) => {
         return res.status(400).json({ message: 'Missing required order data.' });
     }
 
-    const powerAutomateUrl = process.env.POWER_AUTOMATE_GET_URL;
+    const powerAutomateUrl = envConfig.powerAutomateUrl;
     if (!powerAutomateUrl) {
         console.error("POWER_AUTOMATE_GET_URL is not set.");
         return res.status(500).json({ message: 'Server configuration error.' });
@@ -1249,7 +1282,7 @@ Grand Total: EGP ${grandTotal.toLocaleString()}
 app.get('/api/my-requests', async (req, res) => {
     // Authentication check - session or localStorage-based
     const isSessionAuth = req.session.user && req.session.user.GUID;
-    const isLocalDev = process.env.NODE_ENV !== 'production';
+    const isLocalDev = !isProduction();
 
     // Get userGUID from query param (for localStorage auth) or session
     let userGUID = null;
@@ -1501,7 +1534,7 @@ app.post('/api/redeem', async (req, res) => {
         return res.status(400).json({ message: 'Missing required redemption data.' });
     }
 
-    const powerAutomateUrl = process.env.POWER_AUTOMATE_GET_URL;
+    const powerAutomateUrl = envConfig.powerAutomateUrl;
     if (!powerAutomateUrl) {
         console.error("POWER_AUTOMATE_GET_URL is not set.");
         return res.status(500).json({ message: 'Server configuration error.' });
@@ -2201,7 +2234,7 @@ app.post('/api/contact', apiLimiter, async (req, res) => {
         });
     }
 
-    const powerAutomateUrl = process.env.POWER_AUTOMATE_GET_URL;
+    const powerAutomateUrl = envConfig.powerAutomateUrl;
     if (!powerAutomateUrl) {
         console.error("POWER_AUTOMATE_GET_URL is not set.");
         return res.status(500).json({
@@ -2357,7 +2390,7 @@ ${message}
 app.get('/api/environmental-impact', async (req, res) => {
     // Authentication check - session or localStorage-based
     const isSessionAuth = req.session.user && req.session.user.GUID;
-    const isLocalDev = process.env.NODE_ENV !== 'production';
+    const isLocalDev = !isProduction();
 
     let userGUID = null;
     let userFullName = 'Eco Warrior';
@@ -3030,7 +3063,7 @@ app.get('/api/share/my-code', apiLimiter, async (req, res) => {
 
             // Update contact with new share code in Dataverse
             try {
-                const updateUrl = `${process.env.DATAVERSE_URL}/api/data/v9.2/contacts(${userGUID})`;
+                const updateUrl = `${envConfig.dataverseUrl}/api/data/v9.2/contacts(${userGUID})`;
                 await axios.patch(updateUrl, {
                     crd33_sharecode: shareCode
                 }, {
@@ -3049,9 +3082,7 @@ app.get('/api/share/my-code', apiLimiter, async (req, res) => {
         }
 
         // Build the public share URL
-        const baseUrl = process.env.NODE_ENV === 'production'
-            ? 'https://www.drweee.com'
-            : `http://localhost:${port}`;
+        const baseUrl = envConfig.baseUrl;
 
         res.json({
             success: true,
@@ -3487,9 +3518,7 @@ app.get('/certificate/:shareCode', async (req, res) => {
         }
 
         // Build the base URL for OG tags
-        const baseUrl = process.env.NODE_ENV === 'production'
-            ? 'https://www.drweee.com'
-            : `http://localhost:${port}`;
+        const baseUrl = envConfig.baseUrl;
 
         // Inject dynamic OG meta tags
         const ogTitle = `${firstName}'s Environmental Impact | DR.WEEE`;
@@ -3542,7 +3571,7 @@ app.get('/api/territories', async (req, res) => {
 
         console.log('[Territories] Fetching territories from Dataverse...');
         const accessToken = await getDataverseToken();
-        const { DATAVERSE_URL } = process.env;
+        const DATAVERSE_URL = envConfig.dataverseUrl;
 
         // Fetch territories where crd33_iscountry is true, expanding to get currency data
         const url = `${DATAVERSE_URL}/api/data/v9.2/territories?$filter=crd33_iscountry eq true&$select=territoryid,name,crd33_flag,crd33_weeepointequivalent,exchangerate,_transactioncurrencyid_value&$expand=transactioncurrencyid($select=transactioncurrencyid,currencyname,currencysymbol,isocurrencycode,currencyprecision,exchangerate)`;
@@ -3651,7 +3680,7 @@ app.post('/api/pos/send-sms', async (req, res) => {
         const isAllowedOrigin = allowedOrigins.some(allowed => origin.includes(allowed));
 
         // In development, also allow localhost
-        const isDevelopment = process.env.NODE_ENV !== 'production';
+        const isDevelopment = !envConfig.isDeployed;
         const isLocalhost = origin.includes('localhost') || origin.includes('127.0.0.1');
 
         if (!isAllowedOrigin && !(isDevelopment && isLocalhost)) {
@@ -3784,7 +3813,7 @@ app.post('/api/pos/request-otp', async (req, res) => {
         // 2. Verify origin
         const origin = req.headers.origin || req.headers.referer || '';
         const isDynamics = origin.includes('dynamics.com');
-        const isDev = process.env.NODE_ENV !== 'production' && (origin.includes('localhost') || origin.includes('127.0.0.1'));
+        const isDev = !envConfig.isDeployed && (origin.includes('localhost') || origin.includes('127.0.0.1'));
 
         if (!isDynamics && !isDev) {
             return res.status(403).json({ success: false, error: 'Forbidden origin' });
@@ -3874,7 +3903,7 @@ app.post('/api/pos/verify-otp', (req, res) => {
         // 2. Verify origin
         const origin = req.headers.origin || req.headers.referer || '';
         const isDynamics = origin.includes('dynamics.com');
-        const isDev = process.env.NODE_ENV !== 'production' && (origin.includes('localhost') || origin.includes('127.0.0.1'));
+        const isDev = !envConfig.isDeployed && (origin.includes('localhost') || origin.includes('127.0.0.1'));
 
         if (!isDynamics && !isDev) {
             return res.status(403).json({ success: false, error: 'Forbidden origin' });
@@ -4011,7 +4040,7 @@ function verifyPosApiKey(req, res, next) {
     // Also verify origin
     const origin = req.headers.origin || req.headers.referer || '';
     const isDynamics = origin.includes('dynamics.com');
-    const isDev = process.env.NODE_ENV !== 'production' && (origin.includes('localhost') || origin.includes('127.0.0.1'));
+    const isDev = !envConfig.isDeployed && (origin.includes('localhost') || origin.includes('127.0.0.1'));
 
     if (!isDynamics && !isDev) {
         return res.status(403).json({ success: false, error: 'Forbidden origin' });
@@ -4254,7 +4283,7 @@ app.post('/api/pos/bosta/create-delivery', verifyPosApiKey, async (req, res) => 
         // Update the online request in Dataverse with tracking info
         try {
             const token = await getDataverseToken();
-            const { DATAVERSE_URL } = process.env;
+            const DATAVERSE_URL = envConfig.dataverseUrl;
 
             await axios.patch(
                 `${DATAVERSE_URL}/api/data/v9.2/crd33_onlinerequestses(${orderReference})`,
@@ -4895,7 +4924,7 @@ app.post('/api/webhooks/bosta', async (req, res) => {
         // Update the online request in Dataverse
         try {
             const token = await getDataverseToken();
-            const { DATAVERSE_URL } = process.env;
+            const DATAVERSE_URL = envConfig.dataverseUrl;
 
             const updateData = {
                 crd33_bosta_state: state,
@@ -4974,7 +5003,7 @@ app.post('/api/pos/bosta/update-address', verifyPosApiKey, async (req, res) => {
 
         // Update the online request in Dataverse with address info
         const token = await getDataverseToken();
-        const { DATAVERSE_URL } = process.env;
+        const DATAVERSE_URL = envConfig.dataverseUrl;
 
         const updateData = {};
         if (firstName) updateData.crd33_delivery_firstname = firstName;
@@ -5491,7 +5520,7 @@ if (pwaEnabled) {
     // Dynamics 365 PWA manifest - with CORS for cross-origin access
     app.get('/pwa/d365-manifest.json', (req, res) => {
         res.type('application/manifest+json');
-        res.setHeader('Access-Control-Allow-Origin', 'https://org1cbcc5c9.crm3.dynamics.com');
+        res.setHeader('Access-Control-Allow-Origin', envConfig.dataverseUrl);
         res.setHeader('Access-Control-Allow-Credentials', 'true');
         res.sendFile(path.join(pwaDir, 'd365-manifest.json'));
     });
@@ -5519,7 +5548,7 @@ if (pwaEnabled) {
 
     // Fallback: redirect to Dynamics 365 directly
     app.get('/app', (req, res) => {
-        res.redirect(301, 'https://org1cbcc5c9.crm3.dynamics.com/WebResources/crd33_home');
+        res.redirect(301, `${envConfig.dataverseUrl}/WebResources/crd33_home`);
     });
 }
 
@@ -5796,7 +5825,7 @@ app.use(errorHandlerMiddleware());
 
 app.listen(port, () => {
     console.log(`✅ Server is running on http://localhost:${port}`);
-    console.log(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`📝 Environment: ${currentEnv}`);
     console.log(`📝 Using memory store for sessions`);
-    console.log(`🔒 Security middleware: ${process.env.NODE_ENV === 'production' ? 'ENABLED' : 'DISABLED'}`);
+    console.log(`🔒 Security middleware: ${isProduction() ? 'ENABLED' : 'DISABLED'}`);
 });

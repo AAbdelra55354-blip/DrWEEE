@@ -143,7 +143,8 @@ function errorHandlerMiddleware() {
         console.error('❌ Unhandled error:', err);
 
         // Don't leak error details in production
-        const isProduction = process.env.NODE_ENV === 'production';
+        const env = process.env.NODE_ENV || 'development';
+        const isProduction = env === 'production' || env === 'test';
 
         res.status(err.status || 500).json({
             success: false,
@@ -178,7 +179,8 @@ function corsOptionsProduction() {
             });
 
             // In production, strictly enforce CORS whitelist
-            if (process.env.NODE_ENV === 'production') {
+            const env = process.env.NODE_ENV || 'development';
+            if (env === 'production' || env === 'test') {
                 // Allow if matches whitelist OR if it's a Railway domain OR drweee.com OR Dynamics 365 (for POS)
                 if (isAllowed || origin.includes('railway.app') || origin.includes('drweee.com') || origin.includes('dynamics.com')) {
                     callback(null, true);
