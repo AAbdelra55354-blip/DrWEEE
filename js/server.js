@@ -353,7 +353,10 @@ async function getDataverseToken() {
     }
 
     console.log('🔄 Authenticating with Dataverse...');
-    const { DATAVERSE_URL, AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET } = process.env;
+    const AZURE_TENANT_ID = (process.env.AZURE_TENANT_ID || '').trim();
+    const AZURE_CLIENT_ID = (process.env.AZURE_CLIENT_ID || '').trim();
+    const AZURE_CLIENT_SECRET = (process.env.AZURE_CLIENT_SECRET || '').trim();
+    const DATAVERSE_URL = (process.env.DATAVERSE_URL || '').trim().replace(/\/+$/, '');
 
     // Debug: Check if required environment variables are set
     if (!DATAVERSE_URL || !AZURE_TENANT_ID || !AZURE_CLIENT_ID || !AZURE_CLIENT_SECRET) {
@@ -385,8 +388,10 @@ async function getDataverseToken() {
         console.log('✅ Dataverse authentication successful.');
         return dataverse.accessToken;
     } catch (error) {
-        console.error('❌ Dataverse authentication failed:', error.response?.data);
-        throw new Error('Could not authenticate with Dataverse.');
+        console.error('❌ Dataverse authentication failed:', error.response?.status, error.response?.data);
+        console.error('❌ Token endpoint used:', tokenEndpoint);
+        console.error('❌ Scope used:', `${DATAVERSE_URL}/.default`);
+        throw new Error(`Could not authenticate with Dataverse: ${error.response?.data?.error_description || error.message}`);
     }
 }
 
@@ -394,10 +399,10 @@ async function getDataverseToken() {
 async function queryDataverse(entityPluralName, fetchXml) {
     console.log(`[DEBUG] Executing FetchXML for ${entityPluralName}...`);
     const token = await getDataverseToken();
-    const { DATAVERSE_URL } = process.env;
+    const baseUrl = (process.env.DATAVERSE_URL || '').trim().replace(/\/+$/, '');
 
     const encodedFetchXml = encodeURIComponent(fetchXml);
-    const url = `${DATAVERSE_URL}/api/data/v9.2/${entityPluralName}?fetchXml=${encodedFetchXml}`;
+    const url = `${baseUrl}/api/data/v9.2/${entityPluralName}?fetchXml=${encodedFetchXml}`;
 
     try {
         const response = await axios.get(url, {
@@ -413,8 +418,12 @@ async function queryDataverse(entityPluralName, fetchXml) {
         return records;
     } catch (error) {
         const errorMessage = error.response?.data?.error?.message || error.message;
-        console.error(`❌ Dataverse query failed for ${entityPluralName}:`, errorMessage);
-        throw new Error(`Failed to query ${entityPluralName}.`);
+        const statusCode = error.response?.status;
+        console.error(`❌ Dataverse query failed for ${entityPluralName}: [${statusCode}]`, errorMessage);
+        if (error.response?.data) {
+            console.error(`❌ Dataverse error details:`, JSON.stringify(error.response.data).substring(0, 500));
+        }
+        throw new Error(`Failed to query ${entityPluralName}: [${statusCode}] ${errorMessage}`);
     }
 }
 function verifyPassword(password, hashedPassword) {
@@ -929,6 +938,7 @@ app.post('/api/login', authLimiter, async (req, res) => {
         }
     } catch (error) {
         console.error('Error during login:', error.message);
+        console.error('Login error stack:', error.stack);
         res.status(500).json({ message: 'An error occurred during login.' });
     }
 });
