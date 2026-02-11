@@ -778,6 +778,20 @@ function loadIncludes() {
                 headerPlaceholder.innerHTML = html;
                 console.log('✅ Header HTML loaded, initializing components...');
 
+                // Show test environment indicator
+                fetch(getApiBaseUrl() + '/api/health')
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.environment === 'test' && !document.getElementById('test-env-banner')) {
+                            const banner = document.createElement('div');
+                            banner.id = 'test-env-banner';
+                            banner.textContent = 'TEST ENVIRONMENT';
+                            banner.style.cssText = 'background:#ff9800;color:#fff;text-align:center;padding:4px 0;font-size:12px;font-weight:700;letter-spacing:1px;position:sticky;top:0;z-index:9999;';
+                            document.getElementById('header').after(banner);
+                        }
+                    })
+                    .catch(() => {});
+
                 // Initialize header components in correct order
                 initHeader();
                 initMobileMenu();

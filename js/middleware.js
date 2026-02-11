@@ -178,11 +178,12 @@ function corsOptionsProduction() {
                 return allowed === origin;
             });
 
-            // In production, strictly enforce CORS whitelist
+            // In deployed environments, strictly enforce CORS whitelist
             const env = process.env.NODE_ENV || 'development';
+            const isLocalhost = origin.includes('localhost') || origin.includes('127.0.0.1');
             if (env === 'production' || env === 'test') {
-                // Allow if matches whitelist OR if it's a Railway domain OR drweee.com OR Dynamics 365 (for POS)
-                if (isAllowed || origin.includes('railway.app') || origin.includes('drweee.com') || origin.includes('dynamics.com')) {
+                // Allow if matches whitelist OR known domains OR localhost (for local testing with test/production env)
+                if (isAllowed || origin.includes('railway.app') || origin.includes('drweee.com') || origin.includes('dynamics.com') || isLocalhost) {
                     callback(null, true);
                 } else {
                     console.log('⚠️ CORS blocked origin:', origin);

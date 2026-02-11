@@ -12,12 +12,14 @@ require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const currentEnv = process.env.NODE_ENV || 'development';
 
 const envConfig = (() => {
-    const isDeployed = currentEnv === 'production' || currentEnv === 'test';
+    // Actually deployed = NODE_ENV is test/production AND running on Railway (not local)
+    const isDeployed = (currentEnv === 'production' || currentEnv === 'test') && !!process.env.RAILWAY_ENVIRONMENT;
+    const localBaseUrl = `http://localhost:${process.env.PORT || 3000}`;
     if (currentEnv === 'production') {
         return {
             dataverseUrl: process.env.DATAVERSE_URL || '',
             powerAutomateUrl: process.env.POWER_AUTOMATE_GET_URL || '',
-            baseUrl: process.env.BASE_URL || 'https://www.drweee.com',
+            baseUrl: isDeployed ? (process.env.BASE_URL || 'https://www.drweee.com') : localBaseUrl,
             isDeployed
         };
     }
@@ -25,9 +27,7 @@ const envConfig = (() => {
     return {
         dataverseUrl: process.env.DATAVERSE_URL_TEST || '',
         powerAutomateUrl: process.env.POWER_AUTOMATE_GET_URL_TEST || '',
-        baseUrl: isDeployed
-            ? (process.env.BASE_URL || 'https://www.drweee.com')
-            : `http://localhost:${process.env.PORT || 3000}`,
+        baseUrl: isDeployed ? (process.env.BASE_URL || 'https://www.drweee.com') : localBaseUrl,
         isDeployed
     };
 })();
@@ -662,7 +662,8 @@ if (isProduction() && (!process.env.SESSION_SECRET || process.env.SESSION_SECRET
 }
 
 // Session configuration - environment-aware
-const isProd = isProduction(); // Use the existing isProduction function
+// secure cookies require HTTPS; only enable when baseUrl is HTTPS (not localhost HTTP)
+const isHttps = envConfig.baseUrl.startsWith('https://');
 
 app.use(session({
     store: sessionStore,
@@ -671,17 +672,17 @@ app.use(session({
     saveUninitialized: true,  // Create session even if nothing stored
     name: 'drweee.sid',
     cookie: {
-        secure: isProd,  // true for HTTPS in production, false for HTTP in dev
+        secure: isHttps,  // true only when on HTTPS (deployed)
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
-        sameSite: isProd ? 'none' : 'lax',  // 'none' for cross-site in production with secure:true
+        sameSite: isHttps ? 'none' : 'lax',  // 'none' for cross-site with secure:true
         path: '/',
         // In production, set domain to allow cookie across subdomains if needed
-        ...(isProd && process.env.COOKIE_DOMAIN ? { domain: process.env.COOKIE_DOMAIN } : {})
+        ...(isHttps && process.env.COOKIE_DOMAIN ? { domain: process.env.COOKIE_DOMAIN } : {})
     }
 }));
 
-console.log(`🍪 Session cookie: secure=${isProd}, sameSite=${isProd ? 'none' : 'lax'}`);
+console.log(`🍪 Session cookie: secure=${isHttps}, sameSite=${isHttps ? 'none' : 'lax'}`);
 
 // --- 5. API ENDPOINTS ---
 
