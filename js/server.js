@@ -1756,8 +1756,14 @@ app.post('/api/fetch-products', async (req, res) => {
                     <link-entity name="productpricelevel" from="productid" to="productid" alias="ppl">
                         <attribute name="crd33_weeepointequivalent" />
                         <attribute name="crd33_carbonsavingsperunit" />
-                        <filter type="or">
-                            ${priceListConditions}
+                        <filter type="and">
+                            <filter type="or">
+                                ${priceListConditions}
+                            </filter>
+                            <filter type="or">
+                                <condition attribute="crd33_availableforecommerce" operator="eq" value="1" />
+                                <condition attribute="crd33_availableforecommerce" operator="null" />
+                            </filter>
                         </filter>
                         <link-entity name="uom" from="uomid" to="uomid" alias="uom">
                             <attribute name="name" />
@@ -1783,6 +1789,12 @@ app.post('/api/fetch-products', async (req, res) => {
                     <link-entity name="productpricelevel" from="productid" to="productid" alias="ppl">
                         <attribute name="crd33_weeepointequivalent" />
                         <attribute name="crd33_carbonsavingsperunit" />
+                        <filter type="and">
+                            <filter type="or">
+                                <condition attribute="crd33_availableforecommerce" operator="eq" value="1" />
+                                <condition attribute="crd33_availableforecommerce" operator="null" />
+                            </filter>
+                        </filter>
                         <link-entity name="uom" from="uomid" to="uomid" alias="uom">
                             <attribute name="name" />
                         </link-entity>
@@ -2021,10 +2033,10 @@ app.post('/api/store', async (req, res) => {
         if (territoryPriceListIds.length > 0) {
             // Filter to only get prices from the territory's price lists
             const priceListIdsCondition = territoryPriceListIds.map(id => `<value>${id}</value>`).join('');
-            priceItemQuery = `<fetch><entity name="productpricelevel"><attribute name="productpricelevelid" alias="priceListItemId"/><attribute name="amount"/><attribute name="crd33_buyingamount" alias="buyingAmount"/><attribute name="crd33_drweeepercentageofsell" alias="weeePercentageOfSell"/><attribute name="crd33_maxdiscountpercentage" alias="maxDiscountPercentage"/><attribute name="crd33_costperpagefororiginal" alias="costPerPageOriginal"/><attribute name="crd33_costperpageforremanufactured" alias="costPerPageRemanufactured"/><attribute name="crd33_saving" alias="saving"/><attribute name="crd33_weeepointequivalent" alias="weeePoints"/><attribute name="crd33_carbonsavingsperunit" alias="carbonSavings"/><attribute name="productid" alias="productIdForJoin"/><link-entity name="pricelevel" from="pricelevelid" to="pricelevelid" alias="pricelist"><attribute name="pricelevelid" alias="priceListId"/><attribute name="name" alias="priceListName"/></link-entity><filter type="and"><condition attribute="productid" operator="in">${productIds}</condition><condition attribute="pricelevelid" operator="in">${priceListIdsCondition}</condition></filter></entity></fetch>`;
+            priceItemQuery = `<fetch><entity name="productpricelevel"><attribute name="productpricelevelid" alias="priceListItemId"/><attribute name="amount"/><attribute name="crd33_buyingamount" alias="buyingAmount"/><attribute name="crd33_drweeepercentageofsell" alias="weeePercentageOfSell"/><attribute name="crd33_maxdiscountpercentage" alias="maxDiscountPercentage"/><attribute name="crd33_costperpagefororiginal" alias="costPerPageOriginal"/><attribute name="crd33_costperpageforremanufactured" alias="costPerPageRemanufactured"/><attribute name="crd33_saving" alias="saving"/><attribute name="crd33_weeepointequivalent" alias="weeePoints"/><attribute name="crd33_carbonsavingsperunit" alias="carbonSavings"/><attribute name="productid" alias="productIdForJoin"/><link-entity name="pricelevel" from="pricelevelid" to="pricelevelid" alias="pricelist"><attribute name="pricelevelid" alias="priceListId"/><attribute name="name" alias="priceListName"/></link-entity><filter type="and"><condition attribute="productid" operator="in">${productIds}</condition><condition attribute="pricelevelid" operator="in">${priceListIdsCondition}</condition><filter type="or"><condition attribute="crd33_availableforecommerce" operator="eq" value="1"/><condition attribute="crd33_availableforecommerce" operator="null"/></filter></filter></entity></fetch>`;
         } else {
             // No territory filter - get all price items (backwards compatibility)
-            priceItemQuery = `<fetch><entity name="productpricelevel"><attribute name="productpricelevelid" alias="priceListItemId"/><attribute name="amount"/><attribute name="crd33_buyingamount" alias="buyingAmount"/><attribute name="crd33_drweeepercentageofsell" alias="weeePercentageOfSell"/><attribute name="crd33_maxdiscountpercentage" alias="maxDiscountPercentage"/><attribute name="crd33_costperpagefororiginal" alias="costPerPageOriginal"/><attribute name="crd33_costperpageforremanufactured" alias="costPerPageRemanufactured"/><attribute name="crd33_saving" alias="saving"/><attribute name="crd33_weeepointequivalent" alias="weeePoints"/><attribute name="crd33_carbonsavingsperunit" alias="carbonSavings"/><attribute name="productid" alias="productIdForJoin"/><link-entity name="pricelevel" from="pricelevelid" to="pricelevelid" alias="pricelist"><attribute name="pricelevelid" alias="priceListId"/><attribute name="name" alias="priceListName"/></link-entity><filter><condition attribute="productid" operator="in">${productIds}</condition></filter></entity></fetch>`;
+            priceItemQuery = `<fetch><entity name="productpricelevel"><attribute name="productpricelevelid" alias="priceListItemId"/><attribute name="amount"/><attribute name="crd33_buyingamount" alias="buyingAmount"/><attribute name="crd33_drweeepercentageofsell" alias="weeePercentageOfSell"/><attribute name="crd33_maxdiscountpercentage" alias="maxDiscountPercentage"/><attribute name="crd33_costperpagefororiginal" alias="costPerPageOriginal"/><attribute name="crd33_costperpageforremanufactured" alias="costPerPageRemanufactured"/><attribute name="crd33_saving" alias="saving"/><attribute name="crd33_weeepointequivalent" alias="weeePoints"/><attribute name="crd33_carbonsavingsperunit" alias="carbonSavings"/><attribute name="productid" alias="productIdForJoin"/><link-entity name="pricelevel" from="pricelevelid" to="pricelevelid" alias="pricelist"><attribute name="pricelevelid" alias="priceListId"/><attribute name="name" alias="priceListName"/></link-entity><filter type="and"><condition attribute="productid" operator="in">${productIds}</condition><filter type="or"><condition attribute="crd33_availableforecommerce" operator="eq" value="1"/><condition attribute="crd33_availableforecommerce" operator="null"/></filter></filter></entity></fetch>`;
         }
 
         const relationshipQuery = `<fetch><entity name="productsubstitute"><attribute name="productsubstituteid" alias="relationshipId"/><attribute name="salesrelationshiptype" alias="relationshipType"/><attribute name="direction"/><attribute name="productid" alias="parentProductIdForJoin"/><link-entity name="product" from="productid" to="substitutedproductid" alias="relatedProduct"><attribute name="productid" alias="productId"/><attribute name="name" alias="relatedName"/><attribute name="productnumber" alias="relatedProductNumber"/></link-entity><filter><condition attribute="productid" operator="in">${productIds}</condition></filter></entity></fetch>`;
