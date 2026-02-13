@@ -1869,13 +1869,15 @@ app.post('/api/fetch-products', async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch products', error: 'product_fetch_failed', detail: error.message });
     }
 });
-// Add this endpoint to server.js after other endpoints
+// Clear all product caches (called from Admin when visibility settings change)
 app.post('/api/clear-product-cache', (req, res) => {
     if (req.session.cachedProducts) {
         delete req.session.cachedProducts;
-        console.log('Product cache cleared from session');
     }
-    res.status(200).json({ message: 'Cache cleared' });
+    ewasteProductCacheByTerritory.clear();
+    storeProductCacheByTerritory.clear();
+    console.log('All product caches cleared (session + e-waste + store territory caches)');
+    res.status(200).json({ message: 'All product caches cleared' });
 });
 // Add this endpoint in server.js
 app.get('/api/config', (req, res) => {
