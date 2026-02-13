@@ -1428,7 +1428,10 @@ app.get('/api/vouchers', async (req, res) => {
                     <order attribute="crd33_name" descending="false" />
                     <filter type="and">
                         <condition attribute="crd33_availableonline" operator="eq" value="1" />
-                        <condition attribute="crd33_availablequantity" operator="gt" value="0" />
+                        <filter type="or">
+                            <condition attribute="crd33_availablequantity" operator="gt" value="0" />
+                            <condition attribute="crd33_availablequantity" operator="null" />
+                        </filter>
                         <condition attribute="statecode" operator="eq" value="0" />
                         ${territoryFilter}
                     </filter>
@@ -1869,15 +1872,16 @@ app.post('/api/fetch-products', async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch products', error: 'product_fetch_failed', detail: error.message });
     }
 });
-// Clear all product caches (called from Admin when visibility settings change)
+// Clear all product and voucher caches (called from Admin when settings change)
 app.post('/api/clear-product-cache', (req, res) => {
     if (req.session.cachedProducts) {
         delete req.session.cachedProducts;
     }
     ewasteProductCacheByTerritory.clear();
     storeProductCacheByTerritory.clear();
-    console.log('All product caches cleared (session + e-waste + store territory caches)');
-    res.status(200).json({ message: 'All product caches cleared' });
+    vouchersCacheByTerritory.clear();
+    console.log('All caches cleared (session + e-waste + store + vouchers)');
+    res.status(200).json({ message: 'All caches cleared' });
 });
 // Add this endpoint in server.js
 app.get('/api/config', (req, res) => {

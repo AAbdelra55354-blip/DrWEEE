@@ -234,8 +234,8 @@
 
         .rewards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: var(--space-xl);
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--space-lg);
             margin-top: var(--space-xl);
         }
 
@@ -281,39 +281,23 @@
         /* Gift Card Styles */
         .gift-card {
             background: var(--white);
-            border-radius: var(--radius-lg);
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: var(--shadow-md);
-            transition: var(--transition-normal);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             position: relative;
+            border: 1px solid rgba(0,0,0,0.04);
         }
 
         .gift-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .card-badge {
-            position: absolute;
-            top: var(--space-md);
-            right: var(--space-md);
-            background: var(--primary-green);
-            color: var(--white);
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius-xl);
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            z-index: 2;
-        }
-
-        .card-badge.cash {
-            background: linear-gradient(135deg, #FFA000, #FF6F00);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 32px rgba(27,94,32,0.15);
+            border-color: rgba(27,94,32,0.1);
         }
 
         .card-image {
-            height: 150px;
+            height: 180px;
             overflow: hidden;
             position: relative;
             background: linear-gradient(135deg, var(--light-green), var(--accent-green));
@@ -323,93 +307,119 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.4s ease;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .gift-card:hover .card-image img {
-            transform: scale(1.1);
+            transform: scale(1.08);
+        }
+
+        .card-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(to top, rgba(0,0,0,0.35), transparent);
+            pointer-events: none;
         }
 
         .card-category-tag {
             position: absolute;
-            bottom: var(--space-md);
-            left: var(--space-md);
-            background: var(--white);
-            padding: 0.4rem 0.8rem;
-            border-radius: var(--radius-md);
+            bottom: 10px;
+            left: 12px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(8px);
+            padding: 0.3rem 0.7rem;
+            border-radius: 20px;
             font-weight: 600;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-dark);
-            box-shadow: var(--shadow-sm);
+            z-index: 2;
         }
 
         .card-content {
-            padding: 1rem 1.25rem;
+            padding: 1rem 1.25rem 1.25rem;
         }
 
         .card-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.85rem;
             color: var(--text-dark);
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
-        .card-pricing {
+        .card-points-display {
             display: flex;
-            gap: 0.5rem;
-            margin-bottom: 0.75rem;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.65rem 0.85rem;
+            background: linear-gradient(135deg, #f0faf0, #e8f5e9);
+            border-radius: 12px;
+            margin-bottom: 0.85rem;
+            border: 1px solid rgba(27,94,32,0.08);
         }
 
-        .price-option {
-            flex: 1;
+        .card-points-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .card-points-info {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 0.5rem;
-            background: var(--off-white);
-            border-radius: var(--radius-sm);
+            gap: 0.1rem;
         }
 
-        .price-label {
+        .card-points-label {
             font-size: 0.65rem;
             color: var(--text-gray);
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            margin-bottom: 0.15rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
 
-        .price-label i {
+        .card-points-value {
+            font-weight: 800;
+            font-size: 1.15rem;
             color: var(--primary-green);
-            font-size: 0.6rem;
-        }
-
-        .price-value {
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: var(--primary-green);
+            line-height: 1;
         }
 
         .view-details-btn {
             width: 100%;
-            padding: 0.7rem;
+            padding: 0.75rem;
             background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
             color: var(--white);
             border: none;
-            border-radius: var(--radius-md);
+            border-radius: 10px;
             font-weight: 600;
             font-size: 0.85rem;
             cursor: pointer;
-            transition: var(--transition-normal);
+            transition: all 0.25s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.4rem;
+            gap: 0.5rem;
         }
 
         .view-details-btn:hover {
             transform: translateY(-2px);
-            box-shadow: var(--shadow-green);
+            box-shadow: 0 6px 20px rgba(27,94,32,0.3);
         }
 
         /* Voucher Detail Modal */
@@ -589,10 +599,6 @@
             margin: 0 auto 0.3rem;
             color: white;
             font-size: 0.75rem;
-        }
-
-        .payment-option.cash .payment-option-icon {
-            background: linear-gradient(135deg, #FFA000, #FF6F00);
         }
 
         .payment-option-label {
@@ -928,18 +934,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="balance-card">
-                            <div class="balance-icon" style="background: linear-gradient(135deg, #FFA000, #FF6F00);">
-                                <i class="fas fa-wallet"></i>
-                            </div>
-                            <div class="balance-info">
-                                <span class="balance-label" data-i18n="redeemPoints.balance.availableCash">Available Cash</span>
-                                <div class="balance-value">
-                                    <span id="user-cash">0</span>
-                                    <small data-i18n="redeemPoints.balance.egp">EGP</small>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -955,7 +949,6 @@
                         <button class="filter-tab" data-category="food" data-i18n="redeemPoints.filters.food">Food & Dining</button>
                         <button class="filter-tab" data-category="entertainment" data-i18n="redeemPoints.filters.entertainment">Entertainment</button>
                         <button class="filter-tab" data-category="tech" data-i18n="redeemPoints.filters.tech">Technology</button>
-                        <button class="filter-tab" data-category="cash" data-i18n="redeemPoints.filters.cash">Cash</button>
                     </div>
                 </div>
             </div>
@@ -1021,27 +1014,19 @@
                     </div>
                 </div>
 
-                <!-- Payment and Quantity Row -->
+                <!-- Points Cost and Quantity Row -->
                 <div class="modal-controls-row">
-                    <!-- Payment Method Selection -->
+                    <!-- Points Cost Display -->
                     <div class="payment-section">
-                        <div class="section-title" data-i18n="redeemPoints.modal.payWith">Pay with</div>
+                        <div class="section-title" data-i18n="redeemPoints.modal.points">Points</div>
                         <div class="payment-options">
-                            <div class="payment-option points selected" data-method="points" id="payPoints">
+                            <div class="payment-option points selected" id="payPoints">
                                 <div class="payment-option-icon">
                                     <i class="fas fa-coins"></i>
                                 </div>
-                                <div class="payment-option-label" data-i18n="redeemPoints.modal.points">Points</div>
+                                <div class="payment-option-label" data-i18n="redeemPoints.modal.pointsCost">Cost</div>
                                 <div class="payment-option-value" id="modalPointsCost">0</div>
                                 <div class="insufficient-badge" id="pointsInsufficient" style="display: none;" data-i18n="redeemPoints.modal.insufficient">Insufficient</div>
-                            </div>
-                            <div class="payment-option cash" data-method="cash" id="payCash">
-                                <div class="payment-option-icon">
-                                    <i class="fas fa-wallet"></i>
-                                </div>
-                                <div class="payment-option-label" data-i18n="redeemPoints.modal.cash">Cash</div>
-                                <div class="payment-option-value" id="modalCashCost">EGP 0</div>
-                                <div class="insufficient-badge" id="cashInsufficient" style="display: none;" data-i18n="redeemPoints.modal.insufficient">Insufficient</div>
                             </div>
                         </div>
                     </div>
@@ -1172,7 +1157,6 @@
         let selectedPaymentMethod = 'points';
         let selectedQuantity = 1;
         let userPoints = 0;
-        let userCash = 0;
 
         // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
@@ -1219,10 +1203,8 @@
             const storedUser = getStoredUser();
             if (storedUser) {
                 userPoints = storedUser.availableWeeePoints || storedUser.availablePoints || 0;
-                userCash = storedUser.availableCash || 0;
 
                 document.getElementById('user-points').textContent = userPoints.toLocaleString();
-                document.getElementById('user-cash').textContent = userCash.toLocaleString();
             }
         }
 
@@ -1321,13 +1303,11 @@
 
         // Create voucher card HTML
         function createVoucherCard(voucher) {
-            const isCash = voucher.category === 'cash';
             const displayName = voucher.translatedName || voucher.name;
             const displayCategory = voucher.translatedCategory || voucher.categoryName;
 
             return `
                 <div class="gift-card" data-category="${voucher.category}">
-                    ${isCash ? `<div class="card-badge cash">${getI18n('redeemPoints.filters.cash')}</div>` : ''}
                     <div class="card-image">
                         <img src="${voucher.image}" alt="${displayName}" loading="lazy"
                              onerror="this.src='https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop'">
@@ -1335,18 +1315,15 @@
                     </div>
                     <div class="card-content">
                         <h3 class="card-title">${displayName}</h3>
-                        <div class="card-pricing">
-                            <div class="price-option">
-                                <span class="price-label"><i class="fas fa-coins"></i> ${getI18n('redeemPoints.card.points')}</span>
-                                <span class="price-value">${voucher.pointsCost.toLocaleString()}</span>
-                            </div>
-                            <div class="price-option">
-                                <span class="price-label"><i class="fas fa-wallet"></i> ${getI18n('redeemPoints.card.cash')}</span>
-                                <span class="price-value">${getI18n('redeemPoints.balance.egp')} ${voucher.cashCost.toLocaleString()}</span>
+                        <div class="card-points-display">
+                            <div class="card-points-icon"><i class="fas fa-coins"></i></div>
+                            <div class="card-points-info">
+                                <span class="card-points-label">${getI18n('redeemPoints.card.points')}</span>
+                                <span class="card-points-value">${voucher.pointsCost.toLocaleString()}</span>
                             </div>
                         </div>
                         <button class="view-details-btn" data-voucher-id="${voucher.id}">
-                            <i class="fas fa-eye"></i>
+                            <i class="fas fa-gift"></i>
                             ${getI18n('redeemPoints.card.viewDetails')}
                         </button>
                     </div>
@@ -1384,7 +1361,6 @@
             document.getElementById('modalTitle').textContent = displayName;
             document.getElementById('modalCategory').innerHTML = `<i class="fas fa-tag"></i> ${displayCategory}`;
             document.getElementById('modalPointsCost').textContent = selectedVoucher.pointsCost.toLocaleString();
-            document.getElementById('modalCashCost').textContent = `${getI18n('redeemPoints.balance.egp')} ${selectedVoucher.cashCost.toLocaleString()}`;
             document.getElementById('qtyValue').textContent = '1';
 
             // Check affordability
@@ -1398,15 +1374,10 @@
         // Update payment options based on user balance
         function updatePaymentOptions() {
             const pointsOption = document.getElementById('payPoints');
-            const cashOption = document.getElementById('payCash');
             const pointsInsufficient = document.getElementById('pointsInsufficient');
-            const cashInsufficient = document.getElementById('cashInsufficient');
 
             const totalPointsCost = selectedVoucher.pointsCost * selectedQuantity;
-            const totalCashCost = selectedVoucher.cashCost * selectedQuantity;
-
             const canAffordPoints = userPoints >= totalPointsCost;
-            const canAffordCash = userCash >= totalCashCost;
 
             // Points option
             if (canAffordPoints) {
@@ -1415,30 +1386,15 @@
             } else {
                 pointsOption.classList.add('disabled');
                 pointsInsufficient.style.display = 'block';
-                if (selectedPaymentMethod === 'points') {
-                    selectedPaymentMethod = canAffordCash ? 'cash' : null;
-                }
-            }
-
-            // Cash option
-            if (canAffordCash) {
-                cashOption.classList.remove('disabled');
-                cashInsufficient.style.display = 'none';
-            } else {
-                cashOption.classList.add('disabled');
-                cashInsufficient.style.display = 'block';
-                if (selectedPaymentMethod === 'cash') {
-                    selectedPaymentMethod = canAffordPoints ? 'points' : null;
-                }
+                selectedPaymentMethod = null;
             }
 
             // Update selection
             pointsOption.classList.toggle('selected', selectedPaymentMethod === 'points');
-            cashOption.classList.toggle('selected', selectedPaymentMethod === 'cash');
 
             // Enable/disable redeem button
             const redeemBtn = document.getElementById('btnRedeem');
-            if (!canAffordPoints && !canAffordCash) {
+            if (!canAffordPoints) {
                 redeemBtn.disabled = true;
                 redeemBtn.innerHTML = `<i class="fas fa-lock"></i> ${getI18n('redeemPoints.modal.insufficientBalance')}`;
             } else {
@@ -1449,13 +1405,8 @@
 
         // Update order summary
         function updateOrderSummary() {
-            const totalCost = selectedPaymentMethod === 'points'
-                ? selectedVoucher.pointsCost * selectedQuantity
-                : selectedVoucher.cashCost * selectedQuantity;
-
-            const totalDisplay = selectedPaymentMethod === 'points'
-                ? `${totalCost.toLocaleString()} ${getI18n('redeemPoints.modal.points')}`
-                : `${getI18n('redeemPoints.balance.egp')} ${totalCost.toLocaleString()}`;
+            const totalCost = selectedVoucher.pointsCost * selectedQuantity;
+            const totalDisplay = `${totalCost.toLocaleString()} ${getI18n('redeemPoints.modal.points')}`;
 
             document.getElementById('summaryQuantity').textContent = selectedQuantity;
             document.getElementById('summaryTotal').textContent = totalDisplay;
@@ -1470,18 +1421,10 @@
                 if (e.target.id === 'voucherModal') closeModal();
             });
 
-            // Payment method selection
+            // Payment method is always points
             document.getElementById('payPoints').addEventListener('click', () => {
                 if (!document.getElementById('payPoints').classList.contains('disabled')) {
                     selectedPaymentMethod = 'points';
-                    updatePaymentOptions();
-                    updateOrderSummary();
-                }
-            });
-
-            document.getElementById('payCash').addEventListener('click', () => {
-                if (!document.getElementById('payCash').classList.contains('disabled')) {
-                    selectedPaymentMethod = 'cash';
                     updatePaymentOptions();
                     updateOrderSummary();
                 }
@@ -1625,9 +1568,7 @@
                 return;
             }
 
-            const totalCost = selectedPaymentMethod === 'points'
-                ? selectedVoucher.pointsCost * selectedQuantity
-                : selectedVoucher.cashCost * selectedQuantity;
+            const totalCost = selectedVoucher.pointsCost * selectedQuantity;
 
             const redeemBtn = document.getElementById('btnRedeem');
             redeemBtn.disabled = true;
