@@ -1,0 +1,99 @@
+{
+  "name": "DrWEEE (Test)",
+  "short_name": "DrWEEE Test",
+  "description": "DrWEEE Testing Environment - E-Waste management suite",
+  "start_url": "/app-test?source=pwa",
+  "scope": "/",
+  "id": "/app-test",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#ff9800",
+  "theme_color": "#ff9800",
+  "dir": "auto",
+  "lang": "ar",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "/pwa/assets/icons-dev/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa/assets/icons-dev/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa/assets/icons-dev/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa/assets/icons-dev/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa/assets/icons-dev/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa/assets/icons-dev/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa/assets/icons-dev/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa/assets/icons-dev/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa/assets/icons-dev/maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Point of Sale",
+      "short_name": "POS",
+      "url": "/app-test?module=pos",
+      "icons": [{ "src": "/pwa/assets/icons-dev/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "E-Waste Manager",
+      "short_name": "E-Waste",
+      "url": "/app-test?module=ewaste",
+      "icons": [{ "src": "/pwa/assets/icons-dev/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Finance",
+      "short_name": "Finance",
+      "url": "/app-test?module=finance",
+      "icons": [{ "src": "/pwa/assets/icons-dev/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "CRM",
+      "short_name": "CRM",
+      "url": "/app-test?module=crm",
+      "icons": [{ "src": "/pwa/assets/icons-dev/icon-96x96.png", "sizes": "96x96" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

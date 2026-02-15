@@ -54,9 +54,10 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // For /app navigation requests
+    // For /app and /app-test navigation requests
     if (event.request.mode === 'navigate' &&
-        (url.pathname === '/app' || url.pathname.startsWith('/app/'))) {
+        (url.pathname === '/app' || url.pathname.startsWith('/app/') ||
+         url.pathname === '/app-test' || url.pathname.startsWith('/app-test/'))) {
         event.respondWith(
             fetch(event.request)
                 .catch(() => caches.match('/pwa/app-shell.html'))

@@ -183,6 +183,17 @@
             background: #e8e8e8;
         }
 
+        .btn-test {
+            background: linear-gradient(135deg, #ff9800 0%, #ffb74d 100%);
+            color: white;
+            border: 2px dashed rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-test:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 152, 0, 0.4);
+        }
+
         .divider {
             display: flex;
             align-items: center;
@@ -413,6 +424,8 @@
                 <span data-lang="ar">متابعة بدون تثبيت</span>
                 <span data-lang="en" style="display:none">Continue without installing</span>
             </a>
+
+            {{TEST_APP_SECTION}}
 
             <!-- iOS Instructions -->
             <div id="iosInstructions" class="install-instructions">

@@ -5525,13 +5525,44 @@ if (pwaEnabled) {
 
     // Serve PWA app shell dynamically - injects correct Dataverse URL based on NODE_ENV
     const appShellPath = path.join(pwaDir, 'app-shell.html');
+
+    // Test app button HTML - only injected when NODE_ENV=test
+    const testAppSectionHtml = currentEnv === 'test' ? `
+            <div class="divider">
+                <span data-lang="ar">بيئة الاختبار</span>
+                <span data-lang="en" style="display:none">Testing</span>
+            </div>
+            <a href="/app-test" class="btn btn-test">
+                <span data-lang="ar">تثبيت تطبيق الاختبار</span>
+                <span data-lang="en" style="display:none">Install Testing App</span>
+            </a>` : '';
+
     function serveAppShell(req, res) {
         fs.readFile(appShellPath, 'utf8', (err, html) => {
             if (err) {
                 console.error('Failed to read app-shell.html:', err.message);
                 return res.status(500).send('Internal Server Error');
             }
-            const rendered = html.replace(/\{\{DATAVERSE_URL\}\}/g, envConfig.dataverseUrl);
+            let rendered = html
+                .replace(/\{\{DATAVERSE_URL\}\}/g, envConfig.dataverseUrl)
+                .replace('{{TEST_APP_SECTION}}', testAppSectionHtml);
+            res.type('html').send(rendered);
+        });
+    }
+
+    // Serve test app shell - same page but with test manifest for separate PWA install
+    function serveTestAppShell(req, res) {
+        fs.readFile(appShellPath, 'utf8', (err, html) => {
+            if (err) {
+                console.error('Failed to read app-shell.html:', err.message);
+                return res.status(500).send('Internal Server Error');
+            }
+            // Swap manifest to test manifest, inject Dataverse URL, remove test button on test app page
+            let rendered = html
+                .replace('/pwa/manifest.json', '/pwa/manifest-test.json')
+                .replace('content="#00897b"', 'content="#ff9800"')
+                .replace(/\{\{DATAVERSE_URL\}\}/g, envConfig.dataverseUrl)
+                .replace('{{TEST_APP_SECTION}}', '');
             res.type('html').send(rendered);
         });
     }
@@ -5540,11 +5571,25 @@ if (pwaEnabled) {
     app.get('/app', serveAppShell);
     app.get('/app/{*splat}', serveAppShell);
 
+    // Test app routes - only register when NODE_ENV=test
+    if (currentEnv === 'test') {
+        app.get('/app-test', serveTestAppShell);
+        app.get('/app-test/{*splat}', serveTestAppShell);
+    }
+
     // PWA manifest with correct MIME type
     app.get('/pwa/manifest.json', (req, res) => {
         res.type('application/manifest+json');
         res.sendFile(path.join(pwaDir, 'manifest.json'));
     });
+
+    // Test PWA manifest - served only when NODE_ENV=test
+    if (currentEnv === 'test') {
+        app.get('/pwa/manifest-test.json', (req, res) => {
+            res.type('application/manifest+json');
+            res.sendFile(path.join(pwaDir, 'manifest-test.json'));
+        });
+    }
 
     // Dynamics 365 PWA manifest - with CORS for cross-origin access
     app.get('/pwa/d365-manifest.json', (req, res) => {
