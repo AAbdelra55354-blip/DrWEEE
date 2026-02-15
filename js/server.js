@@ -5526,6 +5526,10 @@ if (pwaEnabled) {
     // Serve PWA app shell dynamically - injects correct Dataverse URL based on NODE_ENV
     const appShellPath = path.join(pwaDir, 'app-shell.html');
 
+    // Production and test Dataverse URLs - always available regardless of NODE_ENV
+    const prodDataverseUrl = process.env.DATAVERSE_URL || '';
+    const testDataverseUrl = process.env.DATAVERSE_URL_TEST || '';
+
     // Test app button HTML - only injected when NODE_ENV=test
     const testAppSectionHtml = currentEnv === 'test' ? `
             <div class="divider">
@@ -5543,25 +5547,26 @@ if (pwaEnabled) {
                 console.error('Failed to read app-shell.html:', err.message);
                 return res.status(500).send('Internal Server Error');
             }
+            // Production app always points to production Dataverse
             let rendered = html
-                .replace(/\{\{DATAVERSE_URL\}\}/g, envConfig.dataverseUrl)
+                .replace(/\{\{DATAVERSE_URL_PROD\}\}/g, prodDataverseUrl)
                 .replace('{{TEST_APP_SECTION}}', testAppSectionHtml);
             res.type('html').send(rendered);
         });
     }
 
-    // Serve test app shell - same page but with test manifest for separate PWA install
+    // Serve test app shell - same page but with test manifest and test Dataverse URL
     function serveTestAppShell(req, res) {
         fs.readFile(appShellPath, 'utf8', (err, html) => {
             if (err) {
                 console.error('Failed to read app-shell.html:', err.message);
                 return res.status(500).send('Internal Server Error');
             }
-            // Swap manifest to test manifest, inject Dataverse URL, remove test button on test app page
+            // Test app always points to test Dataverse
             let rendered = html
                 .replace('/pwa/manifest.json', '/pwa/manifest-test.json')
                 .replace('content="#00897b"', 'content="#ff9800"')
-                .replace(/\{\{DATAVERSE_URL\}\}/g, envConfig.dataverseUrl)
+                .replace(/\{\{DATAVERSE_URL_PROD\}\}/g, testDataverseUrl)
                 .replace('{{TEST_APP_SECTION}}', '');
             res.type('html').send(rendered);
         });
