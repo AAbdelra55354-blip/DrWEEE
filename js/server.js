@@ -58,6 +58,14 @@ const productCache = {
     lastFetch: 0
 };
 const CACHE_DURATION_MS = 60 * 60 * 1000; // Cache for 1 hour
+
+// Product family GUID for "Remanufactured Printer Cartages" - set per environment in Railway
+// dev:  b1b4fce2-709a-f011-bbd2-6045bd5eed59
+// prod: 4b81c571-03f0-f011-8407-7ced8da584f0
+const RECON_FAMILY_PRODUCT_ID = (currentEnv === 'production'
+    ? (process.env.RECON_FAMILY_PRODUCT_ID || '4b81c571-03f0-f011-8407-7ced8da584f0')
+    : (process.env.RECON_FAMILY_PRODUCT_ID_TEST || 'b1b4fce2-709a-f011-bbd2-6045bd5eed59'));
+console.log(`📦 Recon family product: ${RECON_FAMILY_PRODUCT_ID}`);
 const dataverse = {
     accessToken: null,
     tokenExpiry: null
@@ -1775,7 +1783,7 @@ app.post('/api/fetch-products', async (req, res) => {
                     <filter type="and">
                         <condition attribute="statecode" operator="eq" value="0" />
                         <filter type="or">
-                            <condition attribute="parentproductid" operator="ne" value="b1b4fce2-709a-f011-bbd2-6045bd5eed59" />
+                            <condition attribute="parentproductid" operator="ne" value="${RECON_FAMILY_PRODUCT_ID}" />
                             <condition attribute="parentproductid" operator="null" />
                         </filter>
                     </filter>
@@ -1805,7 +1813,7 @@ app.post('/api/fetch-products', async (req, res) => {
                     <filter type="and">
                         <condition attribute="statecode" operator="eq" value="0" />
                         <filter type="or">
-                            <condition attribute="parentproductid" operator="ne" value="b1b4fce2-709a-f011-bbd2-6045bd5eed59" />
+                            <condition attribute="parentproductid" operator="ne" value="${RECON_FAMILY_PRODUCT_ID}" />
                             <condition attribute="parentproductid" operator="null" />
                         </filter>
                     </filter>
@@ -2015,7 +2023,7 @@ app.post('/api/store', async (req, res) => {
                                     <attribute name="crd33_productimage3"/>
                                     <filter type="and">
                                         <condition attribute="producttypecode" operator="eq" value="1"/>
-                                        <condition attribute="parentproductid" operator="eq" value="b1b4fce2-709a-f011-bbd2-6045bd5eed59"/>
+                                        <condition attribute="parentproductid" operator="eq" value="${RECON_FAMILY_PRODUCT_ID}"/>
                                     </filter>
                                     <link-entity name="product" from="productid" to="parentproductid" link-type="outer" alias="parentProduct">
                                         <attribute name="name" alias="familyName"/>
