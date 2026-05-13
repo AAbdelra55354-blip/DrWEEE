@@ -4,8 +4,8 @@
   "description": "A comprehensive multi-page website showcasing DR.WEEE's journey, achievements, and environmental sustainability focus.",
   "main": "js/server.js",
   "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=9.0.0"
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
   },
   "scripts": {
     "start": "node js/server.js",
