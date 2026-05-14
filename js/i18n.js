@@ -119,6 +119,8 @@
     }
 
     // Detect user's preferred language
+    // Order: saved preference -> detected country mapping -> CONFIG.defaultLanguage (ar).
+    // Browser language is intentionally NOT used: site default is Arabic.
     function detectLanguage(detectedCountryCode = null) {
         // 1. Check localStorage for saved preference (user explicitly chose)
         const saved = localStorage.getItem(CONFIG.storageKey);
@@ -134,14 +136,7 @@
             return lang;
         }
 
-        // 3. Check browser language
-        const browserLang = navigator.language.split('-')[0];
-        if (CONFIG.supportedLanguages.includes(browserLang)) {
-            console.log(`[i18n] Using browser language: ${browserLang}`);
-            return browserLang;
-        }
-
-        // 4. Fall back to default (English)
+        // 3. Fall back to default (Arabic)
         console.log(`[i18n] Using default language: ${CONFIG.defaultLanguage}`);
         return CONFIG.defaultLanguage;
     }
