@@ -7,7 +7,7 @@
 
     // Configuration
     const CONFIG = {
-        defaultLanguage: 'en', // Default to English (fallback)
+        defaultLanguage: 'ar', // Default to Arabic
         defaultCountryName: 'Egypt', // Default country name to match against territories
         supportedLanguages: ['en', 'ar', 'it'],
         storageKey: 'drweee_language',
@@ -89,7 +89,7 @@
         const lowerCode = countryCode.toLowerCase();
         const lang = CONFIG.countryLanguageDefaults[lowerCode];
         // Return the mapped language if supported, otherwise English
-        return (lang && CONFIG.supportedLanguages.includes(lang)) ? lang : 'en';
+        return (lang && CONFIG.supportedLanguages.includes(lang)) ? lang : CONFIG.defaultLanguage;
     }
 
     // Get human-readable country name from code

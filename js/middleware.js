@@ -37,7 +37,7 @@ function securityMiddleware() {
                 imgSrc: ["'self'", "data:", "https:", "blob:"],
                 mediaSrc: ["'self'", "https://assets.mixkit.co", "https://*.blob.core.windows.net", "blob:", "data:"],
                 connectSrc: ["'self'", "https://atlas.microsoft.com", "https://*.atlas.microsoft.com", "https://dc.services.visualstudio.com", "https://apis.cequens.com", "https://*.crm.dynamics.com", "https://*.railway.app", "https://www.google-analytics.com", "https://region1.google-analytics.com", "https://ipapi.co", "https://ipwho.is"],
-                frameSrc: ["'self'", "https://*.blob.core.windows.net"],
+                frameSrc: ["'self'", "https://*.blob.core.windows.net", "https://www.youtube.com", "https://www.youtube-nocookie.com"],
                 workerSrc: ["'self'", "blob:"],
                 childSrc: ["'self'", "blob:"],
                 objectSrc: ["'none'"],
