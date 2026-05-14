@@ -898,31 +898,19 @@ function initLazyLoading() {
 // NOTE: Lazy loading is initialized in main DOMContentLoaded listener at top of file
 
 // Auto play/pause videos based on scroll visibility.
-// First play is muted (browser autoplay policy), then unmute is attempted once.
+// User must click the video once to enable audio (browser autoplay policy).
 // Position is preserved when scrolling away and back.
 function initScrollVideos() {
     const videos = document.querySelectorAll('video[data-autoplay-onscroll]');
     if (videos.length === 0) return;
-
-    const tryUnmute = (v) => {
-        if (v.dataset.unmuteTried === '1') return;
-        v.dataset.unmuteTried = '1';
-        v.muted = false;
-        // If the browser blocks unmuted playback, revert silently
-        const probe = v.play();
-        if (probe && typeof probe.then === 'function') {
-            probe.catch(() => { v.muted = true; v.play().catch(() => {}); });
-        }
-    };
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             const v = entry.target;
             if (entry.isIntersecting) {
                 if (v.dataset.userPaused === '1') return;
-                v.play()
-                    .then(() => tryUnmute(v))
-                    .catch(() => { /* autoplay blocked - leave it alone */ });
+                if (v.dataset.userSeeking === '1') return;
+                v.play().catch(() => { /* autoplay blocked - silently ignore */ });
             } else if (!v.paused) {
                 v.dataset.scrollPaused = '1';
                 v.pause();
@@ -931,16 +919,22 @@ function initScrollVideos() {
     }, { threshold: 0.5 });
 
     videos.forEach(v => {
+        // First user interaction with the video -> unmute permanently.
+        // Use 'click' because it's a real user gesture and won't fire on scroll-pause.
+        v.addEventListener('click', () => { if (v.muted) v.muted = false; }, { once: true });
+
+        // Track scrub (timeline drag) so the observer doesn't fight it.
+        v.addEventListener('seeking', () => { v.dataset.userSeeking = '1'; });
+        v.addEventListener('seeked',  () => { delete v.dataset.userSeeking; });
+
         v.addEventListener('pause', () => {
-            // Pause we initiated (scroll-out) - don't flag as user-paused
-            if (v.dataset.scrollPaused === '1') {
-                delete v.dataset.scrollPaused;
-                return;
-            }
-            // Pause initiated by user via controls or end-of-video
+            // Ignore pauses caused by our observer or by seeking
+            if (v.dataset.scrollPaused === '1') { delete v.dataset.scrollPaused; return; }
+            if (v.dataset.userSeeking === '1') return;
             if (!v.ended) v.dataset.userPaused = '1';
         });
         v.addEventListener('play', () => { delete v.dataset.userPaused; });
+
         observer.observe(v);
     });
 }
