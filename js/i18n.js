@@ -1190,6 +1190,22 @@
     // Expose t() as a shorthand for translate
     window.t = translate;
 
+    // Inject the splash overlay if a page hasn't included it inline.
+    // Runs as soon as <body> is available, so it covers all pages uniformly.
+    function ensureSplash() {
+        if (!document.body || document.getElementById('app-splash')) return;
+        const splash = document.createElement('div');
+        splash.id = 'app-splash';
+        splash.setAttribute('aria-hidden', 'true');
+        splash.innerHTML = '<img src="images/logos/dr-weee-logo.png" alt="" class="app-splash__logo"><div class="app-splash__spinner" role="status" aria-label="Loading"></div>';
+        document.body.insertBefore(splash, document.body.firstChild);
+    }
+    if (document.body) {
+        ensureSplash();
+    } else {
+        document.addEventListener('DOMContentLoaded', ensureSplash, { once: true });
+    }
+
     // Safety net: if i18n hasn't marked ready within 1.5s, unhide the page anyway
     // so a network failure doesn't leave the body invisible.
     setTimeout(() => {

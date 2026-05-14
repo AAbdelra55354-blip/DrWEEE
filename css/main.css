@@ -720,9 +720,48 @@ a:hover {
     box-shadow: var(--shadow-lg);
 }
 
-/* Hide body until i18n has applied translations to prevent flash of untranslated content */
-html:not([data-i18n-ready]) body {
+/* Hide body content until i18n has applied translations to prevent flash of untranslated content.
+   Splash overlay (#app-splash) stays visible during this window. */
+html:not([data-i18n-ready]) body > *:not(#app-splash) {
     visibility: hidden;
+}
+
+#app-splash {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    background: #ffffff;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+html[data-i18n-ready] #app-splash {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+.app-splash__logo {
+    width: 140px;
+    height: auto;
+    max-width: 60vw;
+    user-select: none;
+}
+.app-splash__spinner {
+    width: 44px;
+    height: 44px;
+    border: 4px solid rgba(0, 0, 0, 0.08);
+    border-top-color: #16a34a; /* DR.WEEE green */
+    border-radius: 50%;
+    animation: app-splash-spin 0.9s linear infinite;
+}
+@keyframes app-splash-spin {
+    to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .app-splash__spinner { animation-duration: 1.8s; }
 }
 
 .video-container iframe,
