@@ -1018,6 +1018,8 @@
         updateCountrySwitcher();
 
         isInitialized = true;
+        // Mark document as i18n-ready so CSS can unhide the body
+        document.documentElement.setAttribute('data-i18n-ready', '');
         console.log(`[i18n] Initialized with language: ${currentLanguage}, country: ${currentCountry?.name || 'none'}`);
 
         // Dispatch ready event for other scripts to react
@@ -1187,6 +1189,15 @@
 
     // Expose t() as a shorthand for translate
     window.t = translate;
+
+    // Safety net: if i18n hasn't marked ready within 1.5s, unhide the page anyway
+    // so a network failure doesn't leave the body invisible.
+    setTimeout(() => {
+        if (!document.documentElement.hasAttribute('data-i18n-ready')) {
+            console.warn('[i18n] Forcing ready state after timeout');
+            document.documentElement.setAttribute('data-i18n-ready', '');
+        }
+    }, 1500);
 
     // Auto-initialize when DOM is ready
     if (document.readyState === 'loading') {

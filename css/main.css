@@ -720,6 +720,11 @@ a:hover {
     box-shadow: var(--shadow-lg);
 }
 
+/* Hide body until i18n has applied translations to prevent flash of untranslated content */
+html:not([data-i18n-ready]) body {
+    visibility: hidden;
+}
+
 .video-container iframe,
 .video-container video {
     position: absolute;
