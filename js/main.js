@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initCarousels();
     initContactForm();
     initLazyLoading();
+    initScrollVideos();
     initPageSpecific();
 
     // Load includes (header/footer) - this will trigger header initialization
@@ -895,6 +896,36 @@ function initLazyLoading() {
 }
 
 // NOTE: Lazy loading is initialized in main DOMContentLoaded listener at top of file
+
+// Auto play/pause videos based on scroll visibility
+function initScrollVideos() {
+    const videos = document.querySelectorAll('video[data-autoplay-onscroll]');
+    if (videos.length === 0) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const video = entry.target;
+            if (entry.isIntersecting) {
+                if (!video.dataset.userPaused) {
+                    video.play().catch(() => { /* autoplay may be blocked - silently ignore */ });
+                }
+            } else {
+                if (!video.paused) video.pause();
+            }
+        });
+    }, { threshold: 0.5 });
+
+    videos.forEach(v => {
+        // Respect user intent: if they manually pause while visible, don't auto-resume
+        v.addEventListener('pause', () => {
+            const rect = v.getBoundingClientRect();
+            const visible = rect.top < window.innerHeight && rect.bottom > 0;
+            if (visible && !v.ended) v.dataset.userPaused = 'true';
+        });
+        v.addEventListener('play', () => { delete v.dataset.userPaused; });
+        observer.observe(v);
+    });
+}
 
 // Page-specific functionality
 function initPageSpecific() {
