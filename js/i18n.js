@@ -1018,8 +1018,6 @@
         updateCountrySwitcher();
 
         isInitialized = true;
-        // Mark document as i18n-ready so CSS can unhide the body
-        document.documentElement.setAttribute('data-i18n-ready', '');
         console.log(`[i18n] Initialized with language: ${currentLanguage}, country: ${currentCountry?.name || 'none'}`);
 
         // Dispatch ready event for other scripts to react
@@ -1189,31 +1187,6 @@
 
     // Expose t() as a shorthand for translate
     window.t = translate;
-
-    // Inject the splash overlay if a page hasn't included it inline.
-    // Runs as soon as <body> is available, so it covers all pages uniformly.
-    function ensureSplash() {
-        if (!document.body || document.getElementById('app-splash')) return;
-        const splash = document.createElement('div');
-        splash.id = 'app-splash';
-        splash.setAttribute('aria-hidden', 'true');
-        splash.innerHTML = '<img src="images/logos/dr-weee-logo.png" alt="" class="app-splash__logo"><div class="app-splash__spinner" role="status" aria-label="Loading"></div>';
-        document.body.insertBefore(splash, document.body.firstChild);
-    }
-    if (document.body) {
-        ensureSplash();
-    } else {
-        document.addEventListener('DOMContentLoaded', ensureSplash, { once: true });
-    }
-
-    // Safety net: if i18n hasn't marked ready within 1.5s, unhide the page anyway
-    // so a network failure doesn't leave the body invisible.
-    setTimeout(() => {
-        if (!document.documentElement.hasAttribute('data-i18n-ready')) {
-            console.warn('[i18n] Forcing ready state after timeout');
-            document.documentElement.setAttribute('data-i18n-ready', '');
-        }
-    }, 1500);
 
     // Auto-initialize when DOM is ready
     if (document.readyState === 'loading') {
