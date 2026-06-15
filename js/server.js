@@ -5635,7 +5635,8 @@ if (pwaEnabled) {
 
     // Fallback: redirect to Dynamics 365 directly
     app.get('/app', (req, res) => {
-        res.redirect(301, `${envConfig.dataverseUrl}/WebResources/crd33_home`);
+        const base = (envConfig.dataverseUrl || '').replace(/\/+$/, '');
+        res.redirect(301, `${base}/WebResources/crd33_home`);
     });
 }
 

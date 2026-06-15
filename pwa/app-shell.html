@@ -2,73 +2,21 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#00897b">
-    <meta name="mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
 
     <title>DrWEEE</title>
 
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="/pwa/manifest.json">
-
-    <!-- Preconnect to Dynamics 365 -->
     <link rel="preconnect" href="{{DATAVERSE_URL_PROD}}">
     <link rel="dns-prefetch" href="{{DATAVERSE_URL_PROD}}">
 
-    <!-- Apple-specific meta tags -->
-    <meta name="apple-mobile-web-app-title" content="DrWEEE">
-    <link rel="apple-touch-icon" href="/pwa/assets/icons/icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/pwa/assets/icons/icon-192x192.png">
-
-    <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-96x96.png">
     <link rel="icon" type="image/svg+xml" href="/images/favicon/favicon.svg">
 
-    <script>
-        // CRITICAL: Capture beforeinstallprompt IMMEDIATELY
-        window.deferredInstallPrompt = null;
-        window.installPromptCaptured = false;
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            console.log('[PWA] beforeinstallprompt event fired!');
-            e.preventDefault();
-            window.deferredInstallPrompt = e;
-            window.installPromptCaptured = true;
-
-            // Update button if it exists
-            const btn = document.getElementById('installBtn');
-            if (btn) {
-                btn.dataset.ready = 'true';
-                btn.classList.add('prompt-ready');
-            }
-
-            // Dispatch custom event for the app to know
-            window.dispatchEvent(new CustomEvent('pwainstallready'));
-        });
-
-        // Also listen for appinstalled
-        window.addEventListener('appinstalled', () => {
-            console.log('[PWA] App was installed!');
-            window.deferredInstallPrompt = null;
-        });
-    </script>
-
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html, body {
-            height: 100%;
-            overflow: hidden;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { min-height: 100%; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #00897b 0%, #26a69a 100%);
@@ -77,675 +25,304 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            min-height: 100vh;
         }
-
-        .container {
+        .wrap {
             text-align: center;
-            max-width: 400px;
+            max-width: 460px;
             width: 100%;
         }
-
-        .logo {
-            margin-bottom: 32px;
-            cursor: pointer;
-        }
-
         .logo-icon {
-            font-size: 80px;
+            font-size: 64px;
             display: block;
             animation: float 3s ease-in-out infinite;
         }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
         .logo-text {
-            font-size: 36px;
+            font-size: 28px;
             font-weight: 700;
-            margin-top: 16px;
+            margin-top: 8px;
             letter-spacing: -1px;
         }
-
-        .logo-accent {
-            color: #b2dfdb;
-        }
-
+        .logo-accent { color: #b2dfdb; }
         .tagline {
-            font-size: 16px;
+            font-size: 14px;
             opacity: 0.9;
-            margin-bottom: 48px;
-            line-height: 1.5;
+            margin-top: 6px;
         }
 
-        .card {
+        /* Install tip card */
+        .tip {
             background: white;
-            border-radius: 20px;
-            padding: 32px 24px;
             color: #333;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            padding: 20px 18px;
+            margin-top: 28px;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+            text-align: start;
         }
-
-        .card-title {
-            font-size: 20px;
+        .tip-title {
+            font-size: 15px;
             font-weight: 600;
-            margin-bottom: 12px;
             color: #00897b;
+            margin-bottom: 12px;
+            text-align: center;
         }
-
-        .card-text {
-            font-size: 14px;
+        .tip-sub {
+            font-size: 12px;
             color: #666;
-            margin-bottom: 24px;
+            margin-top: 12px;
+            text-align: center;
             line-height: 1.5;
         }
 
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 16px 24px;
-            border: none;
+        /* Mock of Chrome's "Install app" popup */
+        .mock {
+            background: #2b2b2b;
+            color: #e8e8e8;
             border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            text-align: center;
-            margin-bottom: 12px;
-        }
-
-        .btn:last-child {
-            margin-bottom: 0;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #00897b 0%, #26a69a 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0, 137, 123, 0.4);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        .btn-secondary {
-            background: #f5f5f5;
-            color: #00897b;
-        }
-
-        .btn-secondary:hover {
-            background: #e8e8e8;
-        }
-
-        .btn-test {
-            background: linear-gradient(135deg, #ff9800 0%, #ffb74d 100%);
-            color: white;
-            border: 2px dashed rgba(255, 255, 255, 0.5);
-        }
-
-        .btn-test:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(255, 152, 0, 0.4);
-        }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 20px 0;
-            color: #999;
-            font-size: 12px;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: #e0e0e0;
-        }
-
-        .divider span {
-            padding: 0 12px;
-        }
-
-        /* Install Instructions */
-        .install-instructions {
-            display: none;
-            text-align: right;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        .install-instructions.visible {
-            display: block;
-        }
-
-        .install-step {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-            font-size: 14px;
-            color: #333;
-        }
-
-        .install-step:last-child {
-            margin-bottom: 0;
-        }
-
-        .step-num {
-            width: 24px;
-            height: 24px;
-            background: #00897b;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 600;
-            flex-shrink: 0;
-        }
-
-        .share-icon {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            background: #007aff;
-            color: white;
-            border-radius: 4px;
-            font-size: 14px;
-            line-height: 20px;
-            text-align: center;
-            vertical-align: middle;
-        }
-
-        /* Already installed state */
-        .installed-state .hide-when-installed {
-            display: none !important;
-        }
-
-        .installed-badge {
-            display: none;
-            background: #4caf50;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            margin-bottom: 16px;
-        }
-
-        .installed-state .installed-badge {
-            display: inline-block;
-        }
-
-        /* Offline state */
-        .offline-banner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: #ff5722;
-            color: white;
-            padding: 12px;
-            text-align: center;
-            font-size: 14px;
-            transform: translateY(-100%);
-            transition: transform 0.3s ease;
-            z-index: 1000;
-        }
-
-        .offline-banner.visible {
-            transform: translateY(0);
-        }
-
-        /* RTL adjustments */
-        [dir="ltr"] .install-step {
-            text-align: left;
-        }
-
-        [dir="ltr"] .install-instructions {
-            text-align: left;
-        }
-
-        /* Loading state for button */
-        .btn-loading {
+            padding: 14px 14px 12px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.25);
             position: relative;
-            pointer-events: none;
         }
-
-        .btn-loading span {
-            visibility: hidden;
+        .mock-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 10px;
         }
-
-        .btn-loading::after {
-            content: '';
+        .mock-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .mock-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            flex-shrink: 0;
+            background: #00897b center/70% no-repeat url('/pwa/assets/icons/icon-96x96.png');
+        }
+        .mock-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .mock-url {
+            font-size: 11px;
+            color: #9ecbff;
+        }
+        .mock-actions {
+            display: flex;
+            gap: 6px;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+        .mock-btn {
+            font-size: 11px;
+            padding: 5px 12px;
+            border-radius: 999px;
+            border: 0;
+            font-weight: 600;
+        }
+        .mock-btn.primary { background: #1a73e8; color: white; }
+        .mock-btn.ghost { background: #d2e3fc; color: #174ea6; }
+        .mock-arrow {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 20px;
-            height: 20px;
-            margin: -10px 0 0 -10px;
-            border: 2px solid white;
-            border-top-color: transparent;
+            top: -10px;
+            inset-inline-start: 28px;
+            width: 0; height: 0;
+            border-inline-start: 8px solid transparent;
+            border-inline-end: 8px solid transparent;
+            border-bottom: 10px solid #2b2b2b;
+        }
+        .mock-highlight {
+            position: absolute;
+            inset: -3px;
+            border-radius: 14px;
+            box-shadow: 0 0 0 3px #ffd54f;
+            pointer-events: none;
+            animation: pulse-ring 1.6s ease-in-out infinite;
+        }
+        @keyframes pulse-ring {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Spinner / status */
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
+            margin: 22px auto 8px;
         }
+        .status { font-size: 12px; opacity: 0.85; }
+        .countdown { font-weight: 600; }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .go-now {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 10px 22px;
+            background: rgba(255,255,255,0.18);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.45);
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
         }
+        .go-now:hover { background: rgba(255,255,255,0.28); }
 
-        /* Ready indicator */
-        .btn-primary.prompt-ready {
-            animation: pulse 2s ease-in-out infinite;
+        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* iOS-specific (no Chrome install popup there) */
+        body.is-ios .tip-desktop { display: none; }
+        body.is-ios .tip-ios { display: block; }
+        .tip-ios { display: none; text-align: start; }
+        .tip-ios .step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            margin-top: 8px;
         }
-
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 4px 15px rgba(0, 137, 123, 0.4); }
-            50% { box-shadow: 0 4px 25px rgba(0, 137, 123, 0.8); }
-        }
-
-        /* Debug info */
-        .debug-info {
-            position: fixed;
-            bottom: 10px;
-            left: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.9);
-            color: #0f0;
-            font-family: monospace;
-            font-size: 11px;
-            padding: 10px;
-            border-radius: 8px;
-            display: none;
-            max-height: 150px;
-            overflow: auto;
-            z-index: 9999;
-        }
-
-        .debug-info.visible {
-            display: block;
+        .tip-ios .num {
+            width: 22px; height: 22px;
+            background: #00897b; color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 700; flex-shrink: 0;
         }
     </style>
 </head>
 <body>
-    <!-- Offline Banner -->
-    <div id="offlineBanner" class="offline-banner">
-        <span data-lang="ar">انت غير متصل بالانترنت</span>
-        <span data-lang="en" style="display:none">You're offline</span>
-    </div>
-
-    <div class="container">
-        <div class="logo" id="logo">
-            <span class="logo-icon">♻</span>
-            <div class="logo-text">Dr.<span class="logo-accent">WEEE</span></div>
-        </div>
-
+    <div class="wrap">
+        <span class="logo-icon">♻</span>
+        <div class="logo-text">Dr.<span class="logo-accent">WEEE</span></div>
         <p class="tagline">
-            <span data-lang="ar">نظام إدارة النفايات الإلكترونية المتكامل</span>
-            <span data-lang="en" style="display:none">Integrated E-Waste Management System</span>
+            <span data-lang="ar">نظام إدارة النفايات الإلكترونية</span>
+            <span data-lang="en" style="display:none">E-Waste Management System</span>
         </p>
 
-        <div class="card">
-            <span class="installed-badge" id="installedBadge">
-                <span data-lang="ar">التطبيق مثبت ✓</span>
-                <span data-lang="en" style="display:none">App Installed ✓</span>
-            </span>
-
-            <h2 class="card-title">
-                <span data-lang="ar">مرحباً بك في DrWEEE</span>
-                <span data-lang="en" style="display:none">Welcome to DrWEEE</span>
-            </h2>
-
-            <p class="card-text hide-when-installed" id="installText">
-                <span data-lang="ar">للحصول على تجربة أفضل بدون شريط العنوان، افتح التطبيق أولاً ثم ثبّته من هناك</span>
-                <span data-lang="en" style="display:none">For the best experience without URL bar, open the app first then install from there</span>
-            </p>
-
-            <button id="installBtn" class="btn btn-primary hide-when-installed">
-                <span data-lang="ar">تثبيت التطبيق</span>
-                <span data-lang="en" style="display:none">Install App</span>
-            </button>
-
-            <div class="divider hide-when-installed" id="divider">
-                <span data-lang="ar">أو</span>
-                <span data-lang="en" style="display:none">or</span>
+        <div class="tip">
+            <div class="tip-title">
+                <span data-lang="ar">لتثبيت التطبيق على جهازك</span>
+                <span data-lang="en" style="display:none">To install the app on your device</span>
             </div>
 
-            <a href="{{DATAVERSE_URL_PROD}}/WebResources/crd33_home" id="continueBtn" class="btn btn-secondary">
-                <span data-lang="ar">متابعة بدون تثبيت</span>
-                <span data-lang="en" style="display:none">Continue without installing</span>
-            </a>
+            <div class="tip-desktop">
+                <div class="mock" aria-hidden="true">
+                    <div class="mock-arrow"></div>
+                    <div class="mock-title">
+                        <span data-lang="ar">تثبيت التطبيق</span>
+                        <span data-lang="en" style="display:none">Install app</span>
+                    </div>
+                    <div class="mock-row">
+                        <div class="mock-icon"></div>
+                        <div>
+                            <div class="mock-name">DrWEEE Business Suite</div>
+                            <div class="mock-url">www.drweee.com</div>
+                        </div>
+                    </div>
+                    <div class="mock-actions">
+                        <button class="mock-btn primary">
+                            <span data-lang="ar">تثبيت</span>
+                            <span data-lang="en" style="display:none">Install</span>
+                        </button>
+                        <button class="mock-btn ghost">
+                            <span data-lang="ar">إلغاء</span>
+                            <span data-lang="en" style="display:none">Cancel</span>
+                        </button>
+                    </div>
+                    <div class="mock-highlight"></div>
+                </div>
+                <p class="tip-sub">
+                    <span data-lang="ar">ستظهر هذه النافذة في أعلى المتصفح. اضغط على <strong>تثبيت</strong> للمتابعة.</span>
+                    <span data-lang="en" style="display:none">This popup will appear at the top of your browser. Click <strong>Install</strong> to continue.</span>
+                </p>
+            </div>
 
-            {{TEST_APP_SECTION}}
-
-            <!-- iOS Instructions -->
-            <div id="iosInstructions" class="install-instructions">
-                <div class="install-step">
-                    <span class="step-num">1</span>
+            <div class="tip-ios">
+                <div class="step">
+                    <span class="num">1</span>
                     <span>
-                        <span data-lang="ar">اضغط على زر المشاركة <span class="share-icon">↑</span> في الأسفل</span>
-                        <span data-lang="en" style="display:none">Tap the Share button <span class="share-icon">↑</span> at the bottom</span>
+                        <span data-lang="ar">اضغط على زر المشاركة ⬆️ في الأسفل</span>
+                        <span data-lang="en" style="display:none">Tap the Share button ⬆️ at the bottom</span>
                     </span>
                 </div>
-                <div class="install-step">
-                    <span class="step-num">2</span>
+                <div class="step">
+                    <span class="num">2</span>
                     <span>
                         <span data-lang="ar">اختر "إضافة إلى الشاشة الرئيسية"</span>
                         <span data-lang="en" style="display:none">Select "Add to Home Screen"</span>
                     </span>
                 </div>
-                <div class="install-step">
-                    <span class="step-num">3</span>
-                    <span>
-                        <span data-lang="ar">اضغط "إضافة" في الأعلى</span>
-                        <span data-lang="en" style="display:none">Tap "Add" at the top</span>
-                    </span>
-                </div>
-            </div>
-
-            <!-- Chrome/Edge Instructions (shown when no prompt available) -->
-            <div id="chromeInstructions" class="install-instructions">
-                <p style="margin-bottom: 16px; font-weight: 500; color: #00897b;">
-                    <span data-lang="ar">لتثبيت التطبيق:</span>
-                    <span data-lang="en" style="display:none">To install the app:</span>
-                </p>
-                <div class="install-step">
-                    <span class="step-num">1</span>
-                    <span>
-                        <span data-lang="ar">ابحث عن أيقونة التثبيت <span style="background:#333;color:white;padding:2px 6px;border-radius:4px;font-size:12px;">⊕</span> في شريط العنوان</span>
-                        <span data-lang="en" style="display:none">Look for the install icon <span style="background:#333;color:white;padding:2px 6px;border-radius:4px;font-size:12px;">⊕</span> in the address bar</span>
-                    </span>
-                </div>
-                <div class="install-step">
-                    <span class="step-num">2</span>
-                    <span>
-                        <span data-lang="ar">أو اضغط على قائمة المتصفح <span style="background:#333;color:white;padding:2px 8px;border-radius:4px;">⋮</span></span>
-                        <span data-lang="en" style="display:none">Or click browser menu <span style="background:#333;color:white;padding:2px 8px;border-radius:4px;">⋮</span></span>
-                    </span>
-                </div>
-                <div class="install-step">
-                    <span class="step-num">3</span>
-                    <span>
-                        <span data-lang="ar">ثم اختر "تثبيت DrWEEE..."</span>
-                        <span data-lang="en" style="display:none">Then select "Install DrWEEE..."</span>
-                    </span>
-                </div>
             </div>
         </div>
+
+        <div class="spinner"></div>
+        <div class="status">
+            <span data-lang="ar">جاري فتح التطبيق خلال <span class="countdown" id="cd">5</span> ثوانٍ...</span>
+            <span data-lang="en" style="display:none">Opening app in <span class="countdown" id="cd-en">5</span>s...</span>
+        </div>
+        <a class="go-now" id="goNow" href="{{DATAVERSE_URL_PROD}}/WebResources/crd33_home">
+            <span data-lang="ar">فتح الآن</span>
+            <span data-lang="en" style="display:none">Open now</span>
+        </a>
     </div>
 
-    <!-- Debug info (triple-tap logo to show) -->
-    <div id="debugInfo" class="debug-info"></div>
-
     <script>
-        // Configuration
-        const DYNAMICS_URL = '{{DATAVERSE_URL_PROD}}/WebResources/crd33_home';
+        // /app is a thin splash that forwards into the real app on D365.
+        // The PWA (manifest + install + service worker) lives on the D365
+        // origin as the crd33_home web resource so the installed window
+        // stays in-scope and Chrome doesn't show a URL bar.
+        (function () {
+            const base = '{{DATAVERSE_URL_PROD}}'.replace(/\/+$/, '');
+            const params = new URLSearchParams(window.location.search);
+            const moduleParam = params.get('module');
+            let target = base + '/WebResources/crd33_home';
+            if (moduleParam) target += '#' + moduleParam;
 
-        // Check URL params for PWA launch
-        const urlParams = new URLSearchParams(window.location.search);
-        const isPWALaunch = urlParams.has('source') || urlParams.has('module');
-        const moduleParam = urlParams.get('module');
-
-        // Quick standalone check
-        function isStandalone() {
-            return window.matchMedia('(display-mode: standalone)').matches
-                || window.navigator.standalone === true;
-        }
-
-        // If launched from installed PWA, show launcher and redirect
-        if (isStandalone()) {
-            let targetUrl = DYNAMICS_URL;
-            if (moduleParam) {
-                targetUrl += '#' + moduleParam;
-            }
-
-            // Show launcher splash screen
-            document.addEventListener('DOMContentLoaded', () => {
-                const lang = localStorage.getItem('drweee_lang') || 'ar';
-                const isRtl = lang === 'ar';
-                document.body.innerHTML = `
-                    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:linear-gradient(135deg,#00897b,#26a69a);color:white;font-family:-apple-system,sans-serif;text-align:center;padding:20px;direction:${isRtl ? 'rtl' : 'ltr'};">
-                        <div style="font-size:80px;margin-bottom:20px;animation:float 3s ease-in-out infinite;">♻</div>
-                        <div style="font-size:32px;font-weight:700;margin-bottom:8px;">Dr.<span style="color:#b2dfdb">WEEE</span></div>
-                        <div style="font-size:14px;opacity:0.9;margin-bottom:30px;">${isRtl ? 'نظام إدارة النفايات الإلكترونية' : 'E-Waste Management System'}</div>
-                        <div style="width:36px;height:36px;border:3px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:16px;"></div>
-                        <div style="font-size:14px;opacity:0.8;">${isRtl ? 'جاري التحميل...' : 'Loading...'}</div>
-                        <style>
-                            @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-                            @keyframes spin{to{transform:rotate(360deg)}}
-                        </style>
-                    </div>
-                `;
-
-                // Auto-redirect after brief splash
-                setTimeout(() => {
-                    window.location.href = targetUrl;
-                }, 800);
-            });
-
-            // Stop here - don't load the rest of the page
-        } else if (isPWALaunch && !isStandalone()) {
-            // Opened via URL params but not in standalone mode - just redirect
-            let targetUrl = DYNAMICS_URL;
-            if (moduleParam) {
-                targetUrl += '#' + moduleParam;
-            }
-            window.location.replace(targetUrl);
-        }
-
-        // Debug logging
-        const debugEl = document.getElementById('debugInfo');
-        const logs = [];
-        function log(msg) {
-            const time = new Date().toLocaleTimeString();
-            const entry = `[${time}] ${msg}`;
-            logs.push(entry);
-            console.log('[PWA]', msg);
-            if (debugEl) {
-                debugEl.textContent = logs.slice(-15).join('\n');
-            }
-        }
-
-        // DOM elements
-        const installBtn = document.getElementById('installBtn');
-        const iosInstructions = document.getElementById('iosInstructions');
-        const chromeInstructions = document.getElementById('chromeInstructions');
-        const divider = document.getElementById('divider');
-        const continueBtn = document.getElementById('continueBtn');
-
-        // Detect platform
-        function isIOS() {
-            return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        }
-
-        function isAndroid() {
-            return /Android/.test(navigator.userAgent);
-        }
-
-        function getBrowser() {
-            const ua = navigator.userAgent;
-            if (ua.includes('Edg/')) return 'edge';
-            if (ua.includes('Chrome/')) return 'chrome';
-            if (ua.includes('Firefox/')) return 'firefox';
-            if (ua.includes('Safari/') && !ua.includes('Chrome')) return 'safari';
-            return 'unknown';
-        }
-
-        // Apply language
-        function applyLanguage(lang) {
+            const lang = localStorage.getItem('drweee_lang') || 'ar';
             document.documentElement.lang = lang;
             document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
             document.querySelectorAll('[data-lang]').forEach(el => {
                 el.style.display = el.dataset.lang === lang ? '' : 'none';
             });
-        }
 
-        // Handle install button click
-        async function handleInstallClick() {
-            log('Install button clicked');
-            log(`Prompt available: ${!!window.deferredInstallPrompt}`);
+            // Platform-specific tip
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            if (isIOS) document.body.classList.add('is-ios');
 
-            const prompt = window.deferredInstallPrompt;
+            document.getElementById('goNow').href = target;
 
-            if (prompt) {
-                // Native install prompt available - use it!
-                log('Triggering native install prompt...');
-                installBtn.classList.add('btn-loading');
+            // Suppress any drweee.com-origin install prompt — installation must
+            // happen on the D365 origin (crd33_home), not here.
+            window.addEventListener('beforeinstallprompt', e => e.preventDefault());
 
-                try {
-                    prompt.prompt();
-                    const result = await prompt.userChoice;
-                    log(`User choice: ${result.outcome}`);
+            // Unregister any stale drweee.com SW from earlier PWA builds so it
+            // can't intercept anything on this origin.
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(regs => {
+                    regs.forEach(r => r.unregister().catch(() => {}));
+                }).catch(() => {});
+            }
 
-                    if (result.outcome === 'accepted') {
-                        log('Install accepted!');
-                        // Redirect after install
-                        setTimeout(() => {
-                            window.location.href = DYNAMICS_URL;
-                        }, 1000);
-                    } else {
-                        log('Install dismissed');
-                    }
-                } catch (err) {
-                    log(`Install error: ${err.message}`);
-                } finally {
-                    installBtn.classList.remove('btn-loading');
-                    window.deferredInstallPrompt = null;
+            // Countdown then redirect (gives the user time to read the tip)
+            let seconds = 5;
+            const cdAr = document.getElementById('cd');
+            const cdEn = document.getElementById('cd-en');
+            const tick = setInterval(() => {
+                seconds -= 1;
+                if (cdAr) cdAr.textContent = seconds;
+                if (cdEn) cdEn.textContent = seconds;
+                if (seconds <= 0) {
+                    clearInterval(tick);
+                    window.location.replace(target);
                 }
-            } else if (isIOS()) {
-                // iOS - show manual instructions
-                log('iOS - showing instructions');
-                iosInstructions.classList.add('visible');
-                installBtn.style.display = 'none';
-                divider.style.display = 'none';
-            } else {
-                // Desktop/Android without prompt - show inline instructions
-                log('No prompt - showing Chrome instructions');
-                document.getElementById('chromeInstructions').classList.add('visible');
-                installBtn.style.display = 'none';
-                divider.style.display = 'none';
-            }
-        }
-
-        // Initialize
-        function init() {
-            const lang = localStorage.getItem('drweee_lang') || 'ar';
-            applyLanguage(lang);
-
-            const browser = getBrowser();
-            log(`Init: browser=${browser}, iOS=${isIOS()}, Android=${isAndroid()}`);
-            log(`Standalone: ${isStandalone()}`);
-            log(`Prompt captured: ${window.installPromptCaptured}`);
-
-            // If already installed, show installed state and redirect
-            if (isStandalone()) {
-                log('Running as installed PWA');
-                document.body.classList.add('installed-state');
-                continueBtn.innerHTML = lang === 'ar' ? '<span>فتح التطبيق</span>' : '<span>Open App</span>';
-                setTimeout(() => window.location.href = DYNAMICS_URL, 1000);
-                return;
-            }
-
-            // Show appropriate instructions based on platform
-            if (isIOS()) {
-                log('iOS device detected');
-                iosInstructions.classList.add('visible');
-                installBtn.querySelector('[data-lang="ar"]').textContent = 'اتبع الخطوات أدناه ↓';
-                installBtn.querySelector('[data-lang="en"]').textContent = 'Follow steps below ↓';
-                installBtn.style.display = 'none';
-                divider.style.display = 'none';
-            } else if (!window.deferredInstallPrompt && (browser === 'chrome' || browser === 'edge')) {
-                // Chrome/Edge but no prompt yet - show instructions immediately
-                log('Chrome/Edge without prompt - showing instructions');
-                chromeInstructions.classList.add('visible');
-                // Keep button visible - it might get the prompt later
-                installBtn.querySelector('[data-lang="ar"]').textContent = 'ابحث عن ⊕ في شريط العنوان';
-                installBtn.querySelector('[data-lang="en"]').textContent = 'Look for ⊕ in address bar';
-            }
-
-            // Setup install button
-            installBtn.addEventListener('click', handleInstallClick);
-
-            // Listen for the prompt becoming available
-            window.addEventListener('pwainstallready', () => {
-                log('Install prompt became ready!');
-                installBtn.classList.add('prompt-ready');
-                // Reset button text
-                installBtn.querySelector('[data-lang="ar"]').textContent = 'تثبيت التطبيق';
-                installBtn.querySelector('[data-lang="en"]').textContent = 'Install App';
-                // Hide instructions since we have native prompt
-                chromeInstructions.classList.remove('visible');
-            });
-
-            // Check if prompt is already available
-            if (window.deferredInstallPrompt) {
-                log('Prompt already available!');
-                installBtn.classList.add('prompt-ready');
-            }
-
-            // Listen for successful installation
-            window.addEventListener('appinstalled', () => {
-                log('App installed!');
-                setTimeout(() => window.location.href = DYNAMICS_URL, 500);
-            });
-
-            // Offline detection
-            function updateOnlineStatus() {
-                const banner = document.getElementById('offlineBanner');
-                banner.classList.toggle('visible', !navigator.onLine);
-            }
-            window.addEventListener('online', updateOnlineStatus);
-            window.addEventListener('offline', updateOnlineStatus);
-            updateOnlineStatus();
-
-            // Debug: triple-tap logo
-            let tapCount = 0;
-            let tapTimer;
-            document.getElementById('logo').addEventListener('click', () => {
-                tapCount++;
-                clearTimeout(tapTimer);
-                tapTimer = setTimeout(() => tapCount = 0, 500);
-                if (tapCount >= 3) {
-                    debugEl.classList.toggle('visible');
-                    tapCount = 0;
-                }
-            });
-        }
-
-        // Register service worker FIRST (required for beforeinstallprompt)
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/pwa/sw.js', { scope: '/' })
-                .then(reg => {
-                    log(`SW registered: ${reg.scope}`);
-
-                    // Force update check
-                    reg.update();
-
-                    // Wait for SW to be ready, then init
-                    navigator.serviceWorker.ready.then(() => {
-                        log('SW ready');
-                        // Small delay to allow beforeinstallprompt to fire
-                        setTimeout(init, 100);
-                    });
-                })
-                .catch(err => {
-                    log(`SW failed: ${err.message}`);
-                    // Init anyway
-                    init();
-                });
-        } else {
-            log('SW not supported');
-            init();
-        }
+            }, 1000);
+        })();
     </script>
 </body>
 </html>
