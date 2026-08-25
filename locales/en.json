@@ -46,8 +46,8 @@
   "home": {
     "hero": {
       "title": "Smart Green IT Solutions",
-      "subtitle": "Pioneering Sustainable Innovation",
-      "description": "Transforming environmental challenges into profitable opportunities through cutting-edge e-waste recycling and circular economy solutions.",
+      "subtitle": "Leader in Sustainable E-Waste Innovation",
+      "description": "We turn Egypt's e-waste challenge into measurable environmental and economic impact, through advanced recycling technology and a proven circular-economy model.",
       "cta": {
         "primary": "Discover Our Story",
         "secondary": "Partner With Us"
@@ -63,17 +63,17 @@
     "video": {
       "subtitle": "Our Mission in Motion",
       "title": "The Journey of E-Waste Valorization",
-      "description": "Discover how Dr. WEEE is transforming the e-waste challenge into a global business opportunity, creating value and championing a sustainable circular economy."
+      "description": "See how DR.WEEE turns Egypt's e-waste challenge into a scalable global business, creating real environmental value and leading the region's shift toward a circular economy."
     },
     "about": {
       "subtitle": "Who We Are",
       "title": "Leading the Circular Economy Revolution",
-      "description": "DR.WEEE Smart Green IT Solutions is Egypt's pioneering e-waste recycling company, founded by visionary environmental entrepreneur Essam Hashem. We specialize in transforming electronic waste into valuable resources while creating sustainable business opportunities."
+      "description": "DR.WEEE Smart Green IT Solutions is Egypt's first e-waste recycling company, founded by visionary environmental entrepreneur Eng. Essam Hashem. We recover valuable materials from electronic waste and build sustainable, profitable operations around it, for our clients, partners, and the environment."
     },
     "services": {
       "subtitle": "Our Services",
       "title": "Comprehensive Sustainability Solutions",
-      "description": "From e-waste recycling to equipment manufacturing, we provide end-to-end solutions that transform environmental challenges into profitable business opportunities.",
+      "description": "From e-waste recycling to equipment manufacturing, DR.WEEE delivers end-to-end solutions that turn environmental responsibility into a profitable, scalable business.",
       "ewaste": {
         "title": "E-Waste Recycling",
         "description": "Comprehensive electronic waste processing with advanced material recovery systems extracting valuable metals.",
@@ -126,7 +126,7 @@
       }
     },
     "cta": {
-      "title": "Ready to Build a Sustainable Future Together?",
+      "title": "Ready to Build a Sustainable Future and Turn E-Waste Into Opportunity?",
       "description": "Whether you're interested in partnerships, franchise opportunities, or collaboration on sustainability projects, we're always open to discussing how we can create positive environmental impact together.",
       "startConversation": "Start a Conversation",
       "exploreServices": "Explore Services"
@@ -167,11 +167,11 @@
       "description": "Our guiding principles drive every decision and action as we work towards a more sustainable and environmentally conscious future.",
       "vision": {
         "title": "Our Vision",
-        "description": "To maximize the use of resources and their optimal exploitation to achieve profits while finding smarter and more innovative sustainable solutions through green information technology. Supporting appropriate methods for preserving the environment and sustainable development, creating a sustainable environment and environmentally friendly investment opportunities."
+        "description": "To get the maximum value out of every resource, using green information technology to deliver smarter, more profitable, and more sustainable solutions, for the environment, the economy, and investors alike."
       },
       "mission": {
         "title": "Our Mission",
-        "description": "To transform challenges into opportunities through continuous development and innovation. We overcome environmental and business challenges by providing comprehensive solutions using green information technology, creating value for all stakeholders while protecting our planet."
+        "description": "We turn environmental and business challenges into opportunities, using green information technology to deliver solutions that create value for every stakeholder while protecting the planet."
       },
       "values": {
         "title": "Our Values",
@@ -335,7 +335,7 @@
     "ewaste": {
       "subtitle": "Core Service",
       "title": "E-Waste Recycling",
-      "description": "Our comprehensive electronic waste recycling service is designed to meet all market needs related to e-waste management through advanced collection, sorting, dismantling, and recycling processes.",
+      "description": "Our e-waste recycling service covers the full cycle, collection, sorting, dismantling, and material recovery, built to meet Egypt's e-waste management needs end to end.",
       "whatWeProcess": "What We Process:",
       "items": {
         "computers": "Computers & Laptops",
@@ -379,7 +379,7 @@
       "cards": {
         "collection": {
           "title": "E-Waste Collection",
-          "price": "Starting from $25,000",
+          "price": "",
           "features": {
             "f1": "Mobile collection services",
             "f2": "Community engagement programs",
@@ -389,7 +389,7 @@
         },
         "fullService": {
           "title": "Full Service Center",
-          "price": "Starting from $75,000",
+          "price": "",
           "features": {
             "f1": "Complete e-waste processing",
             "f2": "Ink cartridge remanufacturing",
@@ -399,7 +399,7 @@
         },
         "regional": {
           "title": "Regional Master",
-          "price": "Starting from $150,000",
+          "price": "",
           "features": {
             "f1": "Regional territory rights",
             "f2": "Sub-franchise development",
@@ -528,6 +528,65 @@
         "customization": {
           "title": "Customization",
           "description": "Equipment tailored to specific regional requirements and conditions"
+        }
+      }
+    },
+    "catalogue": {
+      "subtitle": "What We Offer",
+      "title": "Full Services Catalogue",
+      "description": "Eleven end-to-end offerings across toner, e-waste, compliance, franchise, B2B, and technical support.",
+      "tags": {
+        "toner": "Toner",
+        "ewaste": "E-waste",
+        "compliance": "Compliance",
+        "franchise": "Franchise",
+        "b2b": "B2B",
+        "support": "Support"
+      },
+      "items": {
+        "tonerSales": {
+          "title": "Remanufactured Toner Sales",
+          "description": "Affordable, quality-tested laser cartridge alternatives, inspected before dispatch."
+        },
+        "customerReman": {
+          "title": "Customer Cartridge Remanufacturing",
+          "description": "Send us your empty cartridge — we inspect, refurbish, refill, and test it before returning it."
+        },
+        "emptyCollection": {
+          "title": "Empty Cartridge Collection",
+          "description": "We buy or collect empty cartridges by type, quantity, and condition, supporting the circular economy."
+        },
+        "mps": {
+          "title": "Managed Print Services (MPS)",
+          "description": "Track print and toner consumption and cut costs through managed service contracts."
+        },
+        "pickup": {
+          "title": "E-waste Pickup",
+          "description": "We collect old or faulty electronics, sort them, and recycle them through a documented route."
+        },
+        "dataDestruction": {
+          "title": "Secure Data Destruction",
+          "description": "Wiping or physical destruction of storage media, with a certificate issued on request."
+        },
+        "certificates": {
+          "title": "Recycling & Carbon Certificates",
+          "description": "Reports and certificates documenting processed quantities and estimated environmental impact."
+        },
+        "epr": {
+          "title": "EPR Support",
+          "description": "Helping producers and importers document and route their waste collection obligations."
+        },
+        "franchise": {
+          "title": "Dr. WEEE Franchise",
+          "description": "Franchise models: collection point, distributor/app, full branch, or warehouse partnership."
+        },
+        "corporate": {
+          "title": "Corporate Contracts",
+          "description": "Supply contracts for toner, empty collection, waste recycling, and sustainability reporting."
+        },
+        "printQuality": {
+          "title": "Print Quality Support",
+          "description": "Diagnosis of print defects linked to the drum, magnetic roller, wiper blade, and related parts."
         }
       }
     },
@@ -883,8 +942,13 @@
       "emailDescription": "For general inquiries and partnerships.",
       "callTitle": "Call Us",
       "callDescription": "Sun - Thu, 9:00 AM - 6:00 PM (GMT+2)",
-      "headquartersTitle": "Our Headquarters",
-      "headquartersDescription": "Cairo, Egypt"
+      "headOfficeTitle": "Head Office",
+      "headOfficeAddress": "15 U3, Makram Ebeid St., Nasr City, Cairo",
+      "factoryTitle": "Recycling Factory",
+      "factoryAddress": "6th District, Industrial Zone, 6th of October City",
+      "hubTitle": "Collection Hub",
+      "hubAddress": "Dr. WEEE Sustainable Hub for Circular IT Solutions",
+      "viewOnMap": "View on Map"
     },
     "successModal": {
       "title": "Message Sent Successfully!",

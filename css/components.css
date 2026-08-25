@@ -915,6 +915,98 @@
     box-shadow: var(--shadow-lg);
 }
 
+/* Services Catalogue Grid (11 offerings) */
+.services-catalogue-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-lg);
+    margin-top: var(--space-xl);
+}
+
+.catalogue-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-normal);
+    border-top: 4px solid var(--primary-green);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.catalogue-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+}
+
+.catalogue-card__icon {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(46, 125, 50, 0.08);
+    color: var(--primary-green);
+    border-radius: var(--radius-md);
+    font-size: 1.5rem;
+    margin-bottom: var(--space-md);
+}
+
+.catalogue-card__tag {
+    display: inline-block;
+    align-self: flex-start;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(46, 125, 50, 0.1);
+    color: var(--primary-green);
+    margin-bottom: var(--space-sm);
+}
+
+.catalogue-card__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--dark-gray);
+    margin-bottom: var(--space-sm);
+    line-height: 1.35;
+}
+
+.catalogue-card__description {
+    font-size: 0.9375rem;
+    color: var(--medium-gray);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Category color variants */
+.catalogue-card--toner       { border-top-color: #2E7D32; }
+.catalogue-card--toner .catalogue-card__icon,
+.catalogue-card--toner .catalogue-card__tag { background: rgba(46, 125, 50, 0.1); color: #2E7D32; }
+
+.catalogue-card--ewaste      { border-top-color: #1565C0; }
+.catalogue-card--ewaste .catalogue-card__icon,
+.catalogue-card--ewaste .catalogue-card__tag { background: rgba(21, 101, 192, 0.1); color: #1565C0; }
+
+.catalogue-card--compliance  { border-top-color: #6A1B9A; }
+.catalogue-card--compliance .catalogue-card__icon,
+.catalogue-card--compliance .catalogue-card__tag { background: rgba(106, 27, 154, 0.1); color: #6A1B9A; }
+
+.catalogue-card--franchise   { border-top-color: #EF6C00; }
+.catalogue-card--franchise .catalogue-card__icon,
+.catalogue-card--franchise .catalogue-card__tag { background: rgba(239, 108, 0, 0.1); color: #EF6C00; }
+
+.catalogue-card--b2b         { border-top-color: #37474F; }
+.catalogue-card--b2b .catalogue-card__icon,
+.catalogue-card--b2b .catalogue-card__tag { background: rgba(55, 71, 79, 0.1); color: #37474F; }
+
+.catalogue-card--support     { border-top-color: #C62828; }
+.catalogue-card--support .catalogue-card__icon,
+.catalogue-card--support .catalogue-card__tag { background: rgba(198, 40, 40, 0.1); color: #C62828; }
+
 /* Contact Page Styles */
 .contact-grid {
     display: grid;
