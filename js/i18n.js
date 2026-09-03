@@ -7,7 +7,7 @@
 
     // Configuration
     const CONFIG = {
-        defaultLanguage: 'ar', // Default to Arabic
+        defaultLanguage: 'en', // Default to English
         defaultCountryName: 'Egypt', // Default country name to match against territories
         supportedLanguages: ['en', 'ar', 'it'],
         storageKey: 'drweee_language',
@@ -118,9 +118,7 @@
         return '';
     }
 
-    // Detect user's preferred language
-    // Order: saved preference -> detected country mapping -> CONFIG.defaultLanguage (ar).
-    // Browser language is intentionally NOT used: site default is Arabic.
+    // Detect the language, preserving an explicit user preference.
     function detectLanguage(detectedCountryCode = null) {
         // 1. Check localStorage for saved preference (user explicitly chose)
         const saved = localStorage.getItem(CONFIG.storageKey);
@@ -129,14 +127,7 @@
             return saved;
         }
 
-        // 2. If we detected a country, use its preferred language
-        if (detectedCountryCode) {
-            const lang = getLanguageForCountryCode(detectedCountryCode);
-            console.log(`[i18n] Using language from detected country (${detectedCountryCode}): ${lang}`);
-            return lang;
-        }
-
-        // 3. Fall back to default (Arabic)
+        // New visitors start in English regardless of detected location.
         console.log(`[i18n] Using default language: ${CONFIG.defaultLanguage}`);
         return CONFIG.defaultLanguage;
     }
