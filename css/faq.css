@@ -143,6 +143,7 @@
 .faq-answer {
     display: grid;
     grid-template-rows: 0fr;
+    max-height: none;
     transition: grid-template-rows 350ms ease;
 }
 
