@@ -1,0 +1,197 @@
+/* Homepage FAQ */
+.faq-section {
+    position: relative;
+    overflow: hidden;
+    background: #eef5e9;
+}
+
+.faq-section::before {
+    position: absolute;
+    top: -12rem;
+    left: -10rem;
+    width: 28rem;
+    height: 28rem;
+    content: '';
+    border: 1px solid rgba(70, 124, 83, 0.16);
+    border-radius: 50%;
+    box-shadow: 0 0 0 2rem rgba(70, 124, 83, 0.04), 0 0 0 5rem rgba(70, 124, 83, 0.025);
+    animation: faq-drift 16s ease-in-out infinite alternate;
+}
+
+.faq-layout {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(240px, 0.72fr) minmax(0, 1.28fr);
+    gap: clamp(2rem, 8vw, 7rem);
+    align-items: start;
+}
+
+.faq-intro {
+    position: sticky;
+    top: 7rem;
+}
+
+.faq-intro .section__subtitle {
+    color: #4e7d3e;
+}
+
+.faq-intro .section__title {
+    max-width: 440px;
+    margin-bottom: var(--space-md);
+    color: var(--dark-green);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1.08;
+}
+
+.faq-intro .section__description {
+    max-width: 390px;
+    color: #5e7065;
+}
+
+.faq-contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: var(--space-lg);
+    color: var(--dark-green);
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 180ms ease, gap 180ms ease;
+}
+
+.faq-contact-link i {
+    color: #719b39;
+    transition: transform 180ms ease;
+}
+
+.faq-contact-link:hover,
+.faq-contact-link:focus-visible {
+    color: #719b39;
+    gap: 1.1rem;
+}
+
+.faq-contact-link:hover i,
+.faq-contact-link:focus-visible i {
+    transform: translateX(3px);
+}
+
+.faq-list {
+    border-top: 1px solid rgba(23, 59, 50, 0.2);
+}
+
+.faq-item {
+    border-bottom: 1px solid rgba(23, 59, 50, 0.2);
+    animation: faq-rise 650ms cubic-bezier(.2, .75, .25, 1) both;
+}
+
+.faq-item:nth-child(2) { animation-delay: 80ms; }
+.faq-item:nth-child(3) { animation-delay: 160ms; }
+.faq-item:nth-child(4) { animation-delay: 240ms; }
+.faq-item:nth-child(5) { animation-delay: 320ms; }
+
+.faq-item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 5.4rem;
+    padding: 1.25rem 0;
+    color: var(--dark-green);
+    font-size: clamp(1rem, 2vw, 1.18rem);
+    font-weight: 600;
+    line-height: 1.45;
+    list-style: none;
+    cursor: pointer;
+    transition: color 180ms ease, padding-left 180ms ease;
+}
+
+.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-item summary::marker {
+    display: none;
+    content: '';
+}
+
+.faq-item summary:hover,
+.faq-item summary:focus-visible {
+    color: #719b39;
+    padding-left: 0.35rem;
+}
+
+.faq-item summary i {
+    display: grid;
+    flex: 0 0 2rem;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    color: #4e7d3e;
+    border: 1px solid rgba(78, 125, 62, 0.38);
+    border-radius: 50%;
+    font-size: 0.75rem;
+    transition: color 180ms ease, background-color 180ms ease, transform 300ms ease;
+}
+
+.faq-item[open] summary i {
+    color: #fff;
+    background: #4e7d3e;
+    transform: rotate(45deg);
+}
+
+.faq-answer {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 350ms ease;
+}
+
+.faq-item[open] .faq-answer {
+    grid-template-rows: 1fr;
+}
+
+.faq-answer p {
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+    color: #60736d;
+    line-height: 1.8;
+}
+
+.faq-item[open] .faq-answer p {
+    padding: 0 3rem 1.5rem 0;
+}
+
+@keyframes faq-rise {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes faq-drift {
+    to { transform: translate(2rem, 1rem) rotate(18deg); }
+}
+
+@media (max-width: 800px) {
+    .faq-layout {
+        grid-template-columns: 1fr;
+        gap: var(--space-xl);
+    }
+
+    .faq-intro {
+        position: static;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .faq-section::before,
+    .faq-item {
+        animation: none;
+    }
+
+    .faq-answer,
+    .faq-item summary i,
+    .faq-contact-link,
+    .faq-contact-link i {
+        transition: none;
+    }
+}
