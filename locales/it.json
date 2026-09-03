@@ -132,6 +132,26 @@
       "exploreServices": "Esplora i Servizi"
     }
   },
+  "faq": {
+    "subtitle": "Da sapere",
+    "title": "Risposte per un passo più verde.",
+    "description": "Alcuni dettagli utili sulle nostre soluzioni di riciclaggio, rigenerazione e partnership.",
+    "contact": "Hai ancora una domanda?",
+    "questions": {
+      "whatWeDo": "Di cosa si occupa DR.WEEE?",
+      "arrangeCollection": "Come posso organizzare la raccolta dei rifiuti elettronici?",
+      "acceptedWaste": "Quali tipi di rifiuti elettronici accettate?",
+      "partnerships": "Offrite partnership o opportunità di franchising?",
+      "afterCollection": "Cosa succede ai materiali dopo la raccolta?"
+    },
+    "answers": {
+      "whatWeDo": "Offriamo raccolta responsabile dei rifiuti elettronici, recupero dei materiali, soluzioni IT circolari e servizi di stampa sostenibili per aziende e comunità.",
+      "arrangeCollection": "Inviaci i tuoi dati tramite il modulo di contatto, indicando il tipo e il volume approssimativo delle apparecchiature. Il nostro team esaminerà la richiesta e ti contatterà per i prossimi passi.",
+      "acceptedWaste": "Gestiamo un'ampia gamma di apparecchiature IT ed elettroniche. L'accettazione dipende dal tipo, dalle condizioni, dalla quantità e dai requisiti di gestione sicura, che confermiamo durante la valutazione.",
+      "partnerships": "Sì. Collaboriamo con organizzazioni, partner di raccolta e operatori in franchising. Visita la pagina dei servizi o contattaci per discutere il modello più adatto al tuo mercato.",
+      "afterCollection": "I materiali raccolti vengono valutati, selezionati e indirizzati verso percorsi responsabili di recupero o riutilizzo. Diamo priorità alla sicurezza dei dati, alla tracciabilità e alla riduzione dei rifiuti in discarica."
+    }
+  },
   "about": {
     "hero": {
       "subtitle": "Fondatore e Presidente",

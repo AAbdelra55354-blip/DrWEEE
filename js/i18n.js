@@ -971,8 +971,6 @@
 
         // Check if this is first visit (no saved preferences)
         const hasSavedCountry = localStorage.getItem(CONFIG.countryStorageKey);
-        const hasSavedLanguage = localStorage.getItem(CONFIG.storageKey);
-
         if (!hasSavedCountry && !sessionStorage.getItem(CONFIG.geoDetectedKey)) {
             // First visit - do geolocation
             console.log('[i18n] First visit - performing geolocation...');
@@ -986,16 +984,8 @@
             currentCountryId = currentCountry.id;
         }
 
-        // Detect language (considers detected country if no saved preference)
+        // Detect language from the user's saved choice, or English for new visitors.
         currentLanguage = detectLanguage(detectedCountryCode);
-
-        // If this is first visit and we detected a country, also save the language
-        if (!hasSavedLanguage && detectedCountryCode) {
-            const lang = getLanguageForCountryCode(detectedCountryCode);
-            if (CONFIG.supportedLanguages.includes(lang)) {
-                localStorage.setItem(CONFIG.storageKey, lang);
-            }
-        }
 
         console.log(`[i18n] Detected language: ${currentLanguage}, country: ${currentCountry?.name || 'none'}`);
 

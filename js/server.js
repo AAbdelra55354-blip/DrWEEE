@@ -1893,8 +1893,18 @@ app.post('/api/clear-product-cache', (req, res) => {
 });
 // Add this endpoint in server.js
 app.get('/api/config', (req, res) => {
+    const azureMapsKey = (process.env.AZURE_MAPS_KEY || '').trim();
+
+    if (!azureMapsKey) {
+        return res.status(503).json({
+            configured: false,
+            error: 'Azure Maps is not configured. Set AZURE_MAPS_KEY in the server environment.'
+        });
+    }
+
     res.json({
-        azureMapsKey: process.env.AZURE_MAPS_KEY
+        configured: true,
+        azureMapsKey
     });
 });
 

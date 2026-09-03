@@ -5486,8 +5486,14 @@
             async function loadConfig() {
                 try {
                     const response = await fetch(getApiBaseUrl() + '/api/config');
-                    if (!response.ok) throw new Error('Failed to load config');
+                    if (!response.ok) {
+                        const error = await response.json().catch(() => ({}));
+                        throw new Error(error.error || 'Azure Maps is not configured');
+                    }
                     const config = await response.json();
+                    if (!config.configured || !config.azureMapsKey) {
+                        throw new Error('Azure Maps is not configured');
+                    }
                     AZURE_MAPS_KEY = config.azureMapsKey;
                 } catch (error) {
                     console.error('Error loading configuration:', error);

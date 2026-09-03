@@ -132,6 +132,26 @@
       "exploreServices": "Explore Services"
     }
   },
+  "faq": {
+    "subtitle": "Need to know",
+    "title": "Answers for a greener next step.",
+    "description": "A few helpful details about our recycling, remanufacturing, and partnership solutions.",
+    "contact": "Still have a question?",
+    "questions": {
+      "whatWeDo": "What does DR.WEEE do?",
+      "arrangeCollection": "How can I arrange an e-waste collection?",
+      "acceptedWaste": "What kinds of electronic waste do you accept?",
+      "partnerships": "Do you offer partnerships or franchise opportunities?",
+      "afterCollection": "What happens to the materials after collection?"
+    },
+    "answers": {
+      "whatWeDo": "We provide responsible e-waste collection, material recovery, circular IT solutions, and sustainable printing services for businesses and communities.",
+      "arrangeCollection": "Send us your details through the contact form with the type and approximate volume of equipment. Our team will review your request and contact you with the next steps.",
+      "acceptedWaste": "We handle a wide range of IT and electronic equipment. Acceptance depends on the item, condition, quantity, and safe handling requirements, which we confirm during assessment.",
+      "partnerships": "Yes. We work with organizations, collection partners, and franchise operators. Visit our services page or contact us to discuss a model that fits your market.",
+      "afterCollection": "Collected materials are assessed, sorted, and directed through responsible recovery or reuse pathways. We prioritize data security, traceability, and minimizing landfill waste."
+    }
+  },
   "about": {
     "hero": {
       "subtitle": "Founder & Chairman",
